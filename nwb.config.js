@@ -1,12 +1,14 @@
+const Dotenv = require('dotenv-webpack')
+
 module.exports = {
   type: 'react-component',
   npm: {
     esModules: true,
-    umd: {
-      global: 'DdkMap',
-      externals: {
-        react: 'React'
-      }
-    }
-  }
+    umd: false,
+  },
+  webpack: {
+    extra: {
+      plugins: [new Dotenv()],
+    },
+  },
 }

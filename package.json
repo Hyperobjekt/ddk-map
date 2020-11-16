@@ -19,19 +19,41 @@
     "test:coverage": "nwb test-react --coverage",
     "test:watch": "nwb test-react --server"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@pureartisan/simple-i18n": "^1.6.1",
+    "classnames": "^2.2.6",
+    "clsx": "^1.1.1",
+    "copy-to-clipboard": "^3.3.1",
+    "d3-ease": "^2.0.0",
+    "dotenv-webpack": "^5.1.0",
+    "fontsource-roboto": "^3.0.3",
+    "prop-types": "^15.7.2",
+    "react-device-detect": "^1.14.0",
+    "react-icons": "^3.11.0",
+    "react-map-gl": "^5.2.10",
+    "react-resize-aware": "^3.1.0",
+    "zustand": "^3.2.0"
+  },
   "peerDependencies": {
     "react": "16.x"
   },
   "devDependencies": {
+    "babel-register": "^6.26.0",
     "nwb": "0.25.x",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
-  "author": "",
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 10",
+    "not op_mini all"
+  ],
+  "author": "Lou Groshek, <lou@lougroshek.com>",
   "homepage": "",
   "license": "MIT",
-  "repository": "",
+  "repository": "git@github.com:Hyperobjekt/ddk-map.git",
   "keywords": [
     "react-component"
   ]

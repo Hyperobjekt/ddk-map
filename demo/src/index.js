@@ -1,15 +1,19 @@
-import React, {Component} from 'react'
-import {render} from 'react-dom'
+import React, { Component } from 'react'
+import { render } from 'react-dom'
 
-import Example from '../../src'
+import Explorer from '../../src'
 
 export default class Demo extends Component {
+  toggleMenu = () => {
+    // console.log('demo page toggle menu blah')
+    return null
+  }
+  // TODO: Pass in language object from parent site.
+  // TODO: Pass in active language from parent site.
+
   render() {
-    return <div>
-      <h1>ddk-map Demo</h1>
-      <Example/>
-    </div>
+    return <Explorer toggleMenu={this.toggleMenu} />
   }
 }
 
-render(<Demo/>, document.querySelector('#demo'))
+render(<Demo />, document.querySelector('#demo'))

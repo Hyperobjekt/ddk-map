@@ -23,3 +23,25 @@
 - `npm run build` will build the component for publishing to npm and also bundle the demo app.
 
 - `npm run clean` will delete built resources.
+
+## Development Practices
+
+- Code Formatting: [Prettier](https://prettier.io/) (using
+  .prettierrc config)
+  - [Atom plugin](https://atom.io/packages/prettier-atom)
+  - [VS Code plugin](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- Prefer functional components using hooks instead of class
+  based components
+
+All modules should:
+
+- Contain an `index.js` the exports any components required
+  by other modules
+
+All components should:
+
+- Should opt to use functional components with hooks over
+  class components
+- Have a `Component.md` that document example usage
+- document props accepted using `Component.propTypes`
+- provide default props via `Component.defaultProps`
