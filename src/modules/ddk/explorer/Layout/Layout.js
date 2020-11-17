@@ -11,7 +11,7 @@ import { Paper } from '@material-ui/core'
 
 import Header from './../Header'
 import ControlPanel from './../ControlPanel'
-// import Map from './../Map'
+import Map from './../Map'
 
 const Layout = ({ ...props }) => {
   const layoutStyles = makeStyles(theme => ({
@@ -34,6 +34,7 @@ const Layout = ({ ...props }) => {
     >
       <Header />
       <ControlPanel />
+      <Map />
     </Paper>
   )
 }

@@ -60,8 +60,8 @@ export const BOUNDS = {
 }
 
 export const DEFAULT_VIEWPORT = {
-  latitude: 32.912, // 32.7603525,
-  longitude: -96.866, // -96.791731,
+  latitude: 37.7577, // TODO: Update default lat and lng for nation map.
+  longitude: -122.4376,
   zoom: 8,
   bearing: 0,
   pitch: 0,
@@ -69,4 +69,6 @@ export const DEFAULT_VIEWPORT = {
   touchZoom: true,
   touchRotate: true,
   preserveDrawingBuffer: true,
+  height: '100%',
+  width: '100%',
 }

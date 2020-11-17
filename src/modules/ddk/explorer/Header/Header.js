@@ -1,11 +1,11 @@
 import React from 'react'
 import i18n from '@pureartisan/simple-i18n'
 import AppBar from '@material-ui/core/AppBar'
-import Typography from '@material-ui/core/Typography'
+import { InputBase, Typography } from '@material-ui/core'
 import useScrollTrigger from '@material-ui/core/useScrollTrigger'
 import Toolbar from '@material-ui/core/Toolbar'
-import { MdHome } from 'react-icons/md'
-import { makeStyles } from '@material-ui/core/styles'
+import { MdHome, MdSearch } from 'react-icons/md'
+import { fade, makeStyles } from '@material-ui/core/styles'
 
 import useStore from './../store'
 import theme from './../theme'
@@ -15,7 +15,7 @@ const Header = ({ ...props }) => {
   const activeView = useStore(state => state.activeView)
 
   // Styles for component.
-  const headerStyles = makeStyles({
+  const headerStyles = makeStyles(theme => ({
     root: {
       // Any overrides...
     },
@@ -27,7 +27,53 @@ const Header = ({ ...props }) => {
     h1: {
       fontSize: '1.2rem',
     },
-  })
+    search: {
+      position: 'relative',
+      minWidth: '320px',
+      borderRadius: theme.shape.borderRadius,
+      backgroundColor: fade(
+        theme.palette.common.white,
+        0.15,
+      ),
+      '&:hover': {
+        backgroundColor: fade(
+          theme.palette.common.white,
+          0.25,
+        ),
+      },
+      marginRight: theme.spacing(2),
+      marginLeft: 'auto',
+      width: '100%',
+      [theme.breakpoints.up('sm')]: {
+        marginLeft: 'auto',
+        marginRight: theme.spacing(3),
+        width: 'auto',
+      },
+    },
+    searchIcon: {
+      padding: theme.spacing(0, 2),
+      height: '100%',
+      position: 'absolute',
+      right: 0,
+      pointerEvents: 'none',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    inputRoot: {
+      color: 'inherit',
+    },
+    inputInput: {
+      padding: theme.spacing(1, 1, 1, 0),
+      // vertical padding + font size from searchIcon
+      paddingLeft: theme.spacing(2),
+      transition: theme.transitions.create('width'),
+      width: '100%',
+      [theme.breakpoints.up('md')]: {
+        width: '20ch',
+      },
+    },
+  }))
 
   const classes = headerStyles()
 
@@ -41,6 +87,19 @@ const Header = ({ ...props }) => {
           <Typography className={classes.h1} variant="h1">
             {i18n.translate('SITE_TITLE')}
           </Typography>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <MdSearch />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </div>
         </Toolbar>
       </AppBar>
     )

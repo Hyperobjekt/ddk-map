@@ -56,6 +56,9 @@ setStoreValues({
 ```
 - Update and modify large objects (for the map, for example) using `fromJS({})` from 'immutable' ([examples](https://github.com/Hyperobjekt/cpal-components/blob/258f4881d951d99c53218a749d591a452a035a91/src/modules/cpal/explorer/MapView/selectors.js#L41)).
 
+## Visual Style Guide
+
+The client has a [very thorough style guide](https://drive.google.com/drive/folders/1eRv3la42eC-Y2hPqY-rB6qQ4h-Vv7AQS) with many specifications that pertain to maps and graphs. Our work should conform to this style guide, exceptions should be approved by the client.
 
 ## Updating data
 
