@@ -70,48 +70,51 @@ const BaseMap = ({ ...props }) => {
 
   const mapProps = {
     mapboxApiAccessToken: token,
+    width: classes.parent.width,
     ...viewport,
   }
 
   return (
-    <Mapbox
-      defaultViewport={DEFAULT_VIEWPORT}
-      className={clsx(classes.parent)}
-      MapGLProps={mapProps}
-      mapStyle={
-        'mapbox://styles/ddkids/ckhmbktzi142u19ois58yahb2'
-      }
-    >
-      {
-        <>
-          <div
-            className={clsx(
-              'custom-attribution',
-              classes.customAttrib,
-            )}
-          >
-            <span className="divider">|</span>
-            <Typography
-              variant="caption"
-              className={clsx(classes.customAttribTxt)}
+    <div className={clsx(classes.parent)}>
+      <Mapbox
+        defaultViewport={DEFAULT_VIEWPORT}
+        MapGLProps={mapProps}
+        mapStyle={
+          'mapbox://styles/ddkids/ckhmbktzi142u19ois58yahb2'
+        }
+        style={{ width: '100%', height: '100%' }}
+      >
+        {
+          <>
+            <div
+              className={clsx(
+                'custom-attribution',
+                classes.customAttrib,
+              )}
             >
-              {i18n.translate(`MAP_UI_POWERED_BY`)}
-            </Typography>
-          </div>
-          <div className={clsx(classes.navControls)}>
-            {activeView === 'explorer' && (
-              <>
-                <NavigationControl
-                  showCompass={false}
-                  // onViewportChange={setViewport}
-                  captureClick={true}
-                ></NavigationControl>
-              </>
-            )}
-          </div>
-        </>
-      }
-    </Mapbox>
+              <span className="divider">|</span>
+              <Typography
+                variant="caption"
+                className={clsx(classes.customAttribTxt)}
+              >
+                {i18n.translate(`MAP_UI_POWERED_BY`)}
+              </Typography>
+            </div>
+            <div className={clsx(classes.navControls)}>
+              {activeView === 'explorer' && (
+                <>
+                  <NavigationControl
+                    showCompass={false}
+                    // onViewportChange={setViewport}
+                    captureClick={true}
+                  ></NavigationControl>
+                </>
+              )}
+            </div>
+          </>
+        }
+      </Mapbox>
+    </div>
   )
 }
 
