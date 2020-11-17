@@ -11,8 +11,13 @@ import useStore from './../store'
 import theme from './../theme'
 
 const ControlPanel = ({ ...props }) => {
+  // Header is not displayed if the view type is 'embed'
+  const activeView = useStore(state => state.activeView)
+
+  // Styles for this component.
   const styles = makeStyles(theme => ({
     root: {
+      backgroundColor: theme.palette.background.paper,
       position: 'absolute',
       top: 0,
       left: 0,
@@ -36,18 +41,22 @@ const ControlPanel = ({ ...props }) => {
 
   const classes = styles()
 
-  return (
-    <Box className={clsx('control-panel', classes.root)}>
-      <IconButton
-        className={clsx(
-          'control-panel-button',
-          classes.button,
-        )}
-      >
-        <AiOutlineControl />
-      </IconButton>
-    </Box>
-  )
+  if (activeView === 'embed') {
+    return ''
+  } else {
+    return (
+      <Box className={clsx('control-panel', classes.root)}>
+        <IconButton
+          className={clsx(
+            'control-panel-button',
+            classes.button,
+          )}
+        >
+          <AiOutlineControl />
+        </IconButton>
+      </Box>
+    )
+  }
 }
 
 ControlPanel.propTypes = {}

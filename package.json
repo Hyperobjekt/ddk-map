@@ -20,6 +20,7 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
+    "@hyperobjekt/mapbox": "^1.0.9",
     "@material-ui/core": "^4.11.0",
     "@pureartisan/simple-i18n": "^1.6.1",
     "classnames": "^2.2.6",
@@ -28,6 +29,7 @@
     "d3-ease": "^2.0.0",
     "dotenv-webpack": "^5.1.0",
     "fontsource-roboto": "^3.0.3",
+    "immutable": "^4.0.0-rc.12",
     "prop-types": "^15.7.2",
     "react-device-detect": "^1.14.0",
     "react-icons": "^3.11.0",

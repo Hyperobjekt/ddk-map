@@ -12,7 +12,7 @@ import {
   DEFAULT_SHAPE,
 } from './../../../constants/map'
 
-const [useStore] = create((set, get) => ({
+const useStore = create((set, get) => ({
   // Set any store values by passing in an object of values to merge.
   setStoreValues: obj => set({ ...obj }),
   // Track loading of remote data files.
@@ -188,5 +188,6 @@ const [useStore] = create((set, get) => ({
   // Not counters.
   eventError: 0,
 }))
+const api = useStore
 
 export default useStore
