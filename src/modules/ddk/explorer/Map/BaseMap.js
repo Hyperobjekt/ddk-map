@@ -16,8 +16,8 @@ import { DEFAULT_VIEWPORT } from './../../../../constants/map'
 
 const BaseMap = ({ ...props }) => {
   const activeView = useStore(state => state.activeView)
-  const viewport = useStore(state => state.viewport)
-  const setViewport = useStore(state => state.setViewport)
+  // const viewport = useStore(state => state.viewport)
+  // const setViewport = useStore(state => state.setViewport)
 
   const [loaded, setLoaded] = useState(false)
 
@@ -84,53 +84,53 @@ const BaseMap = ({ ...props }) => {
 
   // handler for viewport change, debounced to prevent
   // race errors
-  const handleViewportChange = useCallback(
-    (vp, options = {}) => {
-      // console.log('handleViewportChange, vp = ', vp)
-      // console.log('BOUNDS, ', BOUNDS)
-      if (!loaded) return
-      // If zoom is below min, reset zoom to min.
-      // if (vp.zoom && vp.zoom <= BOUNDS.zoom.min) {
-      //   vp.zoom = BOUNDS.zoom.min
-      // }
-      // // If zoom is above max, reset zoom to max.
-      // if (vp.zoom && vp.zoom >= BOUNDS.zoom.max) {
-      //   vp.zoom = BOUNDS.zoom.max
-      // }
-      //
-      // if (vp.longitude && vp.longitude < BOUNDS.lng.min) {
-      //   // console.log('panned beyond lng.min')
-      //   vp.longitude = BOUNDS.lng.min
-      // }
-      // if (vp.longitude && vp.longitude > BOUNDS.lng.max) {
-      //   // console.log('panned beyond lng.max')
-      //   vp.longitude = BOUNDS.lng.max
-      // }
-      // if (vp.latitude && vp.latitude < BOUNDS.lat.min) {
-      //   // console.log('panned beyond lat.min')
-      //   vp.latitude = BOUNDS.lat.min
-      // }
-      // if (vp.latitude && vp.latitude > BOUNDS.lat.max) {
-      //   // console.log('panned beyond lat.max')
-      //   vp.latitude = BOUNDS.lat.max
-      // }
-      setViewport(vp)
-    },
-    [setViewport, loaded],
-  )
+  // const handleViewportChange = useCallback(
+  //   (vp, options = {}) => {
+  //     // console.log('handleViewportChange, vp = ', vp)
+  //     // console.log('BOUNDS, ', BOUNDS)
+  //     if (!loaded) return
+  //     // If zoom is below min, reset zoom to min.
+  //     // if (vp.zoom && vp.zoom <= BOUNDS.zoom.min) {
+  //     //   vp.zoom = BOUNDS.zoom.min
+  //     // }
+  //     // // If zoom is above max, reset zoom to max.
+  //     // if (vp.zoom && vp.zoom >= BOUNDS.zoom.max) {
+  //     //   vp.zoom = BOUNDS.zoom.max
+  //     // }
+  //     //
+  //     // if (vp.longitude && vp.longitude < BOUNDS.lng.min) {
+  //     //   // console.log('panned beyond lng.min')
+  //     //   vp.longitude = BOUNDS.lng.min
+  //     // }
+  //     // if (vp.longitude && vp.longitude > BOUNDS.lng.max) {
+  //     //   // console.log('panned beyond lng.max')
+  //     //   vp.longitude = BOUNDS.lng.max
+  //     // }
+  //     // if (vp.latitude && vp.latitude < BOUNDS.lat.min) {
+  //     //   // console.log('panned beyond lat.min')
+  //     //   vp.latitude = BOUNDS.lat.min
+  //     // }
+  //     // if (vp.latitude && vp.latitude > BOUNDS.lat.max) {
+  //     //   // console.log('panned beyond lat.max')
+  //     //   vp.latitude = BOUNDS.lat.max
+  //     // }
+  //     setViewport(vp)
+  //   },
+  //   [setViewport, loaded],
+  // )
 
   const token = process.env.GATSBY_MAPBOX_API_TOKEN
   const VIEWPORT = DEFAULT_VIEWPORT
 
-  // Can't get this to work. Check with Lane about it.
-  // const [viewport, setViewport] = useMapViewport()
+  // A bit janky. Check with Lane about it.
+  const [viewport, setViewport] = useMapViewport()
 
   const mapProps = {
     mapboxApiAccessToken: token,
-    // onViewportChange: viewport => {
-    //   setViewport(viewport)
-    // },
-    onViewportChange: handleViewportChange,
+    onViewportChange: viewport => {
+      setViewport(viewport)
+    },
+    // onViewportChange: handleViewportChange,
     ...viewport,
   }
 
@@ -168,10 +168,14 @@ const BaseMap = ({ ...props }) => {
                 <>
                   {/*onViewportChange={viewport => {
                   setViewport(viewport)
-                }}*/}
+                }}
+                onViewportChange={handleViewportChange}
+                */}
                   <NavigationControl
                     showCompass={false}
-                    onViewportChange={handleViewportChange}
+                    onViewportChange={viewport => {
+                      setViewport(viewport)
+                    }}
                     captureClick={true}
                   ></NavigationControl>
                 </>
