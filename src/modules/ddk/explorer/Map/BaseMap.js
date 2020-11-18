@@ -8,7 +8,7 @@ import ReactMapGL, {
   NavigationControl,
   Popup,
 } from 'react-map-gl'
-import Mapbox, { useMapViewport } from '@hyperobjekt/mapbox'
+import Mapbox, { useMapStore } from '@hyperobjekt/mapbox'
 
 import useStore from './../store'
 import theme from './../theme'
@@ -123,15 +123,12 @@ const BaseMap = ({ ...props }) => {
   const VIEWPORT = DEFAULT_VIEWPORT
 
   // A bit janky. Check with Lane about it.
-  const [viewport, setViewport] = useMapViewport()
+  const setViewport = useMapStore(
+    state => state.setViewport,
+  )
 
   const mapProps = {
     mapboxApiAccessToken: token,
-    onViewportChange: viewport => {
-      setViewport(viewport)
-    },
-    // onViewportChange: handleViewportChange,
-    ...viewport,
   }
 
   return (
