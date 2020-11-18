@@ -44,23 +44,12 @@ export const DATA_FILES = [
 export const DEFAULT_ROUTE =
   '/explorer/census/default/40.74/-73.96/8/'
 
-export const BOUNDS = {
-  lat: {
-    max: 33.75, // 33.26625,
-    min: 31.5, // 32.486597,
-  },
-  lng: {
-    min: -98, // -97.222586,
-    max: -95.5, // -96.410091,
-  },
-}
-
 export const DEFAULT_VIEWPORT = {
   latitude: 39, // TODO: Update default lat and lng for nation map.
   longitude: -96,
   zoom: 3.95,
   maxZoom: 14,
-  minZoom: 3.5,
+  minZoom: 3,
   bearing: 0,
   pitch: 0,
   dragPan: true,
@@ -69,4 +58,8 @@ export const DEFAULT_VIEWPORT = {
   preserveDrawingBuffer: true,
   height: '100%',
   width: '100%',
+  maxBounds: [
+    [-107.6, 33.8],
+    [-65, 49.9],
+  ],
 }

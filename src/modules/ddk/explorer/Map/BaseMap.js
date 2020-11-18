@@ -19,7 +19,10 @@ import Mapbox, {
 
 import useStore from './../store'
 import theme from './../theme'
-import { DEFAULT_VIEWPORT } from './../../../../constants/map'
+import {
+  DEFAULT_VIEWPORT,
+  BOUNDS,
+} from './../../../../constants/map'
 
 const BaseMap = ({ ...props }) => {
   const activeView = useStore(state => state.activeView)
@@ -93,18 +96,9 @@ const BaseMap = ({ ...props }) => {
   // race errors
   const resetViewportState = useCallback(
     (vp, options = {}) => {
-      // console.log('handleViewportChange, vp = ', vp)
+      // console.log('resetViewportState, vp = ', vp)
       // console.log('BOUNDS, ', BOUNDS)
       if (!loaded) return
-      // If zoom is below min, reset zoom to min.
-      if (vp.zoom && vp.zoom <= DEFAULT_VIEWPORT.minZoom) {
-        vp.zoom = DEFAULT_VIEWPORT.minZoom
-      }
-      // If zoom is above max, reset zoom to max.
-      if (vp.zoom && vp.zoom >= DEFAULT_VIEWPORT.maxZoom) {
-        vp.zoom = DEFAULT_VIEWPORT.maxZoom
-      }
-      //
       // if (vp.longitude && vp.longitude < BOUNDS.lng.min) {
       //   // console.log('panned beyond lng.min')
       //   vp.longitude = BOUNDS.lng.min
@@ -126,36 +120,36 @@ const BaseMap = ({ ...props }) => {
     [setViewport, loaded],
   )
 
-  const token = process.env.GATSBY_MAPBOX_API_TOKEN
-  const VIEWPORT = DEFAULT_VIEWPORT
-
-  // This is from the mapbox component.
-  const setMapViewport = useMapStore(
-    state => state.setViewport,
-  )
-  // These are for updating our own app state.
+  // These are for updating our own app state (for hash management).
   const mapViewport = useMapViewport()
   useEffect(() => {
     // console.log('mapViewport changed,', mapViewport)
     resetViewportState(mapViewport[0])
   }, [mapViewport])
 
+  // This is from the mapbox component.
+  const setMapViewport = useMapStore(
+    state => state.setViewport,
+  )
+  // This is to update the map component state.
   const handleViewportChange = vp => {
     setMapViewport(vp)
-    // setViewport(vp)
   }
 
+  // Token and viewport passed to the map.
+  const token = process.env.GATSBY_MAPBOX_API_TOKEN
+  // Passed through to the MapGL component.
   const mapProps = {
     mapboxApiAccessToken: token,
-    // onViewStateChange: viewport => {
-    //   handleViewportChange(viewport)
-    // },
+    // maxBounds: DEFAULT_VIEWPORT.maxBounds, // Doesn't work.
+    minZoom: DEFAULT_VIEWPORT.minZoom,
+    maxZoom: DEFAULT_VIEWPORT.maxZoom,
   }
 
   return (
     <div className={clsx(classes.parent)}>
       <Mapbox
-        defaultViewport={{ ...VIEWPORT }}
+        defaultViewport={{ ...viewport }}
         MapGLProps={mapProps}
         mapStyle={
           'mapbox://styles/ddkids/ckhmbktzi142u19ois58yahb2'

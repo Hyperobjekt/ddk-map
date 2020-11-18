@@ -7,6 +7,7 @@ import { getRoundedValue, useDebounce } from './../utils'
 import {
   BOUNDS,
   DEFAULT_ROUTE,
+  DEFAULT_VIEWPORT,
 } from './../../../../constants/map'
 
 /**
@@ -176,7 +177,10 @@ const isZoomValid = zoom => {
   // console.log('isZoomValid, ', zoom)
   if (!zoom) return true
   // Make sure it's within the zoom min and max.
-  return zoom > BOUNDS.zoom.min && zoom < BOUNDS.zoom.max
+  return (
+    zoom > DEFAULT_VIEWPORT.minZoom &&
+    zoom < DEFAULT_VIEWPORT.maxZoom
+  )
 }
 
 /**
@@ -190,10 +194,10 @@ const isRouteValid = params => {
   if (
     !isViewValid(params.view) ||
     !isMetricValid(params.metric) ||
-    !isQuintilesValid(params.quintiles) ||
-    !isFeederValid(params.feeder) ||
-    !isSchoolValid(params.school) ||
-    !isLayersValid(params.layers) ||
+    // !isQuintilesValid(params.quintiles) ||
+    // !isFeederValid(params.feeder) ||
+    // !isSchoolValid(params.school) ||
+    // !isLayersValid(params.layers) ||
     !isLatLngValid(params.lat, params.lng) ||
     !isZoomValid(params.zoom)
   ) {
