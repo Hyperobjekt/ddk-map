@@ -6,6 +6,11 @@
 
 Interactive explorer component for http://www.diversitydatakids.org/.
 
+This is an interactive explorer map featuring data from the Diversity Data Kids Project. Features include: 
+
+* Census tract choropleths with a variety of indicators, for years 2010 and 2015
+* Dot density data for unique demographics
+
 [Contributing](./CONTRIBUTING.md)
 
 [build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square

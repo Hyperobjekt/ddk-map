@@ -68,6 +68,11 @@ Several client-supplied data files are stored in s3 buckets. These files are loa
 * `staging`: These file are staged at [https://hyperobjekt.github.io/untd-map](https://hyperobjekt.github.io/ddk-map) when new commits are pushed to the `staging` branch.
 * `production`: These files are loaded by the app when loaded into the production environment.
 
+## Language strings
+
+* A set of language strings resides in `./src/constants`. This is a fallback in case the `langSet` object isn't loaded. This is deepmerged with the loaded `langSet` and then fed into the language translation init.
+* A test file to test importing lang strings resides in `./demo/src/`. That is to simulate the lang file loaded when the component is in Gatsby. (The default lang file, therefore, is the one in Gatsby, and from there the strings can be exposed to the CMS.)
+
 ## Process.env
 
 When developing locally you need a `.env` file with 3 values: 

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import { isMobile } from 'react-device-detect'
 import { ThemeProvider } from '@material-ui/core/styles'
+import * as merge from 'deepmerge'
 
 import Layout from '../Layout/Layout'
 import { DataLoader } from './../DataLoader'
@@ -31,29 +32,23 @@ const App = props => {
     state => state.setStoreValues,
   )
 
-  if (!!props.lang && !!props.langSet) {
-    console.log('props.lang exists, ', props.lang)
-    console.log('props.langSet exists, ', props.langSet)
+  // Language management.
+  const activeLang = useStore(state => state.activeLang)
+  if (!!props.lang) {
     setStoreValues({
       activeLang: props.lang,
-      // langSet: props.langSet[props.lang],
-    })
-    // Initialize translation utility using props.
-    i18n.init({
-      locale: props.lang,
-      languages: {
-        en_US: props.langSet[props.lang],
-      },
-    })
-  } else {
-    // Initialize translation utility using local constants file.
-    i18n.init({
-      locale: 'en_US',
-      languages: {
-        en_US: langSet.en_US,
-      },
     })
   }
+  let lang
+  if (!!props.langSet) {
+    lang = merge(langSet, props.langSet)
+  }
+  i18n.init({
+    locale: activeLang,
+    languages: {
+      en_US: lang[activeLang],
+    },
+  })
 
   // Updates menu state and calls handler in parent component.
   // if (!!props.toggleMenu) {
