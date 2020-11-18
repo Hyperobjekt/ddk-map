@@ -1,7 +1,7 @@
 {
   "name": "ddk-map",
   "version": "1.0.0",
-  "description": "ddk-map React component",
+  "description": "ddk-map React component for Hyperobjekt",
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [

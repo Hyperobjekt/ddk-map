@@ -5,6 +5,7 @@
 /umd
 npm-debug.log*
 .DS_Store
+/demo/dist/**
 
 .env
 .env.*
