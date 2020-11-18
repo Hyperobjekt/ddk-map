@@ -34,10 +34,10 @@ const App = props => {
     console.log('props.lang exists, ', props.lang)
     console.log('props.langSet exists, ', props.langSet)
     setStoreValues({
-      lang: props.lang,
+      activeLang: props.lang,
       langSet: props.langSet,
     })
-    // Initialize translation utility
+    // Initialize translation utility using props.
     i18n.init({
       locale: props.lang,
       languages: {
@@ -45,7 +45,7 @@ const App = props => {
       },
     })
   } else {
-    // Initialize translation utility
+    // Initialize translation utility using local constants file.
     i18n.init({
       locale: 'en_US',
       languages: {
@@ -206,6 +206,16 @@ const App = props => {
   )
 }
 
-App.propTypes = {}
+App.propTypes = {
+  lang: PropTypes.string,
+  langSet: PropTypes.object,
+  toggleMenu: PropTypes.func,
+}
+
+App.defaultProps = {
+  lang: 'en_US',
+  langSet: {},
+  toggleMenu: () => {},
+}
 
 export default App

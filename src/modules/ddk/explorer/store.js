@@ -33,6 +33,7 @@ const useStore = create((set, get) => ({
   // Default route.
   defaultRoute: DEFAULT_ROUTE,
   activeLang: `en_us`,
+  langSet: {},
   activeView: `explorer`, // View type, explorer or embed
   activeShape: `census`,
   defaultShape: DEFAULT_SHAPE,
