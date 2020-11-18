@@ -26,24 +26,42 @@ const App = props => {
   const BREAKPOINTS = theme.breakpoints.keys
   const BREAKPOINTS_OBJ = theme.breakpoints.values
 
-  // Initialize translation utility
-  i18n.init({
-    locale: 'en_US',
-    languages: {
-      en_US: en_US,
-    },
-  })
   const setStoreValues = useStore(
     state => state.setStoreValues,
   )
-  // Updates menu state and calls handler in parent component.
-  if (!!props.toggleMenu) {
-    // console.log(
-    //   'props.toggleMenu exists, ',
-    //   props.toggleMenu,
-    // )
-    setStoreValues({ handleToggleMenu: props.toggleMenu })
+
+  if (!!props.lang && !!props.langSet) {
+    console.log('props.lang exists, ', props.lang)
+    console.log('props.langSet exists, ', props.langSet)
+    setStoreValues({
+      lang: props.lang,
+      langSet: props.langSet,
+    })
+    // Initialize translation utility
+    i18n.init({
+      locale: props.lang,
+      languages: {
+        en_US: props.langSet,
+      },
+    })
+  } else {
+    // Initialize translation utility
+    i18n.init({
+      locale: 'en_US',
+      languages: {
+        en_US: en_US,
+      },
+    })
   }
+
+  // Updates menu state and calls handler in parent component.
+  // if (!!props.toggleMenu) {
+  //   // console.log(
+  //   //   'props.toggleMenu exists, ',
+  //   //   props.toggleMenu,
+  //   // )
+  //   setStoreValues({ handleToggleMenu: props.toggleMenu })
+  // }
 
   const setBrowserWidthAndBreakpoint = () => {
     // console.log('setBrowserWidthAndBreakpoint')

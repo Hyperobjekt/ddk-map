@@ -42,7 +42,7 @@ export const DATA_FILES = [
 ]
 
 export const DEFAULT_ROUTE =
-  '/explorer/census/default/32.912/-96.866/8/'
+  '/explorer/census/default/40.74/-73.96/8/'
 
 export const BOUNDS = {
   lat: {
@@ -60,9 +60,9 @@ export const BOUNDS = {
 }
 
 export const DEFAULT_VIEWPORT = {
-  latitude: 37.7577, // TODO: Update default lat and lng for nation map.
-  longitude: -122.4376,
-  zoom: 8,
+  latitude: 39, // TODO: Update default lat and lng for nation map.
+  longitude: -96,
+  zoom: 3.95,
   bearing: 0,
   pitch: 0,
   dragPan: true,

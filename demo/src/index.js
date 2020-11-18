@@ -3,16 +3,23 @@ import { render } from 'react-dom'
 
 import Explorer from '../../src'
 
+// For testing props that will be passed in from Gatsby,
+// where they are editable by the CMS.
+const lang = 'en_US'
+const langSet = {
+  SITE_TITLE: `UNTD Map test`,
+  MAP_LOADING_DATA: `Loading map data test`,
+  MAP_UI_POWERED_BY: `Custom Attribution test ©`,
+}
+
 export default class Demo extends Component {
+  // Fake toggle menu function to store in state for testing only.
   toggleMenu = () => {
-    // console.log('demo page toggle menu blah')
     return null
   }
-  // TODO: Pass in language object from parent site.
-  // TODO: Pass in active language from parent site.
 
   render() {
-    return <Explorer toggleMenu={this.toggleMenu} />
+    return <Explorer lang={lang} langSet={langSet} />
   }
 }
 
