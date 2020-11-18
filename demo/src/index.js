@@ -6,7 +6,7 @@ import Explorer from '../../src'
 // For testing props that will be passed in from Gatsby,
 // where they are editable by the CMS.
 const lang = 'en_US'
-import en_US from './en_US.json'
+import langSet from './lang.json'
 
 export default class Demo extends Component {
   // Fake toggle menu function to store in state for testing only.
@@ -15,7 +15,7 @@ export default class Demo extends Component {
   // }
 
   render() {
-    return <Explorer lang={lang} langSet={en_US} />
+    return <Explorer lang={lang} langSet={langSet} />
   }
 }
 

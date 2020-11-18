@@ -4,7 +4,7 @@ import { FlyToInterpolator } from 'react-map-gl'
 import WebMercatorViewport from 'viewport-mercator-project'
 import * as ease from 'd3-ease'
 
-import en_US from './../../../constants/en_US'
+// import en_US from './../../../constants/lang'
 import {
   DEFAULT_VIEWPORT,
   DEFAULT_ROUTE,

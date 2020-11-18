@@ -12,7 +12,7 @@ import { Tracking } from './../Tracking'
 
 import useStore from './../store'
 import { theme } from './../theme'
-import { langSet } from './../../../../constants/en_US'
+import { langSet } from './../../../../constants/lang'
 import { ROUTE_SET } from './../../../../constants/map'
 
 import 'mapbox-gl/dist/mapbox-gl.css'

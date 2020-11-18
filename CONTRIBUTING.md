@@ -70,8 +70,9 @@ Several client-supplied data files are stored in s3 buckets. These files are loa
 
 ## Language strings
 
-* A set of language strings resides in `./src/constants`. This is a fallback in case the `langSet` object isn't loaded. This is deepmerged with the loaded `langSet` and then fed into the language translation init.
-* A test file to test importing lang strings resides in `./demo/src/`. That is to simulate the lang file loaded when the component is in Gatsby. (The default lang file, therefore, is the one in Gatsby, and from there the strings can be exposed to the CMS.)
+* A set of language strings resides in `./src/constants/lang.js`. This is a fallback in case the `langSet` object isn't loaded. It is deepmerged with the loaded `langSet` and then fed into the language translation init.
+* A test file to test importing lang strings resides in `./demo/src/lang.json`. That is to simulate the lang file loaded when the component is in Gatsby at `./config/lang/explorer/lang.json`. (The default lang file, therefore, is the one in Gatsby, because from there the strings will be exposed to the CMS.)
+* When developing and staging the app, add new strings to the file in `./demo/src/lang.json`. These changes need to be transferred over to the Gatsby site, and also abstracted to the Gatsby site CMS. These two files are identical in format so you should be able to just copy the file over.
 
 ## Process.env
 
