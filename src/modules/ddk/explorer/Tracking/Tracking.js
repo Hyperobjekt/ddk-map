@@ -3,12 +3,9 @@ import i18n from '@pureartisan/simple-i18n'
 import { useEffect, useRef, useState } from 'react'
 
 import useStore from './../store'
-// import { schools } from './../../../../data/schools'
-import { CPAL_FEEDERS } from './../../../../constants/metrics'
-import { UNTD_LAYERS } from './../../../../constants/layers'
 import { DEFAULT_VIEWPORT } from './../../../../constants/map'
 import { useDebounce } from './../utils'
-import { constructShareLink } from './../Share/Share'
+// import { constructShareLink } from './../Share/Share'
 
 const Tracking = ({ ...props }) => {
   const shareHash = useStore(state => state.shareHash)

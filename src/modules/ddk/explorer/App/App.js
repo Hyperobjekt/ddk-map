@@ -7,6 +7,7 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import Layout from '../Layout/Layout'
 import { DataLoader } from './../DataLoader'
 import RouteManager from './../RouteManager/RouteManager'
+import { Tracking } from './../Tracking'
 
 import useStore from './../store'
 import { theme } from './../theme'
@@ -201,6 +202,7 @@ const App = props => {
     <ThemeProvider theme={theme}>
       <DataLoader />
       <RouteManager routeSet={ROUTE_SET} />
+      <Tracking />
       <Layout></Layout>
     </ThemeProvider>
   )
