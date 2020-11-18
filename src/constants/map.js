@@ -53,16 +53,14 @@ export const BOUNDS = {
     min: -98, // -97.222586,
     max: -95.5, // -96.410091,
   },
-  zoom: {
-    min: 6,
-    max: 24,
-  },
 }
 
 export const DEFAULT_VIEWPORT = {
   latitude: 39, // TODO: Update default lat and lng for nation map.
   longitude: -96,
   zoom: 3.95,
+  maxZoom: 14,
+  minZoom: 3.5,
   bearing: 0,
   pitch: 0,
   dragPan: true,

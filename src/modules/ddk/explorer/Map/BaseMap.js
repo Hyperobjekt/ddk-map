@@ -1,4 +1,8 @@
-import React, { useState, useCallback } from 'react'
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+} from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
@@ -8,7 +12,10 @@ import ReactMapGL, {
   NavigationControl,
   Popup,
 } from 'react-map-gl'
-import Mapbox, { useMapStore } from '@hyperobjekt/mapbox'
+import Mapbox, {
+  useMapStore,
+  useMapViewport,
+} from '@hyperobjekt/mapbox'
 
 import useStore from './../store'
 import theme from './../theme'
@@ -80,42 +87,44 @@ const BaseMap = ({ ...props }) => {
     setLoaded(true)
   }
 
+  const viewport = useStore(state => state.viewport)
+  const setViewport = useStore(state => state.setViewport)
   // handler for viewport change, debounced to prevent
   // race errors
-  // const handleViewportChange = useCallback(
-  //   (vp, options = {}) => {
-  //     // console.log('handleViewportChange, vp = ', vp)
-  //     // console.log('BOUNDS, ', BOUNDS)
-  //     if (!loaded) return
-  //     // If zoom is below min, reset zoom to min.
-  //     // if (vp.zoom && vp.zoom <= BOUNDS.zoom.min) {
-  //     //   vp.zoom = BOUNDS.zoom.min
-  //     // }
-  //     // // If zoom is above max, reset zoom to max.
-  //     // if (vp.zoom && vp.zoom >= BOUNDS.zoom.max) {
-  //     //   vp.zoom = BOUNDS.zoom.max
-  //     // }
-  //     //
-  //     // if (vp.longitude && vp.longitude < BOUNDS.lng.min) {
-  //     //   // console.log('panned beyond lng.min')
-  //     //   vp.longitude = BOUNDS.lng.min
-  //     // }
-  //     // if (vp.longitude && vp.longitude > BOUNDS.lng.max) {
-  //     //   // console.log('panned beyond lng.max')
-  //     //   vp.longitude = BOUNDS.lng.max
-  //     // }
-  //     // if (vp.latitude && vp.latitude < BOUNDS.lat.min) {
-  //     //   // console.log('panned beyond lat.min')
-  //     //   vp.latitude = BOUNDS.lat.min
-  //     // }
-  //     // if (vp.latitude && vp.latitude > BOUNDS.lat.max) {
-  //     //   // console.log('panned beyond lat.max')
-  //     //   vp.latitude = BOUNDS.lat.max
-  //     // }
-  //     setViewport(vp)
-  //   },
-  //   [setViewport, loaded],
-  // )
+  const resetViewportState = useCallback(
+    (vp, options = {}) => {
+      // console.log('handleViewportChange, vp = ', vp)
+      // console.log('BOUNDS, ', BOUNDS)
+      if (!loaded) return
+      // If zoom is below min, reset zoom to min.
+      if (vp.zoom && vp.zoom <= DEFAULT_VIEWPORT.minZoom) {
+        vp.zoom = DEFAULT_VIEWPORT.minZoom
+      }
+      // If zoom is above max, reset zoom to max.
+      if (vp.zoom && vp.zoom >= DEFAULT_VIEWPORT.maxZoom) {
+        vp.zoom = DEFAULT_VIEWPORT.maxZoom
+      }
+      //
+      // if (vp.longitude && vp.longitude < BOUNDS.lng.min) {
+      //   // console.log('panned beyond lng.min')
+      //   vp.longitude = BOUNDS.lng.min
+      // }
+      // if (vp.longitude && vp.longitude > BOUNDS.lng.max) {
+      //   // console.log('panned beyond lng.max')
+      //   vp.longitude = BOUNDS.lng.max
+      // }
+      // if (vp.latitude && vp.latitude < BOUNDS.lat.min) {
+      //   // console.log('panned beyond lat.min')
+      //   vp.latitude = BOUNDS.lat.min
+      // }
+      // if (vp.latitude && vp.latitude > BOUNDS.lat.max) {
+      //   // console.log('panned beyond lat.max')
+      //   vp.latitude = BOUNDS.lat.max
+      // }
+      setViewport(vp)
+    },
+    [setViewport, loaded],
+  )
 
   const token = process.env.GATSBY_MAPBOX_API_TOKEN
   const VIEWPORT = DEFAULT_VIEWPORT
@@ -125,19 +134,22 @@ const BaseMap = ({ ...props }) => {
     state => state.setViewport,
   )
   // These are for updating our own app state.
-  const viewport = useStore(state => state.viewport)
-  const setViewport = useStore(state => state.setViewport)
+  const mapViewport = useMapViewport()
+  useEffect(() => {
+    // console.log('mapViewport changed,', mapViewport)
+    resetViewportState(mapViewport[0])
+  }, [mapViewport])
 
   const handleViewportChange = vp => {
     setMapViewport(vp)
-    setViewport(vp)
+    // setViewport(vp)
   }
 
   const mapProps = {
     mapboxApiAccessToken: token,
-    onViewportChange: viewport => {
-      handleViewportChange(viewport)
-    },
+    // onViewStateChange: viewport => {
+    //   handleViewportChange(viewport)
+    // },
   }
 
   return (
