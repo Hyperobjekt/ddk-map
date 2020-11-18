@@ -82,3 +82,13 @@ GATSBY_MAPBOX_USER=***
 GATSBY_MAPBOX_API_TOKEN=***
 NODE_ENV=development
 ```
+
+## Publishing
+
+When you need to publish the app, follow these steps:
+1. Update the package version in `.package.json`. Use [semantic versioning](https://semver.org/).
+2. Run `npm publish`. This publishes the app and pushes it to the npm repository. 
+3. In the Gatsby site, run `npm update ddk-map`. This updates the map in Gatsby. 
+4. Run `npm run build` for the Gatsby site to verify that the build is successful.
+5. If you need to test tracking or something else that needs more than the development server, run `gatsby serve`.
+6. Now you can push the gatsby branch for merge, staging, or production.
