@@ -5,7 +5,6 @@ import shallow from 'zustand/shallow'
 import useStore from './../store'
 import { getRoundedValue, useDebounce } from './../utils'
 import {
-  BOUNDS,
   DEFAULT_ROUTE,
   DEFAULT_VIEWPORT,
 } from './../../../../constants/map'
@@ -162,11 +161,17 @@ const isLatLngValid = (lat, lng) => {
   lat = Number(lat)
   lng = Number(lng)
   let isValid = true
-  if (lat < BOUNDS.lat.min || lat > BOUNDS.lat.max) {
+  if (
+    lat < DEFAULT_VIEWPORT.maxBounds[0][1] ||
+    lat > DEFAULT_VIEWPORT.maxBounds[1][1]
+  ) {
     // console.log('lat out of bounds')
     isValid = false
   }
-  if (lng < BOUNDS.lng.min || lng > BOUNDS.lng.max) {
+  if (
+    lng < DEFAULT_VIEWPORT.maxBounds[0][0] ||
+    lng > DEFAULT_VIEWPORT.maxBounds[1][0]
+  ) {
     // console.log('lng out of bounds')
     isValid = false
   }

@@ -19,10 +19,7 @@ import Mapbox, {
 
 import useStore from './../store'
 import theme from './../theme'
-import {
-  DEFAULT_VIEWPORT,
-  BOUNDS,
-} from './../../../../constants/map'
+import { DEFAULT_VIEWPORT } from './../../../../constants/map'
 
 const BaseMap = ({ ...props }) => {
   const activeView = useStore(state => state.activeView)
