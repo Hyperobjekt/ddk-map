@@ -11,7 +11,7 @@ import { Tracking } from './../Tracking'
 
 import useStore from './../store'
 import { theme } from './../theme'
-import { en_US } from './../../../../constants/en_US'
+import { langSet } from './../../../../constants/en_US'
 import { ROUTE_SET } from './../../../../constants/map'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -36,13 +36,13 @@ const App = props => {
     console.log('props.langSet exists, ', props.langSet)
     setStoreValues({
       activeLang: props.lang,
-      langSet: props.langSet,
+      // langSet: props.langSet[props.lang],
     })
     // Initialize translation utility using props.
     i18n.init({
       locale: props.lang,
       languages: {
-        en_US: props.langSet,
+        en_US: props.langSet[props.lang],
       },
     })
   } else {
@@ -50,7 +50,7 @@ const App = props => {
     i18n.init({
       locale: 'en_US',
       languages: {
-        en_US: en_US,
+        en_US: langSet.en_US,
       },
     })
   }

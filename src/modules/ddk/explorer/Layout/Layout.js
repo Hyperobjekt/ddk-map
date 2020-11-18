@@ -33,8 +33,10 @@ const Layout = ({ ...props }) => {
       className={clsx('layout', classes.root)}
     >
       <Header />
-      <ControlPanel />
-      <Map />
+      <main>
+        <ControlPanel />
+        <Map />
+      </main>
     </Paper>
   )
 }

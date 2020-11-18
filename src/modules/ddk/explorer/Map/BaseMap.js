@@ -8,7 +8,7 @@ import ReactMapGL, {
   NavigationControl,
   Popup,
 } from 'react-map-gl'
-import Mapbox from '@hyperobjekt/mapbox'
+import Mapbox, { useMapViewport } from '@hyperobjekt/mapbox'
 
 import useStore from './../store'
 import theme from './../theme'
@@ -127,6 +127,9 @@ const BaseMap = ({ ...props }) => {
 
   const mapProps = {
     mapboxApiAccessToken: token,
+    // onViewportChange: viewport => {
+    //   setViewport(viewport)
+    // },
     onViewportChange: handleViewportChange,
     ...viewport,
   }
@@ -163,6 +166,9 @@ const BaseMap = ({ ...props }) => {
             <div className={clsx(classes.navControls)}>
               {activeView === 'explorer' && (
                 <>
+                  {/*onViewportChange={viewport => {
+                  setViewport(viewport)
+                }}*/}
                   <NavigationControl
                     showCompass={false}
                     onViewportChange={handleViewportChange}

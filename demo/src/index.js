@@ -6,20 +6,16 @@ import Explorer from '../../src'
 // For testing props that will be passed in from Gatsby,
 // where they are editable by the CMS.
 const lang = 'en_US'
-const langSet = {
-  SITE_TITLE: `UNTD Map test`,
-  MAP_LOADING_DATA: `Loading map data test`,
-  MAP_UI_POWERED_BY: `Custom Attribution test ©`,
-}
+import en_US from './en_US.json'
 
 export default class Demo extends Component {
   // Fake toggle menu function to store in state for testing only.
-  toggleMenu = () => {
-    return null
-  }
+  // toggleMenu = () => {
+  //   return null
+  // }
 
   render() {
-    return <Explorer lang={lang} langSet={langSet} />
+    return <Explorer lang={lang} langSet={en_US} />
   }
 }
 
