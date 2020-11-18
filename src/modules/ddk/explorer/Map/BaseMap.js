@@ -16,8 +16,6 @@ import { DEFAULT_VIEWPORT } from './../../../../constants/map'
 
 const BaseMap = ({ ...props }) => {
   const activeView = useStore(state => state.activeView)
-  // const viewport = useStore(state => state.viewport)
-  // const setViewport = useStore(state => state.setViewport)
 
   const [loaded, setLoaded] = useState(false)
 
@@ -122,13 +120,24 @@ const BaseMap = ({ ...props }) => {
   const token = process.env.GATSBY_MAPBOX_API_TOKEN
   const VIEWPORT = DEFAULT_VIEWPORT
 
-  // A bit janky. Check with Lane about it.
-  const setViewport = useMapStore(
+  // This is from the mapbox component.
+  const setMapViewport = useMapStore(
     state => state.setViewport,
   )
+  // These are for updating our own app state.
+  const viewport = useStore(state => state.viewport)
+  const setViewport = useStore(state => state.setViewport)
+
+  const handleViewportChange = vp => {
+    setMapViewport(vp)
+    setViewport(vp)
+  }
 
   const mapProps = {
     mapboxApiAccessToken: token,
+    onViewportChange: viewport => {
+      handleViewportChange(viewport)
+    },
   }
 
   return (
@@ -163,15 +172,10 @@ const BaseMap = ({ ...props }) => {
             <div className={clsx(classes.navControls)}>
               {activeView === 'explorer' && (
                 <>
-                  {/*onViewportChange={viewport => {
-                  setViewport(viewport)
-                }}
-                onViewportChange={handleViewportChange}
-                */}
                   <NavigationControl
                     showCompass={false}
                     onViewportChange={viewport => {
-                      setViewport(viewport)
+                      handleViewportChange(viewport)
                     }}
                     captureClick={true}
                   ></NavigationControl>

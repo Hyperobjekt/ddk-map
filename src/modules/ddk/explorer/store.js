@@ -39,17 +39,7 @@ const useStore = create((set, get) => ({
   defaultShape: DEFAULT_SHAPE,
   activeMetric: `default_metric`,
   defaultMetric: DEFAULT_METRIC,
-  viewport: {
-    latitude: 39, // TODO: Update default lat and lng for nation map.
-    longitude: -96,
-    zoom: 3.95,
-    bearing: 0,
-    pitch: 0,
-    dragPan: true,
-    touchZoom: true,
-    touchRotate: true,
-    preserveDrawingBuffer: true,
-  },
+  viewport: DEFAULT_VIEWPORT,
   resetViewport: DEFAULT_VIEWPORT,
   setViewport: viewport =>
     set(state => ({
