@@ -26,6 +26,12 @@ const DataLoaderContent = ({ ...props }) => {
     state => state.allDataLoaded,
   )
 
+  // Hack, hide this for a bit to avoid flashing empty string var.
+  const [showContent, setShowContent] = useState(0)
+  setTimeout(() => {
+    setShowContent(1)
+  }, 500)
+
   const loaderStyles = makeStyles({
     root: {
       position: 'absolute',
@@ -41,6 +47,7 @@ const DataLoaderContent = ({ ...props }) => {
       transition: 'top 1000ms ease-in-out 1500ms',
     },
     content: {
+      display: !!showContent ? 'block' : 'none', // Hack, hide this for a bit to avoid flashing empty string var.
       width: '90%',
       [theme.breakpoints.up('md')]: {
         width: '60%',
