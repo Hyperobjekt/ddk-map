@@ -96,22 +96,6 @@ const BaseMap = ({ ...props }) => {
       // console.log('resetViewportState, vp = ', vp)
       // console.log('BOUNDS, ', BOUNDS)
       if (!loaded) return
-      // if (vp.longitude && vp.longitude < BOUNDS.lng.min) {
-      //   // console.log('panned beyond lng.min')
-      //   vp.longitude = BOUNDS.lng.min
-      // }
-      // if (vp.longitude && vp.longitude > BOUNDS.lng.max) {
-      //   // console.log('panned beyond lng.max')
-      //   vp.longitude = BOUNDS.lng.max
-      // }
-      // if (vp.latitude && vp.latitude < BOUNDS.lat.min) {
-      //   // console.log('panned beyond lat.min')
-      //   vp.latitude = BOUNDS.lat.min
-      // }
-      // if (vp.latitude && vp.latitude > BOUNDS.lat.max) {
-      //   // console.log('panned beyond lat.max')
-      //   vp.latitude = BOUNDS.lat.max
-      // }
       setViewport(vp)
     },
     [setViewport, loaded],

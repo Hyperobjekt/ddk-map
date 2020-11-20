@@ -408,7 +408,7 @@ const RouteManager = props => {
           debouncedRoute,
       )
       localStorage.setItem(
-        'cpal_hash',
+        'ddk_hash',
         '#/' + debouncedRoute,
       )
       setStoreValues({ shareHash: '#/' + debouncedRoute })
@@ -428,7 +428,7 @@ const RouteManager = props => {
         props.routeSet,
       )
       const localStorageHash = localStorage.getItem(
-        'cpal_hash',
+        'ddk_hash',
       )
       if (
         !isEmptyRoute(path) &&

@@ -21,6 +21,11 @@
 - `npm run build` will build the component for publishing to npm and also bundle the demo app.
 - `npm run clean` will delete built resources.
 
+## Branches
+
+- Check out new bbranches from `master`, and submit pull requests back onto `master`.
+- To stage the map all alone, outside of the Gatsby shell site, merge `master` into `staging`. A Github Action will build and stage on Github Pages at [https://hyperobjekt.github.io/untd-map](https://hyperobjekt.github.io/ddk-map).
+
 ## Development Practices
 
 - Code Formatting: [Prettier](https://prettier.io/) (using
@@ -60,13 +65,7 @@ setStoreValues({
 
 The client has a [very thorough style guide](https://drive.google.com/drive/folders/1eRv3la42eC-Y2hPqY-rB6qQ4h-Vv7AQS) with many specifications that pertain to maps and graphs. Our work should conform to this style guide, exceptions should be approved by the client.
 
-## Updating data
 
-Several client-supplied data files are stored in s3 buckets. These files are loaded from different locations depending upon the `NODE_ENV` provided to the build script.
-
-* `development`: These files are loaded for local development environments.
-* `staging`: These file are staged at [https://hyperobjekt.github.io/untd-map](https://hyperobjekt.github.io/ddk-map) when new commits are pushed to the `staging` branch.
-* `production`: These files are loaded by the app when loaded into the production environment.
 
 ## Language strings
 
@@ -86,7 +85,7 @@ NODE_ENV=development
 ## Publishing
 
 When you need to publish the app, follow these steps:
-1. Update the package version in `.package.json`. Use [semantic versioning](https://semver.org/).
+1. Update the package version in `package.json`. Use [semantic versioning](https://semver.org/).
 2. Run `npm publish`. This publishes the app and pushes it to the npm repository. 
 3. In the Gatsby site, run `npm update ddk-map`. This updates the map in Gatsby. 
 4. Run `npm run build` for the Gatsby site to verify that the build is successful.

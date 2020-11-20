@@ -46,7 +46,7 @@ const App = props => {
   i18n.init({
     locale: activeLang,
     languages: {
-      en_US: lang[activeLang],
+      en_US: lang['en_US'],
     },
   })
 

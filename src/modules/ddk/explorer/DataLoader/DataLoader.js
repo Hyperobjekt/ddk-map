@@ -85,9 +85,7 @@ const DataLoaderContent = ({ ...props }) => {
             style={{
               animationDelay: '200ms',
             }}
-            className={clsx(styles.dots, {
-              animationDelay: '200ms',
-            })}
+            className={clsx(styles.dots)}
           >
             .
           </Box>
