@@ -122,7 +122,6 @@ const BaseMap = ({ ...props }) => {
   // Passed through to the MapGL component.
   const mapProps = {
     mapboxApiAccessToken: token,
-    // maxBounds: DEFAULT_VIEWPORT.maxBounds, // Doesn't work.
     minZoom: DEFAULT_VIEWPORT.minZoom,
     maxZoom: DEFAULT_VIEWPORT.maxZoom,
   }
@@ -139,6 +138,7 @@ const BaseMap = ({ ...props }) => {
         onClick={handleClick}
         onHover={handleHover}
         onLoad={handleLoad}
+        maxBounds={DEFAULT_VIEWPORT.maxBounds}
       >
         {
           <>

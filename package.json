@@ -20,7 +20,7 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
-    "@hyperobjekt/mapbox": "^1.0.11",
+    "@hyperobjekt/mapbox": "^1.0.12",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@pureartisan/simple-i18n": "^1.6.1",
