@@ -3,7 +3,12 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
-import { IconButton } from '@material-ui/core'
+import {
+  Backdrop,
+  Fade,
+  IconButton,
+  Modal,
+} from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 
 import useStore from './../store'
@@ -42,7 +47,24 @@ const SlideoutPanel = ({ ...props }) => {
         height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px)`,
         top: `${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px`,
       },
+      [theme.breakpoints.down('xs')]: {
+        display: 'none',
+      },
       boxShadow: theme.shadows[3],
+    },
+    mobile: {
+      inset: '10vh 10vw !important',
+      backgroundColor: theme.palette.background.paper,
+      [theme.breakpoints.up('sm')]: {
+        display: 'none',
+      },
+      border: '1px solid #000',
+      boxShadow: theme.shadows[3],
+      padding: theme.spacing(3, 4, 3),
+      outline: 0,
+    },
+    mobileContent: {
+      outline: 0,
     },
     button: {
       padding: '1.5rem',
@@ -55,13 +77,37 @@ const SlideoutPanel = ({ ...props }) => {
   const classes = styles()
 
   return (
-    <div className={clsx(classes.root)}>
-      <IconButton
-        onClick={handleClose}
-        className={clsx(classes.button)}
+    <div>
+      <div className={clsx(classes.root)}>
+        <IconButton
+          onClick={handleClose}
+          className={clsx(classes.button)}
+        >
+          <CloseIcon />
+        </IconButton>
+      </div>
+      <Modal
+        className={clsx(classes.mobile)}
+        open={slideoutPanel.active}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
       >
-        <CloseIcon />
-      </IconButton>
+        <Fade in={slideoutPanel.active}>
+          <div className={classes.mobileContent}>
+            <IconButton
+              onClick={handleClose}
+              className={clsx(classes.button)}
+            >
+              <CloseIcon />
+            </IconButton>
+            some content here
+          </div>
+        </Fade>
+      </Modal>
     </div>
   )
 }
