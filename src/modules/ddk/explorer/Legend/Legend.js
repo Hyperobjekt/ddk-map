@@ -1,0 +1,55 @@
+import React from 'react'
+import PropTypes from 'prop-types'
+import clsx from 'clsx'
+import i18n from '@pureartisan/simple-i18n'
+import { makeStyles } from '@material-ui/core/styles'
+import Box from '@material-ui/core/Box'
+import { IconButton } from '@material-ui/core'
+import { AiOutlineControl } from 'react-icons/ai'
+
+import useStore from './../store'
+import theme from './../theme'
+
+const Legend = ({ ...props }) => {
+  // Header is not displayed if the view type is 'embed'
+  const activeView = useStore(state => state.activeView)
+
+  // Styles for this component.
+  const styles = makeStyles(theme => ({
+    root: {
+      zIndex: theme.extras.Legend.zIndex,
+      backgroundColor: theme.palette.background.paper,
+      position: 'absolute',
+      right: theme.extras.Legend.cushionRight,
+      width: theme.extras.Legend.width,
+      height: theme.extras.Legend.height,
+      // Adjust for different app bar height.
+      top: `${
+        theme.mixins.toolbar[
+          '@media (min-width:0px) and (orientation: landscape)'
+        ].minHeight + theme.extras.Legend.cushionTop
+      }px`,
+      [theme.breakpoints.up('sm')]: {
+        top: `${
+          theme.mixins.toolbar['@media (min-width:600px)']
+            .minHeight + theme.extras.Legend.cushionTop
+        }px`,
+      },
+      padding: theme.spacing(3),
+      boxShadow: theme.shadows[3],
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+    },
+  }))
+
+  const classes = styles()
+
+  return <Box className={classes.root}>i am legend.</Box>
+}
+
+Legend.propTypes = {}
+
+Legend.defaultProps = {}
+
+export default Legend

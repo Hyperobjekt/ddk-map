@@ -11,6 +11,7 @@ import { Paper } from '@material-ui/core'
 
 import Header from './../Header'
 import ControlPanel from './../ControlPanel'
+import Legend from './../Legend'
 import Map from './../Map'
 
 const Layout = ({ ...props }) => {
@@ -35,6 +36,7 @@ const Layout = ({ ...props }) => {
       <Header />
       <main>
         <ControlPanel />
+        <Legend />
         <Map />
       </main>
     </Paper>

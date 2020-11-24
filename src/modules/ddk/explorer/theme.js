@@ -47,6 +47,13 @@ export const variables = {
 export const theme = createMuiTheme({
   // Update theme here according to this documentation
   extras: {
+    Legend: {
+      width: '200px',
+      height: '200px',
+      cushionRight: 15,
+      cushionTop: 15,
+      zIndex: 13,
+    },
     controlPanel: {
       width: '72px',
     },
