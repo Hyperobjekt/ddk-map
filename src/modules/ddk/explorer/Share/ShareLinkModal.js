@@ -29,7 +29,7 @@ const ShareLinkModal = props => {
   const toggle = () => {
     setStoreValues({ shareLinkModal: !shareLinkModal })
   }
-  const defaultRoute = useStore(state => state.defaultRoute)
+  const activeRoute = useStore(state => state.activeRoute)
   const shareHash = useStore(state => state.shareHash)
   const eventShareLink = useStore(
     state => state.eventShareLink,
@@ -51,7 +51,7 @@ const ShareLinkModal = props => {
             shareHash
         : window.location.origin +
             window.location.pathname +
-            defaultRoute,
+            activeRoute,
     )
   }, [shareHash])
 
