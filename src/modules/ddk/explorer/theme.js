@@ -49,6 +49,11 @@ export const theme = createMuiTheme({
   extras: {
     controlPanel: {
       width: '72px',
+      zIndex: 15,
+    },
+    slideoutPanel: {
+      width: '270px',
+      zIndex: 10,
     },
   },
 })
