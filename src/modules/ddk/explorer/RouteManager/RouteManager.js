@@ -7,6 +7,14 @@ import { getRoundedValue, useDebounce } from './../utils'
 import {
   DEFAULT_ROUTE,
   DEFAULT_VIEWPORT,
+  OPTIONS_MAP,
+  ROUTE_METRIC,
+  ROUTE_METRO,
+  ROUTE_NORM,
+  ROUTE_SHAPE,
+  ROUTE_TILESET,
+  ROUTE_VIEW,
+  ROUTE_YEAR,
 } from './../../../../constants/map'
 
 /**
@@ -38,35 +46,18 @@ export const isEmptyRoute = route =>
   getStrippedRoute(route).length === 0
 
 /**
- * Verify that view contains one of the two views.
- * @param  String view View string
- * @return Boolean
- */
-const isViewValid = view => {
-  // console.log('isViewValid, ', view)
-  return ['explorer', 'embed'].indexOf(view) > -1
-}
-
-/**
- * Verifies that metric exists in metric collection.
- * @param  {String}  metric String that corresponds to metric ID in constants
+ * Verify that the route value is valid.
+ * @param  {String} route
+ * @param  {String} value
  * @return {Boolean}
  */
-const isMetricValid = metric => {
-  // Check if it's in the metrics list
-  // console.log('isMetricValid')
-  // If it's empty, just return true. We'll use the default.
-  if (metric.length === 0) {
-    return true
-  } else {
-    // If not empty, verify that it's in the metrics collection.
-    // const filter = CPAL_METRICS.find(el => {
-    //   return el.id === metric
-    // })
-    // return !!filter ? true : false
-    // TODO: Verify that passed-in metric/indicator from hash is in the list.
-    return true
+const isRouteOptionValid = (route, value) => {
+  const validOptions = OPTIONS_MAP[route]
+  if (!validOptions) {
+    console.error('No valid options listed for: ', route)
   }
+  
+  return validOptions.indexOf(value) > -1
 }
 
 const isLatLngValid = (lat, lng) => {
@@ -110,10 +101,12 @@ const isZoomValid = zoom => {
  */
 const isRouteValid = params => {
   // console.log('isRouteValid(), ', params)
+  const enumerableRoutes = [ROUTE_VIEW, ROUTE_SHAPE, ROUTE_YEAR, ROUTE_METRO, ROUTE_METRIC, ROUTE_NORM, ROUTE_TILESET] // routes with discrete options
+
   let isValid = true
   if (
-    !isViewValid(params.view) ||
-    !isMetricValid(params.metric) ||
+    !enumerableRoutes.every(route =>
+      isRouteOptionValid(route, params[route])) ||
 
     !isLatLngValid(params.lat, params.lng) ||
     !isZoomValid(params.zoom)
@@ -129,10 +122,10 @@ const isRouteValid = params => {
  * @param  {Array} activeLayers
  * @return {String}
  */
-const getLayersString = activeLayers => {
-  // console.log('getLayersString(), ', activeLayers)
-  return activeLayers.toString()
-}
+// const getLayersString = activeLayers => {
+//   // console.log('getLayersString(), ', activeLayers)
+//   return activeLayers.toString()
+// }
 
 const RouteManager = props => {
   console.log('RouteManager!!!!!')
@@ -201,17 +194,29 @@ const RouteManager = props => {
    * @param {[type]} params [description]
    */
   const setStateFromHash = params => {
-    // console.log('setStateFromHash(), ', params)
+    console.log('setStateFromHash(), ', params)
 
-    if (!!params.view) {
-      setStoreValues({
-        activeView: params.view,
-      })
+    if (params.hasOwnProperty(ROUTE_VIEW)) {
+      setStoreValues({ activeView: params[ROUTE_VIEW] })
     }
-    if (!!params.metric) {
-      setStoreValues({ activeMetric: params.metric })
+    if (params.hasOwnProperty(ROUTE_SHAPE)) {
+      setStoreValues({ activeShape: params[ROUTE_SHAPE] })
     }
-
+    if (params.hasOwnProperty(ROUTE_YEAR)) {
+      setStoreValues({ activeYear: params[ROUTE_YEAR] })
+    }
+    if (params.hasOwnProperty(ROUTE_METRO)) {
+      setStoreValues({ activeMetro: params[ROUTE_METRO] })
+    }
+    if (params.hasOwnProperty(ROUTE_METRIC)) {
+      setStoreValues({ activeMetric: params[ROUTE_METRIC] })
+    }
+    if (params.hasOwnProperty(ROUTE_NORM)) {
+      setStoreValues({ activeNorm: params[ROUTE_NORM] })
+    }
+    if (params.hasOwnProperty(ROUTE_TILESET)) {
+      setStoreValues({ activeTileset: params[ROUTE_TILESET] })
+    }
 
     let resetViewport = false
     if (!!params.lat && !!params.lng) {

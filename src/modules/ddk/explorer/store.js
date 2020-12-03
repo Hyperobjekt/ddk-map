@@ -43,6 +43,7 @@ const useStore = create((set, get) => ({
     
   // Routing.
   activeRoute: DEFAULT_ROUTE,
+
   activeView: DEFAULT_VIEW,
   activeShape: DEFAULT_SHAPE,
   activeYear: DEFAULT_YEAR,
@@ -50,9 +51,6 @@ const useStore = create((set, get) => ({
   activeMetric: DEFAULT_METRIC,
   activeNorm: DEFAULT_NORM,
   activeTileset: DEFAULT_TILESET,
-  activeLat: DEFAULT_LAT,
-  activeLng: DEFAULT_LNG,
-  activeZoom: DEFAULT_ZOOM,
 
   viewport: DEFAULT_VIEWPORT,
   resetViewport: DEFAULT_VIEWPORT,
