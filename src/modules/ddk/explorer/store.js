@@ -8,8 +8,16 @@ import * as ease from 'd3-ease'
 import {
   DEFAULT_VIEWPORT,
   DEFAULT_ROUTE,
-  DEFAULT_METRIC,
+  DEFAULT_VIEW,
   DEFAULT_SHAPE,
+  DEFAULT_YEAR,
+  DEFAULT_METRO,
+  DEFAULT_METRIC,
+  DEFAULT_NORM,
+  DEFAULT_TILESET,
+  DEFAULT_LAT,
+  DEFAULT_LNG,
+  DEFAULT_ZOOM,
 } from './../../../constants/map'
 
 const useStore = create((set, get) => ({
@@ -30,15 +38,20 @@ const useStore = create((set, get) => ({
     set(state => ({
       remoteJson: { ...state.remoteJson, ...json },
     })),
-  // Default route.
-  defaultRoute: DEFAULT_ROUTE,
-  activeLang: `en_us`,
-  langSet: {},
-  activeView: `explorer`, // View type, explorer or embed
-  activeShape: `census`,
-  defaultShape: DEFAULT_SHAPE,
-  activeMetric: `default_metric`,
-  defaultMetric: DEFAULT_METRIC,
+    activeLang: `en_us`,
+    langSet: {},
+    
+  // Routing.
+  activeRoute: DEFAULT_ROUTE,
+
+  activeView: DEFAULT_VIEW,
+  activeShape: DEFAULT_SHAPE,
+  activeYear: DEFAULT_YEAR,
+  activeMetro: DEFAULT_METRO,
+  activeMetric: DEFAULT_METRIC,
+  activeNorm: DEFAULT_NORM,
+  activeTileset: DEFAULT_TILESET,
+
   viewport: DEFAULT_VIEWPORT,
   resetViewport: DEFAULT_VIEWPORT,
   setViewport: viewport =>
@@ -132,7 +145,7 @@ const useStore = create((set, get) => ({
       // Return view to map.
       activeView: 'explorer',
       // Reset metric.
-      activeMetric: state.defaultMetric,
+      activeMetric: DEFAULT_METRIC,
       // Reset quintiles.
       activeQuintiles: [1, 1, 1, 1, 1],
       // Close the panel.

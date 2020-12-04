@@ -129,7 +129,7 @@ const BaseMap = ({ ...props }) => {
   return (
     <div className={clsx(classes.parent)}>
       <Mapbox
-        defaultViewport={{ ...viewport }}
+        defaultViewport={{ ...DEFAULT_VIEWPORT }}
         MapGLProps={mapProps}
         mapStyle={
           'mapbox://styles/ddkids/ckhmbktzi142u19ois58yahb2'
