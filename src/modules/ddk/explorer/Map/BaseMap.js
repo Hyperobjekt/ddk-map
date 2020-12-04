@@ -16,6 +16,7 @@ import Mapbox, {
   useMapStore,
   useMapViewport,
 } from '@hyperobjekt/mapbox'
+import Legend from './../Legend'
 
 import useStore from './../store'
 import theme from './../theme'
@@ -142,6 +143,7 @@ const BaseMap = ({ ...props }) => {
       >
         {
           <>
+            <Legend />
             <div
               className={clsx(
                 'custom-attribution',
