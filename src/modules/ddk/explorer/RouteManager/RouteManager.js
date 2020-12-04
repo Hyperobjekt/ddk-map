@@ -56,7 +56,11 @@ const isRouteOptionValid = (route, value) => {
   if (!validOptions) {
     console.error('No valid options listed for: ', route)
   }
-  
+  console.log(
+    'isRouteOptionValid, ',
+    value,
+    validOptions.indexOf(value) > -1,
+  )
   return validOptions.indexOf(value) > -1
 }
 
@@ -101,13 +105,21 @@ const isZoomValid = zoom => {
  */
 const isRouteValid = params => {
   // console.log('isRouteValid(), ', params)
-  const enumerableRoutes = [ROUTE_VIEW, ROUTE_SHAPE, ROUTE_YEAR, ROUTE_METRO, ROUTE_METRIC, ROUTE_NORM, ROUTE_TILESET] // routes with discrete options
+  const enumerableRoutes = [
+    ROUTE_VIEW,
+    ROUTE_SHAPE,
+    ROUTE_YEAR,
+    ROUTE_METRO,
+    ROUTE_METRIC,
+    ROUTE_NORM,
+    ROUTE_TILESET,
+  ] // routes with discrete options
 
   let isValid = true
   if (
     !enumerableRoutes.every(route =>
-      isRouteOptionValid(route, params[route])) ||
-
+      isRouteOptionValid(route, params[route]),
+    ) ||
     !isLatLngValid(params.lat, params.lng) ||
     !isZoomValid(params.zoom)
   ) {
@@ -215,7 +227,9 @@ const RouteManager = props => {
       setStoreValues({ activeNorm: params[ROUTE_NORM] })
     }
     if (params.hasOwnProperty(ROUTE_TILESET)) {
-      setStoreValues({ activeTileset: params[ROUTE_TILESET] })
+      setStoreValues({
+        activeTileset: params[ROUTE_TILESET],
+      })
     }
 
     let resetViewport = false
@@ -310,7 +324,7 @@ const RouteManager = props => {
             props.routeSet,
           )
           if (isRouteValid(lsparams, props.routeSet)) {
-              console.log('loadRoute 3')
+            console.log('loadRoute 3')
             setStateFromHash(lsparams)
           }
         }
