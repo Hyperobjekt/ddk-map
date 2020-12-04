@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
-import { FaTwitter } from 'react-icons/fa'
+import TwitterIcon from '@material-ui/icons/Twitter'
 import clsx from 'clsx'
 
 import useStore from './../store'
-import { CoreButton } from './../../../core'
 import { onTwitterShare, constructShareLink } from './Share'
+import { IconButton } from '@material-ui/core'
 
-const TourButton = ({ children, ...props }) => {
+const TwitterShareBtn = ({ children, ...props }) => {
   // Generic store value setter.
   const setStoreValues = useStore(
     state => state.setStoreValues,
@@ -35,24 +35,23 @@ const TourButton = ({ children, ...props }) => {
   }
 
   return (
-    <CoreButton
-      id="button_share_twitter"
-      label={i18n.translate(`BUTTON_SHARE_TWITTER`)}
-      tooltip={props.tooltip ? buttonTooltipPosition : ''}
+    <div
       onClick={handleShare}
-      color="none"
       className={clsx(
         props.className,
-        'button-share-twitter button-share',
       )}
     >
-      <FaTwitter />
-      <span className="sr-only">
-        {i18n.translate(`BUTTON_SHARE_TWITTER`)}
-      </span>
+      <IconButton
+        label={i18n.translate(`BUTTON_SHARE_TWITTER`)}
+      >
+        <TwitterIcon className='social-icon' />
+        <span className="sr-only">
+          {i18n.translate(`BUTTON_SHARE_TWITTER`)}
+        </span>
+      </IconButton>
       {children}
-    </CoreButton>
+    </div>
   )
 }
 
-export default TourButton
+export default TwitterShareBtn

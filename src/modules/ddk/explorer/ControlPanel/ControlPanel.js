@@ -9,6 +9,7 @@ import { AiOutlineControl } from 'react-icons/ai'
 
 import useStore from './../store'
 import theme from './../theme'
+import { DesktopUnifiedShareBtn } from '../Share'
 
 const ControlPanel = ({ ...props }) => {
   // Header is not displayed if the view type is 'embed'
@@ -47,8 +48,8 @@ const ControlPanel = ({ ...props }) => {
       },
       boxShadow: theme.shadows[3],
       display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'flex-start',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
     },
     button: {
       padding: '1.5rem',
@@ -71,6 +72,7 @@ const ControlPanel = ({ ...props }) => {
         >
           <AiOutlineControl />
         </IconButton>
+        <DesktopUnifiedShareBtn />
       </Box>
     )
   }

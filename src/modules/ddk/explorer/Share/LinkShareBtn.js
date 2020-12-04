@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
-import { IoMdShare } from 'react-icons/io'
 import clsx from 'clsx'
 
 import useStore from './../store'
-import { CoreButton } from './../../../core'
+import { IconButton } from '@material-ui/core'
+import LinkIcon from '@material-ui/icons/Link'
 
 const LinkShareBtn = ({ children, ...props }) => {
   // Generic store value setter.
@@ -26,23 +26,20 @@ const LinkShareBtn = ({ children, ...props }) => {
   }
 
   return (
-    <CoreButton
-      id="button_share_link"
-      label={i18n.translate(`BUTTON_SHARE_LINK`)}
-      tooltip={props.tooltip ? buttonTooltipPosition : ''}
+    <div
       onClick={handleShare}
-      color="none"
-      className={clsx(
-        props.className,
-        'button-share-link button-share',
-      )}
+      className={clsx(props.className)}
     >
-      <IoMdShare />
-      <span className="sr-only">
-        {i18n.translate(`BUTTON_SHARE_LINK`)}
-      </span>
+      <IconButton
+        label={i18n.translate(`BUTTON_SHARE_LINK`)}
+      >
+        <LinkIcon className="social-icon" />
+        <span className="sr-only">
+          {i18n.translate(`BUTTON_SHARE_LINK`)}
+        </span>
+      </IconButton>
       {children}
-    </CoreButton>
+    </div>
   )
 }
 

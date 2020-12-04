@@ -1,77 +1,98 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
+import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
-import { Tooltip } from 'reactstrap'
-import { css, cx } from 'emotion'
 
-import useStore from './../store'
-import { theme } from './../theme'
-import { CoreButton } from './../../../core'
-import TwitterShareBtn from './TwitterShareBtn'
+import { TwitterShareBtn } from '.'
 import { FacebookShareBtn } from '.'
 import { MailShareBtn } from '.'
 import { LinkShareBtn } from '.'
+import { IconButton, Popper } from '@material-ui/core'
+import ShareIcon from '@material-ui/icons/Share'
 
 const DesktopUnifiedShareBtn = ({ ...props }) => {
-  // to manage tooltip state
-  const [tooltipOpen, setTooltipOpen] = useState(false)
-  const toggle = () => setTooltipOpen(!tooltipOpen)
+  const [anchorEl, setAnchorEl] = useState(null)
+
+  const handleOpen = event => {
+    setAnchorEl(anchorEl ? null : event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const open = Boolean(anchorEl)
+  const id = open ? 'simple-Popper' : undefined
+
+  // Styles for this component.
+  const styles = makeStyles(theme => ({
+    root: {},
+    popperButton: {
+      padding: '1.5rem',
+      marginTop: 'auto',
+      marginBottom: '1.5rem',
+    },
+    popper: {
+      border: '1px solid',
+      padding: theme.spacing(1),
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.background.paper,
+    },
+    shareButton: {
+      '&:hover': {
+        '& .social-icon': {
+          fill: 'gray',
+        },
+        color: 'gray',
+        cursor: 'pointer',
+      },
+      '& .sr-only': { display: 'none' },
+    },
+  }))
+
+  const classes = styles()
 
   return (
-    <CoreButton
-      id="button_d_u_share_link"
-      label={i18n.translate(`BUTTON_SHARE_UNIFIED`)}
-      color="none"
+    <IconButton
+      onMouseEnter={handleOpen}
+      onMouseLeave={handleClose}
       className={clsx(
         props.className,
-        'button-d-u-share-link',
+        classes.popperButton,
       )}
     >
-      {i18n.translate('CONTROL_PANEL_SHARE_TC')}
-      <Tooltip
-        placement="right"
-        isOpen={tooltipOpen}
-        target="button_d_u_share_link"
-        toggle={toggle}
-        autohide={false}
-        trigger="hover"
-        className={clsx(
-          cx(theme.elements.tooltipCustomShare),
-        )}
+      <ShareIcon />
+      <Popper
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        placement={'right-end'}
       >
-        <div className="tooltip-custom-content">
-          <div className="item">
-            <TwitterShareBtn tooltip={false}>
-              <span className="btn-label">
-                {i18n.translate(`BUTTON_SHARE_TWITTER`)}
-              </span>
-            </TwitterShareBtn>
-          </div>
-          <div className="item">
-            <FacebookShareBtn tooltip={false}>
-              <span className="btn-label">
-                {i18n.translate(`BUTTON_SHARE_FACEBOOK`)}
-              </span>
-            </FacebookShareBtn>
-          </div>
-          <div className="item">
-            <MailShareBtn tooltip={false}>
-              <span className="btn-label">
-                {i18n.translate(`BUTTON_SHARE_EMAIL`)}
-              </span>
-            </MailShareBtn>
-          </div>
-          <div className="item">
-            <LinkShareBtn tooltip={false}>
-              <span className="btn-label">
-                {i18n.translate(`BUTTON_SHARE_LINK`)}
-              </span>
-            </LinkShareBtn>
-          </div>
+        <div className={classes.popper}>
+          <TwitterShareBtn className={classes.shareButton}>
+            <span className="btn-label">
+              {i18n.translate(`BUTTON_SHARE_TWITTER`)}
+            </span>
+          </TwitterShareBtn>
+          <FacebookShareBtn className={classes.shareButton}>
+            <span className="btn-label">
+              {i18n.translate(`BUTTON_SHARE_FACEBOOK`)}
+            </span>
+          </FacebookShareBtn>
+          <MailShareBtn className={classes.shareButton}>
+            <span className="btn-label">
+              {i18n.translate(`BUTTON_SHARE_EMAIL`)}
+            </span>
+          </MailShareBtn>
+          <LinkShareBtn className={classes.shareButton}>
+            <span className="btn-label">
+              {i18n.translate(`BUTTON_SHARE_LINK`)}
+            </span>
+          </LinkShareBtn>
         </div>
-      </Tooltip>
-    </CoreButton>
+      </Popper>
+    </IconButton>
   )
 }
 

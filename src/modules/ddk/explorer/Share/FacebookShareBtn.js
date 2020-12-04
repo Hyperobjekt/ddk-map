@@ -1,15 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
-import { FaFacebookF } from 'react-icons/fa'
+import FacebookIcon from '@material-ui/icons/Facebook'
 import clsx from 'clsx'
 
 import useStore from './../store'
-import { CoreButton } from './../../../core'
 import {
   onFacebookShare,
   constructShareLink,
 } from './Share'
+import { IconButton } from '@material-ui/core'
 
 const FacebookShareBtn = ({ children, ...props }) => {
   // Generic store value setter.
@@ -35,23 +35,20 @@ const FacebookShareBtn = ({ children, ...props }) => {
   }
 
   return (
-    <CoreButton
-      id="button_share_facebook"
-      label={i18n.translate(`BUTTON_SHARE_FACEBOOK`)}
-      tooltip={props.tooltip ? buttonTooltipPosition : ''}
+    <div
       onClick={handleShare}
-      color="none"
-      className={clsx(
-        props.className,
-        'button-share-facebook button-share',
-      )}
+      className={clsx(props.className)}
     >
-      <FaFacebookF />
-      <span className="sr-only">
-        {i18n.translate(`BUTTON_SHARE_FACEBOOK`)}
-      </span>
+      <IconButton
+        label={i18n.translate(`BUTTON_SHARE_FACEBOOK`)}
+      >
+        <FacebookIcon className="social-icon" />
+        <span className="sr-only">
+          {i18n.translate(`BUTTON_SHARE_FACEBOOK`)}
+        </span>
+      </IconButton>
       {children}
-    </CoreButton>
+    </div>
   )
 }
 

@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
-import { GrMail } from 'react-icons/gr'
 import clsx from 'clsx'
 
 import useStore from './../store'
-import { CoreButton } from './../../../core'
+import { IconButton } from '@material-ui/core'
+import EmailIcon from '@material-ui/icons/Email'
 import { onMailShare, constructShareLink } from './Share'
 
 const MailShareBtn = ({ children, ...props }) => {
@@ -24,8 +24,7 @@ const MailShareBtn = ({ children, ...props }) => {
   const handleShare = () => {
     onMailShare(
       encodeURIComponent(constructShareLink(shareHash)),
-      i18n.translate('DIALOG_SHARE_TWITTER'),
-      i18n.translate('DIALOG_SHARE_EMAIL_BODY'),
+      i18n.translate('DIALOG_SHARE_EMAIL'),
     )
     setStoreValues({
       eventShareEmail: eventShareEmail + 1,
@@ -33,23 +32,22 @@ const MailShareBtn = ({ children, ...props }) => {
   }
 
   return (
-    <CoreButton
-      id="button_share_email"
-      label={i18n.translate(`BUTTON_SHARE_EMAIL`)}
-      tooltip={props.tooltip ? buttonTooltipPosition : ''}
+    <div
       onClick={handleShare}
-      color="none"
       className={clsx(
         props.className,
-        'button-share-email button-share',
       )}
     >
-      <GrMail />
-      <span className="sr-only">
-        {i18n.translate(`BUTTON_SHARE_EMAIL`)}
-      </span>
+      <IconButton
+        label={i18n.translate(`BUTTON_SHARE_EMAIL`)}
+      >
+        <EmailIcon className='social-icon' />
+        <span className="sr-only">
+          {i18n.translate(`BUTTON_SHARE_EMAIL`)}
+        </span>
+      </IconButton>
       {children}
-    </CoreButton>
+    </div>
   )
 }
 
