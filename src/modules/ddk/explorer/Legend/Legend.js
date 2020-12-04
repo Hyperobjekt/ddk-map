@@ -24,17 +24,7 @@ const Legend = ({ ...props }) => {
       width: theme.extras.Legend.width,
       height: theme.extras.Legend.height,
       // Adjust for different app bar height.
-      top: `${
-        theme.mixins.toolbar[
-          '@media (min-width:0px) and (orientation: landscape)'
-        ].minHeight + theme.extras.Legend.cushionTop
-      }px`,
-      [theme.breakpoints.up('sm')]: {
-        top: `${
-          theme.mixins.toolbar['@media (min-width:600px)']
-            .minHeight + theme.extras.Legend.cushionTop
-        }px`,
-      },
+      top: theme.extras.Legend.cushionTop,
       padding: theme.spacing(3),
       boxShadow: theme.shadows[3],
       display: 'flex',
