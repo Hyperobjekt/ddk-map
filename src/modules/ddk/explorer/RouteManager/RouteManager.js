@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import shallow from 'zustand/shallow'
+import Mapbox, { useMapStore } from '@hyperobjekt/mapbox'
 
 import useStore from './../store'
 import { getRoundedValue, useDebounce } from './../utils'
@@ -164,6 +165,10 @@ const RouteManager = props => {
   // Track share hash and update when it changes
   const shareHash = useStore(state => state.shareHash)
 
+  const setMapViewport = useMapStore(
+    state => state.setViewport,
+  )
+
   /**
    * Returns a hash based on state
    * @return {String} [description]
@@ -243,7 +248,9 @@ const RouteManager = props => {
       resetViewport = true
     }
     if (!!resetViewport) {
+      console.log('resetting viewport')
       setViewport(viewport)
+      setMapViewport(viewport)
     }
   }
 
