@@ -52,19 +52,25 @@ const SlideoutPanel = ({ ...props }) => {
       },
       boxShadow: theme.shadows[3],
     },
-    mobile: {
-      inset: '10vh 10vw !important',
-      backgroundColor: theme.palette.background.paper,
+    modal: {
+      // inset: '10vh 10vw !important',
+      top: '10vh !important',
+      bottom: '10vh !important',
+      left: '10vw !important',
+      right: '10vw !important',
       [theme.breakpoints.up('sm')]: {
         display: 'none',
       },
-      border: '1px solid #000',
       boxShadow: theme.shadows[3],
-      padding: theme.spacing(3, 4, 3),
       outline: 0,
     },
-    mobileContent: {
+    modalContent: {
+      border: '1px solid #000',
       outline: 0,
+      backgroundColor: theme.palette.background.paper,
+      padding: theme.spacing(3, 4, 3),
+      height: '100%',
+      // width: '100%',
     },
     button: {
       padding: '1.5rem',
@@ -87,7 +93,7 @@ const SlideoutPanel = ({ ...props }) => {
         </IconButton>
       </div>
       <Modal
-        className={clsx(classes.mobile)}
+        className={clsx(classes.modal)}
         open={slideoutPanel.active}
         onClose={handleClose}
         closeAfterTransition
@@ -97,7 +103,7 @@ const SlideoutPanel = ({ ...props }) => {
         }}
       >
         <Fade in={slideoutPanel.active}>
-          <div className={classes.mobileContent}>
+          <div className={classes.modalContent}>
             <IconButton
               onClick={handleClose}
               className={clsx(classes.button)}
