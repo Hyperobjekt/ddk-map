@@ -23,11 +23,11 @@ export const ROUTE_SET = [
 ]
 
 export const DEFAULT_VIEW = 'explorer'
-export const DEFAULT_SHAPE = 'census'
+export const DEFAULT_SHAPE = 'tract'
 export const DEFAULT_YEAR = '2015'
 export const DEFAULT_METRO = ''
 export const DEFAULT_METRIC = 'coi'
-export const DEFAULT_NORM = 'n'
+export const DEFAULT_NORM = 't'
 export const DEFAULT_TILESET = '1.0.0'
 export const DEFAULT_LAT = '37.39'
 export const DEFAULT_LNG = '-96.78'
@@ -37,7 +37,12 @@ export const DEFAULT_ROUTE = `/${DEFAULT_VIEW}/${DEFAULT_SHAPE}/${DEFAULT_YEAR}/
 
 // NOTE: include '' iff empty route value is acceptable
 export const OPTIONS_VIEW = ['explorer', 'embed']
-export const OPTIONS_SHAPE = ['census']
+export const OPTIONS_SHAPE = [
+  'tract',
+  'state',
+  'county',
+  'zip',
+]
 export const OPTIONS_YEAR = ['2015', '2010']
 export const OPTIONS_METRO = [''] // TODO
 export const OPTIONS_METRIC = ['coi', 'ol']
