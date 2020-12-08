@@ -68,6 +68,7 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
           fill: 'black',
         },
         background: '#eaebf4',
+
         cursor: 'pointer',
       },
       '& .sr-only': { display: 'none' },

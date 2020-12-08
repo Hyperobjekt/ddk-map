@@ -24,9 +24,9 @@ const GenericShareModal = ({
   open,
   onClose,
   heading,
-  showIconSection = false,
-  showLinkSection = false,
-  showEmbedSection = false,
+  showIconSection,
+  showLinkSection,
+  showEmbedSection,
 }) => {
   const {
     shareHash,
@@ -67,19 +67,21 @@ const GenericShareModal = ({
   const styles = makeStyles(theme => ({
     root: {
       position: 'absolute',
-      height: 240,
       width: 400,
-      top: 'calc(50% - 100px) !important',
-      left: 'calc(50% - 200px) !important',
+      maxWidth: '70vw',
+      // along with transform values on body, centers the modal
+      top: '50% !important',
+      left: '50% !important',
       // inset: 'unset !important',
     },
     body: {
-      height: '100%',
       width: '100%',
+      // along with top/left values on root, centers the modal
+      transform: 'translate(-50%, -50%)',
       backgroundColor: theme.palette.background.paper,
       border: '1px solid #000',
       boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
+      padding: theme.spacing(2, 4, 4),
     },
     input: {
       width: 'calc(100% - 50px)',

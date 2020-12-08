@@ -33,7 +33,7 @@ export const DEFAULT_LAT = '37.39'
 export const DEFAULT_LNG = '-96.78'
 export const DEFAULT_ZOOM = '3.15'
 
-export const DEFAULT_ROUTE = `/${DEFAULT_VIEW}/${DEFAULT_SHAPE}/${DEFAULT_YEAR}/${DEFAULT_METRO}/${DEFAULT_METRIC}/${DEFAULT_NORM}/${DEFAULT_TILESET}/${DEFAULT_LAT}/${DEFAULT_LNG}/${DEFAULT_ZOOM}`
+export const DEFAULT_ROUTE = `#/${DEFAULT_VIEW}/${DEFAULT_SHAPE}/${DEFAULT_YEAR}/${DEFAULT_METRO}/${DEFAULT_METRIC}/${DEFAULT_NORM}/${DEFAULT_TILESET}/${DEFAULT_LAT}/${DEFAULT_LNG}/${DEFAULT_ZOOM}`
 
 // NOTE: include '' iff empty route value is acceptable
 export const OPTIONS_VIEW = ['explorer', 'embed']
