@@ -8,8 +8,10 @@ import { TwitterShareBtn } from '.'
 import { FacebookShareBtn } from '.'
 import { MailShareBtn } from '.'
 import { LinkShareBtn } from '.'
+import { EmbedShareBtn } from '.'
 import { UnifiedShareModal } from '.'
 import { ShareLinkModal } from '.'
+import { ShareEmbedModal } from '.'
 import { IconButton, Popper } from '@material-ui/core'
 import ShareIcon from '@material-ui/icons/Share'
 import useStore from '../store'
@@ -38,7 +40,6 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
   const openShareModal = event => {
     // in case this is the first touch event and it also triggered openShareTooltip
     closeShareTooltip()
-    console.log('hi')
     setStoreValues({ unifiedShareModal: true })
   }
 
@@ -47,6 +48,9 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
     root: {
       marginTop: 'auto',
       marginBottom: '1.5rem',
+      '&:hover svg': {
+        fill: 'black',
+      },
     },
     popperButton: {
       padding: '1.5rem',
@@ -55,14 +59,15 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
       border: '1px solid',
       padding: theme.spacing(1),
       margin: theme.spacing(1),
+      minWidth: 190,
       backgroundColor: theme.palette.background.paper,
     },
     shareButton: {
       '&:hover': {
         '& .social-icon': {
-          fill: 'gray',
+          fill: 'black',
         },
-        color: 'gray',
+        background: '#eaebf4',
         cursor: 'pointer',
       },
       '& .sr-only': { display: 'none' },
@@ -78,7 +83,7 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
         // onMouseLeave={handleClose}
         onMouseEnter={openShareTooltip}
         onMouseLeave={closeShareTooltip}
-        onClick={openShareModal} // TODO update to onTouchStart
+        onTouchStart={openShareModal} // TODO update to onTouchStart
         className={clsx(classes.popperButton)}
       >
         <ShareIcon />
@@ -113,10 +118,16 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
                 {i18n.translate(`BUTTON_SHARE_LINK`)}
               </span>
             </LinkShareBtn>
+            <EmbedShareBtn className={classes.shareButton}>
+              <span className="btn-label">
+                {i18n.translate(`BUTTON_SHARE_LINK`)}
+              </span>
+            </EmbedShareBtn>
           </div>
         </Popper>
       </IconButton>
       <ShareLinkModal />
+      <ShareEmbedModal />
       <UnifiedShareModal />
     </div>
   )

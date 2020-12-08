@@ -18,6 +18,7 @@ import {
   Input,
 } from '@material-ui/core'
 import { FileCopy } from '@material-ui/icons'
+import { DEFAULT_ROUTE } from '../../../../constants/map'
 
 const UnifiedShareModal = props => {
   // Generic store value setter.
@@ -32,13 +33,10 @@ const UnifiedShareModal = props => {
       unifiedShareModal: false,
     })
   }
-  const defaultRoute = useStore(state => state.defaultRoute)
   const shareHash = useStore(state => state.shareHash)
   const eventShareLink = useStore(
     state => state.eventShareLink,
   )
-
-  console.log('HIHIHI, ', unifiedShareModal)
 
   const onCopy = () => {
     copy(location)
@@ -55,7 +53,7 @@ const UnifiedShareModal = props => {
             shareHash
         : window.location.origin +
             window.location.pathname +
-            defaultRoute,
+            DEFAULT_ROUTE,
     )
   }, [shareHash])
 
@@ -126,7 +124,6 @@ const UnifiedShareModal = props => {
               className={classes.shareButton}
             />
             <MailShareBtn className={classes.shareButton} />
-            <LinkShareBtn className={classes.shareButton} />
           </div>
           <p>{i18n.translate('MODAL_SHARE_LINK_INSTR')}</p>
           {i18n.translate('MODAL_SHARE_LINK_INPUT')}

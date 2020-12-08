@@ -44,7 +44,7 @@ const Layout = ({ ...props }) => {
     <Paper
       elevation={0}
       className={clsx('layout', classes.root)}
-      // onTouchStart={registerTouch} // TODO uncomment
+      onTouchStart={registerTouch} // TODO uncomment
     >
       <Header />
       <main>

@@ -17,5 +17,11 @@ export const langSet = {
     MODAL_SHARE_LINK_INSTR:
       'Copy the link below to share the current view of the Explorer.',
     MODAL_SHARE_LINK_INPUT: 'Current View URL',
+    BUTTON_SHARE_EMBED: 'Embed this map',
+    DIALOG_SHARE_EMBED: 'share text', // TODO
+    MODAL_SHARE_EMBED_HEAD: 'Embed this map',
+    MODAL_SHARE_EMBED_INSTR:
+      'Use the code below to embed the map on your website. The map will match your current map view and selections in the explorer.',
+    MODAL_SHARE_EMBED_INPUT: 'Map Embed Code',
   },
 }
