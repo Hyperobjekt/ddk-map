@@ -1,24 +1,21 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
-import React, { useEffect, useRef, useState } from 'react'
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-} from 'reactstrap'
+import React, { useEffect, useState } from 'react'
+import Modal from '@material-ui/core/Modal'
+import { makeStyles } from '@material-ui/core/styles'
 import i18n from '@pureartisan/simple-i18n'
-import { FaCopy } from 'react-icons/fa'
 import copy from 'copy-to-clipboard'
 
-import { CoreButton } from './../../../core'
 import useStore from './../store'
+import {
+  Backdrop,
+  Fade,
+  FormGroup,
+  IconButton,
+  Input,
+} from '@material-ui/core'
+import { FileCopy } from '@material-ui/icons'
 
 const ShareLinkModal = props => {
-  const { className } = props
   // Generic store value setter.
   const setStoreValues = useStore(
     state => state.setStoreValues,
@@ -36,7 +33,6 @@ const ShareLinkModal = props => {
   )
 
   const onCopy = () => {
-    // console.log('oncopy')
     copy(location)
     setStoreValues({ eventShareLink: eventShareLink + 1 })
   }
@@ -55,33 +51,69 @@ const ShareLinkModal = props => {
     )
   }, [shareHash])
 
+  // Styles for this component.
+  const styles = makeStyles(theme => ({
+    root: {
+      position: 'absolute',
+      height: 200,
+      width: 400,
+      top: 'calc(50% - 100px) !important',
+      left: 'calc(50% - 200px) !important',
+      // inset: 'unset !important',
+    },
+    body: {
+      height: '100%',
+      width: '100%',
+      backgroundColor: theme.palette.background.paper,
+      border: '1px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
+    input: {
+      width: 'calc(100% - 50px)',
+      background: '#eaebf4',
+      padding: theme.spacing(1),
+    },
+  }))
+
+  const classes = styles()
+
   return (
-    <div>
-      <Modal
-        isOpen={!!shareLinkModal}
-        toggle={toggle}
-        className={className}
-        backdrop={false}
-        keyboard={true}
-        autoFocus={true}
-        centered={true}
-      >
-        <ModalHeader toggle={toggle}></ModalHeader>
-        <ModalBody>
+    <Modal
+      open={!!shareLinkModal}
+      onClose={toggle}
+      className={classes.root}
+      closeAfterTransition
+      BackdropComponent={Backdrop}
+      BackdropProps={{
+        timeout: 500,
+      }}
+    >
+      <Fade in={!!shareLinkModal}>
+        <div className={classes.body}>
           <h3>{i18n.translate('MODAL_SHARE_LINK_HEAD')}</h3>
           <p>{i18n.translate('MODAL_SHARE_LINK_INSTR')}</p>
           {i18n.translate('MODAL_SHARE_LINK_INPUT')}
-          <InputGroup>
-            <Input value={shareLinkValue} readOnly={true} />
-            <InputGroupAddon addonType="append">
-              <Button color="secondary" onClick={onCopy}>
-                <FaCopy />
-              </Button>
-            </InputGroupAddon>
-          </InputGroup>
-        </ModalBody>
-      </Modal>
-    </div>
+          <br></br>
+          <FormGroup row>
+            <Input
+              type="text"
+              id="link"
+              name="link"
+              className={classes.input}
+              value={shareLinkValue}
+              // variant='filled'
+              readOnly
+              // disabled
+              // fullWidth
+            />
+            <IconButton onClick={onCopy}>
+              <FileCopy />
+            </IconButton>
+          </FormGroup>
+        </div>
+      </Fade>
+    </Modal>
   )
 }
 

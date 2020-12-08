@@ -9,6 +9,7 @@ import { FacebookShareBtn } from '.'
 import { MailShareBtn } from '.'
 import { LinkShareBtn } from '.'
 import { UnifiedShareModal } from '.'
+import { ShareLinkModal } from '.'
 import { IconButton, Popper } from '@material-ui/core'
 import ShareIcon from '@material-ui/icons/Share'
 import useStore from '../store'
@@ -43,11 +44,12 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
 
   // Styles for this component.
   const styles = makeStyles(theme => ({
-    root: {},
-    popperButton: {
-      padding: '1.5rem',
+    root: {
       marginTop: 'auto',
       marginBottom: '1.5rem',
+    },
+    popperButton: {
+      padding: '1.5rem',
     },
     popper: {
       border: '1px solid',
@@ -70,47 +72,50 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
   const classes = styles()
 
   return (
-    <IconButton
-      // onMouseEnter={openShareTooltip}
-      // onMouseLeave={closeShareTooltip}
-      onClick={openShareModal} // TODO update to onTouchStart
-      className={clsx(
-        props.className,
-        classes.popperButton,
-      )}
-    >
-      <ShareIcon />
-      <Popper
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        placement={'right-end'}
+    <div className={clsx(classes.root)}>
+      <IconButton
+        onMouseEnter={handleOpen}
+        onMouseLeave={handleClose}
+        className={clsx(classes.popperButton)}
       >
-        <div className={classes.popper}>
-          <TwitterShareBtn className={classes.shareButton}>
-            <span className="btn-label">
-              {i18n.translate(`BUTTON_SHARE_TWITTER`)}
-            </span>
-          </TwitterShareBtn>
-          <FacebookShareBtn className={classes.shareButton}>
-            <span className="btn-label">
-              {i18n.translate(`BUTTON_SHARE_FACEBOOK`)}
-            </span>
-          </FacebookShareBtn>
-          <MailShareBtn className={classes.shareButton}>
-            <span className="btn-label">
-              {i18n.translate(`BUTTON_SHARE_EMAIL`)}
-            </span>
-          </MailShareBtn>
-          <LinkShareBtn className={classes.shareButton}>
-            <span className="btn-label">
-              {i18n.translate(`BUTTON_SHARE_LINK`)}
-            </span>
-          </LinkShareBtn>
-        </div>
-      </Popper>
-        <UnifiedShareModal />
-    </IconButton>
+        <ShareIcon />
+        <Popper
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          placement={'right-end'}
+        >
+          <div className={classes.popper}>
+            <TwitterShareBtn
+              className={classes.shareButton}
+            >
+              <span className="btn-label">
+                {i18n.translate(`BUTTON_SHARE_TWITTER`)}
+              </span>
+            </TwitterShareBtn>
+            <FacebookShareBtn
+              className={classes.shareButton}
+            >
+              <span className="btn-label">
+                {i18n.translate(`BUTTON_SHARE_FACEBOOK`)}
+              </span>
+            </FacebookShareBtn>
+            <MailShareBtn className={classes.shareButton}>
+              <span className="btn-label">
+                {i18n.translate(`BUTTON_SHARE_EMAIL`)}
+              </span>
+            </MailShareBtn>
+            <LinkShareBtn className={classes.shareButton}>
+              <span className="btn-label">
+                {i18n.translate(`BUTTON_SHARE_LINK`)}
+              </span>
+            </LinkShareBtn>
+          </div>
+        </Popper>
+      </IconButton>
+      <ShareLinkModal />
+      <UnifiedShareModal />
+    </div>
   )
 }
 

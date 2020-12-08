@@ -13,5 +13,9 @@ export const langSet = {
     DIALOG_SHARE_EMAIL: 'share text', // TODO
     BUTTON_SHARE_LINK: 'Get a custom link',
     DIALOG_SHARE_LINK: 'share text', // TODO
+    MODAL_SHARE_LINK_HEAD: 'Share a Link',
+    MODAL_SHARE_LINK_INSTR:
+      'Copy the link below to share the current view of the Explorer.',
+    MODAL_SHARE_LINK_INPUT: 'Current View URL',
   },
 }
