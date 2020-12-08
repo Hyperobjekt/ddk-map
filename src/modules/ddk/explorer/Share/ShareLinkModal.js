@@ -74,6 +74,11 @@ const ShareLinkModal = props => {
       background: '#eaebf4',
       padding: theme.spacing(1),
     },
+    fileIcon: {
+      '&:hover': {
+        fill: 'black',
+      },
+    },
   }))
 
   const classes = styles()
@@ -108,7 +113,7 @@ const ShareLinkModal = props => {
               // fullWidth
             />
             <IconButton onClick={onCopy}>
-              <FileCopy />
+              <FileCopy className={classes.fileIcon} />
             </IconButton>
           </FormGroup>
         </div>

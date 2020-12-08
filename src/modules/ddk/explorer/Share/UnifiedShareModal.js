@@ -5,6 +5,10 @@ import { makeStyles } from '@material-ui/core/styles'
 import i18n from '@pureartisan/simple-i18n'
 import copy from 'copy-to-clipboard'
 
+import { TwitterShareBtn } from '.'
+import { FacebookShareBtn } from '.'
+import { MailShareBtn } from '.'
+import { LinkShareBtn } from '.'
 import useStore from './../store'
 import {
   Backdrop,
@@ -59,7 +63,7 @@ const UnifiedShareModal = props => {
   const styles = makeStyles(theme => ({
     root: {
       position: 'absolute',
-      height: 200,
+      height: 240,
       width: 400,
       top: 'calc(50% - 100px) !important',
       left: 'calc(50% - 200px) !important',
@@ -77,6 +81,24 @@ const UnifiedShareModal = props => {
       width: 'calc(100% - 50px)',
       background: '#eaebf4',
       padding: theme.spacing(1),
+    },
+    shareButtons: {
+      display: 'flex',
+    },
+    fileIcon: {
+      '&:hover': {
+        fill: 'black',
+      },
+    },
+    shareButton: {
+      '&:hover': {
+        '& .social-icon': {
+          fill: 'black',
+        },
+        color: 'gray',
+        cursor: 'pointer',
+      },
+      '& .sr-only': { display: 'none' },
     },
   }))
 
@@ -96,6 +118,16 @@ const UnifiedShareModal = props => {
       <Fade in={!!unifiedShareModal}>
         <div className={classes.body}>
           <h3>{i18n.translate('MODAL_SHARE_LINK_HEAD')}</h3>
+          <div className={classes.shareButtons}>
+            <TwitterShareBtn
+              className={classes.shareButton}
+            />
+            <FacebookShareBtn
+              className={classes.shareButton}
+            />
+            <MailShareBtn className={classes.shareButton} />
+            <LinkShareBtn className={classes.shareButton} />
+          </div>
           <p>{i18n.translate('MODAL_SHARE_LINK_INSTR')}</p>
           {i18n.translate('MODAL_SHARE_LINK_INPUT')}
           <br></br>
@@ -112,7 +144,7 @@ const UnifiedShareModal = props => {
               // fullWidth
             />
             <IconButton onClick={onCopy}>
-              <FileCopy />
+              <FileCopy className={classes.fileIcon} />
             </IconButton>
           </FormGroup>
         </div>
