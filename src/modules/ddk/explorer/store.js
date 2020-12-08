@@ -38,9 +38,9 @@ const useStore = create((set, get) => ({
     set(state => ({
       remoteJson: { ...state.remoteJson, ...json },
     })),
-    activeLang: `en_us`,
-    langSet: {},
-    
+  activeLang: `en_us`,
+  langSet: {},
+
   // Routing.
   activeRoute: DEFAULT_ROUTE,
 
@@ -163,6 +163,7 @@ const useStore = create((set, get) => ({
       runTour: true,
     }))
   },
+  isTouchScreen: false,
   // Do not track events before map is loaded, as these
   // are state settings based on hash and not user interactions.
   doTrackEvents: false,

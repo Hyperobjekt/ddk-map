@@ -304,7 +304,7 @@ const RouteManager = props => {
   // load the route when the application mounts
   useEffect(() => {
     async function loadRoute() {
-      console.log('loadRoute')
+      // console.log('loadRoute')
       isLoaded.current = true
       // Get path.
       const path = window.location.hash
@@ -321,17 +321,17 @@ const RouteManager = props => {
         isRouteValid(params, props.routeSet)
       ) {
         // Update state based on params
-        console.log('loadRoute 1')
+        // console.log('loadRoute 1')
         setStateFromHash(params)
       } else if (!!localStorageHash) {
         if (localStorageHash.length > 0) {
-          console.log('loadRoute 2')
+          // console.log('loadRoute 2')
           const lsparams = getParamsFromPathname(
             localStorageHash,
             props.routeSet,
           )
           if (isRouteValid(lsparams, props.routeSet)) {
-            console.log('loadRoute 3')
+            // console.log('loadRoute 3')
             setStateFromHash(lsparams)
           }
         }

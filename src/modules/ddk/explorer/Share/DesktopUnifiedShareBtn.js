@@ -8,22 +8,38 @@ import { TwitterShareBtn } from '.'
 import { FacebookShareBtn } from '.'
 import { MailShareBtn } from '.'
 import { LinkShareBtn } from '.'
+import { UnifiedShareModal } from '.'
 import { IconButton, Popper } from '@material-ui/core'
 import ShareIcon from '@material-ui/icons/Share'
+import useStore from '../store'
 
 const DesktopUnifiedShareBtn = ({ ...props }) => {
-  const [anchorEl, setAnchorEl] = useState(null)
+  const { isTouchScreen, setStoreValues } = useStore(
+    state => state,
+  )
 
-  const handleOpen = event => {
+  const [anchorEl, setAnchorEl] = useState(null)
+  const open = Boolean(anchorEl)
+  const id = open ? 'simple-popper' : undefined
+
+  // open/close handlers for desktop
+  const openShareTooltip = event => {
+    if (isTouchScreen) {
+      return
+    }
     setAnchorEl(anchorEl ? null : event.currentTarget)
   }
-
-  const handleClose = () => {
+  const closeShareTooltip = () => {
     setAnchorEl(null)
   }
 
-  const open = Boolean(anchorEl)
-  const id = open ? 'simple-Popper' : undefined
+  // open handler for touch devices
+  const openShareModal = event => {
+    // in case this is the first touch event and it also triggered openShareTooltip
+    closeShareTooltip()
+    console.log('hi')
+    setStoreValues({ unifiedShareModal: true })
+  }
 
   // Styles for this component.
   const styles = makeStyles(theme => ({
@@ -55,8 +71,9 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
 
   return (
     <IconButton
-      onMouseEnter={handleOpen}
-      onMouseLeave={handleClose}
+      // onMouseEnter={openShareTooltip}
+      // onMouseLeave={closeShareTooltip}
+      onClick={openShareModal} // TODO update to onTouchStart
       className={clsx(
         props.className,
         classes.popperButton,
@@ -92,6 +109,7 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
           </LinkShareBtn>
         </div>
       </Popper>
+        <UnifiedShareModal />
     </IconButton>
   )
 }

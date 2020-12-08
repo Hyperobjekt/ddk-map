@@ -8,4 +8,4 @@ export { default as LinkShareBtn } from './LinkShareBtn'
 export { default as DesktopUnifiedShareBtn } from './DesktopUnifiedShareBtn'
 // Modals
 // export { default as ShareLinkModal } from './ShareLinkModal'
-// export { default as UnifiedShareModal } from './UnifiedShareModal'
+export { default as UnifiedShareModal } from './UnifiedShareModal'

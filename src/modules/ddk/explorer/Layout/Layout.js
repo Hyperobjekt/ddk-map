@@ -13,8 +13,20 @@ import Header from './../Header'
 import ControlPanel from './../ControlPanel'
 import SlideoutPanel from './../SlideoutPanel'
 import Map from './../Map'
+import useStore from '../store'
 
 const Layout = ({ ...props }) => {
+  const { isTouchScreen, setStoreValues } = useStore(
+    state => state,
+  )
+
+  const registerTouch = () => {
+    if (isTouchScreen) {
+      return
+    }
+    setStoreValues({ isTouchScreen: true })
+  }
+
   const layoutStyles = makeStyles(theme => ({
     root: {
       position: 'absolute',
@@ -32,6 +44,7 @@ const Layout = ({ ...props }) => {
     <Paper
       elevation={0}
       className={clsx('layout', classes.root)}
+      onMouseDown={registerTouch} // TODO update to onTouchStart
     >
       <Header />
       <main>
