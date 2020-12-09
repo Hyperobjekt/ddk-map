@@ -3,7 +3,12 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
-import { IconButton } from '@material-ui/core'
+import {
+  Backdrop,
+  Fade,
+  IconButton,
+  Modal,
+} from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 
 import useStore from './../store'
@@ -42,7 +47,30 @@ const SlideoutPanel = ({ ...props }) => {
         height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px)`,
         top: `${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px`,
       },
+      [theme.breakpoints.down('xs')]: {
+        display: 'none',
+      },
       boxShadow: theme.shadows[3],
+    },
+    modal: {
+      // inset: '10vh 10vw !important',
+      top: '10vh !important',
+      bottom: '10vh !important',
+      left: '10vw !important',
+      right: '10vw !important',
+      [theme.breakpoints.up('sm')]: {
+        display: 'none',
+      },
+      boxShadow: theme.shadows[3],
+      outline: 0,
+    },
+    modalContent: {
+      border: '1px solid #000',
+      outline: 0,
+      backgroundColor: theme.palette.background.paper,
+      padding: theme.spacing(3, 4, 3),
+      height: '100%',
+      // width: '100%',
     },
     button: {
       padding: '1.5rem',
@@ -55,13 +83,37 @@ const SlideoutPanel = ({ ...props }) => {
   const classes = styles()
 
   return (
-    <div className={clsx(classes.root)}>
-      <IconButton
-        onClick={handleClose}
-        className={clsx(classes.button)}
+    <div>
+      <div className={clsx(classes.root)}>
+        <IconButton
+          onClick={handleClose}
+          className={clsx(classes.button)}
+        >
+          <CloseIcon />
+        </IconButton>
+      </div>
+      <Modal
+        className={clsx(classes.modal)}
+        open={slideoutPanel.active}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
       >
-        <CloseIcon />
-      </IconButton>
+        <Fade in={slideoutPanel.active}>
+          <div className={classes.modalContent}>
+            <IconButton
+              onClick={handleClose}
+              className={clsx(classes.button)}
+            >
+              <CloseIcon />
+            </IconButton>
+            some content here
+          </div>
+        </Fade>
+      </Modal>
     </div>
   )
 }
