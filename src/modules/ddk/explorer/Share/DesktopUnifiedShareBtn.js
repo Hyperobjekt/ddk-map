@@ -17,7 +17,7 @@ import ShareIcon from '@material-ui/icons/Share'
 import useStore from '../store'
 
 const DesktopUnifiedShareBtn = ({ ...props }) => {
-  const { isTouchScreen, setStoreValues } = useStore(
+  const { interactionsMobile, setStoreValues } = useStore(
     state => state,
   )
 
@@ -27,7 +27,7 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
 
   // open/close handlers for desktop
   const openShareTooltip = event => {
-    if (isTouchScreen) {
+    if (interactionsMobile) {
       return
     }
     setAnchorEl(anchorEl ? null : event.currentTarget)
@@ -37,9 +37,10 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
   }
 
   // open handler for touch devices
-  const openShareModal = event => {
-    // in case this is the first touch event and it also triggered openShareTooltip
-    closeShareTooltip()
+  const openShareModal = () => {
+    if (!interactionsMobile) {
+      return
+    }
     setStoreValues({ unifiedShareModal: true })
   }
 
@@ -82,7 +83,7 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
       <IconButton
         onMouseEnter={openShareTooltip}
         onMouseLeave={closeShareTooltip}
-        onTouchStart={openShareModal}
+        onClick={openShareModal}
         className={clsx(classes.popperButton)}
       >
         <ShareIcon />
