@@ -80,11 +80,9 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
   return (
     <div className={clsx(classes.root)}>
       <IconButton
-        // onMouseEnter={handleOpen}
-        // onMouseLeave={handleClose}
         onMouseEnter={openShareTooltip}
         onMouseLeave={closeShareTooltip}
-        onTouchStart={openShareModal} // TODO update to onTouchStart
+        onTouchStart={openShareModal}
         className={clsx(classes.popperButton)}
       >
         <ShareIcon />

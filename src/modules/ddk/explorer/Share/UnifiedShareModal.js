@@ -9,9 +9,7 @@ const UnifiedShareModal = props => {
   const setStoreValues = useStore(
     state => state.setStoreValues,
   )
-  const open = useStore(
-    state => state.unifiedShareModal,
-  )
+  const open = useStore(state => state.unifiedShareModal)
   const onClose = () => {
     setStoreValues({
       unifiedShareModal: false,
