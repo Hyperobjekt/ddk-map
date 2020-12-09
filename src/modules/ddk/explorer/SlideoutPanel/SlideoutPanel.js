@@ -13,14 +13,13 @@ import CloseIcon from '@material-ui/icons/Close'
 
 import useStore from './../store'
 
-const SlideoutPanel = ({ ...props }) => {
-  // Generic store value setter.
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
-  )
-  const slideoutPanel = useStore(
-    state => state.slideoutPanel,
-  )
+const SlideoutPanel = () => {
+  const {
+    setStoreValues,
+    slideoutPanel,
+    interactionsMobile,
+    breakpoint,
+  } = useStore(state => state)
 
   const handleClose = () => {
     setStoreValues({
@@ -30,7 +29,7 @@ const SlideoutPanel = ({ ...props }) => {
 
   // Styles for this component.
   const styles = makeStyles(theme => ({
-    root: {
+    panel: {
       zIndex: theme.extras.slideoutPanel.zIndex,
       backgroundColor: theme.palette.background.paper,
       position: 'absolute',
@@ -41,16 +40,19 @@ const SlideoutPanel = ({ ...props }) => {
       transition: 'left 500ms ease-in-out',
       width: theme.extras.slideoutPanel.width,
       // Adjust for different app bar height.
-      height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px)`,
-      top: `${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px`,
-      [theme.breakpoints.up('sm')]: {
-        height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px)`,
-        top: `${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px`,
-      },
-      [theme.breakpoints.down('xs')]: {
-        display: 'none',
-      },
+      // height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px)`,
+      // top: `${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px`,
+      // [theme.breakpoints.up('sm')]: {
+      height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px)`,
+      top: `${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px`,
+      // },
+      // [theme.breakpoints.down('xs')]: {
+      //   display: 'none',
+      // },
       boxShadow: theme.shadows[3],
+    },
+    panelContent: {
+      padding: theme.spacing(3, 4, 3),
     },
     modal: {
       // inset: '10vh 10vw !important',
@@ -58,9 +60,9 @@ const SlideoutPanel = ({ ...props }) => {
       bottom: '10vh !important',
       left: '10vw !important',
       right: '10vw !important',
-      [theme.breakpoints.up('sm')]: {
-        display: 'none',
-      },
+      // [theme.breakpoints.up('sm')]: {
+      //   display: 'none',
+      // },
       boxShadow: theme.shadows[3],
       outline: 0,
     },
@@ -82,18 +84,36 @@ const SlideoutPanel = ({ ...props }) => {
 
   const classes = styles()
 
-  return (
-    <div>
-      <div className={clsx(classes.root)}>
-        <IconButton
-          onClick={handleClose}
-          className={clsx(classes.button)}
-        >
-          <CloseIcon />
-        </IconButton>
-      </div>
+  let content = null
+  switch (slideoutPanel.panel) {
+    case 'info':
+      content = <div className={classes.content}>info</div>
+      break
+
+    case 'layers':
+      content = (
+        <div className={classes.content}>layers</div>
+      )
+      break
+
+    case 'filters':
+      content = (
+        <div className={classes.content}>filters</div>
+      )
+      break
+
+    default:
+      content = (
+        <div className={classes.content}>other</div>
+      )
+      break
+  }
+
+  // treat large tablets (eg iPad Pro) like desktop
+  if (interactionsMobile && breakpoint !== 'lg') {
+    return (
       <Modal
-        className={clsx(classes.modal)}
+        className={classes.modal}
         open={slideoutPanel.active}
         onClose={handleClose}
         closeAfterTransition
@@ -106,16 +126,30 @@ const SlideoutPanel = ({ ...props }) => {
           <div className={classes.modalContent}>
             <IconButton
               onClick={handleClose}
-              className={clsx(classes.button)}
+              className={classes.button}
             >
               <CloseIcon />
             </IconButton>
-            some content here
+            {content}
           </div>
         </Fade>
       </Modal>
-    </div>
-  )
+    )
+  } else {
+    return (
+      <div className={classes.panel}>
+        <div className={classes.panelContent}>
+          <IconButton
+            onClick={handleClose}
+            className={classes.button}
+          >
+            <CloseIcon />
+          </IconButton>
+          {content}
+        </div>
+      </div>
+    )
+  }
 }
 
 SlideoutPanel.propTypes = {}
