@@ -19,6 +19,7 @@ const SlideoutPanel = () => {
     slideoutPanel,
     interactionsMobile,
     breakpoint,
+    browserWidth,
   } = useStore(state => state)
 
   const handleClose = () => {
@@ -109,8 +110,7 @@ const SlideoutPanel = () => {
       break
   }
 
-  // treat large tablets (eg iPad Pro) like desktop
-  if (interactionsMobile && breakpoint !== 'lg') {
+  if (browserWidth < 1024) {
     return (
       <Modal
         className={classes.modal}
