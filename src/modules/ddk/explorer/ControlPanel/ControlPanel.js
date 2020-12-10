@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import { IconButton } from '@material-ui/core'
 import { AiOutlineControl } from 'react-icons/ai'
+import LayersIcon from '@material-ui/icons/Layers'
 
 import useStore from './../store'
 import theme from './../theme'
@@ -21,11 +22,47 @@ const ControlPanel = ({ ...props }) => {
     state => state.setStoreValues,
   )
 
-  const toggleSlideout = e => {
+  const infoPanelOpen =
+    slideoutPanel.active && slideoutPanel.panel === 'info'
+  const layersPanelOpen =
+    slideoutPanel.active && slideoutPanel.panel === 'layers'
+
+  const openInfoPanel = () => {
+    if (infoPanelOpen) {
+      setStoreValues({
+        slideoutPanel: {
+          ...slideoutPanel,
+          active: false,
+        },
+      })
+      return
+    }
+
     setStoreValues({
       slideoutPanel: {
         ...slideoutPanel,
-        active: !slideoutPanel.active,
+        active: true,
+        panel: 'info',
+      },
+    })
+  }
+
+  const openLayersPanel = () => {
+    if (layersPanelOpen) {
+      setStoreValues({
+        slideoutPanel: {
+          ...slideoutPanel,
+          active: false,
+        },
+      })
+      return
+    }
+
+    setStoreValues({
+      slideoutPanel: {
+        ...slideoutPanel,
+        active: true,
+        panel: 'layers',
       },
     })
   }
@@ -53,6 +90,12 @@ const ControlPanel = ({ ...props }) => {
     },
     button: {
       padding: '1.5rem',
+      '&:hover svg': {
+        fill: 'black',
+      },
+      '&.active svg': {
+        fill: '#3f51b5',
+      },
     },
   }))
 
@@ -62,15 +105,22 @@ const ControlPanel = ({ ...props }) => {
     return ''
   } else {
     return (
-      <Box className={clsx('control-panel', classes.root)}>
+      <Box className={classes.root}>
         <IconButton
-          onClick={toggleSlideout}
-          className={clsx(
-            'control-panel-button',
-            classes.button,
-          )}
+          onClick={openInfoPanel}
+          className={clsx(classes.button, {
+            active: infoPanelOpen,
+          })}
         >
           <AiOutlineControl />
+        </IconButton>
+        <IconButton
+          onClick={openLayersPanel}
+          className={clsx(classes.button, {
+            active: layersPanelOpen,
+          })}
+        >
+          <LayersIcon />
         </IconButton>
         <DesktopUnifiedShareBtn />
       </Box>

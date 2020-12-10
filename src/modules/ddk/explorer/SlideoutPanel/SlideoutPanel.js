@@ -80,6 +80,9 @@ const SlideoutPanel = () => {
       position: 'absolute',
       top: 0,
       right: 0,
+      '&:hover svg': {
+        fill: 'black',
+      },
     },
   }))
 
@@ -104,9 +107,7 @@ const SlideoutPanel = () => {
       break
 
     default:
-      content = (
-        <div className={classes.content}>other</div>
-      )
+      content = <div className={classes.content}>other</div>
       break
   }
 
