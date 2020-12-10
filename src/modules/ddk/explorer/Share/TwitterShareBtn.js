@@ -14,14 +14,11 @@ const TwitterShareBtn = ({ children, ...props }) => {
     state => state.setStoreValues,
   )
   const shareHash = useStore(state => state.shareHash)
-  const buttonTooltipPosition = useStore(
-    state => state.buttonTooltipPosition,
-  )
+  // const buttonTooltipPosition = useStore(
+  //   state => state.buttonTooltipPosition,
+  // )
   const eventShareTwitter = useStore(
     state => state.eventShareTwitter,
-  )
-  const incrementCustomEvent = useStore(
-    state => state.incrementCustomEvent,
   )
 
   const handleShare = () => {
@@ -37,14 +34,12 @@ const TwitterShareBtn = ({ children, ...props }) => {
   return (
     <div
       onClick={handleShare}
-      className={clsx(
-        props.className,
-      )}
+      className={clsx(props.className)}
     >
       <IconButton
         label={i18n.translate(`BUTTON_SHARE_TWITTER`)}
       >
-        <TwitterIcon className='social-icon' />
+        <TwitterIcon className="social-icon" />
         <span className="sr-only">
           {i18n.translate(`BUTTON_SHARE_TWITTER`)}
         </span>

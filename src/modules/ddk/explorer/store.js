@@ -38,10 +38,12 @@ const useStore = create((set, get) => ({
     set(state => ({
       remoteJson: { ...state.remoteJson, ...json },
     })),
-    activeLang: `en_us`,
-    langSet: {},
-    
+  activeLang: `en_us`,
+  langSet: {},
+
   // Routing.
+
+  // TODO remove? (use DEFAULT_ROUTE for initial and shareHash for active?)
   activeRoute: DEFAULT_ROUTE,
 
   activeView: DEFAULT_VIEW,
@@ -92,6 +94,7 @@ const useStore = create((set, get) => ({
   defaultFilterTab: 'cri',
   activeFilterTab: 'cri',
   shareLinkModal: false,
+  shareEmbedModal: false,
   unifiedShareModal: false,
   handleToggleMenu: null,
   shareHash: null,
@@ -163,6 +166,7 @@ const useStore = create((set, get) => ({
       runTour: true,
     }))
   },
+  isTouchScreen: false,
   // Do not track events before map is loaded, as these
   // are state settings based on hash and not user interactions.
   doTrackEvents: false,
@@ -171,6 +175,7 @@ const useStore = create((set, get) => ({
   eventShareFacebook: 0,
   eventShareEmail: 0,
   eventShareLink: 0,
+  eventShareEmbed: 0,
   eventMapReset: 0,
   eventMapCapture: 0,
   eventSchoolSearch: 0,

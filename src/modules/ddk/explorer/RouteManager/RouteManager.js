@@ -141,7 +141,7 @@ const isRouteValid = params => {
 // }
 
 const RouteManager = props => {
-  console.log('RouteManager!!!!!')
+  // console.log('RouteManager!!!!!')
   // track if initial route has loaded
   const isLoaded = useRef(false)
   // Generic store value setter.
@@ -201,7 +201,7 @@ const RouteManager = props => {
 
   // get the route params based on current view
   const route = getHashFromState()
-  console.log('!!!!!", ', route)
+  // console.log('!!!!!", ', route)
 
   // debounce the route so it updates every 1 second max
   const debouncedRoute = useDebounce(route, 500)
@@ -211,7 +211,7 @@ const RouteManager = props => {
    * @param {[type]} params [description]
    */
   const setStateFromHash = params => {
-    console.log('setStateFromHash(), ', params)
+    // console.log('setStateFromHash(), ', params)
 
     if (params.hasOwnProperty(ROUTE_VIEW)) {
       setStoreValues({ activeView: params[ROUTE_VIEW] })
@@ -248,7 +248,7 @@ const RouteManager = props => {
       resetViewport = true
     }
     if (!!resetViewport) {
-      console.log('resetting viewport')
+      // console.log('resetting viewport')
       setViewport(viewport)
       setMapViewport(viewport)
     }
@@ -258,7 +258,7 @@ const RouteManager = props => {
     if (isLoaded.current) {
       // When hash changes, if route is valid, update route for sharing.
       window.addEventListener('hashchange', () => {
-        console.log('hashchange')
+        // console.log('hashchange')
         const path = window.location.hash
         // Construct params object from hash.
         const params = getParamsFromPathname(
@@ -270,7 +270,7 @@ const RouteManager = props => {
           isRouteValid(params, props.routeSet) &&
           path !== shareHash
         ) {
-          console.log('updating hash')
+          // console.log('updating hash')
           setStoreValues({
             shareHash: window.location.hash,
           })
@@ -284,7 +284,7 @@ const RouteManager = props => {
     // only change the hash if the initial route has loaded
     if (isLoaded.current) {
       // window.location.hash = '#/' + debouncedRoute
-      console.log('Route change')
+      // console.log('Route change')
       window.history.replaceState(
         { hash: '#/' + debouncedRoute },
         'Explorer state update',
@@ -304,7 +304,7 @@ const RouteManager = props => {
   // load the route when the application mounts
   useEffect(() => {
     async function loadRoute() {
-      console.log('loadRoute')
+      // console.log('loadRoute')
       isLoaded.current = true
       // Get path.
       const path = window.location.hash
@@ -321,17 +321,17 @@ const RouteManager = props => {
         isRouteValid(params, props.routeSet)
       ) {
         // Update state based on params
-        console.log('loadRoute 1')
+        // console.log('loadRoute 1')
         setStateFromHash(params)
       } else if (!!localStorageHash) {
         if (localStorageHash.length > 0) {
-          console.log('loadRoute 2')
+          // console.log('loadRoute 2')
           const lsparams = getParamsFromPathname(
             localStorageHash,
             props.routeSet,
           )
           if (isRouteValid(lsparams, props.routeSet)) {
-            console.log('loadRoute 3')
+            // console.log('loadRoute 3')
             setStateFromHash(lsparams)
           }
         }
