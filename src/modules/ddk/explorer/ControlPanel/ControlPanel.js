@@ -9,7 +9,6 @@ import { AiOutlineControl } from 'react-icons/ai'
 import LayersIcon from '@material-ui/icons/Layers'
 
 import useStore from './../store'
-import theme from './../theme'
 import { DesktopUnifiedShareBtn } from '../Share'
 
 const ControlPanel = ({ ...props }) => {
@@ -91,10 +90,10 @@ const ControlPanel = ({ ...props }) => {
     button: {
       padding: '1.5rem',
       '&:hover svg': {
-        fill: 'black',
+        fill: theme.extras.colors.svgFillHover,
       },
       '&.active svg': {
-        fill: '#3f51b5',
+        fill: theme.extras.colors.svgFillActive,
       },
     },
   }))

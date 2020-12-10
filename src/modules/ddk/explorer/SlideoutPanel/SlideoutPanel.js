@@ -12,6 +12,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close'
 
 import useStore from './../store'
+import { variables } from '../theme'
 
 const SlideoutPanel = () => {
   const {
@@ -81,7 +82,7 @@ const SlideoutPanel = () => {
       top: 0,
       right: 0,
       '&:hover svg': {
-        fill: 'black',
+        fill: theme.extras.colors.svgFillHover,
       },
     },
   }))
@@ -111,7 +112,7 @@ const SlideoutPanel = () => {
       break
   }
 
-  if (browserWidth < 1024) {
+  if (browserWidth < variables.largeTabletWidth) {
     return (
       <Modal
         className={classes.modal}

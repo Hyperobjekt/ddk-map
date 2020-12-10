@@ -2,7 +2,7 @@ import { createMuiTheme } from '@material-ui/core/styles'
 
 export const variables = {
   colors: {
-    primary: '#20232a',
+    // primary: '#20232a',
     white: '#ffffff',
     bridalHeath: '#fffbf3',
     alabaster: '#f7f7f7',
@@ -32,6 +32,13 @@ export const variables = {
     cpLabelColor: '#606b44',
     cpalOrange: '#e55934',
     cpalOrangeLight: '#ffeee5',
+
+    primary: '#045781',
+    secondary: '#C9422C',
+    terciary: '#467D5E',
+    accentYellow: '#EAA22E',
+    accentBlue: '#5B9BD5',
+    accentIvory: '#F2E8C9',
   },
   dimensions: {
     navbarHeight: '64px',
@@ -39,6 +46,7 @@ export const variables = {
     spacer: `0.8rem`,
   },
   breakpoints: [0, 320, 768, 992, 1280],
+  largeTabletWidth: 1024,
   fonts: {
     primary: 'halyard-text',
   },
@@ -61,6 +69,10 @@ export const theme = createMuiTheme({
     slideoutPanel: {
       width: '270px',
       zIndex: 10,
+    },
+    colors: {
+      svgFillHover: variables.colors.accentBlue,
+      svgFillActive: variables.colors.secondary,
     },
   },
 })
