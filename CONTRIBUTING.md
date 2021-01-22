@@ -26,7 +26,7 @@
 - Check out new bbranches from `master`, and submit pull requests back onto `master`.
 - To stage the map on Github Pages, merge `master` into `testing`. A Github Action will build and stage on Github Pages at [https://hyperobjekt.github.io/untd-map](https://hyperobjekt.github.io/ddk-map).
 - To stage the map on Nelify, merge `master` into `staging`. Netlify will stage the site at [https://staging--tender-mahavira-be8c9a.netlify.app/](https://staging--tender-mahavira-be8c9a.netlify.app/).
-- To move changes to the map to production on Nelify, merge `master` into `production`. The production app resides at []().
+- To move changes to the map to production on Nelify, merge `master` into `production`. The production app resides at [https://tender-mahavira-be8c9a.netlify.app/](https://tender-mahavira-be8c9a.netlify.app/).
 
 ## Development Practices
 
