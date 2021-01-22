@@ -33,9 +33,9 @@ jobs:
       - name: Create .env file
         run: |
           touch .env
-          echo NODE_ENV=${{ secrets.STAGING_NODE_ENV }} >> .env
-          echo GATSBY_MAPBOX_USER=${{ secrets.GATSBY_MAPBOX_USER }} >> .env
-          echo GATSBY_MAPBOX_API_TOKEN=${{ secrets.GATSBY_MAPBOX_API_TOKEN }} >> .env
+          echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
+          echo MAPBOX_USER=${{ secrets.MAPBOX_USER }} >> .env
+          echo MAPBOX_API_TOKEN=${{ secrets.MAPBOX_API_TOKEN }} >> .env
           cat .env
 
       - name: Run nwb build
