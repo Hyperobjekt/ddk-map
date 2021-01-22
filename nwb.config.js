@@ -8,7 +8,11 @@ module.exports = {
   },
   webpack: {
     extra: {
-      plugins: [new Dotenv()],
+      plugins: [
+        new Dotenv({
+          systemvars: true,
+        }),
+      ],
     },
   },
 }

@@ -13,11 +13,7 @@
   publish = "demo/dist"
 
   # Default build command.
-  command = '''
-  npm install nwb -g &&
-  sed -i "s|TOKEN_PLACEHOLDER|${MAPBOX_API_TOKEN}|g" netlify.toml &&
-  MAPBOX_API_TOKEN=TOKEN_PLACEHOLDER; NODE_ENV=production; nwb build-react-component --copy-files
-  '''
+  command = "npm install nwb -g && nwb build-react-component --copy-files"
 
   # Directory with the serverless functions, including background functions,
   # to deploy to AWS. This is relative to the base directory if one has been set,
@@ -26,21 +22,13 @@
 
 # Production context: all deploys from the Production branch set in your site’s
 # deploy contexts will inherit these settings.
-# [context.production]
-#   environment = { NODE_ENV = "production" }
+[context.production]
+  environment = { NODE_ENV = "production" }
 
 [context.staging]
-  command = '''
-  npm install nwb -g &&
-  sed -i "s|TOKEN_PLACEHOLDER|${MAPBOX_API_TOKEN}|g" netlify.toml &&
-  MAPBOX_API_TOKEN=TOKEN_PLACEHOLDER; NODE_ENV=staging; nwb build-react-component --copy-files
-  '''
+  environment = { NODE_ENV = "staging" }
 
 # Deploy Preview context: all deploys generated from a pull/merge request will
 # inherit these settings.
 [context.deploy-preview]
-  command = '''
-  npm install nwb -g &&
-  sed -i "s|TOKEN_PLACEHOLDER|${MAPBOX_API_TOKEN}|g" netlify.toml &&
-  MAPBOX_API_TOKEN=TOKEN_PLACEHOLDER; NODE_ENV=staging; nwb build-react-component --copy-files
-  '''
+  environment = { NODE_ENV = "staging" }
