@@ -9,14 +9,31 @@ import { AiOutlineControl } from 'react-icons/ai'
 
 import useStore from './../store'
 import theme from './../theme'
+import { DesktopUnifiedShareBtn } from '../Share'
 
 const ControlPanel = ({ ...props }) => {
   // Header is not displayed if the view type is 'embed'
   const activeView = useStore(state => state.activeView)
+  const slideoutPanel = useStore(
+    state => state.slideoutPanel,
+  )
+  const setStoreValues = useStore(
+    state => state.setStoreValues,
+  )
+
+  const toggleSlideout = e => {
+    setStoreValues({
+      slideoutPanel: {
+        ...slideoutPanel,
+        active: !slideoutPanel.active,
+      },
+    })
+  }
 
   // Styles for this component.
   const styles = makeStyles(theme => ({
     root: {
+      zIndex: theme.extras.controlPanel.zIndex,
       backgroundColor: theme.palette.background.paper,
       position: 'absolute',
       top: 0,
@@ -25,14 +42,14 @@ const ControlPanel = ({ ...props }) => {
       // Adjust for different app bar height.
       height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px)`,
       top: `${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px`,
-      [theme.breakpoints.up('md')]: {
+      [theme.breakpoints.up('sm')]: {
         height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px)`,
         top: `${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px`,
       },
       boxShadow: theme.shadows[3],
       display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'flex-start',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
     },
     button: {
       padding: '1.5rem',
@@ -47,6 +64,7 @@ const ControlPanel = ({ ...props }) => {
     return (
       <Box className={clsx('control-panel', classes.root)}>
         <IconButton
+          onClick={toggleSlideout}
           className={clsx(
             'control-panel-button',
             classes.button,
@@ -54,6 +72,7 @@ const ControlPanel = ({ ...props }) => {
         >
           <AiOutlineControl />
         </IconButton>
+        <DesktopUnifiedShareBtn />
       </Box>
     )
   }

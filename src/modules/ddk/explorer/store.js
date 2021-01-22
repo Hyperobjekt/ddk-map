@@ -8,8 +8,16 @@ import * as ease from 'd3-ease'
 import {
   DEFAULT_VIEWPORT,
   DEFAULT_ROUTE,
-  DEFAULT_METRIC,
+  DEFAULT_VIEW,
   DEFAULT_SHAPE,
+  DEFAULT_YEAR,
+  DEFAULT_METRO,
+  DEFAULT_METRIC,
+  DEFAULT_NORM,
+  DEFAULT_TILESET,
+  DEFAULT_LAT,
+  DEFAULT_LNG,
+  DEFAULT_ZOOM,
 } from './../../../constants/map'
 
 const useStore = create((set, get) => ({
@@ -30,15 +38,22 @@ const useStore = create((set, get) => ({
     set(state => ({
       remoteJson: { ...state.remoteJson, ...json },
     })),
-  // Default route.
-  defaultRoute: DEFAULT_ROUTE,
   activeLang: `en_us`,
   langSet: {},
-  activeView: `explorer`, // View type, explorer or embed
-  activeShape: `census`,
-  defaultShape: DEFAULT_SHAPE,
-  activeMetric: `default_metric`,
-  defaultMetric: DEFAULT_METRIC,
+
+  // Routing.
+
+  // TODO remove? (use DEFAULT_ROUTE for initial and shareHash for active?)
+  activeRoute: DEFAULT_ROUTE,
+
+  activeView: DEFAULT_VIEW,
+  activeShape: DEFAULT_SHAPE,
+  activeYear: DEFAULT_YEAR,
+  activeMetro: DEFAULT_METRO,
+  activeMetric: DEFAULT_METRIC,
+  activeNorm: DEFAULT_NORM,
+  activeTileset: DEFAULT_TILESET,
+
   viewport: DEFAULT_VIEWPORT,
   resetViewport: DEFAULT_VIEWPORT,
   setViewport: viewport =>
@@ -79,6 +94,7 @@ const useStore = create((set, get) => ({
   defaultFilterTab: 'cri',
   activeFilterTab: 'cri',
   shareLinkModal: false,
+  shareEmbedModal: false,
   unifiedShareModal: false,
   handleToggleMenu: null,
   shareHash: null,
@@ -132,7 +148,7 @@ const useStore = create((set, get) => ({
       // Return view to map.
       activeView: 'explorer',
       // Reset metric.
-      activeMetric: state.defaultMetric,
+      activeMetric: DEFAULT_METRIC,
       // Reset quintiles.
       activeQuintiles: [1, 1, 1, 1, 1],
       // Close the panel.
@@ -150,6 +166,7 @@ const useStore = create((set, get) => ({
       runTour: true,
     }))
   },
+  isTouchScreen: false,
   // Do not track events before map is loaded, as these
   // are state settings based on hash and not user interactions.
   doTrackEvents: false,
@@ -158,6 +175,7 @@ const useStore = create((set, get) => ({
   eventShareFacebook: 0,
   eventShareEmail: 0,
   eventShareLink: 0,
+  eventShareEmbed: 0,
   eventMapReset: 0,
   eventMapCapture: 0,
   eventSchoolSearch: 0,

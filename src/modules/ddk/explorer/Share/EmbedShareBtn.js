@@ -5,9 +5,9 @@ import clsx from 'clsx'
 
 import useStore from './../store'
 import { IconButton } from '@material-ui/core'
-import LinkIcon from '@material-ui/icons/Link'
+import CodeIcon from '@material-ui/icons/Code'
 
-const LinkShareBtn = ({ children, ...props }) => {
+const EmbedShareBtn = ({ children, ...props }) => {
   // Generic store value setter.
   const setStoreValues = useStore(
     state => state.setStoreValues,
@@ -15,7 +15,7 @@ const LinkShareBtn = ({ children, ...props }) => {
 
   const openModal = () => {
     setStoreValues({
-      shareLinkModal: true,
+      shareEmbedModal: true,
     })
   }
 
@@ -25,11 +25,11 @@ const LinkShareBtn = ({ children, ...props }) => {
       className={clsx(props.className)}
     >
       <IconButton
-        label={i18n.translate(`BUTTON_SHARE_LINK`)}
+        label={i18n.translate(`BUTTON_SHARE_EMBED`)}
       >
-        <LinkIcon className="social-icon" />
+        <CodeIcon className="social-icon" />
         <span className="sr-only">
-          {i18n.translate(`BUTTON_SHARE_LINK`)}
+          {i18n.translate(`BUTTON_SHARE_EMBED`)}
         </span>
       </IconButton>
       {children}
@@ -37,4 +37,4 @@ const LinkShareBtn = ({ children, ...props }) => {
   )
 }
 
-export default LinkShareBtn
+export default EmbedShareBtn

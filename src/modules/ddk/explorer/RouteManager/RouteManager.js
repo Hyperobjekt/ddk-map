@@ -1,12 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import shallow from 'zustand/shallow'
+import Mapbox, { useMapStore } from '@hyperobjekt/mapbox'
 
 import useStore from './../store'
 import { getRoundedValue, useDebounce } from './../utils'
 import {
   DEFAULT_ROUTE,
   DEFAULT_VIEWPORT,
+  OPTIONS_MAP,
+  ROUTE_METRIC,
+  ROUTE_METRO,
+  ROUTE_NORM,
+  ROUTE_SHAPE,
+  ROUTE_TILESET,
+  ROUTE_VIEW,
+  ROUTE_YEAR,
 } from './../../../../constants/map'
 
 /**
@@ -23,7 +32,7 @@ export const getParamsFromPathname = (path, routeVars) => {
     (acc, curr, i) => ({
       ...acc,
       [routeVars[i]]:
-        ['zoom', 'lat', 'lon'].indexOf(routeVars[i]) > -1
+        ['zoom', 'lat', 'lng'].indexOf(routeVars[i]) > -1
           ? parseFloat(curr)
           : curr,
     }),
@@ -38,120 +47,22 @@ export const isEmptyRoute = route =>
   getStrippedRoute(route).length === 0
 
 /**
- * Verify that view contains one of the two views.
- * @param  String view View string
- * @return Boolean
- */
-const isViewValid = view => {
-  // console.log('isViewValid, ', view)
-  return ['explorer', 'embed'].indexOf(view) > -1
-}
-
-/**
- * Verifies that metric exists in metric collection.
- * @param  {String}  metric String that corresponds to metric ID in constants
+ * Verify that the route value is valid.
+ * @param  {String} route
+ * @param  {String} value
  * @return {Boolean}
  */
-const isMetricValid = metric => {
-  // Check if it's in the metrics list
-  // console.log('isMetricValid')
-  // If it's empty, just return true. We'll use the default.
-  if (metric.length === 0) {
-    return true
-  } else {
-    // If not empty, verify that it's in the metrics collection.
-    // const filter = CPAL_METRICS.find(el => {
-    //   return el.id === metric
-    // })
-    // return !!filter ? true : false
-    // TODO: Verify that passed-in metric/indicator from hash is in the list.
-    return true
+const isRouteOptionValid = (route, value) => {
+  const validOptions = OPTIONS_MAP[route]
+  if (!validOptions) {
+    console.error('No valid options listed for: ', route)
   }
-}
-
-/**
- * Verifies that quintiles string can be converted into array of quintiles.
- * @param  {String}  quintiles String of comma-separated numbers
- * @return {Boolean}
- */
-const isQuintilesValid = quintiles => {
-  // console.log('isQuintilesValid')
-  if (!quintiles) return true
-  if (quintiles.length < 5) return false
-  const arr = quintiles.split(',')
-  let t = true
-  arr.forEach(el => {
-    const n = Number(el)
-    if (n !== 1 && n !== 0) {
-      t = false
-    }
-  })
-  return t
-}
-
-const isFeederValid = feeder => {
-  // console.log('isFeederValid()')
-  if (!feeder || feeder.length === 0) {
-    return true
-  } else {
-    // If not empty, verify that it's in the feeders collection.
-    const filter = CPAL_FEEDERS.find(el => {
-      return Number(el.id) === Number(feeder)
-    })
-    return !!filter ? true : false
-  }
-}
-
-const isSchoolValid = school => {
-  // console.log('isSchoolValid()')
-  if (!school || school.length === 0) {
-    return true
-  } else {
-    // If not empty, verify that it's in the feeders collection.
-    const filter = schools.find(el => {
-      return Number(el.SLN) === Number(school)
-    })
-    return !!filter ? true : false
-  }
-}
-
-const isLayersValid = layers => {
-  // console.log('isLayersValid()')
-  if (!layers) return true
-  const arr = layers.split(',')
-  // console.log('arr, ', arr)
-  if (arr.length !== 4) return false
-  let t = true
-  arr.forEach((el, i) => {
-    const n = Number(el)
-    if (n !== 1 && n !== 0) {
-      t = false
-    }
-    if (
-      UNTD_LAYERS[i].only_one === true &&
-      Number(arr[i]) === 1
-    ) {
-      // Get the name
-      const name = UNTD_LAYERS[i].only_one_name
-      // If others with same name are true in layers, return false.
-      // console.log('only one loop, others = ', others)
-      UNTD_LAYERS.forEach((item, index) => {
-        if (
-          i !== index &&
-          item.only_one === true &&
-          item.only_one_name === name
-        ) {
-          // console.log('matching up the other only-ones')
-          if (Number(arr[index]) === 1) {
-            // console.log("there's another true")
-            t = false
-          }
-        }
-      })
-    }
-  })
-  // console.log('isLayersValid(), ', t)
-  return t
+  console.log(
+    'isRouteOptionValid, ',
+    value,
+    validOptions.indexOf(value) > -1,
+  )
+  return validOptions.indexOf(value) > -1
 }
 
 const isLatLngValid = (lat, lng) => {
@@ -195,14 +106,21 @@ const isZoomValid = zoom => {
  */
 const isRouteValid = params => {
   // console.log('isRouteValid(), ', params)
+  const enumerableRoutes = [
+    ROUTE_VIEW,
+    ROUTE_SHAPE,
+    ROUTE_YEAR,
+    ROUTE_METRO,
+    ROUTE_METRIC,
+    ROUTE_NORM,
+    ROUTE_TILESET,
+  ] // routes with discrete options
+
   let isValid = true
   if (
-    !isViewValid(params.view) ||
-    !isMetricValid(params.metric) ||
-    // !isQuintilesValid(params.quintiles) ||
-    // !isFeederValid(params.feeder) ||
-    // !isSchoolValid(params.school) ||
-    // !isLayersValid(params.layers) ||
+    !enumerableRoutes.every(route =>
+      isRouteOptionValid(route, params[route]),
+    ) ||
     !isLatLngValid(params.lat, params.lng) ||
     !isZoomValid(params.zoom)
   ) {
@@ -217,10 +135,10 @@ const isRouteValid = params => {
  * @param  {Array} activeLayers
  * @return {String}
  */
-const getLayersString = activeLayers => {
-  // console.log('getLayersString(), ', activeLayers)
-  return activeLayers.toString()
-}
+// const getLayersString = activeLayers => {
+//   // console.log('getLayersString(), ', activeLayers)
+//   return activeLayers.toString()
+// }
 
 const RouteManager = props => {
   // console.log('RouteManager!!!!!')
@@ -230,40 +148,26 @@ const RouteManager = props => {
   const setStoreValues = useStore(
     state => state.setStoreValues,
   )
-  // Schools as set by data loading.
-  const schools = useStore(
-    state => state.remoteJson.schools,
-  )
   // Active view.
-  const activeView = useStore(state => state.activeView)
-  // Active shape, for choropleths.
-  const activeShape = useStore(state => state.activeShape)
-  // Update view select control
-  const viewSelect = useStore(state => state.viewSelect)
-  // Active metric.
-  const activeMetric = useStore(state => state.activeMetric)
-  // Active standard deviations.
-  const activeQuintiles = useStore(
-    state => state.activeQuintiles,
-  )
-  // Active feeder.
-  const activeFeeder = useStore(state => state.activeFeeder)
-  // Highlighted school.
-  const highlightedSchool = useStore(
-    state => state.highlightedSchool,
-  )
-  // Active layers.
-  // const activeLayers = useStore(
-  //   state => [...state.activeLayers],
-  //   shallow,
-  // )
+  const {
+    activeView,
+    activeShape,
+    activeYear,
+    activeMetro,
+    activeMetric,
+    activeNorm,
+    activeTileset,
+  } = useStore(state => state)
+
   // Viewport.
   const viewport = useStore(state => state.viewport)
   const setViewport = useStore(state => state.setViewport)
-  // Feeder is locked.
-  const feederLocked = useStore(state => state.feederLocked)
   // Track share hash and update when it changes
   const shareHash = useStore(state => state.shareHash)
+
+  const setMapViewport = useMapStore(
+    state => state.setViewport,
+  )
 
   /**
    * Returns a hash based on state
@@ -275,7 +179,15 @@ const RouteManager = props => {
       '/' +
       activeShape +
       '/' +
+      activeYear +
+      '/' +
+      activeMetro +
+      '/' +
       activeMetric +
+      '/' +
+      activeNorm +
+      '/' +
+      activeTileset +
       '/' +
       getRoundedValue(viewport.latitude, 4) +
       '/' +
@@ -289,6 +201,7 @@ const RouteManager = props => {
 
   // get the route params based on current view
   const route = getHashFromState()
+  // console.log('!!!!!", ', route)
 
   // debounce the route so it updates every 1 second max
   const debouncedRoute = useDebounce(route, 500)
@@ -300,57 +213,27 @@ const RouteManager = props => {
   const setStateFromHash = params => {
     // console.log('setStateFromHash(), ', params)
 
-    if (!!params.view) {
-      // setActiveView(params.view)
-      // const newViewSelect = viewSelect.map(el => {
-      //   if (String(el.id).indexOf(params.view) >= 0) {
-      //     el.active = true
-      //   } else {
-      //     el.active = false
-      //   }
-      //   return el
-      // })
-      setStoreValues({
-        activeView: params.view,
-        // viewSelect: newViewSelect,
-      })
+    if (params.hasOwnProperty(ROUTE_VIEW)) {
+      setStoreValues({ activeView: params[ROUTE_VIEW] })
     }
-    if (!!params.metric) {
-      setStoreValues({ activeMetric: params.metric })
-      // const tab = CPAL_METRICS.filter(
-      //   el => el.id === params.metric,
-      // )[0].tab
-      // if (!!tab) {
-      //   setStoreValues({ activeFilterTab: tab })
-      // }
-      // console.log('setting metric, ', params.metric, tab)
+    if (params.hasOwnProperty(ROUTE_SHAPE)) {
+      setStoreValues({ activeShape: params[ROUTE_SHAPE] })
     }
-    if (params.quintiles && params.quintiles.length > 0) {
-      const quintiles = params.quintiles.split(',')
-      setStoreValues({
-        activeQuintiles: quintiles.map(el => {
-          return Number(el)
-        }),
-      })
+    if (params.hasOwnProperty(ROUTE_YEAR)) {
+      setStoreValues({ activeYear: params[ROUTE_YEAR] })
     }
-    if (!!params.feeder) {
-      setStoreValues({
-        activeFeeder: params.feeder,
-        feederLocked: true,
-      })
+    if (params.hasOwnProperty(ROUTE_METRO)) {
+      setStoreValues({ activeMetro: params[ROUTE_METRO] })
     }
-    if (!!params.school) {
-      setStoreValues({
-        highlightedSchool: params.school,
-        feederLocked: true,
-      })
+    if (params.hasOwnProperty(ROUTE_METRIC)) {
+      setStoreValues({ activeMetric: params[ROUTE_METRIC] })
     }
-    if (params.layers && params.layers.length > 0) {
-      const getLayers = params.layers.split(',')
+    if (params.hasOwnProperty(ROUTE_NORM)) {
+      setStoreValues({ activeNorm: params[ROUTE_NORM] })
+    }
+    if (params.hasOwnProperty(ROUTE_TILESET)) {
       setStoreValues({
-        activeLayers: getLayers.map(el => {
-          return Number(el)
-        }),
+        activeTileset: params[ROUTE_TILESET],
       })
     }
 
@@ -365,7 +248,9 @@ const RouteManager = props => {
       resetViewport = true
     }
     if (!!resetViewport) {
+      // console.log('resetting viewport')
       setViewport(viewport)
+      setMapViewport(viewport)
     }
   }
 
@@ -399,6 +284,7 @@ const RouteManager = props => {
     // only change the hash if the initial route has loaded
     if (isLoaded.current) {
       // window.location.hash = '#/' + debouncedRoute
+      // console.log('Route change')
       window.history.replaceState(
         { hash: '#/' + debouncedRoute },
         'Explorer state update',
@@ -408,7 +294,7 @@ const RouteManager = props => {
           debouncedRoute,
       )
       localStorage.setItem(
-        'cpal_hash',
+        'ddk_hash',
         '#/' + debouncedRoute,
       )
       setStoreValues({ shareHash: '#/' + debouncedRoute })
@@ -428,27 +314,30 @@ const RouteManager = props => {
         props.routeSet,
       )
       const localStorageHash = localStorage.getItem(
-        'cpal_hash',
+        'ddk_hash',
       )
       if (
         !isEmptyRoute(path) &&
         isRouteValid(params, props.routeSet)
       ) {
         // Update state based on params
+        // console.log('loadRoute 1')
         setStateFromHash(params)
       } else if (!!localStorageHash) {
         if (localStorageHash.length > 0) {
+          // console.log('loadRoute 2')
           const lsparams = getParamsFromPathname(
             localStorageHash,
             props.routeSet,
           )
           if (isRouteValid(lsparams, props.routeSet)) {
+            // console.log('loadRoute 3')
             setStateFromHash(lsparams)
           }
         }
       }
       if (isEmptyRoute(path) && !localStorageHash) {
-        // console.log('showing intro modal')
+        console.log('showing intro modal')
         setStoreValues({ showIntroModal: true })
       }
     }

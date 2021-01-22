@@ -16,6 +16,7 @@ import Mapbox, {
   useMapStore,
   useMapViewport,
 } from '@hyperobjekt/mapbox'
+import Legend from './../Legend'
 
 import useStore from './../store'
 import theme from './../theme'
@@ -96,22 +97,6 @@ const BaseMap = ({ ...props }) => {
       // console.log('resetViewportState, vp = ', vp)
       // console.log('BOUNDS, ', BOUNDS)
       if (!loaded) return
-      // if (vp.longitude && vp.longitude < BOUNDS.lng.min) {
-      //   // console.log('panned beyond lng.min')
-      //   vp.longitude = BOUNDS.lng.min
-      // }
-      // if (vp.longitude && vp.longitude > BOUNDS.lng.max) {
-      //   // console.log('panned beyond lng.max')
-      //   vp.longitude = BOUNDS.lng.max
-      // }
-      // if (vp.latitude && vp.latitude < BOUNDS.lat.min) {
-      //   // console.log('panned beyond lat.min')
-      //   vp.latitude = BOUNDS.lat.min
-      // }
-      // if (vp.latitude && vp.latitude > BOUNDS.lat.max) {
-      //   // console.log('panned beyond lat.max')
-      //   vp.latitude = BOUNDS.lat.max
-      // }
       setViewport(vp)
     },
     [setViewport, loaded],
@@ -138,7 +123,6 @@ const BaseMap = ({ ...props }) => {
   // Passed through to the MapGL component.
   const mapProps = {
     mapboxApiAccessToken: token,
-    // maxBounds: DEFAULT_VIEWPORT.maxBounds, // Doesn't work.
     minZoom: DEFAULT_VIEWPORT.minZoom,
     maxZoom: DEFAULT_VIEWPORT.maxZoom,
   }
@@ -146,7 +130,7 @@ const BaseMap = ({ ...props }) => {
   return (
     <div className={clsx(classes.parent)}>
       <Mapbox
-        defaultViewport={{ ...viewport }}
+        defaultViewport={{ ...DEFAULT_VIEWPORT }}
         MapGLProps={mapProps}
         mapStyle={
           'mapbox://styles/ddkids/ckhmbktzi142u19ois58yahb2'
@@ -155,9 +139,11 @@ const BaseMap = ({ ...props }) => {
         onClick={handleClick}
         onHover={handleHover}
         onLoad={handleLoad}
+        maxBounds={DEFAULT_VIEWPORT.maxBounds}
       >
         {
           <>
+            <Legend />
             <div
               className={clsx(
                 'custom-attribution',

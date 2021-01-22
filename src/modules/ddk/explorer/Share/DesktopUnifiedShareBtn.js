@@ -1,77 +1,135 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
+import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
-import { Tooltip } from 'reactstrap'
-import { css, cx } from 'emotion'
 
-import useStore from './../store'
-import { theme } from './../theme'
-import { CoreButton } from './../../../core'
-import TwitterShareBtn from './TwitterShareBtn'
+import { TwitterShareBtn } from '.'
 import { FacebookShareBtn } from '.'
 import { MailShareBtn } from '.'
 import { LinkShareBtn } from '.'
+import { EmbedShareBtn } from '.'
+import { UnifiedShareModal } from '.'
+import { ShareLinkModal } from '.'
+import { ShareEmbedModal } from '.'
+import { IconButton, Popper } from '@material-ui/core'
+import ShareIcon from '@material-ui/icons/Share'
+import useStore from '../store'
 
 const DesktopUnifiedShareBtn = ({ ...props }) => {
-  // to manage tooltip state
-  const [tooltipOpen, setTooltipOpen] = useState(false)
-  const toggle = () => setTooltipOpen(!tooltipOpen)
+  const { interactionsMobile, setStoreValues } = useStore(
+    state => state,
+  )
+
+  const [anchorEl, setAnchorEl] = useState(null)
+  const open = Boolean(anchorEl)
+  const id = open ? 'simple-popper' : undefined
+
+  // open/close handlers for desktop
+  const openShareTooltip = event => {
+    if (interactionsMobile) {
+      return
+    }
+    setAnchorEl(anchorEl ? null : event.currentTarget)
+  }
+  const closeShareTooltip = () => {
+    setAnchorEl(null)
+  }
+
+  // open handler for touch devices
+  const openShareModal = () => {
+    if (!interactionsMobile) {
+      return
+    }
+    setStoreValues({ unifiedShareModal: true })
+  }
+
+  // Styles for this component.
+  const styles = makeStyles(theme => ({
+    root: {
+      marginTop: 'auto',
+      marginBottom: '1.5rem',
+      '&:hover svg': {
+        fill: 'black',
+      },
+    },
+    popperButton: {
+      padding: '1.5rem',
+    },
+    popper: {
+      border: '1px solid',
+      padding: theme.spacing(1),
+      margin: theme.spacing(1),
+      minWidth: 190,
+      backgroundColor: theme.palette.background.paper,
+    },
+    shareButton: {
+      '&:hover': {
+        '& .social-icon': {
+          fill: 'black',
+        },
+        background: '#eaebf4',
+
+        cursor: 'pointer',
+      },
+      '& .sr-only': { display: 'none' },
+    },
+  }))
+
+  const classes = styles()
 
   return (
-    <CoreButton
-      id="button_d_u_share_link"
-      label={i18n.translate(`BUTTON_SHARE_UNIFIED`)}
-      color="none"
-      className={clsx(
-        props.className,
-        'button-d-u-share-link',
-      )}
-    >
-      {i18n.translate('CONTROL_PANEL_SHARE_TC')}
-      <Tooltip
-        placement="right"
-        isOpen={tooltipOpen}
-        target="button_d_u_share_link"
-        toggle={toggle}
-        autohide={false}
-        trigger="hover"
-        className={clsx(
-          cx(theme.elements.tooltipCustomShare),
-        )}
+    <div className={clsx(classes.root)}>
+      <IconButton
+        onMouseEnter={openShareTooltip}
+        onMouseLeave={closeShareTooltip}
+        onClick={openShareModal}
+        className={clsx(classes.popperButton)}
       >
-        <div className="tooltip-custom-content">
-          <div className="item">
-            <TwitterShareBtn tooltip={false}>
+        <ShareIcon />
+        <Popper
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          placement={'right-end'}
+        >
+          <div className={classes.popper}>
+            <TwitterShareBtn
+              className={classes.shareButton}
+            >
               <span className="btn-label">
                 {i18n.translate(`BUTTON_SHARE_TWITTER`)}
               </span>
             </TwitterShareBtn>
-          </div>
-          <div className="item">
-            <FacebookShareBtn tooltip={false}>
+            <FacebookShareBtn
+              className={classes.shareButton}
+            >
               <span className="btn-label">
                 {i18n.translate(`BUTTON_SHARE_FACEBOOK`)}
               </span>
             </FacebookShareBtn>
-          </div>
-          <div className="item">
-            <MailShareBtn tooltip={false}>
+            <MailShareBtn className={classes.shareButton}>
               <span className="btn-label">
                 {i18n.translate(`BUTTON_SHARE_EMAIL`)}
               </span>
             </MailShareBtn>
-          </div>
-          <div className="item">
-            <LinkShareBtn tooltip={false}>
+            <LinkShareBtn className={classes.shareButton}>
               <span className="btn-label">
                 {i18n.translate(`BUTTON_SHARE_LINK`)}
               </span>
             </LinkShareBtn>
+            <EmbedShareBtn className={classes.shareButton}>
+              <span className="btn-label">
+                {i18n.translate(`BUTTON_SHARE_LINK`)}
+              </span>
+            </EmbedShareBtn>
           </div>
-        </div>
-      </Tooltip>
-    </CoreButton>
+        </Popper>
+      </IconButton>
+      <ShareLinkModal />
+      <ShareEmbedModal />
+      <UnifiedShareModal />
+    </div>
   )
 }
 
