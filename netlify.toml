@@ -25,7 +25,7 @@
 [context.production]
   environment = { NODE_ENV = "production" }
 
-[context.production]
+[context.staging]
   environment = { NODE_ENV = "staging" }
 
 # Deploy Preview context: all deploys generated from a pull/merge request will
