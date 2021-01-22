@@ -119,7 +119,7 @@ const BaseMap = ({ ...props }) => {
   }
 
   // Token and viewport passed to the map.
-  const token = process.env.GATSBY_MAPBOX_API_TOKEN
+  const token = process.env.MAPBOX_API_TOKEN
   // Passed through to the MapGL component.
   const mapProps = {
     mapboxApiAccessToken: token,
