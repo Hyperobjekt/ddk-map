@@ -24,7 +24,9 @@
 ## Branches
 
 - Check out new bbranches from `master`, and submit pull requests back onto `master`.
-- To stage the map all alone, outside of the Gatsby shell site, merge `master` into `staging`. A Github Action will build and stage on Github Pages at [https://hyperobjekt.github.io/untd-map](https://hyperobjekt.github.io/ddk-map).
+- To stage the map on Github Pages, merge `master` into `testing`. A Github Action will build and stage on Github Pages at [https://hyperobjekt.github.io/untd-map](https://hyperobjekt.github.io/ddk-map).
+- To stage the map on Nelify, merge `master` into `staging`.
+- To move changes to the map to production on Nelify, merge `master` into `production`.
 
 ## Development Practices
 
@@ -65,8 +67,6 @@ setStoreValues({
 
 The client has a [very thorough style guide](https://drive.google.com/drive/folders/1eRv3la42eC-Y2hPqY-rB6qQ4h-Vv7AQS) with many specifications that pertain to maps and graphs. Our work should conform to this style guide, exceptions should be approved by the client.
 
-
-
 ## Language strings
 
 * A set of language strings resides in `./src/constants/lang.js`. This is a fallback in case the `langSet` object isn't loaded. It is deepmerged with the loaded `langSet` and then fed into the language translation init.
@@ -75,7 +75,7 @@ The client has a [very thorough style guide](https://drive.google.com/drive/fold
 
 ## Process.env
 
-When developing locally you need a `.env` file with 3 values: 
+When developing locally you need a `.env` file with 3 values:
 ```
 GATSBY_MAPBOX_USER=***
 GATSBY_MAPBOX_API_TOKEN=***
@@ -86,8 +86,8 @@ NODE_ENV=development
 
 When you need to publish the app, follow these steps:
 1. Update the package version in `package.json`. Use [semantic versioning](https://semver.org/).
-2. Run `npm publish`. This publishes the app and pushes it to the npm repository. 
-3. In the Gatsby site, run `npm update ddk-map`. This updates the map in Gatsby. 
+2. Run `npm publish`. This publishes the app and pushes it to the npm repository.
+3. In the Gatsby site, run `npm update ddk-map`. This updates the map in Gatsby.
 4. Run `npm run build` for the Gatsby site to verify that the build is successful.
 5. If you need to test tracking or something else that needs more than the development server, run `gatsby serve`.
 6. Now you can push the gatsby branch for merge, staging, or production.
