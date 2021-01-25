@@ -40,7 +40,8 @@ const useStore = create((set, get) => ({
     })),
   activeLang: `en_us`,
   langSet: {},
-
+  // Version of data to load, can be passed in from hash.
+  dataVersion: '1.0.4',
   // Routing.
 
   // TODO remove? (use DEFAULT_ROUTE for initial and shareHash for active?)
