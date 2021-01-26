@@ -23,10 +23,15 @@ import Legend from './../Legend'
 import useStore from './../store'
 import theme from './../theme'
 import { DEFAULT_VIEWPORT } from './../../../../constants/map'
+import { defaultMapStyle } from './utils/selectors'
+import { getLayers } from './utils/layers'
 
 const BaseMap = ({ ...props }) => {
   const activeView = useStore(state => state.activeView)
   const dataVersion = useStore(state => state.dataVersion)
+
+  // Token and viewport passed to the map.
+  const token = process.env.MAPBOX_API_TOKEN
 
   const [loaded, setLoaded] = useState(false)
 
@@ -83,7 +88,7 @@ const BaseMap = ({ ...props }) => {
   }
 
   const handleHover = e => {
-    // console.log('Map hover, ', e)
+    console.log('Map hover, ', e)
   }
 
   const handleLoad = () => {
@@ -92,23 +97,53 @@ const BaseMap = ({ ...props }) => {
   }
 
   const getMapSources = () => {
-    const
+    const versionStr = dataVersion.replace(/\./g, '-')
+    const mapboxUser = process.env.MAPBOX_USER
+
+    // TODO: Conditinally load dot data based on years set from hash.
     return fromJS({
-      seda: {
+      ddkids: {
         url:
-        ddkids.points_w15_1-0-4
-          'mapbox://hyperobjekt.states-v4-' +
-          process.env.REACT_APP_BUILD_ID +
-          ',hyperobjekt.counties-v4-' +
-          process.env.REACT_APP_BUILD_ID +
-          ',hyperobjekt.districts-v4-' +
-          process.env.REACT_APP_BUILD_ID +
-          ',hyperobjekt.schools-v4-' +
-          process.env.REACT_APP_BUILD_ID,
+          `mapbox://${mapboxUser}.shapes_${versionStr}?access_token=${token}` +
+          `${mapboxUser}.points_w15_${versionStr}?access_token=${token},` +
+          `${mapboxUser}.points_h15_${versionStr}?access_token=${token},` +
+          `${mapboxUser}.points_b15_${versionStr}?access_token=${token},` +
+          `${mapboxUser}.points_ap15_${versionStr}?access_token=${token},` +
+          `${mapboxUser}.points_ai15_${versionStr}?access_token=${token}`,
         type: 'vector',
       },
     })
   }
+
+  /** memoized array of shape and point layers */
+  const layers = useMemo(
+    () => {
+      // if (
+      //   !metric ||
+      //   !activeQuintiles ||
+      //   !activeLayers ||
+      //   !allDataLoaded
+      // ) {
+      //   return []
+      // }
+      // const context = { metric, activeQuintiles }
+      const context = {}
+      return getLayers(
+        getMapSources(),
+        context,
+        // activeLayers,
+        // activePointTypes,
+        // activePointTypesKey,
+      )
+    },
+    [
+      // allDataLoaded,
+      // metric,
+      // activeQuintiles,
+      // activeLayers,
+      // activePointTypes,
+    ],
+  )
 
   /**
    * Returns the map style with the provided layers inserted
@@ -133,13 +168,18 @@ const BaseMap = ({ ...props }) => {
       .set('layers', updatedLayers)
   }
 
-  const mapStyleJSON =
-    'mapbox://styles/ddkids/ckhmbktzi142u19ois58yahb2'
+  // const mapStyleJSON =
+  //   'mapbox://styles/ddkids/ckhmbktzi142u19ois58yahb2'
 
   // update map style layers when layers change
   const mapStyle = useMemo(
-    () => getUpdatedMapStyle(mapStyleJSON, layers, sources),
-    [style, layers, sources],
+    () =>
+      getUpdatedMapStyle(
+        defaultMapStyle,
+        layers,
+        getMapSources(),
+      ),
+    // [style, layers, sources],
   )
 
   const viewport = useStore(state => state.viewport)
@@ -172,13 +212,12 @@ const BaseMap = ({ ...props }) => {
     setMapViewport(vp)
   }
 
-  // Token and viewport passed to the map.
-  const token = process.env.MAPBOX_API_TOKEN
   // Passed through to the MapGL component.
   const mapProps = {
     mapboxApiAccessToken: token,
     minZoom: DEFAULT_VIEWPORT.minZoom,
     maxZoom: DEFAULT_VIEWPORT.maxZoom,
+    mapStyle: mapStyle,
   }
 
   return (
@@ -186,7 +225,6 @@ const BaseMap = ({ ...props }) => {
       <Mapbox
         defaultViewport={{ ...DEFAULT_VIEWPORT }}
         MapGLProps={mapProps}
-        mapStyle={mapStyle}
         style={{ width: '100%', height: '100%' }}
         onClick={handleClick}
         onHover={handleHover}

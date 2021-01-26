@@ -35,7 +35,7 @@ const Legend = ({ ...props }) => {
 
   const classes = styles()
 
-  return <Box className={classes.root}>i am legend.</Box>
+  return <Box className={classes.root}>Legend</Box>
 }
 
 Legend.propTypes = {}

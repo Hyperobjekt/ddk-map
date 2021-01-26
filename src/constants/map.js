@@ -35,7 +35,7 @@ export const DEFAULT_ZOOM = '3.15'
 
 export const DEFAULT_ROUTE = `#/${DEFAULT_VIEW}/${DEFAULT_SHAPE}/${DEFAULT_YEAR}/${DEFAULT_METRO}/${DEFAULT_METRIC}/${DEFAULT_NORM}/${DEFAULT_TILESET}/${DEFAULT_LAT}/${DEFAULT_LNG}/${DEFAULT_ZOOM}`
 
-// NOTE: include '' iff empty route value is acceptable
+// NOTE: include '' if empty route value is acceptable
 export const OPTIONS_VIEW = ['explorer', 'embed']
 export const OPTIONS_SHAPE = [
   'tract',
