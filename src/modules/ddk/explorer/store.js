@@ -10,11 +10,11 @@ import {
   DEFAULT_ROUTE,
   DEFAULT_VIEW,
   DEFAULT_SHAPE,
-  DEFAULT_YEAR,
+  DEFAULT_ACTIVE_YEAR,
   DEFAULT_METRO,
   DEFAULT_METRIC,
   DEFAULT_NORM,
-  DEFAULT_TILESET,
+  DEFAULT_DATA_VERSION,
   DEFAULT_LAT,
   DEFAULT_LNG,
   DEFAULT_ZOOM,
@@ -40,8 +40,6 @@ const useStore = create((set, get) => ({
     })),
   activeLang: `en_us`,
   langSet: {},
-  // Version of data to load, can be passed in from hash.
-  dataVersion: '1.0.4',
   // Routing.
 
   // TODO remove? (use DEFAULT_ROUTE for initial and shareHash for active?)
@@ -49,11 +47,13 @@ const useStore = create((set, get) => ({
 
   activeView: DEFAULT_VIEW,
   activeShape: DEFAULT_SHAPE,
-  activeYear: DEFAULT_YEAR,
+  activeYear: DEFAULT_ACTIVE_YEAR,
   activeMetro: DEFAULT_METRO,
   activeMetric: DEFAULT_METRIC,
   activeNorm: DEFAULT_NORM,
-  activeTileset: DEFAULT_TILESET,
+  // Version of data to load, can be passed in from hash.
+  dataVersion: DEFAULT_DATA_VERSION,
+  // activeTileset: DEFAULT_TILESET,
 
   viewport: DEFAULT_VIEWPORT,
   resetViewport: DEFAULT_VIEWPORT,

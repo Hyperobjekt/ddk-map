@@ -101,6 +101,7 @@ const BaseMap = ({ ...props }) => {
     const mapboxUser = process.env.MAPBOX_USER
 
     // TODO: Conditinally load dot data based on years set from hash.
+
     return fromJS({
       ddkids: {
         url:
