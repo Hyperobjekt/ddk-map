@@ -116,34 +116,33 @@ const BaseMap = ({ ...props }) => {
   }
 
   /** memoized array of shape and point layers */
-  const layers = useMemo(
-    () => {
-      // if (
-      //   !metric ||
-      //   !activeQuintiles ||
-      //   !activeLayers ||
-      //   !allDataLoaded
-      // ) {
-      //   return []
-      // }
-      // const context = { metric, activeQuintiles }
-      const context = {}
-      return getLayers(
-        getMapSources(),
-        context,
-        // activeLayers,
-        // activePointTypes,
-        // activePointTypesKey,
-      )
-    },
-    [
-      // allDataLoaded,
-      // metric,
-      // activeQuintiles,
+  const layers = useMemo(() => {
+    if (
+      !loaded
+      // !metric ||
+      // !activeQuintiles ||
+      // !activeLayers ||
+      // !allDataLoaded
+    ) {
+      return []
+    }
+    // const context = { metric, activeQuintiles }
+    const context = {}
+    return getLayers(
+      getMapSources(),
+      context,
       // activeLayers,
       // activePointTypes,
-    ],
-  )
+      // activePointTypesKey,
+    )
+  }, [
+    loaded,
+    // allDataLoaded,
+    // metric,
+    // activeQuintiles,
+    // activeLayers,
+    // activePointTypes,
+  ])
 
   /**
    * Returns the map style with the provided layers inserted

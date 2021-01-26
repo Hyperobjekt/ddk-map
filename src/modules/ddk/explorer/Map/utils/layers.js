@@ -1,18 +1,23 @@
 import { fromJS } from 'immutable'
 
 export const getPolygonLines = (
+  source,
   type,
   context,
   activeLayers,
 ) => {
-  console.log('getPolygonLines(), ', context)
+  console.log('getPolygonLines(), ', source, type, context)
   const isVisible = true
+  // TODO: Visibility will be determined by the norming,
+  // and the kind of display will be determined by the norming and
+  // whether the map is centered over the tract/metro/state.
   // activeLayers[
   //   UNTD_LAYERS.findIndex(el => el.id === type)
   // ] === 1
   return fromJS({
     id: `${type}Lines`,
-    source: type,
+    source: source,
+    'source-layer': type,
     type: 'line',
     layout: {
       visibility: !!isVisible ? 'visible' : 'none',
@@ -43,12 +48,17 @@ export const getPolygonLines = (
 }
 
 export const getPolygonShapes = (
+  source,
   type,
   context,
   // activeLayers,
 ) => {
+  // TODO: Visibility will be determined by the norming,
+  // and the kind of display will be determined by the norming and
+  // whether the map is centered over the tract/metro/state.
   console.log(
     'getPolygonShapes(), ',
+    source,
     type,
     context,
     // activeLayers,
@@ -60,7 +70,8 @@ export const getPolygonShapes = (
   // console.log('isVisible, ', isVisible)
   return fromJS({
     id: `${type}Shapes`,
-    source: type,
+    source: source,
+    'source-layer': type,
     type: 'fill',
     layout: {
       visibility: !!isVisible ? 'visible' : 'none',
@@ -90,6 +101,7 @@ export const getPolygonShapes = (
 let z = 20
 
 export const getPolygonLayers = (
+  source,
   type,
   context,
   activeLayers,
@@ -99,14 +111,14 @@ export const getPolygonLayers = (
   return [
     {
       z: z,
-      style: getPolygonShapes(type, context),
+      style: getPolygonShapes(source, type, context),
       idMap: true,
       hasFeatureId: true, // isCircleId,
       type: `${type}Shapes`,
     },
     {
       z: z + 1,
-      style: getPolygonLines(type, context),
+      style: getPolygonLines(source, type, context),
       idMap: true,
       hasFeatureId: true, // isCircleId,
       type: `${type}Lines`,
@@ -123,9 +135,15 @@ export const getLayers = (
 ) => {
   console.log('getLayers', sources, context)
   const layers = []
-  layers.push(...getPolygonLayers('states', context))
-  layers.push(...getPolygonLayers('metros', context))
-  layers.push(...getPolygonLayers('tracts', context))
+  layers.push(
+    ...getPolygonLayers('ddkids', 'states', context),
+  )
+  layers.push(
+    ...getPolygonLayers('ddkids', 'metros', context),
+  )
+  layers.push(
+    ...getPolygonLayers('ddkids', 'tracts', context),
+  )
   // layers.push(
   //   ...getPointLayers(
   //     'points',
