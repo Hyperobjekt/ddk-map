@@ -43,7 +43,7 @@ const useStore = create((set, get) => ({
   activeView: DEFAULT_VIEW,
   activeShape: DEFAULT_ACTIVE_SHAPE,
   activeYear: DEFAULT_ACTIVE_YEAR,
-  activePoints: DEFAULT_ACTIVE_POINTS,
+  activePointLayers: DEFAULT_ACTIVE_POINTS,
   // Which years of tilesets to load.
   loadYears: DEFAULT_LOAD_YEARS,
   activeMetric: DEFAULT_METRIC,

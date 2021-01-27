@@ -1,11 +1,11 @@
-export const ROUTE_VIEW = 'view' // View type, 'explorer' or 'embed'
+export const ROUTE_VIEW = 'activeView' // View type, 'explorer' or 'embed'
 export const ROUTE_ACTIVE_SHAPE = 'activeShape' // ID of active shape on map (tract)
-export const ROUTE_ACTIVE_YEAR = 'year' // 2010 or 2015
-export const ROUTE_LOAD_YEARS = 'loadYears' // Years of data to load.
-export const ROUTE_ACTIVE_POINTS = 'activePointLayers' // Active dot density layers
-export const ROUTE_METRIC = 'metric' // child opportunity score (coi) vs opportunity level (ol)
-export const ROUTE_NORM = 'normlevel' // whether data is normalized by metro (m) or nation (n) or state (s)
-export const ROUTE_DATA_VERSION = 'tilesetversion'
+export const ROUTE_ACTIVE_YEAR = 'activeYear' // 2010 or 2015
+export const ROUTE_LOAD_YEARS = 'loadYears' // Comma-delineated list of years of data to load.
+export const ROUTE_ACTIVE_POINTS = 'activePointLayers' // Comma-delineated list of active dot density layers
+export const ROUTE_METRIC = 'activeMetric' // child opportunity score (coi) vs opportunity level (ol)
+export const ROUTE_NORM = 'activeNorm' // whether data is normalized by metro (m) or nation (n) or state (s)
+export const ROUTE_DATA_VERSION = 'dataVersion'
 export const ROUTE_LAT = 'lat' // Latitude
 export const ROUTE_LNG = 'lng' // Longitude
 export const ROUTE_ZOOM = 'zoom' // Zoom level
@@ -36,6 +36,7 @@ export const DEFAULT_LAT = '37.39'
 export const DEFAULT_LNG = '-96.78'
 export const DEFAULT_ZOOM = '3.15'
 
+// #/explorer//2015/2010,2015//coi/1.0.4/1.0.4/37.39/-96.78/3.15/
 export const DEFAULT_ROUTE = `#/${DEFAULT_VIEW}/${DEFAULT_ACTIVE_SHAPE}/${DEFAULT_ACTIVE_YEAR}/${DEFAULT_LOAD_YEARS}/${DEFAULT_ACTIVE_POINTS}/${DEFAULT_METRIC}/${DEFAULT_NORM}/${DEFAULT_DATA_VERSION}/${DEFAULT_LAT}/${DEFAULT_LNG}/${DEFAULT_ZOOM}`
 
 // NOTE: include '' if empty route value is acceptable

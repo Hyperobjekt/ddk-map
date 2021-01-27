@@ -159,7 +159,7 @@ const RouteManager = props => {
     activeShape,
     activeYear,
     loadYears,
-    activePoints,
+    activePointLayers,
     activeMetric,
     activeNorm,
     dataVersion,
@@ -180,42 +180,18 @@ const RouteManager = props => {
    * @return {String} [description]
    */
   const getHashFromState = () => {
-    const hash = `${activeView}/${activeShape}/${activeYear}/${loadYears}/${activePoints}/${activeMetric}/${activeNorm}/${dataVersion}/${getRoundedValue(
+    const hash = `${activeView}/${activeShape}/${activeYear}/${loadYears.toString()}/${activePointLayers.toString()}/${activeMetric}/${activeNorm}/${dataVersion}/${getRoundedValue(
       viewport.latitude,
       4,
     )}/${getRoundedValue(
       viewport.longitude,
       4,
     )}/${getRoundedValue(viewport.zoom, 2)}/`
-    // const hash =
-    // activeView +
-    // '/' +
-    // activeShape +
-    // '/' +
-    // activeYear +
-    // '/' +
-    // activeMetro +
-    // '/' +
-    // activeMetric +
-    // '/' +
-    // activeNorm +
-    // '/' +
-    // activeTileset +
-    // '/' +
-    // getRoundedValue(viewport.latitude, 4) +
-    // '/' +
-    // getRoundedValue(viewport.longitude, 4) +
-    // '/' +
-    // getRoundedValue(viewport.zoom, 2) +
-    // '/'
-
     return hash
   }
 
   // get the route params based on current view
   const route = getHashFromState()
-  // console.log('!!!!!", ', route)
-
   // debounce the route so it updates every 1 second max
   const debouncedRoute = useDebounce(route, 500)
 
@@ -240,12 +216,14 @@ const RouteManager = props => {
     }
     if (params.hasOwnProperty(ROUTE_LOAD_YEARS)) {
       setStoreValues({
-        activeYear: params[ROUTE_LOAD_YEARS],
+        loadYears: params[ROUTE_LOAD_YEARS].split(','),
       })
     }
     if (params.hasOwnProperty(ROUTE_ACTIVE_POINTS)) {
       setStoreValues({
-        activeYear: params[ROUTE_ACTIVE_POINTS],
+        activePointLayers: params[
+          ROUTE_ACTIVE_POINTS
+        ].split(','),
       })
     }
     if (params.hasOwnProperty(ROUTE_METRIC)) {
@@ -256,7 +234,7 @@ const RouteManager = props => {
     }
     if (params.hasOwnProperty(ROUTE_DATA_VERSION)) {
       setStoreValues({
-        activeNorm: params[ROUTE_DATA_VERSION],
+        dataVersion: params[ROUTE_DATA_VERSION],
       })
     }
 
@@ -307,7 +285,7 @@ const RouteManager = props => {
     // only change the hash if the initial route has loaded
     if (isLoaded.current) {
       // window.location.hash = '#/' + debouncedRoute
-      // console.log('Route change')
+      console.log('Route change')
       window.history.replaceState(
         { hash: '#/' + debouncedRoute },
         'Explorer state update',
@@ -344,17 +322,21 @@ const RouteManager = props => {
         isRouteValid(params, props.routeSet)
       ) {
         // Update state based on params
-        // console.log('loadRoute 1')
+        console.log(
+          'hash is valid, setting state from hash.',
+        )
         setStateFromHash(params)
       } else if (!!localStorageHash) {
         if (localStorageHash.length > 0) {
-          // console.log('loadRoute 2')
+          console.log('localStorage exists')
           const lsparams = getParamsFromPathname(
             localStorageHash,
             props.routeSet,
           )
           if (isRouteValid(lsparams, props.routeSet)) {
-            // console.log('loadRoute 3')
+            console.log(
+              'localStorage is valid, setting state from localStorage',
+            )
             setStateFromHash(lsparams)
           }
         }
