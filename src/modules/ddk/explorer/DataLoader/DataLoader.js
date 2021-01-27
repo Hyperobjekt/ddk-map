@@ -118,7 +118,8 @@ const DataLoader = ({ ...props }) => {
   const setRemoteJson = useStore(
     state => state.setRemoteJson,
   )
-  const s3Path = useStore(state => state.s3Path)
+  const dataVersion = useStore(state => state.dataVersion)
+  const s3Path = `${process.env.AWS_ENDPOINT}/proc/${dataVersion}/` // useStore(state => state.s3Path)
 
   // Fetch each file, and update the objects you need to update.
   const files = DATA_FILES
@@ -151,8 +152,6 @@ const DataLoader = ({ ...props }) => {
   //   const xhr = new XMLHttpRequest()
   //   const path =
   //     s3Path +
-  //     process.env.NODE_ENV +
-  //     '/' +
   //     el.filename +
   //     '.' +
   //     el.ext

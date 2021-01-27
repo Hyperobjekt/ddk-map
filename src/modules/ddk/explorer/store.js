@@ -5,13 +5,15 @@ import WebMercatorViewport from 'viewport-mercator-project'
 import * as ease from 'd3-ease'
 
 // import en_US from './../../../constants/lang'
+
 import {
   DEFAULT_VIEWPORT,
   DEFAULT_ROUTE,
   DEFAULT_VIEW,
-  DEFAULT_SHAPE,
+  DEFAULT_ACTIVE_SHAPE,
   DEFAULT_ACTIVE_YEAR,
-  DEFAULT_METRO,
+  DEFAULT_LOAD_YEARS,
+  DEFAULT_ACTIVE_POINTS,
   DEFAULT_METRIC,
   DEFAULT_NORM,
   DEFAULT_DATA_VERSION,
@@ -29,10 +31,7 @@ const useStore = create((set, get) => ({
   dataLoadedPercent: 0,
   // Error flag for loading failure.
   dataLoaderFailed: false,
-  // General path to all s3 folders in bucket.
-  // Where the whole path would look about like so:
-  // https://untd-test.s3.us-east-2.amazonaws.com/development/schools.json
-  s3Path: 'https://untd-map.s3.us-east-2.amazonaws.com/',
+  // JSON files loaded from remote.
   remoteJson: {},
   setRemoteJson: json =>
     set(state => ({
@@ -41,19 +40,16 @@ const useStore = create((set, get) => ({
   activeLang: `en_us`,
   langSet: {},
   // Routing.
-
-  // TODO remove? (use DEFAULT_ROUTE for initial and shareHash for active?)
-  activeRoute: DEFAULT_ROUTE,
-
   activeView: DEFAULT_VIEW,
-  activeShape: DEFAULT_SHAPE,
+  activeShape: DEFAULT_ACTIVE_SHAPE,
   activeYear: DEFAULT_ACTIVE_YEAR,
-  activeMetro: DEFAULT_METRO,
+  activePoints: DEFAULT_ACTIVE_POINTS,
+  // Which years of tilesets to load.
+  loadYears: DEFAULT_LOAD_YEARS,
   activeMetric: DEFAULT_METRIC,
   activeNorm: DEFAULT_NORM,
   // Version of data to load, can be passed in from hash.
   dataVersion: DEFAULT_DATA_VERSION,
-  // activeTileset: DEFAULT_TILESET,
 
   viewport: DEFAULT_VIEWPORT,
   resetViewport: DEFAULT_VIEWPORT,

@@ -9,14 +9,16 @@ import {
   DEFAULT_ROUTE,
   DEFAULT_VIEWPORT,
   OPTIONS_MAP,
-  ROUTE_METRIC,
-  ROUTE_METRO,
-  ROUTE_NORM,
-  ROUTE_SHAPE,
-  ROUTE_TILESET,
   ROUTE_VIEW,
-  ROUTE_YEAR,
+  ROUTE_ACTIVE_SHAPE,
+  ROUTE_ACTIVE_YEAR,
+  ROUTE_LOAD_YEARS,
+  ROUTE_ACTIVE_POINTS,
+  ROUTE_METRIC,
+  ROUTE_NORM,
+  ROUTE_DATA_VERSION,
 } from './../../../../constants/map'
+import { validateRouteOption } from './utils/utils'
 
 /**
  * Get a route parameters object based on the string
@@ -52,17 +54,19 @@ export const isEmptyRoute = route =>
  * @param  {String} value
  * @return {Boolean}
  */
-const isRouteOptionValid = (route, value) => {
-  const validOptions = OPTIONS_MAP[route]
-  if (!validOptions) {
-    console.error('No valid options listed for: ', route)
-  }
+const isRouteOptionValid = (item, value) => {
   console.log(
     'isRouteOptionValid, ',
+    OPTIONS_MAP,
+    item,
     value,
-    validOptions.indexOf(value) > -1,
   )
-  return validOptions.indexOf(value) > -1
+  const optionsItem = OPTIONS_MAP[item]
+  const isValid = validateRouteOption(optionsItem, value)
+  if (!isValid) {
+    console.log('invalid hash item: ', optionsItem, value)
+  }
+  return isValid
 }
 
 const isLatLngValid = (lat, lng) => {
@@ -108,18 +112,19 @@ const isRouteValid = params => {
   // console.log('isRouteValid(), ', params)
   const enumerableRoutes = [
     ROUTE_VIEW,
-    ROUTE_SHAPE,
-    ROUTE_YEAR,
-    ROUTE_METRO,
+    ROUTE_ACTIVE_SHAPE,
+    ROUTE_ACTIVE_YEAR,
+    ROUTE_LOAD_YEARS,
+    ROUTE_ACTIVE_POINTS,
     ROUTE_METRIC,
     ROUTE_NORM,
-    ROUTE_TILESET,
+    ROUTE_DATA_VERSION,
   ] // routes with discrete options
 
   let isValid = true
   if (
-    !enumerableRoutes.every(route =>
-      isRouteOptionValid(route, params[route]),
+    !enumerableRoutes.every(el =>
+      isRouteOptionValid(el, params[el]),
     ) ||
     !isLatLngValid(params.lat, params.lng) ||
     !isZoomValid(params.zoom)
@@ -153,10 +158,11 @@ const RouteManager = props => {
     activeView,
     activeShape,
     activeYear,
-    activeMetro,
+    loadYears,
+    activePoints,
     activeMetric,
     activeNorm,
-    activeTileset,
+    dataVersion,
   } = useStore(state => state)
 
   // Viewport.
@@ -174,27 +180,34 @@ const RouteManager = props => {
    * @return {String} [description]
    */
   const getHashFromState = () => {
-    const hash =
-      activeView +
-      '/' +
-      activeShape +
-      '/' +
-      activeYear +
-      '/' +
-      activeMetro +
-      '/' +
-      activeMetric +
-      '/' +
-      activeNorm +
-      '/' +
-      activeTileset +
-      '/' +
-      getRoundedValue(viewport.latitude, 4) +
-      '/' +
-      getRoundedValue(viewport.longitude, 4) +
-      '/' +
-      getRoundedValue(viewport.zoom, 2) +
-      '/'
+    const hash = `${activeView}/${activeShape}/${activeYear}/${loadYears}/${activePoints}/${activeMetric}/${activeNorm}/${dataVersion}/${getRoundedValue(
+      viewport.latitude,
+      4,
+    )}/${getRoundedValue(
+      viewport.longitude,
+      4,
+    )}/${getRoundedValue(viewport.zoom, 2)}/`
+    // const hash =
+    // activeView +
+    // '/' +
+    // activeShape +
+    // '/' +
+    // activeYear +
+    // '/' +
+    // activeMetro +
+    // '/' +
+    // activeMetric +
+    // '/' +
+    // activeNorm +
+    // '/' +
+    // activeTileset +
+    // '/' +
+    // getRoundedValue(viewport.latitude, 4) +
+    // '/' +
+    // getRoundedValue(viewport.longitude, 4) +
+    // '/' +
+    // getRoundedValue(viewport.zoom, 2) +
+    // '/'
 
     return hash
   }
@@ -212,18 +225,28 @@ const RouteManager = props => {
    */
   const setStateFromHash = params => {
     // console.log('setStateFromHash(), ', params)
-
     if (params.hasOwnProperty(ROUTE_VIEW)) {
       setStoreValues({ activeView: params[ROUTE_VIEW] })
     }
-    if (params.hasOwnProperty(ROUTE_SHAPE)) {
-      setStoreValues({ activeShape: params[ROUTE_SHAPE] })
+    if (params.hasOwnProperty(ROUTE_ACTIVE_SHAPE)) {
+      setStoreValues({
+        activeShape: params[ROUTE_ACTIVE_SHAPE],
+      })
     }
-    if (params.hasOwnProperty(ROUTE_YEAR)) {
-      setStoreValues({ activeYear: params[ROUTE_YEAR] })
+    if (params.hasOwnProperty(ROUTE_ACTIVE_YEAR)) {
+      setStoreValues({
+        activeYear: params[ROUTE_ACTIVE_YEAR],
+      })
     }
-    if (params.hasOwnProperty(ROUTE_METRO)) {
-      setStoreValues({ activeMetro: params[ROUTE_METRO] })
+    if (params.hasOwnProperty(ROUTE_LOAD_YEARS)) {
+      setStoreValues({
+        activeYear: params[ROUTE_LOAD_YEARS],
+      })
+    }
+    if (params.hasOwnProperty(ROUTE_ACTIVE_POINTS)) {
+      setStoreValues({
+        activeYear: params[ROUTE_ACTIVE_POINTS],
+      })
     }
     if (params.hasOwnProperty(ROUTE_METRIC)) {
       setStoreValues({ activeMetric: params[ROUTE_METRIC] })
@@ -231,9 +254,9 @@ const RouteManager = props => {
     if (params.hasOwnProperty(ROUTE_NORM)) {
       setStoreValues({ activeNorm: params[ROUTE_NORM] })
     }
-    if (params.hasOwnProperty(ROUTE_TILESET)) {
+    if (params.hasOwnProperty(ROUTE_DATA_VERSION)) {
       setStoreValues({
-        activeTileset: params[ROUTE_TILESET],
+        activeNorm: params[ROUTE_DATA_VERSION],
       })
     }
 

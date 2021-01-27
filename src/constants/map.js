@@ -44,9 +44,9 @@ export const OPTIONS_VIEW = {
   validate: 'one_exact_match', // Provided value must exactly match one of these.
 }
 export const OPTIONS_ACTIVE_SHAPE = {
-  options: null,
-  validate: 'type_number',
-} // [''] // TODO: This can be empty or any number.
+  options: '',
+  validate: 'type_number', // Any number.
+}
 export const OPTIONS_ACTIVE_YEAR = {
   options: ['2015', '2010'],
   validate: 'one_exact_match',
@@ -59,13 +59,16 @@ export const OPTIONS_ACTIVE_POINTS = {
   options: ['ai', 'ap', 'h', 'b', 'w'],
   validate: 'contains_only',
 }
-export const OPTIONS_METRIC = ['coi', 'ol'] // TODO: Update this based on what's in the csvs.
+export const OPTIONS_METRIC = {
+  options: ['coi', 'ol'],
+  validate: 'one_exact_match',
+} // TODO: Update this based on what's in the csvs.
 export const OPTIONS_NORM = {
   options: ['n', 'm', 's'],
   validate: 'one_exact_match',
 }
 export const OPTIONS_DATA_VERSION = {
-  options: '^([0-9]+).([0-9]+).([0-9]+)?$',
+  options: /^([0-9]+).([0-9]+).([0-9]+)?$/g,
   validate: 'regex', // Create a regex with the supplied option and validate against that.
 }
 
@@ -123,9 +126,10 @@ export const DEFAULT_VIEWPORT = {
   preserveDrawingBuffer: true,
   height: '100%',
   width: '100%',
-  // TODO: Max bounds shoudl include all of Alaska and Hawaii.
   maxBounds: [
-    [-107.6, 33.8],
-    [-65, 49.9],
+    // [-107.6, 33.8], // southwest.
+    [-176, 33.8], // southwest.
+    // [-65, 49.9], // northeast.
+    [-75, 70], // northeast.
   ],
 }
