@@ -95,31 +95,36 @@ export const OPTIONS_DEMOGRAPHICS = [
 
 // Data files to load from remote.
 export const DATA_FILES = [
-  // {
-  //   id: 'counties',
-  //   filename: 'sm_counties',
-  //   ext: 'geojson',
-  // },
-  // {
-  //   id: 'places',
-  //   filename: 'sm_places',
-  //   ext: 'geojson',
-  // },
-  // {
-  //   id: 'tracts',
-  //   filename: 'sm_tracts',
-  //   ext: 'geojson',
-  // },
-  // {
-  //   id: 'zips',
-  //   filename: 'sm_zcta',
-  //   ext: 'geojson',
-  // },
-  // {
-  //   id: 'points',
-  //   filename: 'points',
-  //   ext: 'geojson',
-  // },
+  {
+    id: 'metros',
+    filename: 'metros',
+    ext: 'json',
+    type: 'data',
+  },
+  {
+    id: 'tracts-all',
+    filename: 'tracts-all-data',
+    ext: 'json',
+    type: 'data',
+  },
+  {
+    id: 'barcharts',
+    filename: 'barcharts/barcharts',
+    ext: 'json',
+    type: 'data',
+  },
+  {
+    id: 'indicators',
+    filename: 'helpers/indicators',
+    ext: 'json',
+    type: 'data',
+  },
+  {
+    id: 'en_US',
+    filename: 'helpers/en_US',
+    ext: 'json',
+    type: 'dict',
+  },
 ]
 
 export const DEFAULT_VIEWPORT = {

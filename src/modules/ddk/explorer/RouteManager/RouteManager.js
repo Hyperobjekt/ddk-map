@@ -149,11 +149,7 @@ const RouteManager = props => {
   // console.log('RouteManager!!!!!')
   // track if initial route has loaded
   const isLoaded = useRef(false)
-  // Generic store value setter.
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
-  )
-  // Active view.
+  // Values from store.
   const {
     activeView,
     activeShape,
@@ -163,13 +159,27 @@ const RouteManager = props => {
     activeMetric,
     activeNorm,
     dataVersion,
-  } = useStore(state => state)
-
-  // Viewport.
-  const viewport = useStore(state => state.viewport)
-  const setViewport = useStore(state => state.setViewport)
-  // Track share hash and update when it changes
-  const shareHash = useStore(state => state.shareHash)
+    setStoreValues,
+    viewport,
+    setViewport,
+    shareHash,
+  } = useStore(
+    state => ({
+      activeView: state.activeView,
+      activeShape: state.activeShape,
+      activeYear: state.activeYear,
+      loadYears: state.loadYears,
+      activePointLayers: state.activePointLayers,
+      activeMetric: state.activeMetric,
+      activeNorm: state.activeNorm,
+      dataVersion: state.dataVersion,
+      setStoreValues: state.setStoreValues,
+      viewport: state.viewport,
+      setViewport: state.setViewport,
+      shareHash: state.shareHash,
+    }),
+    shallow,
+  )
 
   const setMapViewport = useMapStore(
     state => state.setViewport,

@@ -3,8 +3,9 @@ import i18n from '@pureartisan/simple-i18n'
 import { FlyToInterpolator } from 'react-map-gl'
 import WebMercatorViewport from 'viewport-mercator-project'
 import * as ease from 'd3-ease'
+import merge from 'deepmerge'
 
-// import en_US from './../../../constants/lang'
+import { langSet } from './../../../constants/lang'
 
 import {
   DEFAULT_VIEWPORT,
@@ -37,8 +38,33 @@ const useStore = create((set, get) => ({
     set(state => ({
       remoteJson: { ...state.remoteJson, ...json },
     })),
-  activeLang: `en_us`,
-  langSet: {},
+  // Language packs handling.
+  // Active language
+  activeLang: `en_US`,
+  // Counter for lang pack updates.
+  langUpdates: 0,
+  incrementLangUpdates: () => {
+    set(state => ({
+      langUpdates: state.langUpdates + 1,
+    }))
+  },
+  // Languages store.
+  langs: {
+    en_US: langSet.en_US,
+  },
+  // Get a language.
+  getLang: loc => {
+    return get().langs[loc]
+  },
+  // Set languages.
+  setLang: (loc, lang) => {
+    // console.log('setLang')
+    const newLangs = get().langs
+    // console.log('newLangs, ', newLangs)
+    newLangs[loc] = merge(newLangs[loc], lang)
+    set({ langs: newLangs })
+    // console.log('after set: ', get().langs)
+  },
   // Routing.
   activeView: DEFAULT_VIEW,
   activeShape: DEFAULT_ACTIVE_SHAPE,
