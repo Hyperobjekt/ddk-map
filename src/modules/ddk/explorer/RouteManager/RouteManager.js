@@ -349,6 +349,15 @@ const RouteManager = props => {
               'localStorage is valid, setting state from localStorage',
             )
             setStateFromHash(lsparams)
+          } else {
+            // If a hash was passed in, but there is
+            // no valid hash in path or localStorage,
+            // set the hash from the default route and proceed.
+            setStateFromHash(DEFAULT_ROUTE)
+            setStoreValues({
+              showIntroModal: true,
+              initialStateSetFromHash: true,
+            })
           }
         }
       }

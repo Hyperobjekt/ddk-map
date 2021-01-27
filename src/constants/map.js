@@ -29,7 +29,7 @@ export const DEFAULT_ACTIVE_SHAPE = ''
 export const DEFAULT_ACTIVE_YEAR = '2015'
 export const DEFAULT_LOAD_YEARS = ['2010', '2015']
 export const DEFAULT_ACTIVE_POINTS = ''
-export const DEFAULT_METRIC = 'coi'
+export const DEFAULT_METRIC = 'xc5c'
 export const DEFAULT_NORM = 'n'
 export const DEFAULT_DATA_VERSION = '1.0.4'
 export const DEFAULT_LAT = '37.39'
@@ -60,10 +60,18 @@ export const OPTIONS_ACTIVE_POINTS = {
   options: ['ai', 'ap', 'hi', 'b', 'w'],
   validate: 'contains_only',
 }
+// xc5 indicates that the value is an index. c5 is a client artifact
+// that ddk-etl preserves bc it **may** be meaningful.
+// x is an affix ddk-etl adds to all indices.
+// Trailing letter specifies whether it's an overall index or sub-index.
+// 'ed': 'e', ==> education
+// 'he': 'h', ==> health
+// 'se': 'o', ==> economic
+// 'coi': 'c', ==> overall
 export const OPTIONS_METRIC = {
-  options: ['coi', 'ol'],
+  options: ['xc5o', 'xc5h', 'xc5e', 'xc5c'],
   validate: 'one_exact_match',
-} // TODO: Update this based on what's in the csvs.
+}
 export const OPTIONS_NORM = {
   options: ['n', 'm', 's'],
   validate: 'one_exact_match',
