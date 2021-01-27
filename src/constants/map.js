@@ -27,7 +27,7 @@ export const ROUTE_SET = [
 export const DEFAULT_VIEW = 'explorer'
 export const DEFAULT_ACTIVE_SHAPE = ''
 export const DEFAULT_ACTIVE_YEAR = '2015'
-export const DEFAULT_LOAD_YEARS = '2010,2015'
+export const DEFAULT_LOAD_YEARS = ['2010', '2015']
 export const DEFAULT_ACTIVE_POINTS = ''
 export const DEFAULT_METRIC = 'coi'
 export const DEFAULT_NORM = 'n'
@@ -83,6 +83,15 @@ export const OPTIONS_MAP = {
   [ROUTE_NORM]: OPTIONS_NORM,
   [ROUTE_DATA_VERSION]: OPTIONS_DATA_VERSION,
 }
+
+// Demographics for dot density.
+export const OPTIONS_DEMOGRAPHICS = [
+  'ai',
+  'ap',
+  'h',
+  'b',
+  'w',
+]
 
 // Data files to load from remote.
 export const DATA_FILES = [

@@ -253,6 +253,7 @@ const RouteManager = props => {
       setViewport(viewport)
       setMapViewport(viewport)
     }
+    setStoreValues({ initialStateSetFromHash: true })
   }
 
   useEffect(() => {

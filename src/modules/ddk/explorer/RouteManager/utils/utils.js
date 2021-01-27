@@ -10,12 +10,6 @@ export const validateRouteOption = (optionsItem, value) => {
   // Case to validate via different methods.
   switch (true) {
     case optionsItem.validate === 'regex':
-      // const regEx = optionsItem.options
-      console.log(
-        'value, ',
-        value,
-        value.match(optionsItem.options),
-      )
       return value.match(optionsItem.options)
       break
     case optionsItem.validate === 'one_exact_match':

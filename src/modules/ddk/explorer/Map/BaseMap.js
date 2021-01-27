@@ -25,10 +25,12 @@ import theme from './../theme'
 import { DEFAULT_VIEWPORT } from './../../../../constants/map'
 import { defaultMapStyle } from './utils/selectors'
 import { getLayers } from './utils/layers'
+import { getSources } from './utils/sources'
 
 const BaseMap = ({ ...props }) => {
   const activeView = useStore(state => state.activeView)
   const dataVersion = useStore(state => state.dataVersion)
+  const loadYears = useStore(state => state.loadYears)
 
   // Token and viewport passed to the map.
   const token = process.env.MAPBOX_API_TOKEN
@@ -97,23 +99,12 @@ const BaseMap = ({ ...props }) => {
   }
 
   const getMapSources = () => {
-    const versionStr = dataVersion.replace(/\./g, '-')
-    const mapboxUser = process.env.MAPBOX_USER
-
-    // TODO: Conditinally load dot data based on years set from hash.
-
-    return fromJS({
-      ddkids: {
-        url:
-          `mapbox://${mapboxUser}.shapes_${versionStr}?access_token=${token}` +
-          `${mapboxUser}.points_w15_${versionStr}?access_token=${token},` +
-          `${mapboxUser}.points_h15_${versionStr}?access_token=${token},` +
-          `${mapboxUser}.points_b15_${versionStr}?access_token=${token},` +
-          `${mapboxUser}.points_ap15_${versionStr}?access_token=${token},` +
-          `${mapboxUser}.points_ai15_${versionStr}?access_token=${token}`,
-        type: 'vector',
-      },
-    })
+    return getSources(
+      process.env.MAPBOX_USER,
+      process.env.MAPBOX_API_TOKEN,
+      dataVersion,
+      loadYears,
+    )
   }
 
   /** memoized array of shape and point layers */

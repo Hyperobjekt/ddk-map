@@ -50,7 +50,9 @@ const useStore = create((set, get) => ({
   activeNorm: DEFAULT_NORM,
   // Version of data to load, can be passed in from hash.
   dataVersion: DEFAULT_DATA_VERSION,
-
+  // Flag to trigger download of data dependent upon hash.
+  initialStateSetFromHash: false,
+  // Settings pertaining to viewport state.
   viewport: DEFAULT_VIEWPORT,
   resetViewport: DEFAULT_VIEWPORT,
   setViewport: viewport =>
