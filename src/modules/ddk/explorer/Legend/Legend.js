@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
@@ -13,7 +13,11 @@ import theme from './../theme'
 const Legend = ({ ...props }) => {
   // Header is not displayed if the view type is 'embed'
   const activeView = useStore(state => state.activeView)
-
+  // Source data
+  // const remoteJson = useStore(state => state.remoteJson)
+  // useEffect(() => {
+  //   console.log('remoteJson changed, ', remoteJson)
+  // }, [remoteJson])
   // Styles for this component.
   const styles = makeStyles(theme => ({
     root: {

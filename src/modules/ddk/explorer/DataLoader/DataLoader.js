@@ -7,15 +7,14 @@ import Box from '@material-ui/core/Box'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import Typography from '@material-ui/core/Typography'
 import shallow from 'zustand/shallow'
+import Papa from 'papaparse'
 
 import useStore from './../store'
 import { theme } from './../theme'
 import { DATA_FILES } from './../../../../constants/map'
 
 // TODO:
-// - Error notification
-// - Hide animation
-// - Why is the percent thing running twice?
+// - Error notification if data loading fails.
 
 const DataLoaderContent = ({ ...props }) => {
   // console.log('DataLoaderContent, ', variables)
@@ -46,7 +45,7 @@ const DataLoaderContent = ({ ...props }) => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      transition: 'top 1000ms ease-in-out 1500ms',
+      transition: 'top 1000ms ease-in-out',
     },
     content: {
       display: !!showContent ? 'block' : 'none', // Hack, hide this for a bit to avoid flashing empty string var.
@@ -139,26 +138,46 @@ const DataLoader = ({ ...props }) => {
   const files = DATA_FILES
   // Counter for loaded files.
   let loadedCount = 0
-
-  // For testing. Remove when you load actual files.
-  // TODO: Comment this out once we are loading actual data.
-  // setTimeout(() => {
-  //   console.log('timeout')
-  //   setStoreValues({
-  //     dataLoadedPercent: 20,
-  //     allDataLoaded: false,
-  //   })
-  // }, 1000)
-  // setTimeout(() => {
-  //   console.log('timeout')
-  //   setStoreValues({
-  //     dataLoadedPercent: 70,
-  //     allDataLoaded: true,
-  //   })
-  // }, 3000)
+  // Process a downloaded file outside of synch request.
+  const processFile = (el, response) => {
+    if (el.type === 'data' && el.ext === 'json') {
+      console.log('parsing data.')
+      let obj = {}
+      obj[el.id] = {
+        type: el.type,
+        data: JSON.parse(response),
+      }
+      // obj[el.id] = JSON.parse(xhr.responseText)
+      console.log('file parsed, ', el.id)
+      setRemoteJson(obj)
+    }
+    // Parse CSV into JSON before sticking it into the store.
+    if (el.type === 'data' && el.ext === 'csv') {
+      console.log('parsing csv.')
+      let obj = {}
+      // Parse asynchronously using papaparse to prevent UI from locking up.
+      const parsed = Papa.parse(response, {
+        header: true,
+        worker: true,
+        complete: function (results) {
+          console.log('file parsed, ', el.id, results)
+          obj[el.id] = {
+            type: el.type,
+            data: results.data,
+          }
+          setRemoteJson(obj)
+        },
+      })
+    }
+    if (el.type === 'dict') {
+      // Merge loaded dictionary values with existing dictionary.
+      const strings = JSON.parse(response)
+      // console.log('lang file parsed, ', el.id)
+      setLang('en_US', strings)
+    }
+  }
 
   const loadFiles = () => {
-    // TODO: uncomment the request below to load files, once we have them.
     // Load each file.
     // Set each file to the store.
     // Update loaded percent.
@@ -179,28 +198,13 @@ const DataLoader = ({ ...props }) => {
               el.id,
               (loadedCount / files.length) * 100,
             )
-            if (el.type === 'data') {
-              let obj = {}
-              obj[el.id] = {
-                type: el.type,
-                data: JSON.parse(xhr.responseText),
-              }
-              // obj[el.id] = JSON.parse(xhr.responseText)
-              setRemoteJson(obj)
-              setStoreValues({
-                dataLoadedPercent:
-                  (loadedCount / files.length) * 100,
-                allDataLoaded:
-                  loadedCount === files.length
-                    ? true
-                    : false,
-              })
-            }
-            if (el.type === 'dict') {
-              // Merge loaded dictionary values with existing dictionary.
-              const strings = JSON.parse(xhr.responseText)
-              setLang('en_US', strings)
-            }
+            setStoreValues({
+              dataLoadedPercent:
+                (loadedCount / files.length) * 100,
+              allDataLoaded:
+                loadedCount === files.length ? true : false,
+            })
+            processFile(el, xhr.responseText)
           } else {
             // console.error(xhr.statusText)
             // Flag something failed.

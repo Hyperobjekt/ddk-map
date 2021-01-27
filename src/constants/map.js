@@ -104,7 +104,7 @@ export const DATA_FILES = [
   {
     id: 'tracts-all',
     filename: 'tracts-all-data',
-    ext: 'json',
+    ext: 'csv',
     type: 'data',
   },
   {
