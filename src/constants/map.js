@@ -57,7 +57,7 @@ export const OPTIONS_LOAD_YEARS = {
   validate: 'contains_only',
 }
 export const OPTIONS_ACTIVE_POINTS = {
-  options: ['ai', 'ap', 'h', 'b', 'w'],
+  options: ['ai', 'ap', 'hi', 'b', 'w'],
   validate: 'contains_only',
 }
 export const OPTIONS_METRIC = {

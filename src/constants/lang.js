@@ -23,5 +23,9 @@ export const langSet = {
     MODAL_SHARE_EMBED_INSTR:
       'Use the code below to embed the map on your website. The map will match your current map view and selections in the explorer.',
     MODAL_SHARE_EMBED_INPUT: 'Map Embed Code',
+    UNIT_MCM: '&#181;g/m&#0179;',
+    UNIT_MCM_DESC: `Micrograms per cubic meter`,
+    UNIT_PPB: 'ppb',
+    UNIT_PPB_DESC: 'Parts per billion',
   },
 }
