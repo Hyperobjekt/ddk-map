@@ -354,7 +354,10 @@ const RouteManager = props => {
       }
       if (isEmptyRoute(path) && !localStorageHash) {
         console.log('showing intro modal')
-        setStoreValues({ showIntroModal: true })
+        setStoreValues({
+          showIntroModal: true,
+          initialStateSetFromHash: true,
+        })
       }
     }
     loadRoute()
