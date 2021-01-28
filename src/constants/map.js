@@ -26,8 +26,8 @@ export const ROUTE_SET = [
 
 export const DEFAULT_VIEW = 'explorer'
 export const DEFAULT_ACTIVE_SHAPE = ''
-export const DEFAULT_ACTIVE_YEAR = '2015'
-export const DEFAULT_LOAD_YEARS = ['2010', '2015']
+export const DEFAULT_ACTIVE_YEAR = '15'
+export const DEFAULT_LOAD_YEARS = ['10', '15']
 export const DEFAULT_ACTIVE_POINTS = ''
 export const DEFAULT_METRIC = 'xc5c'
 export const DEFAULT_NORM = 'n'
@@ -49,11 +49,11 @@ export const OPTIONS_ACTIVE_SHAPE = {
   validate: 'type_number', // Any number.
 }
 export const OPTIONS_ACTIVE_YEAR = {
-  options: ['2015', '2010'],
+  options: ['15', '10'],
   validate: 'one_exact_match',
 }
 export const OPTIONS_LOAD_YEARS = {
-  options: ['2010', '2015', '2020'], // NOTE: Including 2020 because client will add that data later this year, but don't pass it in for now.
+  options: ['10', '15', '20'], // NOTE: Including 2020 because client will add that data later this year, but don't pass it in for now.
   validate: 'contains_only',
 }
 export const OPTIONS_ACTIVE_POINTS = {
@@ -156,3 +156,13 @@ export const DEFAULT_VIEWPORT = {
     [-75, 70], // northeast.
   ],
 }
+
+const DEFAULT_POINT_SIZE = 5
+
+export const POINT_TYPES = [
+  { id: 'ai', color: 'yellow', size: 10 },
+  { id: 'ap', color: 'orange', size: DEFAULT_POINT_SIZE },
+  { id: 'hi', color: 'red', size: DEFAULT_POINT_SIZE },
+  { id: 'b', color: 'purple', size: DEFAULT_POINT_SIZE },
+  { id: 'w', color: 'green', size: DEFAULT_POINT_SIZE },
+]

@@ -13,20 +13,19 @@ import { OPTIONS_DEMOGRAPHICS } from './../../../../../constants/map'
 const buildTilesetsURL = (
   mapboxUser,
   mapboxToken,
-  dataVersion,
-  loadYears,
+  versionStr,
+  year,
 ) => {
-  const versionStr = dataVersion.replace(/\./g, '-')
-  let urlStr = `mapbox://${mapboxUser}.shapes_${versionStr}?access_token=${mapboxToken}`
+  let urlStr = `mapbox://`
   const demos = OPTIONS_DEMOGRAPHICS
-  loadYears.forEach(year => {
-    const yr = year.slice(2, 4)
-    demos.forEach(demo => {
-      urlStr += `,${mapboxUser}.points_${demo}${yr}_${versionStr}?access_token=${mapboxToken}`
-    })
+  // loadYears.forEach(year => {
+  // const yr = year.slice(2, 4)
+  demos.forEach(demo => {
+    urlStr += `${mapboxUser}.points_${demo}${year}_${versionStr},`
   })
+  // })
   console.log('completed urlStr to load = ', urlStr)
-  return urlStr
+  return urlStr + `?access_token=${mapboxToken}`
 }
 
 export const getSources = (
@@ -35,15 +34,23 @@ export const getSources = (
   dataVersion,
   loadYears,
 ) => {
-  return fromJS({
-    ddkids: {
+  const versionStr = dataVersion.replace(/\./g, '-')
+  const obj = {
+    ddkids_shapes: {
+      url: `mapbox://${mapboxUser}.shapes_${versionStr}?access_token=${mapboxToken}`,
+      type: 'vector',
+    },
+  }
+  loadYears.forEach(year => {
+    obj[`ddkids_points_${year}`] = {
       url: buildTilesetsURL(
         mapboxUser,
         mapboxToken,
-        dataVersion,
-        loadYears,
+        versionStr,
+        year,
       ),
       type: 'vector',
-    },
+    }
   })
+  return fromJS(obj)
 }

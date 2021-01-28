@@ -1,5 +1,112 @@
 import { fromJS } from 'immutable'
 
+import { POINT_TYPES } from './../../../../../constants/map'
+
+export const getPoints = (source, layer, context) => {
+  console.log('getPoints, ', source, context)
+  // const isVisible =
+  //   activeLayers[
+  //     UNTD_LAYERS.findIndex(el => el.id === type)
+  //   ] === 1
+  // console.log('isVisible, ', isVisible)
+  const demographic = layer.substring(0, layer.length - 2)
+  console.log(
+    'demographic, ',
+    demographic,
+    POINT_TYPES.find(el => el.id === demographic),
+  )
+  return fromJS({
+    id: `${source}-${layer}-points`,
+    source: source,
+    'source-layer': layer,
+    type: 'circle', //
+    layout: {
+      visibility: 'visible', // isVisible ? 'visible' : 'none',
+    },
+    interactive: false,
+    paint: {
+      'circle-color': POINT_TYPES.find(
+        el => el.id === demographic,
+      ).color,
+      'circle-opacity': 1,
+      'circle-radius': 5,
+      // 'circle-radius': [
+      //   'interpolate',
+      //   ['linear'],
+      //   ['zoom'],
+      //   11.99999, // At or below zoom level of 11.999, smaller school dots.
+      //   [
+      //     'case',
+      //     ['==', ['feature-state', 'hover'], true],
+      //     7,
+      //     5,
+      //   ],
+      //   12, // At or above zoom level of 12, larger school dots.
+      //   [
+      //     'case',
+      //     ['==', ['feature-state', 'hover'], true],
+      //     16,
+      //     12,
+      //   ],
+      // ],
+      // 'circle-stroke-opacity': 1,
+      // 'circle-stroke-color': [
+      //   'case',
+      //   ['boolean', ['feature-state', 'hover'], false],
+      //   '#fff', // Hover color
+      //   '#fff', // Normal color
+      // ],
+      // 'circle-stroke-width': [
+      //   'interpolate',
+      //   ['linear'],
+      //   ['zoom'],
+      //   4,
+      //   0.25,
+      //   6,
+      //   0.5, // 1.5,
+      //   14,
+      //   1,
+      // ],
+    },
+    // filter: [
+    //   '==',
+    //   [
+    //     'at',
+    //     [
+    //       'index-of',
+    //       ['get', 'variable'],
+    //       ['literal', activePointTypesKey],
+    //     ],
+    //     ['literal', activePointTypes],
+    //   ],
+    //   1,
+    // ],
+  })
+}
+
+const pointIndex = 100
+
+export const getPointLayers = (source, layer, context) => {
+  // console.log('getRedlineLayers', context)
+  // z = z + 3
+  return [
+    {
+      z: pointIndex,
+      style: getPoints(source, layer, context),
+      idMap: true,
+      hasFeatureId: true, // isCircleId,
+      type: `${source}-${layer}-points`, // `${source}Points`,
+    },
+    // {
+    //   z: z + 1,
+    //   style: getPointLines(type, context, activeLayers),
+    //   idMap: true,
+    //   hasFeatureId: true, // isCircleId,
+    //   type: `${type}Lines`,
+    // },
+  ]
+}
+
 export const getPolygonLines = (
   source,
   type,
@@ -126,31 +233,27 @@ export const getPolygonLayers = (
   ]
 }
 
-export const getLayers = (
-  sources,
-  context,
-  // activeLayers,
-  // activePointTypes,
-  // activePointTypesKey,
-) => {
+export const getLayers = (sources, context) => {
   console.log('getLayers', sources, context)
   const layers = []
   layers.push(
-    ...getPolygonLayers('ddkids', 'states', context),
+    ...getPolygonLayers('ddkids_shapes', 'states', context),
   )
   layers.push(
-    ...getPolygonLayers('ddkids', 'metros', context),
+    ...getPolygonLayers('ddkids_shapes', 'metros', context),
   )
   layers.push(
-    ...getPolygonLayers('ddkids', 'tracts', context),
+    ...getPolygonLayers('ddkids_shapes', 'tracts', context),
   )
-  // layers.push(
-  //   ...getPointLayers(
-  //     'points',
-  //     context,
-  //     activePointTypes,
-  //     activePointTypesKey,
-  //   ),
-  // )
+  context.activePointLayers.forEach(point => {
+    // console.log('adding active point layers')
+    layers.push(
+      ...getPointLayers(
+        `ddkids_points_${context.activeYear}`,
+        `${point}${context.activeYear}`,
+        context,
+      ),
+    )
+  })
   return layers
 }

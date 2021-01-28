@@ -18,6 +18,7 @@ import Mapbox, {
   useMapViewport,
 } from '@hyperobjekt/mapbox'
 import { fromJS } from 'immutable'
+import shallow from 'zustand/shallow'
 
 import Legend from './../Legend'
 import useStore from './../store'
@@ -28,9 +29,35 @@ import { getLayers } from './utils/layers'
 import { getSources } from './utils/sources'
 
 const BaseMap = ({ ...props }) => {
-  const activeView = useStore(state => state.activeView)
-  const dataVersion = useStore(state => state.dataVersion)
-  const loadYears = useStore(state => state.loadYears)
+  // const activeView = useStore(state => state.activeView)
+  // const dataVersion = useStore(state => state.dataVersion)
+  // const loadYears = useStore(state => state.loadYears)
+  // const activePointLayers = useStore(
+  //   state => state.activePointLayers,
+  // )
+
+  const {
+    activeView,
+    dataVersion,
+    loadYears,
+    activeYear,
+    activePointLayers,
+    activeMetric,
+    activeNorm,
+    activeShape,
+  } = useStore(
+    state => ({
+      activeView: state.activeView,
+      dataVersion: state.dataVersion,
+      loadYears: state.loadYears,
+      activeYear: state.activeYear,
+      activePointLayers: state.activePointLayers,
+      activeMetric: state.activeMetric,
+      activeNorm: state.activeNorm,
+      activeShape: state.activeShape,
+    }),
+    shallow,
+  )
 
   // Token and viewport passed to the map.
   const token = process.env.MAPBOX_API_TOKEN
@@ -90,7 +117,7 @@ const BaseMap = ({ ...props }) => {
   }
 
   const handleHover = e => {
-    console.log('Map hover, ', e)
+    // console.log('Map hover, ', e)
   }
 
   const handleLoad = () => {
@@ -109,31 +136,24 @@ const BaseMap = ({ ...props }) => {
 
   /** memoized array of shape and point layers */
   const layers = useMemo(() => {
-    if (
-      !loaded
-      // !metric ||
-      // !activeQuintiles ||
-      // !activeLayers ||
-      // !allDataLoaded
-    ) {
+    if (!loaded || !activeMetric || !activeNorm) {
       return []
     }
-    // const context = { metric, activeQuintiles }
-    const context = {}
-    return getLayers(
-      getMapSources(),
-      context,
-      // activeLayers,
-      // activePointTypes,
-      // activePointTypesKey,
-    )
+    const context = {
+      activeYear,
+      activeMetric,
+      activeNorm,
+      activeShape,
+      activePointLayers,
+    }
+    return getLayers(getMapSources(), context)
   }, [
     loaded,
-    // allDataLoaded,
-    // metric,
-    // activeQuintiles,
-    // activeLayers,
-    // activePointTypes,
+    activeYear,
+    activeMetric,
+    activeNorm,
+    activeShape,
+    activePointLayers,
   ])
 
   /**

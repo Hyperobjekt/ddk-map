@@ -230,11 +230,18 @@ const RouteManager = props => {
       })
     }
     if (params.hasOwnProperty(ROUTE_ACTIVE_POINTS)) {
-      setStoreValues({
-        activePointLayers: params[
-          ROUTE_ACTIVE_POINTS
-        ].split(','),
-      })
+      // If empty string, set empty array.
+      if (params[ROUTE_ACTIVE_POINTS] === '') {
+        setStoreValues({
+          activePointLayers: [],
+        })
+      } else {
+        setStoreValues({
+          activePointLayers: params[
+            ROUTE_ACTIVE_POINTS
+          ].split(','),
+        })
+      }
     }
     if (params.hasOwnProperty(ROUTE_METRIC)) {
       setStoreValues({ activeMetric: params[ROUTE_METRIC] })
