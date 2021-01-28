@@ -29,13 +29,7 @@ import { getLayers } from './utils/layers'
 import { getSources } from './utils/sources'
 
 const BaseMap = ({ ...props }) => {
-  // const activeView = useStore(state => state.activeView)
-  // const dataVersion = useStore(state => state.dataVersion)
-  // const loadYears = useStore(state => state.loadYears)
-  // const activePointLayers = useStore(
-  //   state => state.activePointLayers,
-  // )
-
+  // Values from store.
   const {
     activeView,
     dataVersion,
@@ -45,7 +39,6 @@ const BaseMap = ({ ...props }) => {
     activeMetric,
     activeNorm,
     activeShape,
-    mapSources,
     setStoreValues,
   } = useStore(
     state => ({
@@ -57,7 +50,6 @@ const BaseMap = ({ ...props }) => {
       activeMetric: state.activeMetric,
       activeNorm: state.activeNorm,
       activeShape: state.activeShape,
-      mapSources: state.mapSources,
       setStoreValues: state.setStoreValues,
     }),
     shallow,
@@ -182,9 +174,6 @@ const BaseMap = ({ ...props }) => {
       .set('sources', updatedSources)
       .set('layers', updatedLayers)
   }
-
-  // const mapStyleJSON =
-  //   'mapbox://styles/ddkids/ckhmbktzi142u19ois58yahb2'
 
   // update map style layers when layers change
   const mapStyle = useMemo(
