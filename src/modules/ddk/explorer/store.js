@@ -78,6 +78,8 @@ const useStore = create((set, get) => ({
   dataVersion: DEFAULT_DATA_VERSION,
   // Flag to trigger download of data dependent upon hash.
   initialStateSetFromHash: false,
+  // Map sources, stored so we don't have to construct it over and over.
+  mapSources: false,
   // Settings pertaining to viewport state.
   viewport: DEFAULT_VIEWPORT,
   resetViewport: DEFAULT_VIEWPORT,

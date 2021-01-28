@@ -39,6 +39,7 @@ const BaseMap = ({ ...props }) => {
     activeMetric,
     activeNorm,
     activeShape,
+    mapSources,
     setStoreValues,
   } = useStore(
     state => ({
@@ -50,6 +51,7 @@ const BaseMap = ({ ...props }) => {
       activeMetric: state.activeMetric,
       activeNorm: state.activeNorm,
       activeShape: state.activeShape,
+      mapSources: state.mapSources,
       setStoreValues: state.setStoreValues,
     }),
     shallow,
@@ -122,12 +124,14 @@ const BaseMap = ({ ...props }) => {
   }
 
   const getMapSources = () => {
-    return getSources(
+    const sources = getSources(
       process.env.MAPBOX_USER,
       process.env.MAPBOX_API_TOKEN,
       dataVersion,
       loadYears,
     )
+    setStoreValues({ mapSources: sources })
+    return sources
   }
 
   /** memoized array of shape and point layers */
@@ -181,9 +185,9 @@ const BaseMap = ({ ...props }) => {
       getUpdatedMapStyle(
         defaultMapStyle,
         layers,
-        getMapSources(),
+        !!mapSources ? mapSources : getMapSources(),
       ),
-    // [style, layers, sources],
+    [defaultMapStyle, layers],
   )
 
   const viewport = useStore(state => state.viewport)
