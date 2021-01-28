@@ -20,12 +20,16 @@ const buildTilesetsURL = (
   const demos = OPTIONS_DEMOGRAPHICS
   // loadYears.forEach(year => {
   // const yr = year.slice(2, 4)
-  demos.forEach(demo => {
-    urlStr += `${mapboxUser}.points_${demo}${year}_${versionStr},`
+  demos.forEach((demo, i) => {
+    if (i > 0) {
+      urlStr += ','
+    }
+    urlStr += `${mapboxUser}.points_${demo}${year}_${versionStr}?access_token=${mapboxToken}`
   })
   // })
-  console.log('completed urlStr to load = ', urlStr)
-  return urlStr + `?access_token=${mapboxToken}`
+  // console.log('completed urlStr to load = ', urlStr)
+  // return urlStr + `?access_token=${mapboxToken}`
+  return urlStr
 }
 
 export const getSources = (
@@ -52,5 +56,6 @@ export const getSources = (
       type: 'vector',
     }
   })
+  // console.log('source object: ', obj)
   return fromJS(obj)
 }

@@ -2,6 +2,8 @@ import { fromJS } from 'immutable'
 
 import { POINT_TYPES } from './../../../../../constants/map'
 
+let z = 50
+
 export const getPoints = (source, layer, context) => {
   console.log('getPoints, ', source, context)
   // const isVisible =
@@ -205,8 +207,6 @@ export const getPolygonShapes = (
   })
 }
 
-let z = 20
-
 export const getPolygonLayers = (
   source,
   type,
@@ -246,7 +246,7 @@ export const getLayers = (sources, context) => {
     ...getPolygonLayers('ddkids_shapes', 'tracts', context),
   )
   context.activePointLayers.forEach(point => {
-    // console.log('adding active point layers')
+    console.log('adding active point layer for ', point)
     layers.push(
       ...getPointLayers(
         `ddkids_points_${context.activeYear}`,
