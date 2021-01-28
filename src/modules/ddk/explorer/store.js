@@ -78,6 +78,8 @@ const useStore = create((set, get) => ({
   dataVersion: DEFAULT_DATA_VERSION,
   // Flag to trigger download of data dependent upon hash.
   initialStateSetFromHash: false,
+  // Map sources. So we don't re-load when layers change.
+  mapSources: {},
   // Settings pertaining to viewport state.
   viewport: DEFAULT_VIEWPORT,
   resetViewport: DEFAULT_VIEWPORT,

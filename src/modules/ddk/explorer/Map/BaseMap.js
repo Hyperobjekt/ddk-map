@@ -45,6 +45,8 @@ const BaseMap = ({ ...props }) => {
     activeMetric,
     activeNorm,
     activeShape,
+    mapSources,
+    setStoreValues,
   } = useStore(
     state => ({
       activeView: state.activeView,
@@ -55,6 +57,8 @@ const BaseMap = ({ ...props }) => {
       activeMetric: state.activeMetric,
       activeNorm: state.activeNorm,
       activeShape: state.activeShape,
+      mapSources: state.mapSources,
+      setStoreValues: state.setStoreValues,
     }),
     shallow,
   )

@@ -1,8 +1,16 @@
 import { fromJS } from 'immutable'
 
-import { POINT_TYPES } from './../../../../../constants/map'
+import {
+  POINT_TYPES,
+  OPTIONS_DEMOGRAPHICS,
+} from './../../../../../constants/map'
 
 let z = 50
+const dotSize = 2
+
+const getDemographic = layer => {
+  return layer.substring(0, layer.length - 2)
+}
 
 export const getPoints = (source, layer, context) => {
   console.log('getPoints, ', source, context)
@@ -11,7 +19,7 @@ export const getPoints = (source, layer, context) => {
   //     UNTD_LAYERS.findIndex(el => el.id === type)
   //   ] === 1
   // console.log('isVisible, ', isVisible)
-  const demographic = layer.substring(0, layer.length - 2)
+  const demographic = getDemographic(layer)
   console.log(
     'demographic, ',
     demographic,
@@ -31,7 +39,13 @@ export const getPoints = (source, layer, context) => {
         el => el.id === demographic,
       ).color,
       'circle-opacity': 1,
-      'circle-radius': 5,
+      // If it's 'ai', make larger, else standard size.
+      'circle-radius': [
+        'case',
+        ['in', ['get', 'type'], 'ai'],
+        4, // Hover color
+        2, // Normal color
+      ],
       // 'circle-radius': [
       //   'interpolate',
       //   ['linear'],
@@ -87,13 +101,19 @@ export const getPoints = (source, layer, context) => {
 }
 
 const pointIndex = 100
+const getPointIndex = layer => {
+  const ind = OPTIONS_DEMOGRAPHICS.indexOf(
+    getDemographic(layer),
+  )
+  return pointIndex + ind
+}
 
 export const getPointLayers = (source, layer, context) => {
   // console.log('getRedlineLayers', context)
   // z = z + 3
   return [
     {
-      z: pointIndex,
+      z: getPointIndex(layer),
       style: getPoints(source, layer, context),
       idMap: true,
       hasFeatureId: true, // isCircleId,
@@ -246,10 +266,10 @@ export const getLayers = (sources, context) => {
     ...getPolygonLayers('ddkids_shapes', 'tracts', context),
   )
   context.activePointLayers.forEach(point => {
-    console.log('adding active point layer for ', point)
+    // console.log('adding active point layer for ', point)
     layers.push(
       ...getPointLayers(
-        `ddkids_points_${context.activeYear}`,
+        `ddkids_points_${point}${context.activeYear}`,
         `${point}${context.activeYear}`,
         context,
       ),

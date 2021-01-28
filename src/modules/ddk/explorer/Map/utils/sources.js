@@ -2,36 +2,14 @@ import { fromJS } from 'immutable'
 import { OPTIONS_DEMOGRAPHICS } from './../../../../../constants/map'
 
 /**
- * Builds tilesets URL based on years to load
- * and demographics to load.
- * @param  {[type]} mapboxUser  [description]
- * @param  {[type]} mapboxToken [description]
- * @param  {[type]} dataVersion [description]
- * @param  {[type]} loadYears   [description]
- * @return {[type]}             [description]
+ * Return object of map sources, one for each
+ * point tileset, and one for the shapes tileset.
+ * @param  {String} mapboxUser  Mapbox username
+ * @param  {String} mapboxToken Mapbox api token
+ * @param  {String} dataVersion Data version indicated for app to load and use
+ * @param  {String} loadYears   Years of data to load for potential use
+ * @return {Object}
  */
-const buildTilesetsURL = (
-  mapboxUser,
-  mapboxToken,
-  versionStr,
-  year,
-) => {
-  let urlStr = `mapbox://`
-  const demos = OPTIONS_DEMOGRAPHICS
-  // loadYears.forEach(year => {
-  // const yr = year.slice(2, 4)
-  demos.forEach((demo, i) => {
-    if (i > 0) {
-      urlStr += ','
-    }
-    urlStr += `${mapboxUser}.points_${demo}${year}_${versionStr}?access_token=${mapboxToken}`
-  })
-  // })
-  // console.log('completed urlStr to load = ', urlStr)
-  // return urlStr + `?access_token=${mapboxToken}`
-  return urlStr
-}
-
 export const getSources = (
   mapboxUser,
   mapboxToken,
@@ -46,15 +24,12 @@ export const getSources = (
     },
   }
   loadYears.forEach(year => {
-    obj[`ddkids_points_${year}`] = {
-      url: buildTilesetsURL(
-        mapboxUser,
-        mapboxToken,
-        versionStr,
-        year,
-      ),
-      type: 'vector',
-    }
+    OPTIONS_DEMOGRAPHICS.forEach(demo => {
+      obj[`ddkids_points_${demo}${year}`] = {
+        url: `mapbox://${mapboxUser}.points_${demo}${year}_${versionStr}?access_token=${mapboxToken}`,
+        type: 'vector',
+      }
+    })
   })
   // console.log('source object: ', obj)
   return fromJS(obj)

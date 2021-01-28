@@ -93,12 +93,13 @@ export const OPTIONS_MAP = {
 }
 
 // Demographics for dot density.
+// Order here dictates layer z-index in the map
 export const OPTIONS_DEMOGRAPHICS = [
-  'ai',
-  'ap',
-  'h',
-  'b',
   'w',
+  'hi',
+  'b',
+  'ap',
+  'ai',
 ]
 
 // Data files to load from remote.
