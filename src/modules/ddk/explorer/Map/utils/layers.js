@@ -2,7 +2,7 @@ import { fromJS } from 'immutable'
 
 import {
   POINT_TYPES,
-  OPTIONS_DEMOGRAPHICS,
+  OPTIONS_ACTIVE_POINTS,
 } from './../../../../../constants/map'
 
 let z = 50
@@ -102,9 +102,11 @@ export const getPoints = (source, layer, context) => {
 
 const pointIndex = 100
 const getPointIndex = layer => {
-  const ind = OPTIONS_DEMOGRAPHICS.indexOf(
-    getDemographic(layer),
-  )
+  const ind =
+    OPTIONS_ACTIVE_POINTS.options.length -
+    OPTIONS_ACTIVE_POINTS.options.indexOf(
+      getDemographic(layer),
+    )
   return pointIndex + ind
 }
 

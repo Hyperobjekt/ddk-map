@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable'
-import { OPTIONS_DEMOGRAPHICS } from './../../../../../constants/map'
+import { OPTIONS_ACTIVE_POINTS } from './../../../../../constants/map'
 
 /**
  * Return object of map sources, one for each
@@ -24,7 +24,7 @@ export const getSources = (
     },
   }
   loadYears.forEach(year => {
-    OPTIONS_DEMOGRAPHICS.forEach(demo => {
+    OPTIONS_ACTIVE_POINTS.options.forEach(demo => {
       obj[`ddkids_points_${demo}${year}`] = {
         url: `mapbox://${mapboxUser}.points_${demo}${year}_${versionStr}?access_token=${mapboxToken}`,
         type: 'vector',

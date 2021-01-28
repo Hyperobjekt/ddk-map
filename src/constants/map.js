@@ -56,8 +56,10 @@ export const OPTIONS_LOAD_YEARS = {
   options: ['10', '15', '20'], // NOTE: Including 2020 because client will add that data later this year, but don't pass it in for now.
   validate: 'contains_only',
 }
+// Point feature options.
+// Order here goes from highest z-index to lowest (least populous to most).
 export const OPTIONS_ACTIVE_POINTS = {
-  options: ['ai', 'ap', 'hi', 'b', 'w'],
+  options: ['ai', 'ap', 'b', 'hi', 'w'],
   validate: 'contains_only',
 }
 // xc5 indicates that the value is an index. c5 is a client artifact
@@ -94,13 +96,13 @@ export const OPTIONS_MAP = {
 
 // Demographics for dot density.
 // Order here dictates layer z-index in the map
-export const OPTIONS_DEMOGRAPHICS = [
-  'w',
-  'hi',
-  'b',
-  'ap',
-  'ai',
-]
+// export const OPTIONS_DEMOGRAPHICS = [
+//   'w',
+//   'hi',
+//   'b',
+//   'ap',
+//   'ai',
+// ]
 
 // Data files to load from remote.
 export const DATA_FILES = [
