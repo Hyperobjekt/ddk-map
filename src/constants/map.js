@@ -25,7 +25,7 @@ export const ROUTE_SET = [
 ]
 
 export const DEFAULT_VIEW = 'explorer'
-export const DEFAULT_ACTIVE_SHAPE = ''
+export const DEFAULT_ACTIVE_SHAPE = 0
 export const DEFAULT_ACTIVE_YEAR = '15'
 export const DEFAULT_LOAD_YEARS = ['10', '15']
 export const DEFAULT_ACTIVE_POINTS = ''
@@ -165,7 +165,7 @@ export const POINT_TYPES = [
 // first value = prop name
 // second value = expected value
 export const CENTER_TRACKED_SHAPES = [
-  { id: 'tracts', minZoom: 7, require_props: [] },
+  { id: 'tracts', minZoom: 5, require_props: [] },
   {
     id: 'metros',
     minZoom: 5,

@@ -138,35 +138,39 @@ const useStore = create((set, get) => ({
   enableTour: true, // Set this true to show the launch tour button in intro modal.
   showMapModal: false,
   // Hovered feature ID
-  hovered: null,
+  // hovered: 0,
+  // Hovered tract
+  hoveredTract: 0,
+  hoveredFeature: null,
   // Hovered feature type.
-  type: null,
+  // type: null,
   // Hovered feature object.
-  feature: null,
+  // feature: null,
   // x, y coords of hovered object.
   coords: [0, 0],
   setCoords: coords => set({ coords }),
   // Sets the various state items related to school hover.
-  setHovered: (
-    hoveredId,
-    hoveredType,
-    coords,
-    feature,
-    options = { showTooltip: true, showMarkers: true },
-  ) => {
-    // console.log(
-    //   'setHovered',
-    //   hoveredId,
-    //   hoveredType,
-    //   coords,
-    // )
-    set(state => ({
-      hovered: hoveredId,
-      type: hoveredType,
-      coords: coords ? coords : state.coords,
-      feature: feature,
-    }))
-  },
+  // setHovered: (
+  //   hoveredId,
+  //   hoveredType,
+  //   coords,
+  //   feature,
+  //   options = { showTooltip: true, showMarkers: true },
+  // ) => {
+  //   console.log(
+  //     'setHovered',
+  //     hoveredId,
+  //     hoveredType,
+  //     coords,
+  //   )
+  //   set(state => ({
+  //     hoveredTract: hoveredId,
+  //     hovered: hoveredId,
+  //     type: hoveredType,
+  //     coords: coords ? coords : state.coords,
+  //     feature: feature,
+  //   }))
+  // },
   // Position of tooltips in control panel, changes with breakpoint
   buttonTooltipPosition: 'auto',
   showMobileLegend: false,

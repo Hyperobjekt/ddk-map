@@ -216,7 +216,7 @@ const RouteManager = props => {
     }
     if (params.hasOwnProperty(ROUTE_ACTIVE_SHAPE)) {
       setStoreValues({
-        activeShape: params[ROUTE_ACTIVE_SHAPE],
+        activeShape: Number(params[ROUTE_ACTIVE_SHAPE]),
       })
     }
     if (params.hasOwnProperty(ROUTE_ACTIVE_YEAR)) {

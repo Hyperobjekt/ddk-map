@@ -32,6 +32,10 @@ import { defaultMapStyle } from './utils/selectors'
 import { getLayers } from './utils/layers'
 import { getSources } from './utils/sources'
 import { useDebounce } from './../utils'
+import {
+  getFeaturesAtPoint,
+  getMouseXY,
+} from './utils/utils'
 
 const BaseMap = ({ ...props }) => {
   // Values from store.
@@ -50,6 +54,8 @@ const BaseMap = ({ ...props }) => {
     centerMetro,
     centerState,
     allDataLoaded,
+    setHovered,
+    hoveredTract,
   } = useStore(
     state => ({
       activeView: state.activeView,
@@ -66,6 +72,8 @@ const BaseMap = ({ ...props }) => {
       centerMetro: state.centerMetro,
       centerState: state.centerState,
       allDataLoaded: state.allDataLoaded,
+      setHovered: state.setHovered,
+      hoveredTract: state.hoveredTract,
     }),
     shallow,
   )
@@ -135,12 +143,31 @@ const BaseMap = ({ ...props }) => {
 
   const classes = styles()
 
-  const handleClick = e => {
+  const handleClick = feature => {
     // console.log('Map click, ', e)
+    if (
+      !!feature &&
+      !!feature.layer &&
+      feature.layer['source-layer'] === 'tracts'
+    ) {
+      setStoreValues({
+        activeShape: feature.id,
+      })
+    }
   }
 
-  const handleHover = e => {
-    // console.log('Map hover, ', e)
+  const handleHover = feature => {
+    // console.log('Map hover, ', feature)
+    if (
+      !!feature &&
+      !!feature.layer &&
+      feature.layer['source-layer'] === 'tracts'
+    ) {
+      setStoreValues({
+        hoveredTract: feature.id,
+        hoveredFeature: feature,
+      })
+    }
   }
 
   const handleLoad = () => {
@@ -173,7 +200,9 @@ const BaseMap = ({ ...props }) => {
       centerTract,
       centerMetro,
       centerState,
+      hoveredTract,
     }
+    console.log('layers changed, ', hoveredTract)
     return getLayers(getMapSources(), context)
   }, [
     loaded,
@@ -185,6 +214,7 @@ const BaseMap = ({ ...props }) => {
     centerTract,
     centerMetro,
     centerState,
+    hoveredTract,
   ])
 
   /**

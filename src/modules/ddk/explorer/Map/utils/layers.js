@@ -14,18 +14,18 @@ const getDemographic = layer => {
 }
 
 export const getPoints = (source, layer, context) => {
-  console.log('getPoints, ', source, context)
+  // console.log('getPoints, ', source, context)
   // const isVisible =
   //   activeLayers[
   //     UNTD_LAYERS.findIndex(el => el.id === type)
   //   ] === 1
   // console.log('isVisible, ', isVisible)
   const demographic = getDemographic(layer)
-  console.log(
-    'demographic, ',
-    demographic,
-    POINT_TYPES.find(el => el.id === demographic),
-  )
+  // console.log(
+  //   'demographic, ',
+  //   demographic,
+  //   POINT_TYPES.find(el => el.id === demographic),
+  // )
   return fromJS({
     id: `${source}-${layer}-points`,
     source: source,
@@ -127,7 +127,7 @@ export const getPolygonLines = (
   context,
   activeLayers,
 ) => {
-  console.log('getPolygonLines(), ', source, type, context)
+  // console.log('getPolygonLines(), ', source, type, context)
   return fromJS({
     id: `${type}Lines`,
     source: source,
@@ -148,10 +148,24 @@ export const getPolygonLines = (
         ['==', type, 'tracts'],
         [
           'case',
+          // Tract that is hovered or clicked/active/
           [
             'all',
             ['==', type, 'tracts'],
-            ['==', ['id'], ['number', context.centerTract]],
+            [
+              'any',
+              // ['==', ['id'], ['number', context.centerTract]], // Tract that is centered.
+              [
+                '==',
+                ['id'],
+                ['number', context.hoveredTract],
+              ],
+              [
+                '==',
+                ['id'],
+                ['number', context.activeShape],
+              ],
+            ],
           ],
           CHOROPLETH_COLORS[4],
           [
@@ -243,20 +257,29 @@ export const getPolygonLines = (
           ['!=', ['id'], ['number', context.centerMetro]],
         ],
         3,
-        // Tract that is centered.
+        // Tract that is hovered or clicked/active/
         [
           'all',
           ['==', type, 'tracts'],
-          ['==', ['id'], ['number', context.centerTract]],
+          [
+            'any',
+            // ['==', ['id'], ['number', context.centerTract]], // Tract that is centered.
+            [
+              '==',
+              ['id'],
+              ['number', context.hoveredTract],
+            ],
+            ['==', ['id'], ['number', context.activeShape]],
+          ],
         ],
         6,
         // Tract that is not centered.
-        [
-          'all',
-          ['==', type, 'tracts'],
-          ['!=', ['id'], ['number', context.centerTract]],
-        ],
-        1,
+        // [
+        //   'all',
+        //   ['==', type, 'tracts'],
+        //   ['!=', ['id'], ['number', context.centerTract]],
+        // ],
+        // 1,
         0,
       ],
       // 2, // Line width adjusted if centered.
@@ -356,19 +379,20 @@ export const getPolygonShapes = (source, type, context) => {
   })
 }
 
-const shapeLayerOrder = ['tracts', 'states', 'metros']
+const shapeLayerOrder = ['states', 'metros', 'tracts']
 export const getPolygonLayers = (source, type, context) => {
-  console.log('getPolygonLayers', type, context)
+  // console.log('getPolygonLayers', type, context)
+  const zIndex = z + shapeLayerOrder.indexOf(type)
   return [
     {
-      z: z + shapeLayerOrder.indexOf(type),
+      z: zIndex,
       style: getPolygonShapes(source, type, context),
       idMap: true,
       hasFeatureId: true, // isCircleId,
       type: `${type}Shapes`,
     },
     {
-      z: z + 4 + shapeLayerOrder.indexOf(type),
+      z: zIndex + 20,
       style: getPolygonLines(source, type, context),
       idMap: true,
       hasFeatureId: true, // isCircleId,
