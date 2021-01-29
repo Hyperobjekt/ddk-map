@@ -170,6 +170,14 @@ const BaseMap = ({ ...props }) => {
     }
   }
 
+  const handleMouseMove = e => {
+    // console.log('mousemove, ', e)
+    setStoreValues({
+      mouseXY: e.point,
+      coords: e.lngLat,
+    })
+  }
+
   const handleLoad = () => {
     // console.log('Map loaded.')
     setLoaded(true)
@@ -202,7 +210,7 @@ const BaseMap = ({ ...props }) => {
       centerState,
       hoveredTract,
     }
-    console.log('layers changed, ', hoveredTract)
+    // console.log('layers changed, ', hoveredTract)
     return getLayers(getMapSources(), context)
   }, [
     loaded,
@@ -356,6 +364,7 @@ const BaseMap = ({ ...props }) => {
     minZoom: DEFAULT_VIEWPORT.minZoom,
     maxZoom: DEFAULT_VIEWPORT.maxZoom,
     mapStyle: mapStyle,
+    onMouseMove: handleMouseMove,
   }
 
   return (

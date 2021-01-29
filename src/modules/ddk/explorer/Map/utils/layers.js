@@ -171,10 +171,13 @@ export const getPolygonLines = (
           [
             '==',
             [
-              'get',
-              context.activeMetric +
-                context.activeNorm +
-                context.activeYear,
+              'to-number',
+              [
+                'get',
+                context.activeMetric +
+                  context.activeNorm +
+                  context.activeYear,
+              ],
             ],
             0,
           ],
@@ -182,10 +185,13 @@ export const getPolygonLines = (
           [
             '==',
             [
-              'get',
-              context.activeMetric +
-                context.activeNorm +
-                context.activeYear,
+              'to-number',
+              [
+                'get',
+                context.activeMetric +
+                  context.activeNorm +
+                  context.activeYear,
+              ],
             ],
             1,
           ],
@@ -193,10 +199,13 @@ export const getPolygonLines = (
           [
             '==',
             [
-              'get',
-              context.activeMetric +
-                context.activeNorm +
-                context.activeYear,
+              'to-number',
+              [
+                'get',
+                context.activeMetric +
+                  context.activeNorm +
+                  context.activeYear,
+              ],
             ],
             2,
           ],
@@ -204,10 +213,13 @@ export const getPolygonLines = (
           [
             '==',
             [
-              'get',
-              context.activeMetric +
-                context.activeNorm +
-                context.activeYear,
+              'to-number',
+              [
+                'get',
+                context.activeMetric +
+                  context.activeNorm +
+                  context.activeYear,
+              ],
             ],
             3,
           ],
@@ -215,10 +227,13 @@ export const getPolygonLines = (
           [
             '==',
             [
-              'get',
-              context.activeMetric +
-                context.activeNorm +
-                context.activeYear,
+              'to-number',
+              [
+                'get',
+                context.activeMetric +
+                  context.activeNorm +
+                  context.activeYear,
+              ],
             ],
             4,
           ],
@@ -323,10 +338,13 @@ export const getPolygonShapes = (source, type, context) => {
           [
             '==',
             [
-              'get',
-              context.activeMetric +
-                context.activeNorm +
-                context.activeYear,
+              'to-number',
+              [
+                'get',
+                context.activeMetric +
+                  context.activeNorm +
+                  context.activeYear,
+              ],
             ],
             1,
           ],
@@ -334,10 +352,13 @@ export const getPolygonShapes = (source, type, context) => {
           [
             '==',
             [
-              'get',
-              context.activeMetric +
-                context.activeNorm +
-                context.activeYear,
+              'to-number',
+              [
+                'get',
+                context.activeMetric +
+                  context.activeNorm +
+                  context.activeYear,
+              ],
             ],
             2,
           ],
@@ -345,10 +366,13 @@ export const getPolygonShapes = (source, type, context) => {
           [
             '==',
             [
-              'get',
-              context.activeMetric +
-                context.activeNorm +
-                context.activeYear,
+              'to-number',
+              [
+                'get',
+                context.activeMetric +
+                  context.activeNorm +
+                  context.activeYear,
+              ],
             ],
             3,
           ],
@@ -356,10 +380,13 @@ export const getPolygonShapes = (source, type, context) => {
           [
             '==',
             [
-              'get',
-              context.activeMetric +
-                context.activeNorm +
-                context.activeYear,
+              'to-number',
+              [
+                'get',
+                context.activeMetric +
+                  context.activeNorm +
+                  context.activeYear,
+              ],
             ],
             4,
           ],
@@ -402,7 +429,7 @@ export const getPolygonLayers = (source, type, context) => {
 }
 
 export const getLayers = (sources, context) => {
-  console.log('getLayers', sources, context)
+  // console.log('getLayers', sources, context)
   const layers = []
   layers.push(
     ...getPolygonLayers('ddkids_shapes', 'states', context),
