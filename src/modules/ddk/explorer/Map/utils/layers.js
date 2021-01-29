@@ -3,6 +3,7 @@ import { fromJS } from 'immutable'
 import {
   POINT_TYPES,
   OPTIONS_ACTIVE_POINTS,
+  CHOROPLETH_COLORS,
 } from './../../../../../constants/map'
 
 let z = 50
@@ -43,60 +44,10 @@ export const getPoints = (source, layer, context) => {
       'circle-radius': [
         'case',
         ['in', ['get', 'type'], 'ai'],
-        4, // Hover color
-        2, // Normal color
+        4, // If AI/NA
+        2, // All others
       ],
-      // 'circle-radius': [
-      //   'interpolate',
-      //   ['linear'],
-      //   ['zoom'],
-      //   11.99999, // At or below zoom level of 11.999, smaller school dots.
-      //   [
-      //     'case',
-      //     ['==', ['feature-state', 'hover'], true],
-      //     7,
-      //     5,
-      //   ],
-      //   12, // At or above zoom level of 12, larger school dots.
-      //   [
-      //     'case',
-      //     ['==', ['feature-state', 'hover'], true],
-      //     16,
-      //     12,
-      //   ],
-      // ],
-      // 'circle-stroke-opacity': 1,
-      // 'circle-stroke-color': [
-      //   'case',
-      //   ['boolean', ['feature-state', 'hover'], false],
-      //   '#fff', // Hover color
-      //   '#fff', // Normal color
-      // ],
-      // 'circle-stroke-width': [
-      //   'interpolate',
-      //   ['linear'],
-      //   ['zoom'],
-      //   4,
-      //   0.25,
-      //   6,
-      //   0.5, // 1.5,
-      //   14,
-      //   1,
-      // ],
     },
-    // filter: [
-    //   '==',
-    //   [
-    //     'at',
-    //     [
-    //       'index-of',
-    //       ['get', 'variable'],
-    //       ['literal', activePointTypesKey],
-    //     ],
-    //     ['literal', activePointTypes],
-    //   ],
-    //   1,
-    // ],
   })
 }
 
@@ -131,6 +82,12 @@ export const getPointLayers = (source, layer, context) => {
   ]
 }
 
+/**
+ * Returns mapbox expression to filter
+ * a provided type of shape.
+ * @param  {String} type Type of shape
+ * @return {Array}      Mapbox expression
+ */
 const getShapeFilters = type => {
   switch (true) {
     case type === 'tracts':
@@ -159,10 +116,8 @@ const getShapeFilters = type => {
         'all',
         ['!=', ['number', ['get', 'fips']], ['number', 43]],
       ]
-      // code block
       break
     default:
-    // code block
   }
 }
 
@@ -173,21 +128,13 @@ export const getPolygonLines = (
   activeLayers,
 ) => {
   console.log('getPolygonLines(), ', source, type, context)
-  const isVisible = true
-  // TODO: Visibility will be determined by the norming,
-  // and the kind of display will be determined by the norming and
-  // whether the map is centered over the tract/metro/state.
-  // activeLayers[
-  //   UNTD_LAYERS.findIndex(el => el.id === type)
-  // ] === 1
-  // const isCentered =
   return fromJS({
     id: `${type}Lines`,
     source: source,
     'source-layer': type,
     type: 'line',
     layout: {
-      visibility: !!isVisible ? 'visible' : 'none',
+      visibility: 'visible',
       'line-cap': 'round',
     },
     interactive: true,
@@ -195,12 +142,76 @@ export const getPolygonLines = (
       'line-color': [
         'case',
         ['==', type, 'states'],
-        'red',
+        '#fff',
         ['==', type, 'metros'],
-        'blue',
+        '#D65743',
         ['==', type, 'tracts'],
-        'yellow',
-        'orange',
+        [
+          'case',
+          [
+            'all',
+            ['==', type, 'tracts'],
+            ['==', ['id'], ['number', context.centerTract]],
+          ],
+          CHOROPLETH_COLORS[4],
+          [
+            '==',
+            [
+              'get',
+              context.activeMetric +
+                context.activeNorm +
+                context.activeYear,
+            ],
+            0,
+          ],
+          CHOROPLETH_COLORS[0],
+          [
+            '==',
+            [
+              'get',
+              context.activeMetric +
+                context.activeNorm +
+                context.activeYear,
+            ],
+            1,
+          ],
+          CHOROPLETH_COLORS[1],
+          [
+            '==',
+            [
+              'get',
+              context.activeMetric +
+                context.activeNorm +
+                context.activeYear,
+            ],
+            2,
+          ],
+          CHOROPLETH_COLORS[1],
+          [
+            '==',
+            [
+              'get',
+              context.activeMetric +
+                context.activeNorm +
+                context.activeYear,
+            ],
+            3,
+          ],
+          CHOROPLETH_COLORS[3],
+          [
+            '==',
+            [
+              'get',
+              context.activeMetric +
+                context.activeNorm +
+                context.activeYear,
+            ],
+            4,
+          ],
+          CHOROPLETH_COLORS[4],
+          '#ccc',
+        ],
+        '#ccc',
       ],
       'line-width': [
         'case',
@@ -254,36 +265,17 @@ export const getPolygonLines = (
   })
 }
 
-export const getPolygonShapes = (
-  source,
-  type,
-  context,
-  // activeLayers,
-) => {
-  // TODO: Visibility will be determined by the norming,
-  // and the kind of display will be determined by the norming and
-  // whether the map is centered over the tract/metro/state.
-  console.log(
-    'getPolygonShapes(), ',
-    source,
-    type,
-    context,
-    // activeLayers,
-  )
-  const isVisible = true
-  // activeLayers[
-  //   UNTD_LAYERS.findIndex(el => el.id === type)
-  // ] === 1
-  // console.log('isVisible, ', isVisible)
+export const getPolygonShapes = (source, type, context) => {
+  // console.log('getPolygonShapes(), ', source, type, context)
   return fromJS({
     id: `${type}Shapes`,
     source: source,
     'source-layer': type,
     type: 'fill',
     layout: {
-      visibility: !!isVisible ? 'visible' : 'none',
+      visibility: 'visible',
     },
-    interactive: true,
+    interactive: type === 'tracts' ? true : false,
     paint: {
       'fill-color': [
         'case',
@@ -292,38 +284,91 @@ export const getPolygonShapes = (
         ['==', type, 'metros'],
         'transparent',
         ['==', type, 'tracts'],
-        'transparent',
+        [
+          'case',
+          [
+            '==',
+            [
+              'get',
+              context.activeMetric +
+                context.activeNorm +
+                context.activeYear,
+            ],
+            0,
+          ],
+          CHOROPLETH_COLORS[0],
+          [
+            '==',
+            [
+              'get',
+              context.activeMetric +
+                context.activeNorm +
+                context.activeYear,
+            ],
+            1,
+          ],
+          CHOROPLETH_COLORS[1],
+          [
+            '==',
+            [
+              'get',
+              context.activeMetric +
+                context.activeNorm +
+                context.activeYear,
+            ],
+            2,
+          ],
+          CHOROPLETH_COLORS[1],
+          [
+            '==',
+            [
+              'get',
+              context.activeMetric +
+                context.activeNorm +
+                context.activeYear,
+            ],
+            3,
+          ],
+          CHOROPLETH_COLORS[3],
+          [
+            '==',
+            [
+              'get',
+              context.activeMetric +
+                context.activeNorm +
+                context.activeYear,
+            ],
+            4,
+          ],
+          CHOROPLETH_COLORS[4],
+          '#ccc',
+        ],
         'transparent',
       ],
       'fill-opacity': [
         'case',
         ['boolean', ['feature-state', 'hover'], false],
-        0.4,
         0.6,
+        0.9,
       ],
     },
     filter: getShapeFilters(type),
   })
 }
 
-export const getPolygonLayers = (
-  source,
-  type,
-  context,
-  activeLayers,
-) => {
-  // console.log('getRedlineLayers', context)
-  z = z + 2
+const shapeLayerOrder = ['tracts', 'states', 'metros']
+export const getPolygonLayers = (source, type, context) => {
+  console.log('getPolygonLayers', type, context)
   return [
     {
-      z: z,
+      z: z + shapeLayerOrder.indexOf(type),
       style: getPolygonShapes(source, type, context),
       idMap: true,
       hasFeatureId: true, // isCircleId,
       type: `${type}Shapes`,
     },
     {
-      z: z + 1,
+      z: z + 4 + shapeLayerOrder.indexOf(type),
       style: getPolygonLines(source, type, context),
       idMap: true,
       hasFeatureId: true, // isCircleId,

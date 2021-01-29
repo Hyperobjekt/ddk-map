@@ -94,16 +94,6 @@ export const OPTIONS_MAP = {
   [ROUTE_DATA_VERSION]: OPTIONS_DATA_VERSION,
 }
 
-// Demographics for dot density.
-// Order here dictates layer z-index in the map
-// export const OPTIONS_DEMOGRAPHICS = [
-//   'w',
-//   'hi',
-//   'b',
-//   'ap',
-//   'ai',
-// ]
-
 // Data files to load from remote.
 export const DATA_FILES = [
   {
@@ -154,7 +144,7 @@ export const DEFAULT_VIEWPORT = {
   width: '100%',
   maxBounds: [
     // [-107.6, 33.8], // southwest.
-    [-176, 33.8], // southwest.
+    [-176, 13.8], // southwest.
     // [-65, 49.9], // northeast.
     [-55, 80], // northeast.
   ],
@@ -163,11 +153,11 @@ export const DEFAULT_VIEWPORT = {
 const DEFAULT_POINT_SIZE = 5
 
 export const POINT_TYPES = [
-  { id: 'ai', color: 'yellow', size: 10 },
-  { id: 'ap', color: 'orange', size: DEFAULT_POINT_SIZE },
-  { id: 'hi', color: 'red', size: DEFAULT_POINT_SIZE },
-  { id: 'b', color: 'purple', size: DEFAULT_POINT_SIZE },
-  { id: 'w', color: 'green', size: DEFAULT_POINT_SIZE },
+  { id: 'ai', color: '#FF66CC', size: 10 },
+  { id: 'ap', color: '#FF730C', size: DEFAULT_POINT_SIZE },
+  { id: 'hi', color: '#7401B1', size: DEFAULT_POINT_SIZE },
+  { id: 'b', color: '#FFC31A', size: DEFAULT_POINT_SIZE },
+  { id: 'w', color: '#66CC00', size: DEFAULT_POINT_SIZE },
 ]
 
 // Shape types we track for map center.
@@ -182,4 +172,12 @@ export const CENTER_TRACKED_SHAPES = [
     require_props: [['in100', 1]],
   },
   { id: 'states', minZoom: 5, require_props: [] },
+]
+
+export const CHOROPLETH_COLORS = [
+  '#C9E8F8',
+  '#8DD4F9',
+  '#73A0C9',
+  '#588DA8',
+  '#56778D',
 ]
