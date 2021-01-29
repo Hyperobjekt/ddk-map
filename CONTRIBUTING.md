@@ -94,3 +94,7 @@ When you need to publish the app, follow these steps:
 4. Run `npm run build` for the Gatsby site to verify that the build is successful.
 5. If you need to test tracking or something else that needs more than the development server, run `gatsby serve`.
 6. Now you can push the gatsby branch for merge, staging, or production.
+
+## Other styling and design info
+
+- Icons are from the [feather icon set](https://react-icons.github.io/react-icons/icons?name=fi), use them by loading them using `react-icons`. There are other examples of this already in the repo. If possible, all icons should be switched over to use feather.
