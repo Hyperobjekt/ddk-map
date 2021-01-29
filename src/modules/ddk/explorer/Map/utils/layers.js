@@ -131,6 +131,41 @@ export const getPointLayers = (source, layer, context) => {
   ]
 }
 
+const getShapeFilters = type => {
+  switch (true) {
+    case type === 'tracts':
+      return [
+        'all',
+        [
+          '!=',
+          ['number', ['get', 'statefips']],
+          ['number', 43],
+        ],
+      ]
+      break
+    case type === 'metros':
+      return [
+        'all',
+        [
+          '!=',
+          ['number', ['get', 'statefips']],
+          ['number', 43],
+        ],
+        ['==', ['get', 'in100'], 1],
+      ]
+      break
+    case type === 'states':
+      return [
+        'all',
+        ['!=', ['number', ['get', 'fips']], ['number', 43]],
+      ]
+      // code block
+      break
+    default:
+    // code block
+  }
+}
+
 export const getPolygonLines = (
   source,
   type,
@@ -145,6 +180,7 @@ export const getPolygonLines = (
   // activeLayers[
   //   UNTD_LAYERS.findIndex(el => el.id === type)
   // ] === 1
+  // const isCentered =
   return fromJS({
     id: `${type}Lines`,
     source: source,
@@ -152,6 +188,7 @@ export const getPolygonLines = (
     type: 'line',
     layout: {
       visibility: !!isVisible ? 'visible' : 'none',
+      'line-cap': 'round',
     },
     interactive: true,
     paint: {
@@ -165,16 +202,55 @@ export const getPolygonLines = (
         'yellow',
         'orange',
       ],
-      // 'line-color': polygonColors.find(
-      //   el => el.type === type,
-      // ).color,
-      'line-width': 2,
+      'line-width': [
+        'case',
+        // State that is centered.
+        [
+          'all',
+          ['==', type, 'states'],
+          ['==', ['id'], ['number', context.centerState]],
+        ],
+        6,
+        // State that is not centered.
+        [
+          'all',
+          ['==', type, 'states'],
+          ['!=', ['id'], ['number', context.centerState]],
+        ],
+        2,
+        // Metro area that is centered.
+        [
+          'all',
+          ['==', type, 'metros'],
+          ['==', ['id'], ['number', context.centerMetro]],
+        ],
+        10,
+        // Metro area that is not centered.
+        [
+          'all',
+          ['==', type, 'metros'],
+          ['!=', ['id'], ['number', context.centerMetro]],
+        ],
+        3,
+        // Tract that is centered.
+        [
+          'all',
+          ['==', type, 'tracts'],
+          ['==', ['id'], ['number', context.centerTract]],
+        ],
+        6,
+        // Tract that is not centered.
+        [
+          'all',
+          ['==', type, 'tracts'],
+          ['!=', ['id'], ['number', context.centerTract]],
+        ],
+        1,
+        0,
+      ],
+      // 2, // Line width adjusted if centered.
     },
-    // filter: getFilter(
-    //   type,
-    //   context.metric,
-    //   context.activeQuintiles,
-    // ),
+    filter: getShapeFilters(type),
   })
 }
 
@@ -212,12 +288,12 @@ export const getPolygonShapes = (
       'fill-color': [
         'case',
         ['==', type, 'states'],
-        'red',
+        'transparent', // Use this to toggle on fill for testing.
         ['==', type, 'metros'],
-        'blue',
+        'transparent',
         ['==', type, 'tracts'],
-        'yellow',
-        'orange',
+        'transparent',
+        'transparent',
       ],
       'fill-opacity': [
         'case',
@@ -226,6 +302,7 @@ export const getPolygonShapes = (
         0.6,
       ],
     },
+    filter: getShapeFilters(type),
   })
 }
 
@@ -267,15 +344,17 @@ export const getLayers = (sources, context) => {
   layers.push(
     ...getPolygonLayers('ddkids_shapes', 'tracts', context),
   )
-  context.activePointLayers.forEach(point => {
-    // console.log('adding active point layer for ', point)
-    layers.push(
-      ...getPointLayers(
-        `ddkids_points_${point}${context.activeYear}`,
-        `${point}${context.activeYear}`,
-        context,
-      ),
-    )
-  })
+  if (context.activePointLayers.length > 0) {
+    context.activePointLayers.forEach(point => {
+      // console.log('adding active point layer for ', point)
+      layers.push(
+        ...getPointLayers(
+          `ddkids_points_${point}${context.activeYear}`,
+          `${point}${context.activeYear}`,
+          context,
+        ),
+      )
+    })
+  }
   return layers
 }

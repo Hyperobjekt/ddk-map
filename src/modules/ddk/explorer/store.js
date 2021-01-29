@@ -80,6 +80,10 @@ const useStore = create((set, get) => ({
   initialStateSetFromHash: false,
   // Map sources, stored so we don't have to construct it over and over.
   mapSources: false,
+  // Map center tract, metro, and state tracking
+  centerTract: 0,
+  centerMetro: 0,
+  centerState: 0,
   // Settings pertaining to viewport state.
   viewport: DEFAULT_VIEWPORT,
   resetViewport: DEFAULT_VIEWPORT,

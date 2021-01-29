@@ -1,5 +1,5 @@
 export const ROUTE_VIEW = 'activeView' // View type, 'explorer' or 'embed'
-export const ROUTE_ACTIVE_SHAPE = 'activeShape' // ID of active shape on map (tract)
+export const ROUTE_ACTIVE_SHAPE = 'activeShape' // ID of active (clicked) shape on map (tract)
 export const ROUTE_ACTIVE_YEAR = 'activeYear' // 2010 or 2015
 export const ROUTE_LOAD_YEARS = 'loadYears' // Comma-delineated list of years of data to load.
 export const ROUTE_ACTIVE_POINTS = 'activePointLayers' // Comma-delineated list of active dot density layers
@@ -29,9 +29,9 @@ export const DEFAULT_ACTIVE_SHAPE = ''
 export const DEFAULT_ACTIVE_YEAR = '15'
 export const DEFAULT_LOAD_YEARS = ['10', '15']
 export const DEFAULT_ACTIVE_POINTS = ''
-export const DEFAULT_METRIC = 'xc5c'
+export const DEFAULT_METRIC = 'xc'
 export const DEFAULT_NORM = 'n'
-export const DEFAULT_DATA_VERSION = '1.0.4'
+export const DEFAULT_DATA_VERSION = '1.0.5'
 export const DEFAULT_LAT = '37.39'
 export const DEFAULT_LNG = '-96.78'
 export const DEFAULT_ZOOM = '3.15'
@@ -71,7 +71,7 @@ export const OPTIONS_ACTIVE_POINTS = {
 // 'se': 'o', ==> economic
 // 'coi': 'c', ==> overall
 export const OPTIONS_METRIC = {
-  options: ['xc5o', 'xc5h', 'xc5e', 'xc5c'],
+  options: ['xo', 'xh', 'xe', 'xc'],
   validate: 'one_exact_match',
 }
 export const OPTIONS_NORM = {
@@ -156,7 +156,7 @@ export const DEFAULT_VIEWPORT = {
     // [-107.6, 33.8], // southwest.
     [-176, 33.8], // southwest.
     // [-65, 49.9], // northeast.
-    [-75, 70], // northeast.
+    [-55, 80], // northeast.
   ],
 }
 
@@ -168,4 +168,18 @@ export const POINT_TYPES = [
   { id: 'hi', color: 'red', size: DEFAULT_POINT_SIZE },
   { id: 'b', color: 'purple', size: DEFAULT_POINT_SIZE },
   { id: 'w', color: 'green', size: DEFAULT_POINT_SIZE },
+]
+
+// Shape types we track for map center.
+// require_props is an array of arrays,
+// first value = prop name
+// second value = expected value
+export const CENTER_TRACKED_SHAPES = [
+  { id: 'tracts', minZoom: 7, require_props: [] },
+  {
+    id: 'metros',
+    minZoom: 5,
+    require_props: [['in100', 1]],
+  },
+  { id: 'states', minZoom: 5, require_props: [] },
 ]

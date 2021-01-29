@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
 } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
@@ -23,10 +24,14 @@ import shallow from 'zustand/shallow'
 import Legend from './../Legend'
 import useStore from './../store'
 import theme from './../theme'
-import { DEFAULT_VIEWPORT } from './../../../../constants/map'
+import {
+  DEFAULT_VIEWPORT,
+  CENTER_TRACKED_SHAPES,
+} from './../../../../constants/map'
 import { defaultMapStyle } from './utils/selectors'
 import { getLayers } from './utils/layers'
 import { getSources } from './utils/sources'
+import { useDebounce } from './../utils'
 
 const BaseMap = ({ ...props }) => {
   // Values from store.
@@ -41,6 +46,10 @@ const BaseMap = ({ ...props }) => {
     activeShape,
     mapSources,
     setStoreValues,
+    centerTract,
+    centerMetro,
+    centerState,
+    allDataLoaded,
   } = useStore(
     state => ({
       activeView: state.activeView,
@@ -53,6 +62,10 @@ const BaseMap = ({ ...props }) => {
       activeShape: state.activeShape,
       mapSources: state.mapSources,
       setStoreValues: state.setStoreValues,
+      centerTract: state.centerTract,
+      centerMetro: state.centerMetro,
+      centerState: state.centerState,
+      allDataLoaded: state.allDataLoaded,
     }),
     shallow,
   )
@@ -61,6 +74,18 @@ const BaseMap = ({ ...props }) => {
   const token = process.env.MAPBOX_API_TOKEN
 
   const [loaded, setLoaded] = useState(false)
+
+  const mapRef = useRef(null)
+  const [localMapRef, setLocalMapRef] = useState(null)
+  useEffect(() => {
+    if (mapRef.current) {
+      // gives you access to StaticMap methods from ReactMapGL
+      // https://visgl.github.io/react-map-gl/docs/api-reference/static-map#methods
+      const map = mapRef.current.getMap()
+      // do something with the map
+      setLocalMapRef(map)
+    }
+  }, [mapRef.current])
 
   const styles = makeStyles(theme => ({
     parent: {
@@ -145,6 +170,9 @@ const BaseMap = ({ ...props }) => {
       activeNorm,
       activeShape,
       activePointLayers,
+      centerTract,
+      centerMetro,
+      centerState,
     }
     return getLayers(getMapSources(), context)
   }, [
@@ -154,6 +182,9 @@ const BaseMap = ({ ...props }) => {
     activeNorm,
     activeShape,
     activePointLayers,
+    centerTract,
+    centerMetro,
+    centerState,
   ])
 
   /**
@@ -206,10 +237,79 @@ const BaseMap = ({ ...props }) => {
 
   // These are for updating our own app state (for hash management).
   const mapViewport = useMapViewport()
+  // Update our viewport data in state store when viewport chagnes.
   useEffect(() => {
     // console.log('mapViewport changed,', mapViewport)
     resetViewportState(mapViewport[0])
   }, [mapViewport])
+  // Update highlighted shapes when viewport changes or on load.
+  useEffect(() => {
+    // console.log(
+    //   'loaded or mapViewport changed,',
+    //   mapViewport,
+    // )
+    // Update center tract, metro, and state
+    if (!!localMapRef && !!mapSources && !!loaded) {
+      // console.log('local map ref exists')
+      // Get point at map center
+      const mapEl = document.getElementById('map')
+      const mapCenterX = mapEl.offsetWidth / 2
+      const mapCenterY = mapEl.offsetHeight / 2
+      // Find all features at a point
+      const layersArray = CENTER_TRACKED_SHAPES.map(
+        layer => {
+          return `${layer.id}Shapes`
+        },
+      )
+      var features = localMapRef.queryRenderedFeatures(
+        [mapCenterX, mapCenterY],
+        {
+          layers: layersArray,
+        },
+      )
+      // console.log('Features at map center: ', features)
+      const centerSettingsObj = {}
+      CENTER_TRACKED_SHAPES.forEach((el, i) => {
+        const singular = el.id.slice(0, -1)
+        const capitalized = singular.length
+          ? singular[0].toUpperCase() +
+            singular.slice(1).toLowerCase()
+          : ''
+        // If zoom is higher than relevant to shape,
+        // we won't make it highlighted.
+        let feature = features.find(feature => {
+          return feature.layer.id === `${el.id}Shapes`
+        })
+        // console.log('feature is ', feature)
+        if (
+          mapViewport[0].zoom >= el.minZoom &&
+          !!feature &&
+          !!feature.id &&
+          !!feature.properties
+        ) {
+          // console.log('feature exists')
+          // If feature exists, also check any required prop values.
+          el.require_props.forEach(prop => {
+            // console.log('checking a prop: ', prop)
+            if (feature.properties[prop[0]] !== prop[1]) {
+              feature = false
+            }
+          })
+          centerSettingsObj[
+            `center${capitalized}`
+          ] = !!feature ? feature.id : 0
+        } else {
+          centerSettingsObj[`center${capitalized}`] = 0
+        }
+      })
+      setStoreValues(centerSettingsObj)
+    }
+  }, [loaded, allDataLoaded, mapViewport])
+
+  // const debouncedMapViewport = useDebounce(mapViewport, 700)
+  // useEffect(() => {
+  //   console.log('debouncedMapViewport changed')
+  // }, [debouncedMapViewport])
 
   // This is from the mapbox component.
   const setMapViewport = useMapStore(
@@ -231,6 +331,7 @@ const BaseMap = ({ ...props }) => {
   return (
     <div className={clsx(classes.parent)}>
       <Mapbox
+        ref={mapRef}
         defaultViewport={{ ...DEFAULT_VIEWPORT }}
         MapGLProps={mapProps}
         style={{ width: '100%', height: '100%' }}
