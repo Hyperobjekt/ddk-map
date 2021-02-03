@@ -141,26 +141,26 @@ const DataLoader = ({ ...props }) => {
   // Process a downloaded file outside of synch request.
   const processFile = (el, response) => {
     if (el.type === 'data' && el.ext === 'json') {
-      console.log('parsing data.')
+      // console.log('parsing data.')
       let obj = {}
       obj[el.id] = {
         type: el.type,
         data: JSON.parse(response),
       }
       // obj[el.id] = JSON.parse(xhr.responseText)
-      console.log('file parsed, ', el.id)
+      // console.log('file parsed, ', el.id)
       setRemoteJson(obj)
     }
     // Parse CSV into JSON before sticking it into the store.
     if (el.type === 'data' && el.ext === 'csv') {
-      console.log('parsing csv.')
+      // console.log('parsing csv.')
       let obj = {}
       // Parse asynchronously using papaparse to prevent UI from locking up.
       const parsed = Papa.parse(response, {
         header: true,
         worker: true,
         complete: function (results) {
-          console.log('file parsed, ', el.id, results)
+          // console.log('file parsed, ', el.id, results)
           obj[el.id] = {
             type: el.type,
             data: results.data,
@@ -185,7 +185,7 @@ const DataLoader = ({ ...props }) => {
     files.forEach((el, i) => {
       const xhr = new XMLHttpRequest()
       const path = s3Path + el.filename + '.' + el.ext
-      console.log('path, ', path)
+      // console.log('path, ', path)
       xhr.open('GET', path, true)
       xhr.onload = function (e) {
         // console.log('loaded, ', xhr)
@@ -193,11 +193,11 @@ const DataLoader = ({ ...props }) => {
           if (xhr.status === 200) {
             // Increment counter for loaded files.
             loadedCount++
-            console.log(
-              'file loaded ',
-              el.id,
-              (loadedCount / files.length) * 100,
-            )
+            // console.log(
+            //   'file loaded ',
+            //   el.id,
+            //   (loadedCount / files.length) * 100,
+            // )
             setStoreValues({
               dataLoadedPercent:
                 (loadedCount / files.length) * 100,
@@ -215,7 +215,7 @@ const DataLoader = ({ ...props }) => {
         }
       }
       xhr.onerror = function (e) {
-        console.error(xhr.statusText)
+        // console.error(xhr.statusText)
         // Flag something failed.
         setStoreValues({
           dataLoaderFailed: true,

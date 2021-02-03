@@ -55,17 +55,17 @@ export const isEmptyRoute = route =>
  * @return {Boolean}
  */
 const isRouteOptionValid = (item, value) => {
-  console.log(
-    'isRouteOptionValid, ',
-    OPTIONS_MAP,
-    item,
-    value,
-  )
+  // console.log(
+  //   'isRouteOptionValid, ',
+  //   OPTIONS_MAP,
+  //   item,
+  //   value,
+  // )
   const optionsItem = OPTIONS_MAP[item]
   const isValid = validateRouteOption(optionsItem, value)
-  if (!isValid) {
-    console.log('invalid hash item: ', optionsItem, value)
-  }
+  // if (!isValid) {
+  //   console.log('invalid hash item: ', optionsItem, value)
+  // }
   return isValid
 }
 
@@ -303,7 +303,7 @@ const RouteManager = props => {
     // only change the hash if the initial route has loaded
     if (isLoaded.current) {
       // window.location.hash = '#/' + debouncedRoute
-      console.log('Route change')
+      // console.log('Route change')
       window.history.replaceState(
         { hash: '#/' + debouncedRoute },
         'Explorer state update',
@@ -340,21 +340,21 @@ const RouteManager = props => {
         isRouteValid(params, props.routeSet)
       ) {
         // Update state based on params
-        console.log(
-          'hash is valid, setting state from hash.',
-        )
+        // console.log(
+        //   'hash is valid, setting state from hash.',
+        // )
         setStateFromHash(params)
       } else if (!!localStorageHash) {
         if (localStorageHash.length > 0) {
-          console.log('localStorage exists')
+          // console.log('localStorage exists')
           const lsparams = getParamsFromPathname(
             localStorageHash,
             props.routeSet,
           )
           if (isRouteValid(lsparams, props.routeSet)) {
-            console.log(
-              'localStorage is valid, setting state from localStorage',
-            )
+            // console.log(
+            //   'localStorage is valid, setting state from localStorage',
+            // )
             setStateFromHash(lsparams)
           } else {
             // If a hash was passed in, but there is
@@ -369,7 +369,7 @@ const RouteManager = props => {
         }
       }
       if (isEmptyRoute(path) && !localStorageHash) {
-        console.log('showing intro modal')
+        // console.log('showing intro modal')
         setStoreValues({
           showIntroModal: true,
           initialStateSetFromHash: true,

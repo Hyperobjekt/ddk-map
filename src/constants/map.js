@@ -168,10 +168,10 @@ export const CENTER_TRACKED_SHAPES = [
   { id: 'tracts', minZoom: 5, require_props: [] },
   {
     id: 'metros',
-    minZoom: 5,
+    minZoom: 3,
     require_props: [['in100', 1]],
   },
-  { id: 'states', minZoom: 5, require_props: [] },
+  { id: 'states', minZoom: 3, require_props: [] },
 ]
 
 export const CHOROPLETH_COLORS = [

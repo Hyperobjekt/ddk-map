@@ -23,6 +23,7 @@ import 'fontsource-roboto' // TODO: Remove when our own fonts are added.
  * @param Object props Any props passed into the component
  */
 const App = props => {
+  // Logging theme during dev to facilitate front-end work
   console.log('App, theme: ', theme)
 
   const BREAKPOINTS = theme.breakpoints.keys
