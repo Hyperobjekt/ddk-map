@@ -443,7 +443,7 @@ export const getPolygonShapes = (source, type, context) => {
 }
 
 const shapeIndex = 20
-const lineIndex = 100
+const lineIndex = 90
 export const getPolygonLayers = (source, type, context) => {
   const shapeLayerOrder =
     context.activeNorm === 's'
@@ -471,7 +471,7 @@ export const getPolygonLayers = (source, type, context) => {
 }
 
 export const getLayers = (sources, context) => {
-  console.log('getLayers', sources, context)
+  // console.log('getLayers', sources, context)
   const layers = []
   layers.push(
     ...getPolygonLayers('ddkids_shapes', 'states', context),

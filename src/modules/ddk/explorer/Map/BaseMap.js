@@ -194,6 +194,10 @@ const BaseMap = ({ ...props }) => {
     return sources
   }
 
+  const debouncedHoveredTract = useDebounce(
+    hoveredTract,
+    500,
+  )
   /** memoized array of shape and point layers */
   const layers = useMemo(() => {
     if (!loaded || !activeMetric || !activeNorm) {
@@ -222,7 +226,8 @@ const BaseMap = ({ ...props }) => {
     centerTract,
     centerMetro,
     centerState,
-    hoveredTract,
+    debouncedHoveredTract,
+    // hoveredTract,
   ])
 
   /**
@@ -276,10 +281,17 @@ const BaseMap = ({ ...props }) => {
   // These are for updating our own app state (for hash management).
   const mapViewport = useMapViewport()
   // Update our viewport data in state store when viewport chagnes.
+  // useEffect(() => {
+  //   // console.log('mapViewport changed,', mapViewport)
+  //   resetViewportState(mapViewport[0])
+  // }, [mapViewport])
+
+  const debouncedMapViewport = useDebounce(mapViewport, 500)
   useEffect(() => {
-    // console.log('mapViewport changed,', mapViewport)
+    console.log('debouncedMapViewport changed')
     resetViewportState(mapViewport[0])
-  }, [mapViewport])
+  }, [debouncedMapViewport])
+
   // Update highlighted shapes when viewport changes or on load.
   useEffect(() => {
     // console.log(
@@ -342,12 +354,7 @@ const BaseMap = ({ ...props }) => {
       })
       setStoreValues(centerSettingsObj)
     }
-  }, [loaded, allDataLoaded, mapViewport])
-
-  // const debouncedMapViewport = useDebounce(mapViewport, 700)
-  // useEffect(() => {
-  //   console.log('debouncedMapViewport changed')
-  // }, [debouncedMapViewport])
+  }, [loaded, allDataLoaded, debouncedMapViewport])
 
   // This is from the mapbox component.
   const setMapViewport = useMapStore(
