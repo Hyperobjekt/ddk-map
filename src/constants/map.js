@@ -103,8 +103,8 @@ export const DATA_FILES = [
     type: 'data',
   },
   {
-    id: 'tracts-all',
-    filename: 'tracts-all-data',
+    id: 'tracts-sm',
+    filename: 'tracts-sm',
     ext: 'csv',
     type: 'data',
   },
