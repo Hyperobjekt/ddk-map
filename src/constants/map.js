@@ -165,7 +165,7 @@ export const POINT_TYPES = [
 // first value = prop name
 // second value = expected value
 export const CENTER_TRACKED_SHAPES = [
-  { id: 'tracts', minZoom: 5, require_props: [] },
+  { id: 'tracts', minZoom: 6, require_props: [] },
   {
     id: 'metros',
     minZoom: 3,

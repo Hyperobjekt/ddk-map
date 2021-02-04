@@ -22,6 +22,10 @@ export const getSources = (
       url: `mapbox://${mapboxUser}.shapes_${versionStr}?access_token=${mapboxToken}`,
       type: 'vector',
     },
+    ddkids_tracts: {
+      url: `mapbox://${mapboxUser}.tracts_${versionStr}?access_token=${mapboxToken}`,
+      type: 'vector',
+    },
   }
   loadYears.forEach(year => {
     OPTIONS_ACTIVE_POINTS.options.forEach(demo => {

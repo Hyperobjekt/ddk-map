@@ -4,9 +4,10 @@ import {
   POINT_TYPES,
   OPTIONS_ACTIVE_POINTS,
   CHOROPLETH_COLORS,
+  CENTER_TRACKED_SHAPES,
 } from './../../../../../constants/map'
 
-let z = 50
+let z = 150
 const dotSize = 2
 
 const getDemographic = layer => {
@@ -42,10 +43,18 @@ export const getPoints = (source, layer, context) => {
       'circle-opacity': 1,
       // If it's 'ai', make larger, else standard size.
       'circle-radius': [
-        'case',
-        ['in', ['get', 'type'], 'ai'],
-        4, // If AI/NA
-        2, // All others
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        3,
+        // 0.5,
+        ['case', ['in', ['get', 'type'], 'ai'], 14, 0.5],
+        6,
+        // 1,
+        ['case', ['in', ['get', 'type'], 'ai'], 2, 1],
+        13,
+        // 2,
+        ['case', ['in', ['get', 'type'], 'ai'], 4, 2],
       ],
     },
   })
@@ -88,16 +97,38 @@ export const getPointLayers = (source, layer, context) => {
  * @param  {String} type Type of shape
  * @return {Array}      Mapbox expression
  */
-const getShapeFilters = type => {
+const getShapeFilters = (type, context) => {
+  const minZoom = CENTER_TRACKED_SHAPES.find(el => {
+    return el.id === type
+  }).minZoom
   switch (true) {
     case type === 'tracts':
       return [
-        'all',
+        'case',
+        // If you're a tract in another state and norming is set to state...
+        [
+          'all',
+          ['==', ['string', context.activeNorm], 's'],
+          ['!=', ['get', 'statefips'], context.centerState],
+        ],
+        false,
+        // If zoom is lower than min zoom set for shape type...
+        ['<', ['zoom'], minZoom],
+        false,
+        // If you're a tract not in a metro and norming is set to metro...
+        [
+          'all',
+          ['==', ['string', context.activeNorm], 'm'],
+          ['!=', ['number', ['get', 'in100']], 1],
+        ],
+        false,
         [
           '!=',
           ['number', ['get', 'statefips']],
           ['number', 43],
         ],
+        true,
+        true,
       ]
       break
     case type === 'metros':
@@ -121,13 +152,8 @@ const getShapeFilters = type => {
   }
 }
 
-export const getPolygonLines = (
-  source,
-  type,
-  context,
-  activeLayers,
-) => {
-  // console.log('getPolygonLines(), ', source, type, context)
+export const getPolygonLines = (source, type, context) => {
+  // console.log('getPolygonLines(), ', source, type, context
   return fromJS({
     id: `${type}Lines`,
     source: source,
@@ -136,6 +162,8 @@ export const getPolygonLines = (
     layout: {
       visibility: 'visible',
       'line-cap': 'round',
+      'line-join': 'round',
+      'line-round-limit': 0.2,
     },
     interactive: true,
     paint: {
@@ -272,22 +300,30 @@ export const getPolygonLines = (
           ['!=', ['id'], ['number', context.centerMetro]],
         ],
         3,
-        // Tract that is hovered or clicked/active/
+        // Tract that is clicked/active/
         [
           'all',
           ['==', type, 'tracts'],
           [
             'any',
-            // ['==', ['id'], ['number', context.centerTract]], // Tract that is centered.
+            ['==', ['id'], ['number', context.activeShape]],
+          ],
+        ],
+        6,
+        // Tract that is hovered
+        [
+          'all',
+          ['==', type, 'tracts'],
+          [
+            'any',
             [
               '==',
               ['id'],
               ['number', context.hoveredTract],
             ],
-            ['==', ['id'], ['number', context.activeShape]],
           ],
         ],
-        6,
+        3,
         // Tract that is not centered.
         // [
         //   'all',
@@ -299,7 +335,7 @@ export const getPolygonLines = (
       ],
       // 2, // Line width adjusted if centered.
     },
-    filter: getShapeFilters(type),
+    filter: getShapeFilters(type, context),
   })
 }
 
@@ -402,24 +438,30 @@ export const getPolygonShapes = (source, type, context) => {
         0.9,
       ],
     },
-    filter: getShapeFilters(type),
+    filter: getShapeFilters(type, context),
   })
 }
 
-const shapeLayerOrder = ['states', 'metros', 'tracts']
+const shapeIndex = 20
+const lineIndex = 100
 export const getPolygonLayers = (source, type, context) => {
+  const shapeLayerOrder =
+    context.activeNorm === 's'
+      ? ['metros', 'states', 'tracts']
+      : ['states', 'metros', 'tracts']
   // console.log('getPolygonLayers', type, context)
-  const zIndex = z + shapeLayerOrder.indexOf(type)
+  const sIndex = shapeIndex + shapeLayerOrder.indexOf(type)
+  const lIndex = lineIndex + shapeLayerOrder.indexOf(type)
   return [
     {
-      z: zIndex,
+      z: sIndex,
       style: getPolygonShapes(source, type, context),
       idMap: true,
       hasFeatureId: true, // isCircleId,
       type: `${type}Shapes`,
     },
     {
-      z: zIndex + 20,
+      z: lIndex,
       style: getPolygonLines(source, type, context),
       idMap: true,
       hasFeatureId: true, // isCircleId,
@@ -429,7 +471,7 @@ export const getPolygonLayers = (source, type, context) => {
 }
 
 export const getLayers = (sources, context) => {
-  // console.log('getLayers', sources, context)
+  console.log('getLayers', sources, context)
   const layers = []
   layers.push(
     ...getPolygonLayers('ddkids_shapes', 'states', context),
@@ -438,7 +480,7 @@ export const getLayers = (sources, context) => {
     ...getPolygonLayers('ddkids_shapes', 'metros', context),
   )
   layers.push(
-    ...getPolygonLayers('ddkids_shapes', 'tracts', context),
+    ...getPolygonLayers('ddkids_tracts', 'tracts', context),
   )
   if (context.activePointLayers.length > 0) {
     context.activePointLayers.forEach(point => {
