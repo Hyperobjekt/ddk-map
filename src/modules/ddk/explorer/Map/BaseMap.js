@@ -31,7 +31,7 @@ import {
 import { defaultMapStyle } from './utils/selectors'
 import { getLayers } from './utils/layers'
 import { getSources } from './utils/sources'
-import { useDebounce } from './../utils'
+import { useDebounce, usePrevious } from './../utils'
 import {
   getFeaturesAtPoint,
   getMouseXY,
@@ -94,6 +94,11 @@ const BaseMap = ({ ...props }) => {
       setLocalMapRef(map)
     }
   }, [mapRef.current])
+
+  // storing previous hover / selected IDs
+  const prev = usePrevious({
+    hoveredTract,
+  })
 
   const styles = makeStyles(theme => ({
     parent: {
@@ -226,7 +231,7 @@ const BaseMap = ({ ...props }) => {
     centerTract,
     centerMetro,
     centerState,
-    debouncedHoveredTract,
+    // debouncedHoveredTract,
     // hoveredTract,
   ])
 
@@ -286,7 +291,7 @@ const BaseMap = ({ ...props }) => {
   //   resetViewportState(mapViewport[0])
   // }, [mapViewport])
 
-  const debouncedMapViewport = useDebounce(mapViewport, 500)
+  const debouncedMapViewport = useDebounce(mapViewport, 300)
   useEffect(() => {
     console.log('debouncedMapViewport changed')
     resetViewportState(mapViewport[0])
