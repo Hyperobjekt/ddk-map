@@ -240,10 +240,6 @@ const BaseMap = ({ ...props }) => {
     return sources
   }
 
-  const debouncedHoveredTract = useDebounce(
-    hoveredTract,
-    500,
-  )
   /** memoized array of shape and point layers */
   const layers = useMemo(() => {
     if (!loaded || !activeMetric || !activeNorm) {
@@ -264,7 +260,8 @@ const BaseMap = ({ ...props }) => {
     activeMetric,
     activeNorm,
     activePointLayers,
-    centerState,
+    // centerState,
+    activeNorm === 's' ? centerState : null,
   ])
 
   /**
