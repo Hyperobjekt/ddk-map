@@ -188,7 +188,8 @@ const BaseMap = ({ ...props }) => {
       feature.layer['source-layer'] === 'tracts'
     ) {
       // console.log('feature exists, setting')
-      // If the hovered item is new, reset.
+      // If the hovered item is new, reset hovered
+      // features state for currently and previously hovered tracts.
       if (feature.id !== prev.hoveredTract) {
         // Set states for both.
         localMapRef.setFeatureState(
@@ -207,13 +208,40 @@ const BaseMap = ({ ...props }) => {
           },
           { hovered: true },
         )
-        // Set previous hovered
+        // Set new hovered hovered feature in store.
         setStoreValues({
           hoveredTract: feature.id,
           hoveredFeature: feature,
         })
       }
     }
+  }
+
+  const handleMouseOut = e => {
+    // console.log('handleMouseOut')
+    // When the users mouses out of the map canvas,
+    // reset the hovered tract values and feature states.
+    localMapRef.setFeatureState(
+      {
+        id: prev.hoveredTract,
+        source: 'ddkids_tracts',
+        sourceLayer: 'tracts',
+      },
+      { hovered: false },
+    )
+    localMapRef.setFeatureState(
+      {
+        id: hoveredTract,
+        source: 'ddkids_tracts',
+        sourceLayer: 'tracts',
+      },
+      { hovered: false },
+    )
+    // Set previous hovered to null
+    setStoreValues({
+      hoveredTract: 0,
+      hoveredFeature: null,
+    })
   }
 
   const handleMouseMove = e => {
@@ -470,6 +498,7 @@ const BaseMap = ({ ...props }) => {
     maxZoom: DEFAULT_VIEWPORT.maxZoom,
     mapStyle: mapStyle,
     onMouseMove: handleMouseMove,
+    onMouseOut: handleMouseOut,
   }
 
   return (
