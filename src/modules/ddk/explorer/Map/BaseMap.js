@@ -216,6 +216,33 @@ const BaseMap = ({ ...props }) => {
     }
   }
 
+  const handleMouseOut = e => {
+    // console.log('handleMouseOut')
+    // When the users mouses out of the map canvas,
+    // reset the hovered tract values and feature states.
+    localMapRef.setFeatureState(
+      {
+        id: prev.hoveredTract,
+        source: 'ddkids_tracts',
+        sourceLayer: 'tracts',
+      },
+      { hovered: false },
+    )
+    localMapRef.setFeatureState(
+      {
+        id: hoveredTract,
+        source: 'ddkids_tracts',
+        sourceLayer: 'tracts',
+      },
+      { hovered: false },
+    )
+    // Set previous hovered to null
+    setStoreValues({
+      hoveredTract: 0,
+      hoveredFeature: null,
+    })
+  }
+
   const handleMouseMove = e => {
     // console.log('mousemove, ', e)
     // If we have moved the mouse outside of any tracts, remove
@@ -470,6 +497,7 @@ const BaseMap = ({ ...props }) => {
     maxZoom: DEFAULT_VIEWPORT.maxZoom,
     mapStyle: mapStyle,
     onMouseMove: handleMouseMove,
+    onMouseOut: handleMouseOut,
   }
 
   return (
