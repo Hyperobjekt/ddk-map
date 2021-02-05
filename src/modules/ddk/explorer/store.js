@@ -86,8 +86,6 @@ const useStore = create((set, get) => ({
   centerState: 0,
   // Hovered tract.
   hoveredTract: 0,
-  // Previously hovered tract.
-  prevHoveredTract: 0,
   // Hovered feature.
   hoveredFeature: null,
   // Mouse XY.

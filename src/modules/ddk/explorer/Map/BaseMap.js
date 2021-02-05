@@ -218,6 +218,33 @@ const BaseMap = ({ ...props }) => {
 
   const handleMouseMove = e => {
     // console.log('mousemove, ', e)
+    // If we have moved the mouse outside of any tracts, remove
+    // the hovered state from the last tract.
+    const tracts = localMapRef.queryRenderedFeatures(
+      e.point,
+      {
+        layers: ['tractsShapes', 'tractsLines'],
+      },
+    )
+    // console.log('tracts, ', tracts)
+    if (!tracts || tracts.length <= 0) {
+      // Remove hovered state from previously hovered.
+      localMapRef.setFeatureState(
+        {
+          id: prev.hoveredTract,
+          source: 'ddkids_tracts',
+          sourceLayer: 'tracts',
+        },
+        { hovered: false },
+      )
+      // Set previous hovered to null
+      setStoreValues({
+        hoveredTract: 0,
+        hoveredFeature: null,
+      })
+    }
+    // Setting mouse coords and lnglat
+    // for general use by tooltips, etc.
     setStoreValues({
       mouseXY: e.point,
       coords: e.lngLat,
@@ -240,10 +267,6 @@ const BaseMap = ({ ...props }) => {
     return sources
   }
 
-  const debouncedHoveredTract = useDebounce(
-    hoveredTract,
-    500,
-  )
   /** memoized array of shape and point layers */
   const layers = useMemo(() => {
     if (!loaded || !activeMetric || !activeNorm) {
@@ -264,7 +287,8 @@ const BaseMap = ({ ...props }) => {
     activeMetric,
     activeNorm,
     activePointLayers,
-    centerState,
+    // centerState,
+    activeNorm === 's' ? centerState : null,
   ])
 
   /**
