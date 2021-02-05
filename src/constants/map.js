@@ -160,18 +160,31 @@ export const POINT_TYPES = [
   { id: 'w', color: '#66CC00', size: DEFAULT_POINT_SIZE },
 ]
 
+export const SHAPE_ZOOM_LEVELS = [
+  { id: 'tracts', minZoom: 6 },
+  { id: 'metros', minZoom: 3 },
+  { id: 'states', minZoom: 3 },
+]
+
 // Shape types we track for map center.
 // require_props is an array of arrays,
 // first value = prop name
 // second value = expected value
 export const CENTER_TRACKED_SHAPES = [
-  { id: 'tracts', minZoom: 6, require_props: [] },
   {
     id: 'metros',
     minZoom: 3,
     require_props: [['in100', 1]],
+    storeHandle: `centerMetro`,
+    source: `ddkids_shapes`,
   },
-  { id: 'states', minZoom: 3, require_props: [] },
+  {
+    id: 'states',
+    minZoom: 3,
+    require_props: [],
+    storeHandle: `centerState`,
+    source: `ddkids_shapes`,
+  },
 ]
 
 export const CHOROPLETH_COLORS = [

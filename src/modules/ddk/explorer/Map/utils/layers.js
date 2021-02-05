@@ -4,7 +4,7 @@ import {
   POINT_TYPES,
   OPTIONS_ACTIVE_POINTS,
   CHOROPLETH_COLORS,
-  CENTER_TRACKED_SHAPES,
+  SHAPE_ZOOM_LEVELS,
 } from './../../../../../constants/map'
 
 let z = 150
@@ -98,7 +98,7 @@ export const getPointLayers = (source, layer, context) => {
  * @return {Array}      Mapbox expression
  */
 const getShapeFilters = (type, context) => {
-  const minZoom = CENTER_TRACKED_SHAPES.find(el => {
+  const minZoom = SHAPE_ZOOM_LEVELS.find(el => {
     return el.id === type
   }).minZoom
   switch (true) {
@@ -165,7 +165,7 @@ export const getPolygonLines = (source, type, context) => {
       'line-join': 'round',
       'line-round-limit': 0.2,
     },
-    interactive: true,
+    interactive: type === 'tracts' ? true : false,
     paint: {
       'line-color': [
         'case',
@@ -182,17 +182,8 @@ export const getPolygonLines = (source, type, context) => {
             ['==', type, 'tracts'],
             [
               'any',
-              // ['==', ['id'], ['number', context.centerTract]], // Tract that is centered.
-              [
-                '==',
-                ['id'],
-                ['number', context.hoveredTract],
-              ],
-              [
-                '==',
-                ['id'],
-                ['number', context.activeShape],
-              ],
+              ['==', ['feature-state', 'hovered'], true],
+              ['==', ['feature-state', 'active'], true],
             ],
           ],
           CHOROPLETH_COLORS[4],
@@ -272,65 +263,42 @@ export const getPolygonLines = (source, type, context) => {
       ],
       'line-width': [
         'case',
-        // State that is centered.
+        // State that is centered (when norming is set to state).
         [
           'all',
           ['==', type, 'states'],
-          ['==', ['id'], ['number', context.centerState]],
+          ['==', context.activeNorm, 's'],
+          ['==', ['feature-state', 'centered'], true],
         ],
-        6,
+        10,
         // State that is not centered.
-        [
-          'all',
-          ['==', type, 'states'],
-          ['!=', ['id'], ['number', context.centerState]],
-        ],
+        ['all', ['==', type, 'states']],
         2,
         // Metro area that is centered.
         [
           'all',
           ['==', type, 'metros'],
-          ['==', ['id'], ['number', context.centerMetro]],
+          ['==', context.activeNorm, 'm'],
+          ['==', ['feature-state', 'centered'], true],
         ],
         10,
         // Metro area that is not centered.
-        [
-          'all',
-          ['==', type, 'metros'],
-          ['!=', ['id'], ['number', context.centerMetro]],
-        ],
+        ['all', ['==', type, 'metros']],
         3,
         // Tract that is clicked/active/
         [
           'all',
           ['==', type, 'tracts'],
-          [
-            'any',
-            ['==', ['id'], ['number', context.activeShape]],
-          ],
+          ['==', ['feature-state', 'active'], true],
         ],
         6,
         // Tract that is hovered
         [
           'all',
           ['==', type, 'tracts'],
-          [
-            'any',
-            [
-              '==',
-              ['id'],
-              ['number', context.hoveredTract],
-            ],
-          ],
+          ['==', ['feature-state', 'hovered'], true],
         ],
         3,
-        // Tract that is not centered.
-        // [
-        //   'all',
-        //   ['==', type, 'tracts'],
-        //   ['!=', ['id'], ['number', context.centerTract]],
-        // ],
-        // 1,
         0,
       ],
       // 2, // Line width adjusted if centered.
@@ -442,13 +410,13 @@ export const getPolygonShapes = (source, type, context) => {
   })
 }
 
-const shapeIndex = 20
+const shapeIndex = 40
 const lineIndex = 90
 export const getPolygonLayers = (source, type, context) => {
-  const shapeLayerOrder =
-    context.activeNorm === 's'
-      ? ['metros', 'states', 'tracts']
-      : ['states', 'metros', 'tracts']
+  const shapeLayerOrder = ['states', 'metros', 'tracts']
+  // context.activeNorm === 's'
+  //   ? ['metros', 'states', 'tracts']
+  //   : ['states', 'metros', 'tracts']
   // console.log('getPolygonLayers', type, context)
   const sIndex = shapeIndex + shapeLayerOrder.indexOf(type)
   const lIndex = lineIndex + shapeLayerOrder.indexOf(type)
