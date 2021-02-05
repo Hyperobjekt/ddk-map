@@ -188,7 +188,8 @@ const BaseMap = ({ ...props }) => {
       feature.layer['source-layer'] === 'tracts'
     ) {
       // console.log('feature exists, setting')
-      // If the hovered item is new, reset.
+      // If the hovered item is new, reset hovered
+      // features state for currently and previously hovered tracts.
       if (feature.id !== prev.hoveredTract) {
         // Set states for both.
         localMapRef.setFeatureState(
@@ -207,7 +208,7 @@ const BaseMap = ({ ...props }) => {
           },
           { hovered: true },
         )
-        // Set previous hovered
+        // Set new hovered hovered feature in store.
         setStoreValues({
           hoveredTract: feature.id,
           hoveredFeature: feature,
