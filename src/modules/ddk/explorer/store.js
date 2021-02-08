@@ -56,14 +56,10 @@ const useStore = create((set, get) => ({
   getLang: loc => {
     return get().langs[loc]
   },
-  // Set languages.
-  setLang: (loc, lang) => {
+  // Merge existing language strings with any new ones.
+  setLang: obj => {
     // console.log('setLang')
-    const newLangs = get().langs
-    // console.log('newLangs, ', newLangs)
-    newLangs[loc] = merge(newLangs[loc], lang)
-    set({ langs: newLangs })
-    // console.log('after set: ', get().langs)
+    set({ langs: merge(get().langs, obj) })
   },
   // Routing.
   activeView: DEFAULT_VIEW,
