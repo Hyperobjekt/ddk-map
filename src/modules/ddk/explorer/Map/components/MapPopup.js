@@ -28,13 +28,21 @@ const MapPopup = ({ ...props }) => {
   const [popupAnchor, setPopupAnchor] = useState('top')
 
   const updatePopupCoords = () => {
-    console.log('feature', hoveredFeature)
-    if (!!hoveredFeature) {
+    // console.log('feature', hoveredFeature)
+    if (
+      !!hoveredFeature &&
+      !!hoveredFeature.geometry &&
+      !!hoveredFeature.geometry.coordinates
+    ) {
+      console.log(
+        'coordinates, ',
+        hoveredFeature.geometry.coordinates,
+      )
       var line = turf.lineString(
         hoveredFeature.geometry.coordinates[0],
       )
       const featureBox = turf.bbox(line)
-      console.log('featureBox, ', featureBox)
+      // console.log('featureBox, ', featureBox)
       const boxWidth = featureBox[2] - featureBox[0]
       const boxHeight = featureBox[3] - featureBox[1]
       setPopupCoords([
@@ -50,11 +58,13 @@ const MapPopup = ({ ...props }) => {
   useEffect(() => {
     // console.log('Updating show popup')
     setShowPopup(hoveredTract !== 0)
-    console.log('updatePopupCoords, ', updatePopupCoords())
+    updatePopupCoords()
+    // console.log('updatePopupCoords, ', updatePopupCoords())
   }, [hoveredTract])
 
   return (
-    !!showPopup && (
+    !!showPopup &&
+    !!popupCoords && (
       <Popup
         latitude={popupCoords[1]}
         longitude={popupCoords[0]}

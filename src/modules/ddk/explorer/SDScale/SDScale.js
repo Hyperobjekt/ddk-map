@@ -130,7 +130,7 @@ const SDScale = ({ ...props }) => {
 }
 
 SDScale.propTypes = {
-  active: PropTypes.Array,
+  active: PropTypes.array,
 }
 
 export default SDScale

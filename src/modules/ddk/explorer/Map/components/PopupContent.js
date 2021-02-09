@@ -25,6 +25,7 @@ const PopupContent = ({ ...props }) => {
       width: theme.extras.mapPopup.width,
       padding: '16px',
       'font-family': 'Fira Sans',
+      zIndex: '30',
     },
     title: {
       fontWeight: 600,
@@ -78,17 +79,11 @@ const PopupContent = ({ ...props }) => {
       display: 'flex',
       justifyContent: 'space-between',
     },
-    SDScale: {
-      // display: 'block',
-      // margin: '0 0 18px 0',
-      // marginBottom: '30px',
-      // paddingBottom: '300px',
-    },
   }))
 
   const classes = styles()
   // If no feature or tract data, return.
-  if (!feature | !remoteJson | !remoteJson.tracts) {
+  if (!feature || !remoteJson || !remoteJson.tracts) {
     return ''
   }
   // Array of all tracts
@@ -147,7 +142,7 @@ const PopupContent = ({ ...props }) => {
             classes.popItems,
           )}
         >
-          {popItems.map(el => {
+          {popItems.map((el, i) => {
             const tract = tracts.find(tract => {
               return Number(tract.GEOID) === feature.id
             })
@@ -157,6 +152,7 @@ const PopupContent = ({ ...props }) => {
                   'popup-pop-item',
                   classes.popItem,
                 )}
+                key={`popup-item-${i}`}
               >
                 <span
                   className={clsx('popup-pop-item-title')}
