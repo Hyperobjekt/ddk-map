@@ -93,7 +93,6 @@ const SlideoutPanel = ({ ...props }) => {
           <CloseIcon />
         </IconButton>
         <TractPanel />
-        <p>blah!</p>
       </div>
 
       <Modal
