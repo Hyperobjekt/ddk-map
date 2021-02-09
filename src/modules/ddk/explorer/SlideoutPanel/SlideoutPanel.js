@@ -12,6 +12,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close'
 
 import useStore from './../store'
+import TractPanel from './../TractPanel'
 
 const SlideoutPanel = ({ ...props }) => {
   // Generic store value setter.
@@ -83,15 +84,18 @@ const SlideoutPanel = ({ ...props }) => {
   const classes = styles()
 
   return (
-    <div>
-      <div className={clsx(classes.root)}>
+    <>
+      <div className={clsx('panel-slideout', classes.root)}>
         <IconButton
           onClick={handleClose}
           className={clsx(classes.button)}
         >
           <CloseIcon />
         </IconButton>
+        <TractPanel />
+        <p>blah!</p>
       </div>
+
       <Modal
         className={clsx(classes.modal)}
         open={slideoutPanel.active}
@@ -110,11 +114,11 @@ const SlideoutPanel = ({ ...props }) => {
             >
               <CloseIcon />
             </IconButton>
-            some content here
+            <TractPanel />
           </div>
         </Fade>
       </Modal>
-    </div>
+    </>
   )
 }
 

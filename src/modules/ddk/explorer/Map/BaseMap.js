@@ -184,6 +184,11 @@ const BaseMap = ({ ...props }) => {
       )
       setStoreValues({
         activeShape: feature.id,
+        slideoutTract: feature.id,
+        slideoutPanel: {
+          panel: 'tract',
+          active: true,
+        },
       })
     }
   }

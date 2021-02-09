@@ -51,8 +51,8 @@ export const theme = createMuiTheme({
   // Update theme here according to this documentation
   extras: {
     Legend: {
-      width: '200px',
-      height: '200px',
+      width: '279px',
+      height: '300px',
       cushionRight: 15,
       cushionTop: 25,
       zIndex: 13,
@@ -62,7 +62,7 @@ export const theme = createMuiTheme({
       zIndex: 15,
     },
     slideoutPanel: {
-      width: '270px',
+      width: '416px',
       zIndex: 10,
     },
     mapPopup: {

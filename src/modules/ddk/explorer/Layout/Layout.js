@@ -24,6 +24,11 @@ const Layout = ({ ...props }) => {
       height: '100vh',
       backgroundColor: theme.palette.background.default,
     },
+    main: {
+      // marginTop:
+      //   theme.extras.variables.dimensions.navbarHeight,
+      // height: `calc(100vh - ${theme.extras.variables.dimensions.navbarHeight})`,
+    },
   }))
 
   const classes = layoutStyles()
@@ -34,7 +39,7 @@ const Layout = ({ ...props }) => {
       className={clsx('layout', classes.root)}
     >
       <Header />
-      <main>
+      <main className={clsx(classes.main)}>
         <ControlPanel />
         <SlideoutPanel />
         <Map />
