@@ -228,7 +228,7 @@ export const getPolygonLines = (source, type, context) => {
             ],
             2,
           ],
-          CHOROPLETH_COLORS[1],
+          CHOROPLETH_COLORS[2],
           [
             '==',
             [
@@ -366,7 +366,7 @@ export const getPolygonShapes = (source, type, context) => {
             ],
             2,
           ],
-          CHOROPLETH_COLORS[1],
+          CHOROPLETH_COLORS[2],
           [
             '==',
             [

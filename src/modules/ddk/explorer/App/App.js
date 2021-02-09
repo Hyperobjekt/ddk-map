@@ -14,9 +14,12 @@ import useStore from './../store'
 import { theme } from './../theme'
 import { langSet } from './../../../../constants/lang'
 import { ROUTE_SET } from './../../../../constants/map'
+import Language from './components/Language'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
-import 'fontsource-roboto' // TODO: Remove when our own fonts are added.
+// Import fonts installed using fontsource: https://github.com/fontsource/fontsource
+import '@fontsource/fira-sans'
+import '@fontsource/merriweather'
 
 /**
  * App is the base component for the explorer.
@@ -32,24 +35,37 @@ const App = props => {
   const setStoreValues = useStore(
     state => state.setStoreValues,
   )
-
-  // Language management.
-  const activeLang = useStore(state => state.activeLang)
-  if (!!props.lang) {
-    setStoreValues({
-      activeLang: props.lang,
-    })
-  }
-  let lang
-  if (!!props.langSet) {
-    lang = merge(langSet, props.langSet)
-  }
-  i18n.init({
-    locale: activeLang,
-    languages: {
-      en_US: lang['en_US'],
-    },
-  })
+  //
+  // // Language management.
+  // const activeLang = useStore(state => state.activeLang)
+  // const langs = useStore(state => state.langs)
+  // const setLang = useStore(state => state.setLang)
+  //
+  // // Initializes the languages in use.
+  // const initLang = () => {
+  //   i18n.init({
+  //     locale: activeLang,
+  //     languages: langs,
+  //   })
+  // }
+  // useEffect(() => {
+  //   console.log('change to languages. re-initializing.')
+  //   initLang()
+  // }, [activeLang, langs])
+  //
+  // if (!!props.lang) {
+  //   setStoreValues({
+  //     activeLang: props.lang,
+  //   })
+  // }
+  // let lang
+  // if (!!props.langSet) {
+  //   setStoreValues({
+  //     langs: merge(langs, props.lang),
+  //   })
+  //   // lang = merge(langSet, props.langSet)
+  // }
+  // initLang()
 
   // Updates menu state and calls handler in parent component.
   // if (!!props.toggleMenu) {
@@ -196,6 +212,7 @@ const App = props => {
 
   return (
     <ThemeProvider theme={theme}>
+      <Language props={props} />
       <DataLoader />
       <RouteManager routeSet={ROUTE_SET} />
       <Tracking />

@@ -36,6 +36,7 @@ import {
   getFeaturesAtPoint,
   getMouseXY,
 } from './utils/utils'
+import MapPopup from './components/MapPopup'
 
 const BaseMap = ({ ...props }) => {
   // Values from store.
@@ -516,6 +517,7 @@ const BaseMap = ({ ...props }) => {
         {
           <>
             <Legend />
+            <MapPopup />
             <div
               className={clsx(
                 'custom-attribution',

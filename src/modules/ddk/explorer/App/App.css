@@ -1,0 +1,8 @@
+/* sets sitewide font sizes based on user's font size in browser */
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: 'Fira Sans', helvetica, arial;
+}

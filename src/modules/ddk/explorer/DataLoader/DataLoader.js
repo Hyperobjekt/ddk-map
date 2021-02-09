@@ -171,9 +171,10 @@ const DataLoader = ({ ...props }) => {
     }
     if (el.type === 'dict') {
       // Merge loaded dictionary values with existing dictionary.
-      const strings = JSON.parse(response)
+      const strings = { en_US: JSON.parse(response) }
       // console.log('lang file parsed, ', el.id)
-      setLang('en_US', strings)
+      // console.log('strings,', strings)
+      setLang(strings)
     }
   }
 

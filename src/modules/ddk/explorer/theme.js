@@ -4,6 +4,9 @@ export const variables = {
   colors: {
     primary: '#20232a',
     white: '#ffffff',
+    darkGray: '#03171C',
+    lightGray: '#616161',
+    lightLightGray: '#eee',
     bridalHeath: '#fffbf3',
     alabaster: '#f7f7f7',
     oldLace: '#fdf5e9',
@@ -40,7 +43,7 @@ export const variables = {
   },
   breakpoints: [0, 320, 768, 992, 1280],
   fonts: {
-    primary: 'halyard-text',
+    primary: 'Fira Sans',
   },
 }
 
@@ -61,6 +64,26 @@ export const theme = createMuiTheme({
     slideoutPanel: {
       width: '270px',
       zIndex: 10,
+    },
+    mapPopup: {
+      width: '329px',
+    },
+    variables: variables,
+    SDScale: {
+      offColors: [
+        'rgba(201, 232, 248, 0.3)',
+        'rgba(115, 160, 201, 0.3)',
+        'rgba(141, 212, 249, 0.3)',
+        'rgba(88, 141, 168, 0.3)',
+        'rgba(86, 119, 141, 0.3)',
+      ],
+      onColors: [
+        '#C9E8F8',
+        '#8DD4F9',
+        '#73A0C9',
+        '#588DA8',
+        '#56778D',
+      ],
     },
   },
 })
