@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Popup } from 'react-map-gl'
 import shallow from 'zustand/shallow'
-import * as turf from '@turf/turf'
+// import * as turf from '@turf/turf'
 
 import useStore from './../../store'
 import PopupContent from './PopupContent'
@@ -29,28 +29,28 @@ const MapPopup = ({ ...props }) => {
 
   const updatePopupCoords = () => {
     // console.log('feature', hoveredFeature)
-    if (
-      !!hoveredFeature &&
-      !!hoveredFeature.geometry &&
-      !!hoveredFeature.geometry.coordinates
-    ) {
-      console.log(
-        'coordinates, ',
-        hoveredFeature.geometry.coordinates,
-      )
-      var line = turf.lineString(
-        hoveredFeature.geometry.coordinates[0],
-      )
-      const featureBox = turf.bbox(line)
-      // console.log('featureBox, ', featureBox)
-      const boxWidth = featureBox[2] - featureBox[0]
-      const boxHeight = featureBox[3] - featureBox[1]
-      setPopupCoords([
-        featureBox[0] + boxWidth / 2,
-        featureBox[1],
-      ])
-      // return [coords[0], coords[1]]
-    }
+    // if (
+    //   !!hoveredFeature &&
+    //   !!hoveredFeature.geometry &&
+    //   !!hoveredFeature.geometry.coordinates
+    // ) {
+    //   console.log(
+    //     'coordinates, ',
+    //     hoveredFeature.geometry.coordinates,
+    //   )
+    //   var line = turf.lineString(
+    //     hoveredFeature.geometry.coordinates[0],
+    //   )
+    //   const featureBox = turf.bbox(line)
+    //   // console.log('featureBox, ', featureBox)
+    //   const boxWidth = featureBox[2] - featureBox[0]
+    //   const boxHeight = featureBox[3] - featureBox[1]
+    //   setPopupCoords([
+    //     featureBox[0] + boxWidth / 2,
+    //     featureBox[1],
+    //   ])
+    setPopupCoords([coords[0], coords[1]])
+    // }
   }
 
   const [showPopup, setShowPopup] = useState(false)
@@ -71,6 +71,7 @@ const MapPopup = ({ ...props }) => {
         closeButton={false}
         tipSize={0}
         anchor={popupAnchor}
+        offsetTop={100}
       >
         <PopupContent feature={hoveredFeature} />
       </Popup>
