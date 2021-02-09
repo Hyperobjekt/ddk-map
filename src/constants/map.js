@@ -194,3 +194,5 @@ export const CHOROPLETH_COLORS = [
   '#588DA8',
   '#56778D',
 ]
+
+export const MAP_CONTROLS_CLASSES = ['map-legend']

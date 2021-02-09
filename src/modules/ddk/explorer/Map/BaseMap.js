@@ -27,6 +27,7 @@ import theme from './../theme'
 import {
   DEFAULT_VIEWPORT,
   CENTER_TRACKED_SHAPES,
+  MAP_CONTROLS_CLASSES,
 } from './../../../../constants/map'
 import { defaultMapStyle } from './utils/selectors'
 import { getLayers } from './utils/layers'
@@ -35,6 +36,7 @@ import { useDebounce, usePrevious } from './../utils'
 import {
   getFeaturesAtPoint,
   getMouseXY,
+  getClosest,
 } from './utils/utils'
 import MapPopup from './components/MapPopup'
 
@@ -55,6 +57,7 @@ const BaseMap = ({ ...props }) => {
     centerState,
     allDataLoaded,
     hoveredTract,
+    controlHovered,
   } = useStore(
     state => ({
       activeView: state.activeView,
@@ -71,6 +74,7 @@ const BaseMap = ({ ...props }) => {
       centerState: state.centerState,
       allDataLoaded: state.allDataLoaded,
       hoveredTract: state.hoveredTract,
+      controlHovered: state.controlHovered,
     }),
     shallow,
   )
@@ -150,6 +154,9 @@ const BaseMap = ({ ...props }) => {
 
   const handleClick = feature => {
     // console.log('Map click, ', e)
+    if (!!controlHovered) {
+      return
+    }
     if (
       !!feature &&
       !!feature.layer &&
@@ -183,6 +190,9 @@ const BaseMap = ({ ...props }) => {
 
   const handleHover = feature => {
     // console.log('Map hover, ', feature)
+    if (!!controlHovered) {
+      return
+    }
     if (
       !!feature &&
       !!feature.layer &&
@@ -247,6 +257,20 @@ const BaseMap = ({ ...props }) => {
 
   const handleMouseMove = e => {
     // console.log('mousemove, ', e)
+    // If the cursor is over the legend or another control,
+    // we need to clear hovered states.
+    const hoveredElements = document.querySelectorAll(
+      ':hover',
+    )
+    const nodeList = Object.values(hoveredElements)
+    const isControl = nodeList.some(node => {
+      // console.log('node, ', node, node.classList)
+      return MAP_CONTROLS_CLASSES.some(item =>
+        node.classList.contains(item),
+      )
+    })
+    // console.log('isControl, ', isControl)
+
     // If we have moved the mouse outside of any tracts, remove
     // the hovered state from the last tract.
     const tracts = localMapRef.queryRenderedFeatures(
@@ -272,11 +296,28 @@ const BaseMap = ({ ...props }) => {
         hoveredFeature: null,
       })
     }
+    if (isControl) {
+      // Remove hovered state from previously hovered.
+      localMapRef.setFeatureState(
+        {
+          id: hoveredTract,
+          source: 'ddkids_tracts',
+          sourceLayer: 'tracts',
+        },
+        { hovered: false },
+      )
+      // Set previous hovered to null
+      setStoreValues({
+        hoveredTract: 0,
+        hoveredFeature: null,
+      })
+    }
     // Setting mouse coords and lnglat
     // for general use by tooltips, etc.
     setStoreValues({
       mouseXY: e.point,
       coords: e.lngLat,
+      controlHovered: isControl,
     })
   }
 

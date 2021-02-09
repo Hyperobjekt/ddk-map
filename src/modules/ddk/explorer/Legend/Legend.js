@@ -34,12 +34,17 @@ const Legend = ({ ...props }) => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'flex-start',
+      // pointerEvents: 'none',
     },
   }))
 
   const classes = styles()
 
-  return <Box className={classes.root}>Legend</Box>
+  return (
+    <Box className={clsx('map-legend', classes.root)}>
+      Legend
+    </Box>
+  )
 }
 
 Legend.propTypes = {}

@@ -89,6 +89,8 @@ const useStore = create((set, get) => ({
   // Mouse coords.
   coords: [0, 0],
   setCoords: coords => set({ coords }),
+  // Tracks whether a control is hovered.
+  controlHovered: false,
   // Settings pertaining to viewport state.
   viewport: DEFAULT_VIEWPORT,
   resetViewport: DEFAULT_VIEWPORT,
