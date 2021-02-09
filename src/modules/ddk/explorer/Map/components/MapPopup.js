@@ -68,8 +68,4 @@ const MapPopup = ({ ...props }) => {
   )
 }
 
-MapPopup.propTypes = {}
-
-MapPopup.defaultProps = {}
-
 export default MapPopup
