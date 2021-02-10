@@ -5,6 +5,7 @@ import {
   OPTIONS_ACTIVE_POINTS,
   CHOROPLETH_COLORS,
   SHAPE_ZOOM_LEVELS,
+  DDK_RED,
 } from './../../../../../constants/map'
 
 let z = 150
@@ -172,7 +173,7 @@ export const getPolygonLines = (source, type, context) => {
         ['==', type, 'states'],
         '#fff',
         ['==', type, 'metros'],
-        '#D65743',
+        DDK_RED, // '#D65743',
         ['==', type, 'tracts'],
         [
           'case',

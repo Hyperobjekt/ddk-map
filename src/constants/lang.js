@@ -40,5 +40,13 @@ export const langSet = {
     SDSCALE_MOD: `moderate`,
     SDSCALE_HIGH: `high`,
     SDSCALE_VHIGH: `very high`,
+    SLIDEOUT_COMPARING_TO: `<b>Comparing to:</b> other neighborhoods in {normPhrase}`,
+    SLIDEOUT_NEIGHBORHOODS_IN: `other neighborhoods in {normPhrase}`,
+    SLIDEOUT_THIS_METRO: `this metro area`,
+    SLIDEOUT_THIS_STATE: `this metro area`,
+    SLIDEOUT_THIS_NAT: `the nation`,
+    SLIDEOUT_COMPARE_TIP: `Your location is being compared to others in this geographic area. Use the “Compare to” dropdown to change this.`,
+    SLIDEOUT_TIP_COI: `<b>Child Opportunity Index</b> is an index of neighborhood resources and conditions that help children develop in a healthy way. It combines data from 29 neighborhood-level indicators into a single composite measure.`,
+    SEARCH_PROMPT: `Search for a location (address, city, or state)`,
   },
 }
