@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
-import Tooltip from '@material-ui/core/Tooltip'
+import { Tooltip, Button } from '@material-ui/core'
 
 import useStore from './../store'
 import {
@@ -71,6 +71,7 @@ const TractPanel = () => {
     },
     metricTitle: {
       fontSize: '18px',
+      lineHeight: '24px',
       fontWeight: 600,
       borderBottom: `1px dashed ${theme.extras.variables.colors.darkGray}`,
       margin: '0 0 25px 0',
@@ -78,9 +79,30 @@ const TractPanel = () => {
     sdScale: {
       marginTop: '15px',
     },
+    btnParent: {
+      display: 'flex',
+      alignItems: 'flex-end',
+      justifyContent: 'flex-end',
+    },
+    btn: {
+      color: theme.extras.variables.colors.ddkRed,
+      marginRight: 0,
+      '&.visible': {
+        display: 'block',
+      },
+      '&.hidden': {
+        display: 'none',
+      },
+    },
   }))
 
   const classes = styles()
+
+  const [showAll, setShowAll] = useState(false)
+
+  const toggleShowAll = () => {
+    setShowAll(!showAll)
+  }
 
   const getNormPhrase = () => {
     switch (activeNorm) {
@@ -121,17 +143,31 @@ const TractPanel = () => {
             classes.content,
           )}
         >
-          <h2 className={clsx(classes.h2)}>
-            {i18n.translate(tract.msaid15)}
-          </h2>
-          <h3 className={clsx(classes.h3)}>
-            {i18n.translate(`POPUP_CENSUS_TRACT`, {
-              id: tract.GEOID,
-            })}
-          </h3>
+          {Number(tract.msaid15) === 0 && (
+            <h2 className={clsx(classes.h2)}>
+              {i18n.translate(`POPUP_CENSUS_TRACT`, {
+                id: tract.GEOID,
+              })}
+            </h2>
+          )}
+          {Number(tract.msaid15) !== 0 && (
+            <>
+              <h2 className={clsx(classes.h2)}>
+                {i18n.translate(tract.msaid15)}
+              </h2>
+              <h3 className={clsx(classes.h3)}>
+                {i18n.translate(`POPUP_CENSUS_TRACT`, {
+                  id: tract.GEOID,
+                })}
+              </h3>
+            </>
+          )}
           <div className={clsx('tract-compare-tip')}>
             <Tooltip
-              title={i18n.translate(`SLIDEOUT_COMPARE_TIP`)}
+              title={i18n.translate(
+                `SLIDEOUT_COMPARE_TIP`,
+                { normPhrase: getNormPhrase() },
+              )}
               arrow
             >
               <span
@@ -191,7 +227,31 @@ const TractPanel = () => {
               )}
             />
           </div>
-          <div className={clsx('btn-show-all')}></div>
+          <div
+            className={clsx(
+              'btn-show-all',
+              classes.btnParent,
+            )}
+          >
+            <Button
+              className={clsx(
+                classes.btn,
+                !!showAll ? 'hidden' : 'visible',
+              )}
+              onClick={toggleShowAll}
+            >
+              {i18n.translate('BTN_SHOW_ALL')}
+            </Button>
+            <Button
+              className={clsx(
+                classes.btn,
+                !!showAll ? 'visible' : 'hidden',
+              )}
+              onClick={toggleShowAll}
+            >
+              {i18n.translate('BTN_HIDE_ALL')}
+            </Button>
+          </div>
           <div
             className={clsx(
               'tract-panel-pad-subindices',
@@ -199,7 +259,50 @@ const TractPanel = () => {
               classes.subindex,
             )}
           >
-            sub-indices
+            {SUB_INDICES.map((el, i) => {
+              return (
+                <div
+                  key={`subindex-${i}`}
+                  className={clsx(
+                    'tract-panel-pad-subindex',
+                    classes.pad,
+                    classes.index,
+                  )}
+                >
+                  <Tooltip
+                    title={
+                      <React.Fragment>
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: i18n.translate(
+                              `SLIDEOUT_TIP_${el.toUpperCase()}`,
+                            ),
+                          }}
+                        ></span>
+                      </React.Fragment>
+                    }
+                    arrow
+                  >
+                    <span
+                      className={clsx(
+                        'slideout-metric-title',
+                        classes.metricTitle,
+                      )}
+                    >
+                      {i18n.translate(`${el}${activeNorm}`)}
+                    </span>
+                  </Tooltip>
+                  <SDScale
+                    className={classes.sdScale}
+                    active={getActiveArray(
+                      tract[
+                        `${el}${activeNorm}${activeYear}`
+                      ],
+                    )}
+                  />
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>
