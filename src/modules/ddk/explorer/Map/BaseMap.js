@@ -184,6 +184,11 @@ const BaseMap = ({ ...props }) => {
       )
       setStoreValues({
         activeShape: feature.id,
+        slideoutTract: feature.id,
+        slideoutPanel: {
+          panel: 'tract',
+          active: true,
+        },
       })
     }
   }
@@ -348,6 +353,7 @@ const BaseMap = ({ ...props }) => {
       activeNorm,
       activePointLayers,
       centerState,
+      centerMetro,
     }
     // console.log('layers changed, ', hoveredTract)
     return getLayers(getMapSources(), context)
@@ -359,6 +365,7 @@ const BaseMap = ({ ...props }) => {
     activePointLayers,
     // centerState,
     activeNorm === 's' ? centerState : null,
+    activeNorm === 'm' ? centerMetro : null,
   ])
 
   /**

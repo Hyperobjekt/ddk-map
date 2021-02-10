@@ -17,7 +17,7 @@ const Header = ({ ...props }) => {
   // Styles for component.
   const headerStyles = makeStyles(theme => ({
     root: {
-      // Any overrides...
+      backgroundColor: theme.extras.variables.colors.white,
     },
     icon: {
       height: '24px',
@@ -30,6 +30,8 @@ const Header = ({ ...props }) => {
     search: {
       position: 'relative',
       minWidth: '320px',
+      border: `1px solid ${theme.extras.variables.colors.lightLightGray}`,
+      color: theme.extras.variables.colors.lightGray,
       borderRadius: theme.shape.borderRadius,
       backgroundColor: fade(
         theme.palette.common.white,
@@ -92,7 +94,7 @@ const Header = ({ ...props }) => {
               <MdSearch />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder={i18n.translate('SEARCH_PROMPT')}
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,

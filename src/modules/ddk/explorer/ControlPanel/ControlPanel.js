@@ -13,13 +13,24 @@ import { DesktopUnifiedShareBtn } from '../Share'
 
 const ControlPanel = ({ ...props }) => {
   // Header is not displayed if the view type is 'embed'
-  const activeView = useStore(state => state.activeView)
-  const slideoutPanel = useStore(
-    state => state.slideoutPanel,
-  )
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
-  )
+  // const activeView = useStore(state => state.activeView)
+  // const slideoutPanel = useStore(
+  //   state => state.slideoutPanel,
+  // )
+  // const setStoreValues = useStore(
+  //   state => state.setStoreValues,
+  // )
+  const {
+    slideoutTract,
+    activeView,
+    slideoutPanel,
+    setStoreValues,
+  } = useStore(state => ({
+    slideoutTract: state.slideoutTract,
+    activeView: state.activeView,
+    slideoutPanel: state.slideoutPanel,
+    setStoreValues: state.setStoreValues,
+  }))
 
   const toggleSlideout = e => {
     setStoreValues({
@@ -69,6 +80,7 @@ const ControlPanel = ({ ...props }) => {
             'control-panel-button',
             classes.button,
           )}
+          disabled={slideoutTract === 0 ? true : false}
         >
           <AiOutlineControl />
         </IconButton>

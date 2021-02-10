@@ -6,6 +6,7 @@ export const variables = {
     white: '#ffffff',
     darkGray: '#03171C',
     lightGray: '#616161',
+    ddkRed: '#C9422C',
     lightLightGray: '#eee',
     bridalHeath: '#fffbf3',
     alabaster: '#f7f7f7',
@@ -33,8 +34,6 @@ export const variables = {
     criColor3: '#cabbf5',
     barHighlight: '#e94f34',
     cpLabelColor: '#606b44',
-    cpalOrange: '#e55934',
-    cpalOrangeLight: '#ffeee5',
   },
   dimensions: {
     navbarHeight: '64px',
@@ -48,11 +47,38 @@ export const variables = {
 }
 
 export const theme = createMuiTheme({
-  // Update theme here according to this documentation
+  // Update theme here according to the Mui documentation
+  palette: {
+    primary: {
+      main: '#6200EE',
+      dark: '#3700B3',
+    },
+    secondary: {
+      main: '#03DAC5', //Another orange-ish color
+      dark: '#018786',
+    },
+    error: {
+      main: '#B00020',
+    },
+  },
+  overrides: {
+    MuiTooltip: {
+      // Arrow styling.
+      arrow: {
+        color: variables.colors.black,
+      },
+      // Tooltip body and contents.
+      tooltipArrow: {
+        backgroundColor: variables.colors.black,
+        fontSize: '14px',
+        padding: '16px',
+      },
+    },
+  },
   extras: {
     Legend: {
-      width: '200px',
-      height: '200px',
+      width: '279px',
+      height: '300px',
       cushionRight: 15,
       cushionTop: 25,
       zIndex: 13,
@@ -62,7 +88,7 @@ export const theme = createMuiTheme({
       zIndex: 15,
     },
     slideoutPanel: {
-      width: '270px',
+      width: '416px',
       zIndex: 10,
     },
     mapPopup: {

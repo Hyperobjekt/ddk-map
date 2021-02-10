@@ -161,7 +161,7 @@ export const POINT_TYPES = [
 ]
 
 export const SHAPE_ZOOM_LEVELS = [
-  { id: 'tracts', minZoom: 6 },
+  { id: 'tracts', minZoom: 3 },
   { id: 'metros', minZoom: 3 },
   { id: 'states', minZoom: 3 },
 ]
@@ -195,4 +195,14 @@ export const CHOROPLETH_COLORS = [
   '#56778D',
 ]
 
+export const DDK_RED = '#C9422C'
+
 export const MAP_CONTROLS_CLASSES = ['map-legend']
+
+/**
+ * Main index and four sub-indices that will be displayed for every
+ * tract in the slideout panel/modal.
+ * overall, social & economic, health, education
+ */
+export const MAIN_INDEX = 'xc'
+export const SUB_INDICES = ['xo', 'xh', 'xe']
