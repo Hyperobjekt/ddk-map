@@ -17,11 +17,6 @@ const getDemographic = layer => {
 
 export const getPoints = (source, layer, context) => {
   // console.log('getPoints, ', source, context)
-  // const isVisible =
-  //   activeLayers[
-  //     UNTD_LAYERS.findIndex(el => el.id === type)
-  //   ] === 1
-  // console.log('isVisible, ', isVisible)
   const demographic = getDemographic(layer)
   // console.log(
   //   'demographic, ',
@@ -58,6 +53,25 @@ export const getPoints = (source, layer, context) => {
         ['case', ['in', ['get', 'type'], 'ai'], 4, 2],
       ],
     },
+    filter: [
+      'case',
+      // If you're a tract in another state and norming is set to state...
+      // TODO: After statefips is added to points.
+      // [
+      //   'all',
+      //   ['==', ['string', context.activeNorm], 's'],
+      //   ['!=', ['get', 'statefips'], context.centerState],
+      // ],
+      // false,
+      // If you're a tract not in a metro and norming is set to metro...
+      [
+        'all',
+        ['==', ['string', context.activeNorm], 'm'],
+        ['!=', ['get', 'met'], context.centerMetro],
+      ],
+      false,
+      true,
+    ],
   })
 }
 
