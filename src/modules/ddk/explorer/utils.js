@@ -9,7 +9,7 @@ import {
 
 export const getActiveArray = index => {
   const arr = [0, 0, 0, 0, 0]
-  arr[index] = 1
+  arr[Math.round(index)] = 1
   return arr
 }
 

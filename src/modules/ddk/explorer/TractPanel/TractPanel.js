@@ -130,9 +130,15 @@ const TractPanel = () => {
     const tract = tracts.find(tract => {
       return Number(tract.GEOID) === slideoutTract
     })
-    // if (!!tract) {
-    //   console.log('slideout tract is ', tract)
-    // }
+    console.log(
+      'active array, ',
+      getActiveArray(
+        tract[`${MAIN_INDEX}${activeNorm}${activeYear}`],
+      ),
+    )
+    if (!!tract) {
+      console.log('slideout tract is ', tract)
+    }
     return (
       <div
         className={clsx('tract-panel-parent', classes.root)}
