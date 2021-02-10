@@ -137,24 +137,46 @@ const getShapeFilters = (type, context) => {
           ['!=', ['number', ['get', 'in100']], 1],
         ],
         false,
+        // If you're a tract not in the centered metro,
+        // and norming is set to metro, don't display.
         [
-          '!=',
+          'all',
+          ['==', ['string', context.activeNorm], 'm'],
+          [
+            '!=',
+            ['number', ['get', 'msaid15']],
+            context.centerMetro,
+          ],
+        ],
+        false,
+        [
+          '==',
           ['number', ['get', 'statefips']],
           ['number', 43],
         ],
-        true,
+        false,
         true,
       ]
       break
     case type === 'metros':
       return [
-        'all',
+        'case',
         [
-          '!=',
+          '==',
           ['number', ['get', 'statefips']],
           ['number', 43],
         ],
-        ['==', ['get', 'in100'], 1],
+        false,
+        // National norming, don't display.
+        ['==', ['string', context.activeNorm], 'n'],
+        false,
+        // State norming, don't display.
+        ['==', ['string', context.activeNorm], 's'],
+        false,
+        // Not in top 100, don't display.
+        ['!=', ['get', 'in100'], 1],
+        false,
+        true,
       ]
       break
     case type === 'states':
