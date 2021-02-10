@@ -141,6 +141,7 @@ const getShapeFilters = (type, context) => {
         // and norming is set to metro, don't display.
         [
           'all',
+          ['>', ['zoom'], 5],
           ['==', ['string', context.activeNorm], 'm'],
           [
             '!=',
