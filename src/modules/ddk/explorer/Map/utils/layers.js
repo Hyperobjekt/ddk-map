@@ -231,9 +231,7 @@ export const getPolygonLines = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             0,
@@ -245,9 +243,7 @@ export const getPolygonLines = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             1,
@@ -259,9 +255,7 @@ export const getPolygonLines = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             2,
@@ -273,9 +267,7 @@ export const getPolygonLines = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             3,
@@ -287,9 +279,7 @@ export const getPolygonLines = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             4,
@@ -370,9 +360,7 @@ export const getPolygonShapes = (source, type, context) => {
             '==',
             [
               'get',
-              context.activeMetric +
-                context.activeNorm +
-                context.activeYear,
+              context.activeMetric + context.activeNorm,
             ],
             0,
           ],
@@ -383,9 +371,7 @@ export const getPolygonShapes = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             1,
@@ -397,9 +383,7 @@ export const getPolygonShapes = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             2,
@@ -411,9 +395,7 @@ export const getPolygonShapes = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             3,
@@ -425,9 +407,7 @@ export const getPolygonShapes = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             4,
@@ -488,17 +468,17 @@ export const getLayers = (sources, context) => {
   layers.push(
     ...getPolygonLayers('ddkids_tracts', 'tracts', context),
   )
-  if (context.activePointLayers.length > 0) {
-    context.activePointLayers.forEach(point => {
-      // console.log('adding active point layer for ', point)
-      layers.push(
-        ...getPointLayers(
-          `ddkids_points_${point}${context.activeYear}`,
-          `${point}${context.activeYear}`,
-          context,
-        ),
-      )
-    })
-  }
+  // if (context.activePointLayers.length > 0) {
+  //   context.activePointLayers.forEach(point => {
+  //     // console.log('adding active point layer for ', point)
+  //     layers.push(
+  //       ...getPointLayers(
+  //         `ddkids_points_${point}${context.activeYear}`,
+  //         `${point}${context.activeYear}`,
+  //         context,
+  //       ),
+  //     )
+  //   })
+  // }
   return layers
 }

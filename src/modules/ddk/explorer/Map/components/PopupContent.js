@@ -12,12 +12,14 @@ const PopupContent = ({ ...props }) => {
     activeMetric,
     activeYear,
     activeNorm,
-    remoteJson,
+    hoveredFeature,
+    hoveredTract,
   } = useStore(state => ({
     activeMetric: state.activeMetric,
     activeYear: state.activeYear,
     activeNorm: state.activeNorm,
-    remoteJson: state.remoteJson,
+    hoveredFeature: state.hoveredFeature,
+    hoveredTract: state.hoveredTract,
   }))
 
   const styles = makeStyles(theme => ({
@@ -83,19 +85,17 @@ const PopupContent = ({ ...props }) => {
 
   const classes = styles()
   // If no feature or tract data, return.
-  if (!feature || !remoteJson || !remoteJson.tracts) {
+  if (hoveredTract === 0) {
     return ''
   }
   // Array of all tracts
-  const tracts = remoteJson.tracts.data
+  // const tracts = remoteJson.tracts.data
 
   const popItems = ['w', 'ai', 'hi', 'ap', 'b']
 
   const scaleArr = [0, 0, 0, 0, 0]
   scaleArr[
-    feature.properties[
-      `${activeMetric}${activeNorm}${activeYear}`
-    ]
+    feature.properties[`${activeMetric}${activeNorm}`]
   ] = 1
 
   return (
@@ -143,9 +143,6 @@ const PopupContent = ({ ...props }) => {
           )}
         >
           {popItems.map((el, i) => {
-            const tract = tracts.find(tract => {
-              return Number(tract.GEOID) === feature.id
-            })
             return (
               <div
                 className={clsx(
@@ -162,7 +159,7 @@ const PopupContent = ({ ...props }) => {
                   )}
                 </span>
                 <span className="popup-pop-item-data">
-                  {tract[`${el}${activeYear}`]}
+                  {feature.properties[el]}
                 </span>
               </div>
             )

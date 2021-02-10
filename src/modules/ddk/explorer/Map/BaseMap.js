@@ -51,7 +51,7 @@ const BaseMap = ({ ...props }) => {
     activeMetric,
     activeNorm,
     activeShape,
-    mapSources,
+    // mapSources,
     setStoreValues,
     centerMetro,
     centerState,
@@ -68,7 +68,7 @@ const BaseMap = ({ ...props }) => {
       activeMetric: state.activeMetric,
       activeNorm: state.activeNorm,
       activeShape: state.activeShape,
-      mapSources: state.mapSources,
+      // mapSources: state.mapSources,
       setStoreValues: state.setStoreValues,
       centerMetro: state.centerMetro,
       centerState: state.centerState,
@@ -326,9 +326,105 @@ const BaseMap = ({ ...props }) => {
     })
   }
 
+  const updateCentered = () => {
+    if (!!localMapRef && !!loaded) {
+      // console.log('local map ref exists')
+      // Get point at map center
+      const mapEl = document.getElementById('map')
+      const mapCenterX = mapEl.offsetWidth / 2
+      const mapCenterY = mapEl.offsetHeight / 2
+      // Find all features at a point
+      const layersArray = CENTER_TRACKED_SHAPES.map(
+        layer => {
+          return `${layer.id}Shapes`
+        },
+      )
+      var features = localMapRef.queryRenderedFeatures(
+        [mapCenterX, mapCenterY],
+        {
+          layers: layersArray,
+        },
+      )
+      // console.log('Features at map center: ', features)
+      const centerSettingsObj = {}
+      CENTER_TRACKED_SHAPES.forEach((el, i) => {
+        const singular = el.id.slice(0, -1)
+        const capitalized = singular.length
+          ? singular[0].toUpperCase() +
+            singular.slice(1).toLowerCase()
+          : ''
+        // If zoom is higher than relevant to shape,
+        // we won't make it highlighted.
+        let feature = features.find(feature => {
+          return feature.layer.id === `${el.id}Shapes`
+        })
+        // console.log('feature is ', feature)
+        // If feature exists, also check any required prop values.
+        el.require_props.forEach(prop => {
+          // console.log('checking a prop: ', prop)
+          if (
+            !!feature &&
+            !!feature.properties &&
+            feature.properties[prop[0]] !== prop[1]
+          ) {
+            feature = false
+          }
+        })
+        if (
+          // mapViewport[0].zoom >= el.minZoom &&
+          !!feature &&
+          !!feature.id &&
+          !!feature.properties
+        ) {
+          if (!!feature) {
+            if (feature.id !== prev[el.storeHandle]) {
+              console.log(`Setting centered for ${el.id}.`)
+              if (!!prev[el.storeHandle]) {
+                localMapRef.setFeatureState(
+                  {
+                    id: prev[el.storeHandle],
+                    source: el.source,
+                    sourceLayer: el.id,
+                  },
+                  { centered: false },
+                )
+              }
+              localMapRef.setFeatureState(
+                {
+                  id: feature.id,
+                  source: feature.layer.source,
+                  sourceLayer:
+                    feature.layer['source-layer'],
+                },
+                { centered: true },
+              )
+            }
+          }
+          centerSettingsObj[
+            `center${capitalized}`
+          ] = !!feature ? feature.id : 0
+        } else {
+          if (!!prev[el.storeHandle]) {
+            localMapRef.setFeatureState(
+              {
+                id: prev[el.storeHandle],
+                source: el.source,
+                sourceLayer: el.id,
+              },
+              { centered: false },
+            )
+          }
+          centerSettingsObj[`center${capitalized}`] = 0
+        }
+      })
+      setStoreValues(centerSettingsObj)
+    }
+  }
+
   const handleLoad = () => {
     // console.log('Map loaded.')
     setLoaded(true)
+    updateCentered()
   }
 
   const getMapSources = () => {
@@ -336,9 +432,9 @@ const BaseMap = ({ ...props }) => {
       process.env.MAPBOX_USER,
       process.env.MAPBOX_API_TOKEN,
       dataVersion,
-      loadYears,
+      activeYear,
     )
-    setStoreValues({ mapSources: sources })
+    // setStoreValues({ mapSources: sources })
     return sources
   }
 
@@ -397,7 +493,7 @@ const BaseMap = ({ ...props }) => {
       getUpdatedMapStyle(
         defaultMapStyle,
         layers,
-        !!mapSources ? mapSources : getMapSources(),
+        getMapSources(),
       ),
     [defaultMapStyle, layers],
   )
@@ -424,7 +520,7 @@ const BaseMap = ({ ...props }) => {
   //   resetViewportState(mapViewport[0])
   // }, [mapViewport])
 
-  const debouncedMapViewport = useDebounce(mapViewport, 300)
+  const debouncedMapViewport = useDebounce(mapViewport, 200)
   useEffect(() => {
     // console.log('debouncedMapViewport changed')
     resetViewportState(mapViewport[0])
@@ -436,100 +532,14 @@ const BaseMap = ({ ...props }) => {
     //   'loaded or mapViewport changed,',
     //   mapViewport,
     // )
-    // Update center tract, metro, and state
-    if (!!localMapRef && !!mapSources && !!loaded) {
-      // console.log('local map ref exists')
-      // Get point at map center
-      const mapEl = document.getElementById('map')
-      const mapCenterX = mapEl.offsetWidth / 2
-      const mapCenterY = mapEl.offsetHeight / 2
-      // Find all features at a point
-      const layersArray = CENTER_TRACKED_SHAPES.map(
-        layer => {
-          return `${layer.id}Shapes`
-        },
-      )
-      var features = localMapRef.queryRenderedFeatures(
-        [mapCenterX, mapCenterY],
-        {
-          layers: layersArray,
-        },
-      )
-      // console.log('Features at map center: ', features)
-      const centerSettingsObj = {}
-      CENTER_TRACKED_SHAPES.forEach((el, i) => {
-        const singular = el.id.slice(0, -1)
-        const capitalized = singular.length
-          ? singular[0].toUpperCase() +
-            singular.slice(1).toLowerCase()
-          : ''
-        // If zoom is higher than relevant to shape,
-        // we won't make it highlighted.
-        let feature = features.find(feature => {
-          return feature.layer.id === `${el.id}Shapes`
-        })
-        // console.log('feature is ', feature)
-        // If feature exists, also check any required prop values.
-        el.require_props.forEach(prop => {
-          // console.log('checking a prop: ', prop)
-          if (
-            !!feature &&
-            !!feature.properties &&
-            feature.properties[prop[0]] !== prop[1]
-          ) {
-            feature = false
-          }
-        })
-        if (
-          // mapViewport[0].zoom >= el.minZoom &&
-          !!feature &&
-          !!feature.id &&
-          !!feature.properties
-        ) {
-          if (!!feature) {
-            if (feature.id !== prev[el.storeHandle]) {
-              // console.log(`Setting centered for ${el.id}.`)
-              if (!!prev[el.storeHandle]) {
-                localMapRef.setFeatureState(
-                  {
-                    id: prev[el.storeHandle],
-                    source: el.source,
-                    sourceLayer: el.id,
-                  },
-                  { centered: false },
-                )
-              }
-              localMapRef.setFeatureState(
-                {
-                  id: feature.id,
-                  source: feature.layer.source,
-                  sourceLayer:
-                    feature.layer['source-layer'],
-                },
-                { centered: true },
-              )
-            }
-          }
-          centerSettingsObj[
-            `center${capitalized}`
-          ] = !!feature ? feature.id : 0
-        } else {
-          if (!!prev[el.storeHandle]) {
-            localMapRef.setFeatureState(
-              {
-                id: prev[el.storeHandle],
-                source: el.source,
-                sourceLayer: el.id,
-              },
-              { centered: false },
-            )
-          }
-          centerSettingsObj[`center${capitalized}`] = 0
-        }
-      })
-      setStoreValues(centerSettingsObj)
-    }
+    updateCentered()
   }, [loaded, allDataLoaded, debouncedMapViewport])
+
+  // Hack. The map isn't checking centered features
+  // when loaded. Force it to check.
+  setTimeout(() => {
+    updateCentered()
+  }, 300)
 
   // This is from the mapbox component.
   const setMapViewport = useMapStore(

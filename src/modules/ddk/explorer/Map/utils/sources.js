@@ -14,7 +14,7 @@ export const getSources = (
   mapboxUser,
   mapboxToken,
   dataVersion,
-  loadYears,
+  activeYear,
 ) => {
   const versionStr = dataVersion.replace(/\./g, '-')
   const obj = {
@@ -23,18 +23,16 @@ export const getSources = (
       type: 'vector',
     },
     ddkids_tracts: {
-      url: `mapbox://${mapboxUser}.tracts_${versionStr}?access_token=${mapboxToken}`,
+      url: `mapbox://${mapboxUser}.tracts${activeYear}_${versionStr}?access_token=${mapboxToken}`,
       type: 'vector',
     },
   }
-  loadYears.forEach(year => {
-    OPTIONS_ACTIVE_POINTS.options.forEach(demo => {
-      obj[`ddkids_points_${demo}${year}`] = {
-        url: `mapbox://${mapboxUser}.points_${demo}${year}_${versionStr}?access_token=${mapboxToken}`,
-        type: 'vector',
-      }
-    })
-  })
+  // OPTIONS_ACTIVE_POINTS.options.forEach(demo => {
+  //   obj[`ddkids_points_${demo}${activeYear}`] = {
+  //     url: `mapbox://${mapboxUser}.points_${demo}${activeYear}_${versionStr}?access_token=${mapboxToken}`,
+  //     type: 'vector',
+  //   }
+  // })
   // console.log('source object: ', obj)
   return fromJS(obj)
 }
