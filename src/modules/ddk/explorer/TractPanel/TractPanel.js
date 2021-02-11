@@ -20,14 +20,14 @@ const TractPanel = () => {
   const {
     slideoutPanel,
     slideoutTract,
-    remoteJson,
+    slideoutFeature,
     allDataLoaded,
     activeNorm,
     activeYear,
   } = useStore(state => ({
     slideoutPanel: state.slideoutPanel,
     slideoutTract: state.slideoutTract,
-    remoteJson: state.remoteJson,
+    slideoutFeature: state.slideoutFeature,
     allDataLoaded: state.allDataLoaded,
     activeNorm: state.activeNorm,
     activeYear: state.activeYear,
@@ -123,21 +123,23 @@ const TractPanel = () => {
   if (
     slideoutPanel.panel === 'tract' &&
     allDataLoaded &&
-    !!remoteJson &&
-    !!remoteJson.tracts
+    !!slideoutFeature
+    // !!remoteJson &&
+    // !!remoteJson.tracts
   ) {
-    const tracts = remoteJson.tracts.data
-    const tract = tracts.find(tract => {
-      return Number(tract.GEOID) === slideoutTract
-    })
+    // const tracts = remoteJson.tracts.data
+    const feature = slideoutFeature
+    // tracts.find(tract => {
+    //   return Number(tract.GEOID) === slideoutTract
+    // })
     console.log(
       'active array, ',
       getActiveArray(
-        tract[`${MAIN_INDEX}${activeNorm}${activeYear}`],
+        feature.properties[`${MAIN_INDEX}${activeNorm}`],
       ),
     )
-    if (!!tract) {
-      console.log('slideout tract is ', tract)
+    if (!!feature) {
+      console.log('slideout tract is ', feature)
     }
     return (
       <div
@@ -149,21 +151,21 @@ const TractPanel = () => {
             classes.content,
           )}
         >
-          {Number(tract.msaid15) === 0 && (
+          {Number(feature.properties.msaid15) === 0 && (
             <h2 className={clsx(classes.h2)}>
               {i18n.translate(`POPUP_CENSUS_TRACT`, {
-                id: tract.GEOID,
+                id: feature.properties.GEOID,
               })}
             </h2>
           )}
-          {Number(tract.msaid15) !== 0 && (
+          {Number(feature.properties.msaid15) !== 0 && (
             <>
               <h2 className={clsx(classes.h2)}>
-                {i18n.translate(tract.msaid15)}
+                {i18n.translate(feature.properties.msaid15)}
               </h2>
               <h3 className={clsx(classes.h3)}>
                 {i18n.translate(`POPUP_CENSUS_TRACT`, {
-                  id: tract.GEOID,
+                  id: feature.properties.GEOID,
                 })}
               </h3>
             </>
@@ -227,8 +229,8 @@ const TractPanel = () => {
             <SDScale
               className={classes.sdScale}
               active={getActiveArray(
-                tract[
-                  `${MAIN_INDEX}${activeNorm}${activeYear}`
+                feature.properties[
+                  `${MAIN_INDEX}${activeNorm}`
                 ],
               )}
             />
@@ -301,8 +303,8 @@ const TractPanel = () => {
                   <SDScale
                     className={classes.sdScale}
                     active={getActiveArray(
-                      tract[
-                        `${el}${activeNorm}${activeYear}`
+                      feature.properties[
+                        `${el}${activeNorm}`
                       ],
                     )}
                   />
