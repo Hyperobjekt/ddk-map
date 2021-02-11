@@ -195,7 +195,7 @@ const BaseMap = ({ ...props }) => {
   }
 
   const handleHover = feature => {
-    // console.log('Map hover, ', feature)
+    console.log('Map hover, ', feature)
     if (!!controlHovered) {
       return
     }
@@ -379,7 +379,7 @@ const BaseMap = ({ ...props }) => {
         ) {
           if (!!feature) {
             if (feature.id !== prev[el.storeHandle]) {
-              console.log(`Setting centered for ${el.id}.`)
+              // console.log(`Setting centered for ${el.id}.`)
               if (!!prev[el.storeHandle]) {
                 localMapRef.setFeatureState(
                   {

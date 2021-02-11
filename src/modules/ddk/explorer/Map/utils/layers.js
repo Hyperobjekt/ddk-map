@@ -124,7 +124,7 @@ const getShapeFilters = (type, context) => {
         [
           'all',
           ['==', ['string', context.activeNorm], 's'],
-          ['!=', ['get', 'statefips'], context.centerState],
+          ['!=', ['get', 's'], context.centerState],
         ],
         false,
         // If zoom is lower than min zoom set for shape type...
@@ -145,16 +145,12 @@ const getShapeFilters = (type, context) => {
           ['==', ['string', context.activeNorm], 'm'],
           [
             '!=',
-            ['number', ['get', 'msaid15']],
+            ['number', ['get', 'm']],
             context.centerMetro,
           ],
         ],
         false,
-        [
-          '==',
-          ['number', ['get', 'statefips']],
-          ['number', 43],
-        ],
+        ['==', ['number', ['get', 's']], ['number', 43]],
         false,
         true,
       ]
@@ -162,11 +158,7 @@ const getShapeFilters = (type, context) => {
     case type === 'metros':
       return [
         'case',
-        [
-          '==',
-          ['number', ['get', 'statefips']],
-          ['number', 43],
-        ],
+        ['==', ['number', ['get', 's']], ['number', 43]],
         false,
         // National norming, don't display.
         ['==', ['string', context.activeNorm], 'n'],

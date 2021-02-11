@@ -31,7 +31,7 @@ export const DEFAULT_LOAD_YEARS = ['10', '15']
 export const DEFAULT_ACTIVE_POINTS = ''
 export const DEFAULT_METRIC = 'xc'
 export const DEFAULT_NORM = 'n'
-export const DEFAULT_DATA_VERSION = '1.0.6'
+export const DEFAULT_DATA_VERSION = '1.0.8'
 export const DEFAULT_LAT = '37.39'
 export const DEFAULT_LNG = '-96.78'
 export const DEFAULT_ZOOM = '3.15'
@@ -100,6 +100,30 @@ export const DATA_FILES = [
     id: 'metros',
     filename: 'metros',
     ext: 'json',
+    type: 'data',
+  },
+  {
+    id: 'pop10',
+    filename: 'pop10',
+    ext: 'csv',
+    type: 'data',
+  },
+  {
+    id: 'pop15',
+    filename: 'pop15',
+    ext: 'csv',
+    type: 'data',
+  },
+  {
+    id: 'raw10',
+    filename: 'raw10',
+    ext: 'csv',
+    type: 'data',
+  },
+  {
+    id: 'raw15',
+    filename: 'raw15',
+    ext: 'csv',
     type: 'data',
   },
   // {
