@@ -14,12 +14,16 @@ const PopupContent = ({ ...props }) => {
     activeNorm,
     hoveredFeature,
     hoveredTract,
+    remoteJson,
+    langs,
   } = useStore(state => ({
     activeMetric: state.activeMetric,
     activeYear: state.activeYear,
     activeNorm: state.activeNorm,
     hoveredFeature: state.hoveredFeature,
     hoveredTract: state.hoveredTract,
+    remoteJson: state.remoteJson,
+    langs: state.langs,
   }))
 
   const styles = makeStyles(theme => ({
@@ -88,26 +92,33 @@ const PopupContent = ({ ...props }) => {
   if (hoveredTract === 0) {
     return ''
   }
-  // Array of all tracts
-  // const tracts = remoteJson.tracts.data
-
+  // Population items.
   const popItems = ['w', 'ai', 'hi', 'ap', 'b']
-
+  // Default array for scale.
   const scaleArr = [0, 0, 0, 0, 0]
   scaleArr[
     feature.properties[`${activeMetric}${activeNorm}`]
   ] = 1
-
+  // If there's no population data, don't render.
+  // if (!remoteJson.pop) {
+  //   return ''
+  // } else {
+  // console.log('remoteJson, ', remoteJson)
+  const tract = remoteJson.pop.data.find(el => {
+    return Number(el.GEOID) === feature.id
+  })
+  console.log('tract = ', tract)
+  console.log('feature = ', feature)
   return (
     <div className={clsx('popup-parent', classes.root)}>
-      {feature.properties.msaid15 !== 0 && (
+      {feature.properties.m !== 0 && (
         <h3
           className={clsx(
             'popup-metro-name',
             classes.title,
           )}
         >
-          {i18n.translate(feature.properties.msaid15)}
+          {i18n.translate(feature.properties.m)}
         </h3>
       )}
       <span
@@ -142,32 +153,34 @@ const PopupContent = ({ ...props }) => {
             classes.popItems,
           )}
         >
-          {popItems.map((el, i) => {
-            return (
-              <div
-                className={clsx(
-                  'popup-pop-item',
-                  classes.popItem,
-                )}
-                key={`popup-item-${i}`}
-              >
-                <span
-                  className={clsx('popup-pop-item-title')}
-                >
-                  {i18n.translate(
-                    `POP_${el.toUpperCase()}`,
+          {!!remoteJson.pop &&
+            popItems.map((el, i) => {
+              return (
+                <div
+                  className={clsx(
+                    'popup-pop-item',
+                    classes.popItem,
                   )}
-                </span>
-                <span className="popup-pop-item-data">
-                  {feature.properties[el]}
-                </span>
-              </div>
-            )
-          })}
+                  key={`popup-item-${i}`}
+                >
+                  <span
+                    className={clsx('popup-pop-item-title')}
+                  >
+                    {i18n.translate(
+                      `POP_${el.toUpperCase()}`,
+                    )}
+                  </span>
+                  <span className="popup-pop-item-data">
+                    {tract[el]}
+                  </span>
+                </div>
+              )
+            })}
         </div>
       </div>
     </div>
   )
+  // }
 }
 
 export default PopupContent
