@@ -21,6 +21,8 @@ import {
   DEFAULT_LAT,
   DEFAULT_LNG,
   DEFAULT_ZOOM,
+  OPTIONS_NORM,
+  OPTIONS_ACTIVE_POINTS
 } from './../../../constants/map'
 
 const useStore = create((set, get) => ({
@@ -65,10 +67,14 @@ const useStore = create((set, get) => ({
   activeView: DEFAULT_VIEW,
   activeShape: DEFAULT_ACTIVE_SHAPE,
   activeYear: DEFAULT_ACTIVE_YEAR,
+  // demographic dot density layers
+  optionsPointLayers: OPTIONS_ACTIVE_POINTS,
   activePointLayers: DEFAULT_ACTIVE_POINTS,
   // Which years of tilesets to load.
   loadYears: DEFAULT_LOAD_YEARS,
   activeMetric: DEFAULT_METRIC,
+  // Norming info
+  optionsNorm: OPTIONS_NORM,
   activeNorm: DEFAULT_NORM,
   // Version of data to load, can be passed in from hash.
   dataVersion: DEFAULT_DATA_VERSION,

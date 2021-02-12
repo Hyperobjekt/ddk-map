@@ -51,8 +51,8 @@ export const theme = createMuiTheme({
   // Update theme here according to this documentation
   extras: {
     Legend: {
-      width: '200px',
-      height: '200px',
+      width: '250px',
+      height: '400px',
       cushionRight: 15,
       cushionTop: 25,
       zIndex: 13,

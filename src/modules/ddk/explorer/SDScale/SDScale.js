@@ -67,13 +67,33 @@ const SDScale = ({ ...props }) => {
           backgroundColor: theme.extras.SDScale.onColors[4],
         },
       },
+      '&.legend': {
+        backgroundColor: theme.extras.SDScale.onColors[0],
+        '&:nth-child(2)': {
+          backgroundColor: theme.extras.SDScale.onColors[1],
+        },
+        '&:nth-child(3)': {
+          backgroundColor: theme.extras.SDScale.onColors[2],
+        },
+        '&:nth-child(4)': {
+          backgroundColor: theme.extras.SDScale.onColors[3],
+        },
+        '&:nth-child(5)': {
+          backgroundColor: theme.extras.SDScale.onColors[4],
+        },
+      }
     },
     label: {
+      fontSize: '12px',
+      fontWeight: 600,
       flex: '1 1 20%',
       textAlign: 'center',
-      fontWeight: 600,
-      fontSize: '12px',
       height: '12px',
+      '&.legend': {
+        fontWeight: 400,
+        fontSize: '8px',
+        color: '#616161'
+      }
     },
   }))
 
@@ -96,7 +116,7 @@ const SDScale = ({ ...props }) => {
             <div
               className={clsx(
                 'sd-scale-block',
-                props.active[i] === 1 ? 'active' : '',
+                props.type === 'legend' ? 'legend' : props.active[i] === 1 ? 'active' : '',
                 classes.block,
               )}
               key={`sd-scale-block-${i}`}
@@ -105,14 +125,15 @@ const SDScale = ({ ...props }) => {
         })}
       </div>
       <div
-        className={clsx('sd-scale-labels', classes.labels)}
+        className={clsx(
+          'sd-scale-labels', classes.labels)}
       >
         {SDArray.map((el, i) => {
           return (
             <div
               className={clsx(
                 'sd-scale-item',
-                props.active[i] === 1 ? 'active' : '',
+                props.type === 'legend' ? 'legend' : '',
                 classes.label,
               )}
               aria-label={el}
@@ -131,6 +152,7 @@ const SDScale = ({ ...props }) => {
 
 SDScale.propTypes = {
   active: PropTypes.array,
+  type: PropTypes.string
 }
 
 export default SDScale
