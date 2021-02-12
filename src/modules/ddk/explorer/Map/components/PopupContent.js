@@ -5,6 +5,7 @@ import i18n from '@pureartisan/simple-i18n'
 
 import useStore from './../../store'
 import SDScale from './../../SDScale'
+import PopStack from './../../PopStack'
 
 const PopupContent = ({ ...props }) => {
   const feature = props.feature
@@ -39,7 +40,6 @@ const PopupContent = ({ ...props }) => {
       lineHeight: '24px',
       letterSpacing: '0.15px',
       color: theme.extras.variables.colors.darkGray,
-      // border: '1px solid gray',
       margin: '0 0 3px 0',
     },
     tractId: {
@@ -47,7 +47,6 @@ const PopupContent = ({ ...props }) => {
       fontSize: '14px',
       lineHeight: '14px',
       letterSpacing: '0.25px',
-      // border: '1px solid gray',
       margin: '0 0 14px 0',
     },
     hr: {
@@ -99,16 +98,9 @@ const PopupContent = ({ ...props }) => {
   scaleArr[
     feature.properties[`${activeMetric}${activeNorm}`]
   ] = 1
-  // If there's no population data, don't render.
-  // if (!remoteJson.pop) {
-  //   return ''
-  // } else {
-  // console.log('remoteJson, ', remoteJson)
-  const tract = remoteJson.pop.data.find(el => {
+  const pop = remoteJson.pop.data.find(el => {
     return Number(el.GEOID) === feature.id
   })
-  console.log('tract = ', tract)
-  console.log('feature = ', feature)
   return (
     <div className={clsx('popup-parent', classes.root)}>
       {feature.properties.m !== 0 && (
@@ -147,40 +139,10 @@ const PopupContent = ({ ...props }) => {
         >
           {i18n.translate(`POPUP_POPULATION`)}
         </h4>
-        <div
-          className={clsx(
-            'popup-pop-items',
-            classes.popItems,
-          )}
-        >
-          {!!remoteJson.pop &&
-            popItems.map((el, i) => {
-              return (
-                <div
-                  className={clsx(
-                    'popup-pop-item',
-                    classes.popItem,
-                  )}
-                  key={`popup-item-${i}`}
-                >
-                  <span
-                    className={clsx('popup-pop-item-title')}
-                  >
-                    {i18n.translate(
-                      `POP_${el.toUpperCase()}`,
-                    )}
-                  </span>
-                  <span className="popup-pop-item-data">
-                    {tract[el]}
-                  </span>
-                </div>
-              )
-            })}
-        </div>
+        <PopStack pop={pop} />
       </div>
     </div>
   )
-  // }
 }
 
 export default PopupContent
