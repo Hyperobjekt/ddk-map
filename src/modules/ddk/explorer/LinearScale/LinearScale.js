@@ -16,10 +16,8 @@ const styles = makeStyles(theme => ({
     height: '3px',
     width: '100%',
     display: 'block',
-
     top: 0,
     left: 0,
-    // backgroundColor: 'black',
     backgroundImage:
       'linear-gradient(90deg, #C9E8F8 0%, #58798F 101.52%)',
     backgroundSize: '100% 3px',
@@ -32,6 +30,30 @@ const styles = makeStyles(theme => ({
     width: '0.5px',
     height: '22px',
     backgroundColor: '#58798F',
+  },
+  hashMean: {
+    width: '0.5px',
+    height: '5px',
+    backgroundColor: '#58798F',
+  },
+  scaleLabelGroup: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  scaleLabel: {
+    fontSize: '12px',
+    lineHeight: '16px',
+    letterSpacing: '0.4px',
+  },
+  hashLabel: {
+    width: '60px',
+    marginLeft: '-50%',
+    // marginTop: '-1px',
+    display: 'block',
+    textAlign: 'center',
+  },
+  valueLabel: {
+    fontWeight: 500,
   },
 }))
 
@@ -50,13 +72,13 @@ const LinearScale = ({ ...props }) => {
   const percent = false
 
   const rightLabel = getRoundedValue(
-    !!high_is_good ? max : min,
+    max, // !!high_is_good ? max : min,
     decimals,
     currency,
     percent,
   )
   const leftLabel = getRoundedValue(
-    !!high_is_good ? min : max,
+    min, // !!high_is_good ? min : max,
     decimals,
     currency,
     percent,
@@ -98,7 +120,16 @@ const LinearScale = ({ ...props }) => {
             classes.hash,
           )}
         ></div>
-        <span className={clsx('label')}>{valueLabel}</span>
+        <span
+          className={clsx(
+            'label',
+            classes.scaleLabel,
+            classes.hashLabel,
+            classes.valueLabel,
+          )}
+        >
+          {valueLabel}
+        </span>
       </div>
       <div
         className={clsx(
@@ -108,15 +139,41 @@ const LinearScale = ({ ...props }) => {
         style={{ left: meanPercentFromLeft }}
       >
         <div
-          className={clsx('linear-scale-hash-mean')}
+          className={clsx(
+            'linear-scale-hash-mean',
+            classes.hashMean,
+          )}
         ></div>
-        <span className={clsx('label')}>{meanLabel}</span>
+        <span
+          className={clsx(
+            'label',
+            classes.scaleLabel,
+            classes.hashLabel,
+          )}
+        >
+          {meanLabel}
+        </span>
       </div>
-      <div className={clsx('linear-scale-label-left')}>
-        <span className={clsx('label')}>{leftLabel}</span>
-      </div>
-      <div className={clsx('linear-scale-label-right')}>
-        <span className={clsx('label')}>{rightLabel}</span>
+      <div
+        className={clsx(
+          'linear-scale-labels',
+          classes.scaleLabelGroup,
+        )}
+      >
+        <div className={clsx('linear-scale-label-left')}>
+          <span
+            className={clsx('label', classes.scaleLabel)}
+          >
+            {leftLabel}
+          </span>
+        </div>
+        <div className={clsx('linear-scale-label-right')}>
+          <span
+            className={clsx('label', classes.scaleLabel)}
+          >
+            {rightLabel}
+          </span>
+        </div>
       </div>
     </div>
   )
