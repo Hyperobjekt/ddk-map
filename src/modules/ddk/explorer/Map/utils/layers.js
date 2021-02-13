@@ -16,8 +16,8 @@ const getDemographic = layer => {
 }
 
 export const getPoints = (source, layer, context) => {
-  // console.log('getPoints, ', source, context)
-  const demographic = getDemographic(layer)
+  console.log('getPoints, ', source, context)
+  // const demographic = getDemographic(layer)
   // console.log(
   //   'demographic, ',
   //   demographic,
@@ -34,7 +34,7 @@ export const getPoints = (source, layer, context) => {
     interactive: false,
     paint: {
       'circle-color': POINT_TYPES.find(
-        el => el.id === demographic,
+        el => el.id === layer,
       ).color,
       'circle-opacity': 1,
       // If it's 'ai', make larger, else standard size.
@@ -56,18 +56,17 @@ export const getPoints = (source, layer, context) => {
     filter: [
       'case',
       // If you're a tract in another state and norming is set to state...
-      // TODO: After statefips is added to points.
-      // [
-      //   'all',
-      //   ['==', ['string', context.activeNorm], 's'],
-      //   ['!=', ['get', 'statefips'], context.centerState],
-      // ],
-      // false,
+      [
+        'all',
+        ['==', ['string', context.activeNorm], 's'],
+        ['!=', ['get', 's'], context.centerState],
+      ],
+      false,
       // If you're a tract not in a metro and norming is set to metro...
       [
         'all',
         ['==', ['string', context.activeNorm], 'm'],
-        ['!=', ['get', 'met'], context.centerMetro],
+        ['!=', ['get', 'm'], context.centerMetro],
       ],
       false,
       true,
@@ -75,7 +74,7 @@ export const getPoints = (source, layer, context) => {
   })
 }
 
-const pointIndex = 100
+const pointIndex = 200
 const getPointIndex = layer => {
   const ind =
     OPTIONS_ACTIVE_POINTS.options.length -
@@ -86,7 +85,7 @@ const getPointIndex = layer => {
 }
 
 export const getPointLayers = (source, layer, context) => {
-  // console.log('getRedlineLayers', context)
+  console.log('getPointLayers', layer, context)
   // z = z + 3
   return [
     {
@@ -460,17 +459,17 @@ export const getLayers = (sources, context) => {
   layers.push(
     ...getPolygonLayers('ddkids_tracts', 'tracts', context),
   )
-  // if (context.activePointLayers.length > 0) {
-  //   context.activePointLayers.forEach(point => {
-  //     // console.log('adding active point layer for ', point)
-  //     layers.push(
-  //       ...getPointLayers(
-  //         `ddkids_points_${point}${context.activeYear}`,
-  //         `${point}${context.activeYear}`,
-  //         context,
-  //       ),
-  //     )
-  //   })
-  // }
+  if (context.activePointLayers.length > 0) {
+    context.activePointLayers.forEach(point => {
+      // console.log('adding active point layer for ', point)
+      layers.push(
+        ...getPointLayers(
+          `ddkids_points_${point}`,
+          `${point}`,
+          context,
+        ),
+      )
+    })
+  }
   return layers
 }

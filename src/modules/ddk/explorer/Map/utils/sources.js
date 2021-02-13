@@ -27,12 +27,12 @@ export const getSources = (
       type: 'vector',
     },
   }
-  // OPTIONS_ACTIVE_POINTS.options.forEach(demo => {
-  //   obj[`ddkids_points_${demo}${activeYear}`] = {
-  //     url: `mapbox://${mapboxUser}.points_${demo}${activeYear}_${versionStr}?access_token=${mapboxToken}`,
-  //     type: 'vector',
-  //   }
-  // })
-  // console.log('source object: ', obj)
+  OPTIONS_ACTIVE_POINTS.options.forEach(demo => {
+    obj[`ddkids_points_${demo}`] = {
+      url: `mapbox://${mapboxUser}.points_${demo}${activeYear}_${versionStr}?access_token=${mapboxToken}`,
+      type: 'vector',
+    }
+  })
+  console.log('source object: ', obj)
   return fromJS(obj)
 }

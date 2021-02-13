@@ -195,7 +195,7 @@ const BaseMap = ({ ...props }) => {
   }
 
   const handleHover = feature => {
-    console.log('Map hover, ', feature)
+    // console.log('Map hover, ', feature)
     if (!!controlHovered) {
       return
     }
