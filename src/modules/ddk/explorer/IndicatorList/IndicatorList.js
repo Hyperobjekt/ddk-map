@@ -42,8 +42,24 @@ const IndicatorList = ({ ...props }) => {
         const value = rawTractData[el.id]
         return (
           <>
-            {' '}
-            <h5>{i18n.translate(el.id)}</h5>
+            <Tooltip
+              title={
+                <React.Fragment>
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: i18n.translate(
+                        `${el.id}_desc`,
+                      ),
+                    }}
+                  ></span>
+                </React.Fragment>
+              }
+              arrow
+            >
+              <span role="heading" aria-level="5">
+                {i18n.translate(el.id)}
+              </span>
+            </Tooltip>
             <LinearScale indicator={el} value={value} />
           </>
         )
