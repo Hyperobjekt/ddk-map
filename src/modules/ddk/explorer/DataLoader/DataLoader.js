@@ -185,7 +185,7 @@ const DataLoader = ({ ...props }) => {
   }
 
   const loadYearFiles = () => {
-    console.log('loadYearFiles')
+    // console.log('loadYearFiles')
     // Load each file.
     // Set each file to the store.
     // Update loaded percent.
@@ -204,7 +204,7 @@ const DataLoader = ({ ...props }) => {
         // console.log('loaded, ', xhr)
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
-            console.log(`year file ${el.id} loaded.`)
+            // console.log(`year file ${el.id} loaded.`)
             processFile(el, xhr.responseText)
           } else {
             // console.error(xhr.statusText)
@@ -227,7 +227,7 @@ const DataLoader = ({ ...props }) => {
   }
 
   const loadFiles = () => {
-    console.log('loadFiles')
+    // console.log('loadFiles')
     // Load each file.
     // Set each file to the store.
     // Update loaded percent.
@@ -281,8 +281,8 @@ const DataLoader = ({ ...props }) => {
     if (!initialStateSetFromHash) {
       return
     } else {
-      console.log('initial state set.')
-      console.log('activeYear, ', activeYear)
+      // console.log('initial state set.')
+      // console.log('activeYear, ', activeYear)
       loadFiles()
     }
   }, [initialStateSetFromHash])
@@ -291,7 +291,7 @@ const DataLoader = ({ ...props }) => {
     if (!initialStateSetFromHash) {
       return
     } else {
-      console.log('activeYear, ', activeYear)
+      // console.log('activeYear, ', activeYear)
       loadYearFiles()
     }
   }, [activeYear])

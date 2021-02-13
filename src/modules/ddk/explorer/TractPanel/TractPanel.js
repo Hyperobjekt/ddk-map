@@ -144,7 +144,6 @@ const TractPanel = () => {
     // const tracts = remoteJson.tracts.data
     const feature = slideoutFeature
     // Population feature data
-    console.log(remoteJson)
     const pop = remoteJson.pop.data.find(el => {
       return Number(el.GEOID) === feature.id
     })
@@ -152,15 +151,6 @@ const TractPanel = () => {
     const raw = remoteJson.raw.data.find(el => {
       return Number(el.GEOID) === feature.id
     })
-    console.log(
-      'active array, ',
-      getActiveArray(
-        feature.properties[`${MAIN_INDEX}${activeNorm}`],
-      ),
-    )
-    if (!!feature) {
-      console.log('slideout tract is ', feature)
-    }
     return (
       <div
         className={clsx('tract-panel-parent', classes.root)}

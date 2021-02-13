@@ -16,13 +16,7 @@ const getDemographic = layer => {
 }
 
 export const getPoints = (source, layer, context) => {
-  console.log('getPoints, ', source, context)
-  // const demographic = getDemographic(layer)
-  // console.log(
-  //   'demographic, ',
-  //   demographic,
-  //   POINT_TYPES.find(el => el.id === demographic),
-  // )
+  // console.log('getPoints, ', source, context)
   return fromJS({
     id: `${source}-${layer}-points`,
     source: source,
@@ -85,8 +79,7 @@ const getPointIndex = layer => {
 }
 
 export const getPointLayers = (source, layer, context) => {
-  console.log('getPointLayers', layer, context)
-  // z = z + 3
+  // console.log('getPointLayers', layer, context)
   return [
     {
       z: getPointIndex(layer),

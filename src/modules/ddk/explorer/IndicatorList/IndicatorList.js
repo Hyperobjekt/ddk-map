@@ -39,7 +39,7 @@ const IndicatorList = ({ ...props }) => {
       <p>Button</p>
 
       {indicators.map(el => {
-        const value = rawTractData[el.id]
+        const value = Number(rawTractData[el.id])
         return (
           <>
             <Tooltip

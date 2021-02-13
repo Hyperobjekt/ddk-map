@@ -33,6 +33,6 @@ export const getSources = (
       type: 'vector',
     }
   })
-  console.log('source object: ', obj)
+  // console.log('source object: ', obj)
   return fromJS(obj)
 }

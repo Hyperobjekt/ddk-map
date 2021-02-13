@@ -36,7 +36,7 @@ const styles = makeStyles(theme => ({
 }))
 
 const LinearScale = ({ ...props }) => {
-  console.log('LinearScale, ', props)
+  // console.log('LinearScale, ', props)
 
   const classes = styles()
 
