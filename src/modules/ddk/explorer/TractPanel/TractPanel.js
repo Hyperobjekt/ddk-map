@@ -90,6 +90,9 @@ const styles = makeStyles(theme => ({
     height: '100%',
     marginBottom: '15rem',
   },
+  subindex: {
+    marginBottom: '20rem',
+  },
 }))
 
 /**
@@ -347,6 +350,7 @@ const TractPanel = () => {
                     <IndicatorList
                       subindex={el}
                       isOpen={i === 0}
+                      showAll={showAll}
                     />
                   </div>
                 )

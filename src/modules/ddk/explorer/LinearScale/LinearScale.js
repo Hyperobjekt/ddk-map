@@ -14,7 +14,7 @@ const styles = makeStyles(theme => ({
   },
   bar: {
     height: '3px',
-    width: '100%',
+    width: '100.2%',
     display: 'block',
     top: 0,
     left: 0,
@@ -24,7 +24,7 @@ const styles = makeStyles(theme => ({
   },
   hashGroup: {
     position: 'absolute',
-    boxSizing: 'border-box',
+    boxSizing: 'content-box',
   },
   hash: {
     width: '0.5px',
@@ -63,43 +63,50 @@ const LinearScale = ({ ...props }) => {
   const classes = styles()
 
   const high_is_good = !!props.indicator.high_is_good
-  const currency = !!props.indicator.currency
-  const decimals = Number(props.indicator.decimals)
+  const currency = !!props.indicator.curr
+  const decimals = Number(props.indicator.dec)
   const alt_u = props.indicator.alt_u
-  const min = props.indicator.min
-  const max = props.indicator.max
-  const mean = props.indicator.mean
+  const min = Number(props.indicator.min)
+  const max = Number(props.indicator.max)
+  const mean = Number(props.indicator.mean)
   const percent = false
 
-  const rightLabel = getRoundedValue(
-    max, // !!high_is_good ? max : min,
+  const rightLabel = `${getRoundedValue(
+    !!high_is_good ? max : min,
     decimals,
+    true,
     currency,
     percent,
-  )
-  const leftLabel = getRoundedValue(
-    min, // !!high_is_good ? min : max,
+  )}`
+  const leftLabel = `${getRoundedValue(
+    !!high_is_good ? min : max,
     decimals,
+    true,
     currency,
     percent,
-  )
-  const valueLabel = getRoundedValue(
+  )}`
+  const valueLabel = `${getRoundedValue(
     props.value,
     decimals,
+    true,
     currency,
     percent,
-  )
+  )}`
 
   const meanLabel = i18n.translate(`SCALE_MEAN`)
-  const percentFromLeft = `${getHashLeft(
-    props.value,
-    min,
-    max,
+  const percentFromLeft = `${Math.round(
+    getHashLeft(
+      props.value,
+      !!high_is_good ? min : max,
+      !!high_is_good ? max : min,
+    ),
   )}%`
-  const meanPercentFromLeft = `${getHashLeft(
-    mean,
-    min,
-    max,
+  const meanPercentFromLeft = `${Math.round(
+    getHashLeft(
+      mean,
+      !!high_is_good ? min : max,
+      !!high_is_good ? max : min,
+    ),
   )}%`
 
   return (

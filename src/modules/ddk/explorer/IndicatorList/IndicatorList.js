@@ -25,14 +25,14 @@ const styles = makeStyles(theme => ({
     overflowY: 'hidden',
     maxHeight: 0,
     transition: 'max-height 200ms ease-in-out',
-    padding: '0 0.5rem',
+    padding: '0 1.5rem',
     '& .linear-scale': {
       margin: '8px 0',
     },
   },
   collapseOpen: {
     height: 'auto',
-    maxHeight: '800px',
+    maxHeight: '1200px',
     transition: 'max-height 200ms ease-in-out',
   },
   caret: {
@@ -79,7 +79,7 @@ const IndicatorList = ({ ...props }) => {
     return Number(el.GEOID) === slideoutTract
   })
 
-  const [isOpen, setIsOpen] = useState(props.isOpen)
+  const [isOpen, setIsOpen] = useState(!!props.isOpen)
   const toggleIsOpen = () => {
     setIsOpen(!isOpen)
   }
@@ -133,13 +133,25 @@ const IndicatorList = ({ ...props }) => {
                 }
                 arrow
               >
-                <span
-                  role="heading"
-                  aria-level="5"
-                  className={clsx(classes.heading)}
-                >
-                  {i18n.translate(el.id)}
-                </span>
+                <>
+                  <span
+                    role="heading"
+                    aria-level="5"
+                    className={clsx(classes.heading)}
+                  >
+                    {i18n.translate(el.id)}{' '}
+                    {!!el.alt_u && (
+                      <span
+                        className={clsx('alt-unit')}
+                        dangerouslySetInnerHTML={{
+                          __html: `(${i18n.translate(
+                            el.alt_u,
+                          )})`,
+                        }}
+                      ></span>
+                    )}
+                  </span>
+                </>
               </Tooltip>
               <LinearScale indicator={el} value={value} />
             </>
@@ -152,7 +164,8 @@ const IndicatorList = ({ ...props }) => {
 
 IndicatorList.propTypes = {
   subindex: PropTypes.string,
-  isOpen: PropTypes.Boolean,
+  isOpen: PropTypes.bool,
+  showAll: PropTypes.bool,
 }
 
 export default IndicatorList
