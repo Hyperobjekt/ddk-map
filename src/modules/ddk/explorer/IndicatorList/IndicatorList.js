@@ -92,7 +92,7 @@ const IndicatorList = ({ ...props }) => {
     <div className="slideout-indicator-list">
       <Button
         onClick={toggleIsOpen}
-        ariaLabel={buttonLabel}
+        aria-label={buttonLabel}
         className={clsx(
           'indicator-list-toggle',
           classes.btn,
@@ -115,10 +115,13 @@ const IndicatorList = ({ ...props }) => {
           !!isOpen ? 'open' : null,
         )}
       >
-        {indicators.map(el => {
+        {indicators.map((el, i) => {
           const value = Number(rawTractData[el.id])
           return (
-            <>
+            <div
+              className={clsx('indicator')}
+              key={`indicator-${i}`}
+            >
               <Tooltip
                 title={
                   <React.Fragment>
@@ -154,7 +157,7 @@ const IndicatorList = ({ ...props }) => {
                 </>
               </Tooltip>
               <LinearScale indicator={el} value={value} />
-            </>
+            </div>
           )
         })}
       </div>
