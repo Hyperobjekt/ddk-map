@@ -12,6 +12,7 @@ import {
 import SDScale from './../SDScale'
 import { getActiveArray } from './../utils'
 import PopStack from './../PopStack'
+import IndicatorList from './../IndicatorList'
 
 // Styles for this component.
 const styles = makeStyles(theme => ({
@@ -244,6 +245,8 @@ const TractPanel = () => {
               arrow
             >
               <span
+                role="heading"
+                aria-level="4"
                 className={clsx(
                   'slideout-metric-title',
                   classes.metricTitle,
@@ -320,6 +323,8 @@ const TractPanel = () => {
                     arrow
                   >
                     <span
+                      role="heading"
+                      aria-level="4"
                       className={clsx(
                         'slideout-metric-title',
                         classes.metricTitle,
@@ -336,6 +341,7 @@ const TractPanel = () => {
                       ],
                     )}
                   />
+                  <IndicatorList subindex={el} />
                 </div>
               )
             })}

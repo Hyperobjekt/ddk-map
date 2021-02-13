@@ -32,7 +32,7 @@ const styles = makeStyles(theme => ({
 }))
 
 const PopStack = ({ ...props }) => {
-  console.log('PopStack, ', props.pop['w'])
+  // console.log('PopStack, ', props.pop['w'])
   // Capture classes.
   const classes = styles()
   // Population items.
