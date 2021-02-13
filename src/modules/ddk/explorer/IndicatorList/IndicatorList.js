@@ -119,8 +119,11 @@ const IndicatorList = ({ ...props }) => {
           const value = Number(rawTractData[el.id])
           return (
             <div
-              className={clsx('indicator')}
-              key={`indicator-${i}`}
+              className={clsx(
+                'indicator',
+                `indicator-${el.id}`,
+              )}
+              key={`indicator-${el.id}`}
             >
               <Tooltip
                 title={
@@ -136,25 +139,18 @@ const IndicatorList = ({ ...props }) => {
                 }
                 arrow
               >
-                <>
-                  <span
-                    role="heading"
-                    aria-level="5"
-                    className={clsx(classes.heading)}
-                  >
-                    {i18n.translate(el.id)}{' '}
-                    {!!el.alt_u && (
-                      <span
-                        className={clsx('alt-unit')}
-                        dangerouslySetInnerHTML={{
-                          __html: `(${i18n.translate(
-                            el.alt_u,
-                          )})`,
-                        }}
-                      ></span>
-                    )}
-                  </span>
-                </>
+                <span
+                  role="heading"
+                  aria-level="5"
+                  className={clsx(classes.heading)}
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      `${i18n.translate(el.id)} ` +
+                      (el.alt_u
+                        ? `(${i18n.translate(el.alt_u)})`
+                        : ''),
+                  }}
+                ></span>
               </Tooltip>
               <LinearScale indicator={el} value={value} />
             </div>
