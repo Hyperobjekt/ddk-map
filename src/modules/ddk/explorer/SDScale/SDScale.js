@@ -107,7 +107,10 @@ const SDScale = ({ ...props }) => {
     i18n.translate(`SDSCALE_VHIGH`),
   ]
   return (
-    <div className={clsx('sd-scale-parent', classes.root)}>
+    <div
+      className={clsx('sd-scale-parent', classes.root)}
+      {...props}
+    >
       <div
         className={clsx('sd-scale-blocks', classes.blocks)}
       >

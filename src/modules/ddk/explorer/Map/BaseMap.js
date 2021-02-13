@@ -51,7 +51,7 @@ const BaseMap = ({ ...props }) => {
     activeMetric,
     activeNorm,
     activeShape,
-    mapSources,
+    // mapSources,
     setStoreValues,
     centerMetro,
     centerState,
@@ -68,7 +68,7 @@ const BaseMap = ({ ...props }) => {
       activeMetric: state.activeMetric,
       activeNorm: state.activeNorm,
       activeShape: state.activeShape,
-      mapSources: state.mapSources,
+      // mapSources: state.mapSources,
       setStoreValues: state.setStoreValues,
       centerMetro: state.centerMetro,
       centerState: state.centerState,
@@ -184,6 +184,12 @@ const BaseMap = ({ ...props }) => {
       )
       setStoreValues({
         activeShape: feature.id,
+        slideoutTract: feature.id,
+        slideoutFeature: feature,
+        slideoutPanel: {
+          panel: 'tract',
+          active: true,
+        },
       })
     }
   }
@@ -321,116 +327,8 @@ const BaseMap = ({ ...props }) => {
     })
   }
 
-  const handleLoad = () => {
-    // console.log('Map loaded.')
-    setLoaded(true)
-  }
-
-  const getMapSources = () => {
-    const sources = getSources(
-      process.env.MAPBOX_USER,
-      process.env.MAPBOX_API_TOKEN,
-      dataVersion,
-      loadYears,
-    )
-    setStoreValues({ mapSources: sources })
-    return sources
-  }
-
-  /** memoized array of shape and point layers */
-  const layers = useMemo(() => {
-    if (!loaded || !activeMetric || !activeNorm) {
-      return []
-    }
-    const context = {
-      activeYear,
-      activeMetric,
-      activeNorm,
-      activePointLayers,
-      centerState,
-    }
-    // console.log('layers changed, ', hoveredTract)
-    return getLayers(getMapSources(), context)
-  }, [
-    loaded,
-    activeYear,
-    activeMetric,
-    activeNorm,
-    activePointLayers,
-    // centerState,
-    activeNorm === 's' ? centerState : null,
-  ])
-
-  /**
-   * Returns the map style with the provided layers inserted
-   * @param {Map} style immutable Map of the base mapboxgl style
-   * @param {array} layers list of layer objects containing style and z order
-   */
-  const getUpdatedMapStyle = (
-    style,
-    layers,
-    sources = fromJS({}),
-  ) => {
-    const updatedSources = style
-      .get('sources')
-      .merge(sources)
-    const updatedLayers = layers.reduce(
-      (newLayers, layer) =>
-        newLayers.splice(layer.z, 0, layer.style),
-      style.get('layers'),
-    )
-    return style
-      .set('sources', updatedSources)
-      .set('layers', updatedLayers)
-  }
-
-  // update map style layers when layers change
-  const mapStyle = useMemo(
-    () =>
-      getUpdatedMapStyle(
-        defaultMapStyle,
-        layers,
-        !!mapSources ? mapSources : getMapSources(),
-      ),
-    [defaultMapStyle, layers],
-  )
-
-  const viewport = useStore(state => state.viewport)
-  const setViewport = useStore(state => state.setViewport)
-  // handler for viewport change, debounced to prevent
-  // race errors
-  const resetViewportState = useCallback(
-    (vp, options = {}) => {
-      // console.log('resetViewportState, vp = ', vp)
-      // console.log('BOUNDS, ', BOUNDS)
-      if (!loaded) return
-      setViewport(vp)
-    },
-    [setViewport, loaded],
-  )
-
-  // These are for updating our own app state (for hash management).
-  const mapViewport = useMapViewport()
-  // Update our viewport data in state store when viewport chagnes.
-  // useEffect(() => {
-  //   // console.log('mapViewport changed,', mapViewport)
-  //   resetViewportState(mapViewport[0])
-  // }, [mapViewport])
-
-  const debouncedMapViewport = useDebounce(mapViewport, 300)
-  useEffect(() => {
-    // console.log('debouncedMapViewport changed')
-    resetViewportState(mapViewport[0])
-  }, [debouncedMapViewport])
-
-  // Update highlighted shapes when viewport changes or on load.
-  useEffect(() => {
-    // console.log(
-    //   'loaded or mapViewport changed,',
-    //   mapViewport,
-    // )
-    // Update center tract, metro, and state
-    if (!!localMapRef && !!mapSources && !!loaded) {
+  const updateCentered = () => {
+    if (!!localMapRef && !!loaded) {
       // console.log('local map ref exists')
       // Get point at map center
       const mapEl = document.getElementById('map')
@@ -522,7 +420,127 @@ const BaseMap = ({ ...props }) => {
       })
       setStoreValues(centerSettingsObj)
     }
+  }
+
+  const handleLoad = () => {
+    // console.log('Map loaded.')
+    setLoaded(true)
+    updateCentered()
+  }
+
+  const getMapSources = () => {
+    const sources = getSources(
+      process.env.MAPBOX_USER,
+      process.env.MAPBOX_API_TOKEN,
+      dataVersion,
+      activeYear,
+    )
+    // setStoreValues({ mapSources: sources })
+    return sources
+  }
+
+  /** memoized array of shape and point layers */
+  const layers = useMemo(() => {
+    if (!loaded || !activeMetric || !activeNorm) {
+      return []
+    }
+    const context = {
+      activeYear,
+      activeMetric,
+      activeNorm,
+      activePointLayers,
+      centerState,
+      centerMetro,
+    }
+    // console.log('layers changed, ', hoveredTract)
+    return getLayers(getMapSources(), context)
+  }, [
+    loaded,
+    activeYear,
+    activeMetric,
+    activeNorm,
+    activePointLayers,
+    // centerState,
+    activeNorm === 's' ? centerState : null,
+    activeNorm === 'm' ? centerMetro : null,
+  ])
+
+  /**
+   * Returns the map style with the provided layers inserted
+   * @param {Map} style immutable Map of the base mapboxgl style
+   * @param {array} layers list of layer objects containing style and z order
+   */
+  const getUpdatedMapStyle = (
+    style,
+    layers,
+    sources = fromJS({}),
+  ) => {
+    const updatedSources = style
+      .get('sources')
+      .merge(sources)
+    const updatedLayers = layers.reduce(
+      (newLayers, layer) =>
+        newLayers.splice(layer.z, 0, layer.style),
+      style.get('layers'),
+    )
+    return style
+      .set('sources', updatedSources)
+      .set('layers', updatedLayers)
+  }
+
+  // update map style layers when layers change
+  const mapStyle = useMemo(
+    () =>
+      getUpdatedMapStyle(
+        defaultMapStyle,
+        layers,
+        getMapSources(),
+      ),
+    [defaultMapStyle, layers],
+  )
+
+  const viewport = useStore(state => state.viewport)
+  const setViewport = useStore(state => state.setViewport)
+  // handler for viewport change, debounced to prevent
+  // race errors
+  const resetViewportState = useCallback(
+    (vp, options = {}) => {
+      // console.log('resetViewportState, vp = ', vp)
+      // console.log('BOUNDS, ', BOUNDS)
+      if (!loaded) return
+      setViewport(vp)
+    },
+    [setViewport, loaded],
+  )
+
+  // These are for updating our own app state (for hash management).
+  const mapViewport = useMapViewport()
+  // Update our viewport data in state store when viewport chagnes.
+  // useEffect(() => {
+  //   // console.log('mapViewport changed,', mapViewport)
+  //   resetViewportState(mapViewport[0])
+  // }, [mapViewport])
+
+  const debouncedMapViewport = useDebounce(mapViewport, 200)
+  useEffect(() => {
+    // console.log('debouncedMapViewport changed')
+    resetViewportState(mapViewport[0])
+  }, [debouncedMapViewport])
+
+  // Update highlighted shapes when viewport changes or on load.
+  useEffect(() => {
+    // console.log(
+    //   'loaded or mapViewport changed,',
+    //   mapViewport,
+    // )
+    updateCentered()
   }, [loaded, allDataLoaded, debouncedMapViewport])
+
+  // Hack. The map isn't checking centered features
+  // when loaded. Force it to check.
+  setTimeout(() => {
+    updateCentered()
+  }, 300)
 
   // This is from the mapbox component.
   const setMapViewport = useMapStore(

@@ -65,6 +65,7 @@ const useStore = create((set, get) => ({
   },
   // Routing.
   activeView: DEFAULT_VIEW,
+  // ID of the tract that's been clicked.
   activeShape: DEFAULT_ACTIVE_SHAPE,
   activeYear: DEFAULT_ACTIVE_YEAR,
   // demographic dot density layers
@@ -82,6 +83,10 @@ const useStore = create((set, get) => ({
   initialStateSetFromHash: false,
   // Map sources, stored so we don't have to construct it over and over.
   mapSources: false,
+  // Stores the ID of the tract displayed in the slideout panel.
+  slideoutTract: 0,
+  // Stores the feature of the tract displayed in the slideout panel.
+  slideoutFeature: null,
   // Map center tract, metro, and state tracking
   centerTract: 0,
   centerMetro: 0,
@@ -133,7 +138,7 @@ const useStore = create((set, get) => ({
   },
   slideoutPanel: {
     active: false,
-    panel: '', // 'filters', 'layers', or 'info'
+    panel: 'tract', // 'tract' or 'info'
   },
   defaultFilterTab: 'cri',
   activeFilterTab: 'cri',

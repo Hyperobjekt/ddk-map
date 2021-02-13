@@ -118,6 +118,8 @@ const DataLoader = ({ ...props }) => {
     setRemoteJson,
     dataVersion,
     setLang,
+    activeYear,
+    remoteJson,
   } = useStore(
     state => ({
       initialStateSetFromHash:
@@ -128,11 +130,13 @@ const DataLoader = ({ ...props }) => {
       setRemoteJson: state.setRemoteJson,
       dataVersion: state.dataVersion,
       setLang: state.setLang,
+      activeYear: state.activeYear,
+      remoteJson: state.remoteJson,
     }),
     shallow,
   )
 
-  const s3Path = `${process.env.AWS_ENDPOINT}${dataVersion}/`
+  const s3Path = `${process.env.AWS_ENDPOINT}${dataVersion}/gzip/`
 
   // Fetch each file, and update the objects you need to update.
   const files = DATA_FILES
@@ -148,7 +152,7 @@ const DataLoader = ({ ...props }) => {
         data: JSON.parse(response),
       }
       // obj[el.id] = JSON.parse(xhr.responseText)
-      // console.log('file parsed, ', el.id)
+      // console.log('json file parsed, ', el.id)
       setRemoteJson(obj)
     }
     // Parse CSV into JSON before sticking it into the store.
@@ -165,6 +169,7 @@ const DataLoader = ({ ...props }) => {
             type: el.type,
             data: results.data,
           }
+          // console.log('csv file parsed, ', el.id)
           setRemoteJson(obj)
         },
       })
@@ -176,16 +181,62 @@ const DataLoader = ({ ...props }) => {
       // console.log('strings,', strings)
       setLang(strings)
     }
+    // console.log('remoteJSON, ', remoteJson)
+  }
+
+  const loadYearFiles = () => {
+    // console.log('loadYearFiles')
+    // Load each file.
+    // Set each file to the store.
+    // Update loaded percent.
+    // Update overall loading tracking.
+    const yearFiles = files.filter(el => {
+      return el.yearDependent === 1
+    })
+    yearFiles.forEach((el, i) => {
+      const xhr = new XMLHttpRequest()
+      const path = `${s3Path}${el.filename}${
+        !!el.yearDependent ? activeYear : ''
+      }.${el.ext}.gz`
+      // console.log('path, ', path)
+      xhr.open('GET', path, true)
+      xhr.onload = function (e) {
+        // console.log('loaded, ', xhr)
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            // console.log(`year file ${el.id} loaded.`)
+            processFile(el, xhr.responseText)
+          } else {
+            // console.error(xhr.statusText)
+            // Flag something failed.
+            setStoreValues({
+              dataLoaderFailed: true,
+            })
+          }
+        }
+      }
+      xhr.onerror = function (e) {
+        // console.error(xhr.statusText)
+        // Flag something failed.
+        setStoreValues({
+          dataLoaderFailed: true,
+        })
+      }
+      xhr.send(null)
+    })
   }
 
   const loadFiles = () => {
+    // console.log('loadFiles')
     // Load each file.
     // Set each file to the store.
     // Update loaded percent.
     // Update overall loading tracking.
     files.forEach((el, i) => {
       const xhr = new XMLHttpRequest()
-      const path = s3Path + el.filename + '.' + el.ext
+      const path = `${s3Path}${el.filename}${
+        !!el.yearDependent ? activeYear : ''
+      }.${el.ext}.gz`
       // console.log('path, ', path)
       xhr.open('GET', path, true)
       xhr.onload = function (e) {
@@ -230,9 +281,20 @@ const DataLoader = ({ ...props }) => {
     if (!initialStateSetFromHash) {
       return
     } else {
+      // console.log('initial state set.')
+      // console.log('activeYear, ', activeYear)
       loadFiles()
     }
   }, [initialStateSetFromHash])
+
+  useEffect(() => {
+    if (!initialStateSetFromHash) {
+      return
+    } else {
+      // console.log('activeYear, ', activeYear)
+      loadYearFiles()
+    }
+  }, [activeYear])
 
   return <DataLoaderContent />
 }

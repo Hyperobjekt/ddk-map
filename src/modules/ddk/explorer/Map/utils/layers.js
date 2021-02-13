@@ -5,6 +5,7 @@ import {
   OPTIONS_ACTIVE_POINTS,
   CHOROPLETH_COLORS,
   SHAPE_ZOOM_LEVELS,
+  DDK_RED,
 } from './../../../../../constants/map'
 
 let z = 150
@@ -16,17 +17,6 @@ const getDemographic = layer => {
 
 export const getPoints = (source, layer, context) => {
   // console.log('getPoints, ', source, context)
-  // const isVisible =
-  //   activeLayers[
-  //     UNTD_LAYERS.findIndex(el => el.id === type)
-  //   ] === 1
-  // console.log('isVisible, ', isVisible)
-  const demographic = getDemographic(layer)
-  // console.log(
-  //   'demographic, ',
-  //   demographic,
-  //   POINT_TYPES.find(el => el.id === demographic),
-  // )
   return fromJS({
     id: `${source}-${layer}-points`,
     source: source,
@@ -38,7 +28,7 @@ export const getPoints = (source, layer, context) => {
     interactive: false,
     paint: {
       'circle-color': POINT_TYPES.find(
-        el => el.id === demographic,
+        el => el.id === layer,
       ).color,
       'circle-opacity': 1,
       // If it's 'ai', make larger, else standard size.
@@ -57,10 +47,28 @@ export const getPoints = (source, layer, context) => {
         ['case', ['in', ['get', 'type'], 'ai'], 4, 2],
       ],
     },
+    filter: [
+      'case',
+      // If you're a tract in another state and norming is set to state...
+      [
+        'all',
+        ['==', ['string', context.activeNorm], 's'],
+        ['!=', ['get', 's'], context.centerState],
+      ],
+      false,
+      // If you're a tract not in a metro and norming is set to metro...
+      [
+        'all',
+        ['==', ['string', context.activeNorm], 'm'],
+        ['!=', ['get', 'm'], context.centerMetro],
+      ],
+      false,
+      true,
+    ],
   })
 }
 
-const pointIndex = 100
+const pointIndex = 200
 const getPointIndex = layer => {
   const ind =
     OPTIONS_ACTIVE_POINTS.options.length -
@@ -71,8 +79,7 @@ const getPointIndex = layer => {
 }
 
 export const getPointLayers = (source, layer, context) => {
-  // console.log('getRedlineLayers', context)
-  // z = z + 3
+  // console.log('getPointLayers', layer, context)
   return [
     {
       z: getPointIndex(layer),
@@ -109,7 +116,7 @@ const getShapeFilters = (type, context) => {
         [
           'all',
           ['==', ['string', context.activeNorm], 's'],
-          ['!=', ['get', 'statefips'], context.centerState],
+          ['!=', ['get', 's'], context.centerState],
         ],
         false,
         // If zoom is lower than min zoom set for shape type...
@@ -122,24 +129,39 @@ const getShapeFilters = (type, context) => {
           ['!=', ['number', ['get', 'in100']], 1],
         ],
         false,
+        // If you're a tract not in the centered metro,
+        // and norming is set to metro, don't display.
         [
-          '!=',
-          ['number', ['get', 'statefips']],
-          ['number', 43],
+          'all',
+          ['>', ['zoom'], 5],
+          ['==', ['string', context.activeNorm], 'm'],
+          [
+            '!=',
+            ['number', ['get', 'm']],
+            context.centerMetro,
+          ],
         ],
-        true,
+        false,
+        ['==', ['number', ['get', 's']], ['number', 43]],
+        false,
         true,
       ]
       break
     case type === 'metros':
       return [
-        'all',
-        [
-          '!=',
-          ['number', ['get', 'statefips']],
-          ['number', 43],
-        ],
-        ['==', ['get', 'in100'], 1],
+        'case',
+        ['==', ['number', ['get', 's']], ['number', 43]],
+        false,
+        // National norming, don't display.
+        ['==', ['string', context.activeNorm], 'n'],
+        false,
+        // State norming, don't display.
+        ['==', ['string', context.activeNorm], 's'],
+        false,
+        // Not in top 100, don't display.
+        ['!=', ['get', 'in100'], 1],
+        false,
+        true,
       ]
       break
     case type === 'states':
@@ -172,7 +194,7 @@ export const getPolygonLines = (source, type, context) => {
         ['==', type, 'states'],
         '#fff',
         ['==', type, 'metros'],
-        '#D65743',
+        DDK_RED, // '#D65743',
         ['==', type, 'tracts'],
         [
           'case',
@@ -193,9 +215,7 @@ export const getPolygonLines = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             0,
@@ -207,9 +227,7 @@ export const getPolygonLines = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             1,
@@ -221,9 +239,7 @@ export const getPolygonLines = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             2,
@@ -235,9 +251,7 @@ export const getPolygonLines = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             3,
@@ -249,9 +263,7 @@ export const getPolygonLines = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             4,
@@ -332,9 +344,7 @@ export const getPolygonShapes = (source, type, context) => {
             '==',
             [
               'get',
-              context.activeMetric +
-                context.activeNorm +
-                context.activeYear,
+              context.activeMetric + context.activeNorm,
             ],
             0,
           ],
@@ -345,9 +355,7 @@ export const getPolygonShapes = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             1,
@@ -359,9 +367,7 @@ export const getPolygonShapes = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             2,
@@ -373,9 +379,7 @@ export const getPolygonShapes = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             3,
@@ -387,9 +391,7 @@ export const getPolygonShapes = (source, type, context) => {
               'to-number',
               [
                 'get',
-                context.activeMetric +
-                  context.activeNorm +
-                  context.activeYear,
+                context.activeMetric + context.activeNorm,
               ],
             ],
             4,
@@ -455,8 +457,8 @@ export const getLayers = (sources, context) => {
       // console.log('adding active point layer for ', point)
       layers.push(
         ...getPointLayers(
-          `ddkids_points_${point}${context.activeYear}`,
-          `${point}${context.activeYear}`,
+          `ddkids_points_${point}`,
+          `${point}`,
           context,
         ),
       )

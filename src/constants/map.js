@@ -31,7 +31,7 @@ export const DEFAULT_LOAD_YEARS = ['10', '15']
 export const DEFAULT_ACTIVE_POINTS = ''
 export const DEFAULT_METRIC = 'xc'
 export const DEFAULT_NORM = 'n'
-export const DEFAULT_DATA_VERSION = '1.0.5'
+export const DEFAULT_DATA_VERSION = '1.0.8'
 export const DEFAULT_LAT = '37.39'
 export const DEFAULT_LNG = '-96.78'
 export const DEFAULT_ZOOM = '3.15'
@@ -101,30 +101,42 @@ export const DATA_FILES = [
     filename: 'metros',
     ext: 'json',
     type: 'data',
+    yearDependent: 0,
   },
   {
-    id: 'tracts',
-    filename: 'tracts-sm',
+    id: 'pop',
+    filename: 'pop',
     ext: 'csv',
     type: 'data',
+    yearDependent: 1,
+  },
+  {
+    id: 'raw',
+    filename: 'raw',
+    ext: 'csv',
+    type: 'data',
+    yearDependent: 1,
   },
   {
     id: 'barcharts',
-    filename: 'barcharts/barcharts',
+    filename: 'barcharts',
     ext: 'json',
     type: 'data',
+    yearDependent: 0,
   },
   {
     id: 'indicators',
-    filename: 'helpers/indicators',
+    filename: 'indicators',
     ext: 'json',
     type: 'data',
+    yearDependent: 0,
   },
   {
     id: 'en_US',
-    filename: 'helpers/en_US',
+    filename: 'en_US',
     ext: 'json',
     type: 'dict',
+    yearDependent: 0,
   },
 ]
 
@@ -161,7 +173,7 @@ export const POINT_TYPES = [
 ]
 
 export const SHAPE_ZOOM_LEVELS = [
-  { id: 'tracts', minZoom: 6 },
+  { id: 'tracts', minZoom: 3 },
   { id: 'metros', minZoom: 3 },
   { id: 'states', minZoom: 3 },
 ]
@@ -195,4 +207,14 @@ export const CHOROPLETH_COLORS = [
   '#56778D',
 ]
 
+export const DDK_RED = '#C9422C'
+
 export const MAP_CONTROLS_CLASSES = ['map-legend']
+
+/**
+ * Main index and four sub-indices that will be displayed for every
+ * tract in the slideout panel/modal.
+ * overall, social & economic, health, education
+ */
+export const MAIN_INDEX = 'xc'
+export const SUB_INDICES = ['xo', 'xh', 'xe']

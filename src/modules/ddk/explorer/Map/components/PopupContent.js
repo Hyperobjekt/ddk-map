@@ -5,6 +5,7 @@ import i18n from '@pureartisan/simple-i18n'
 
 import useStore from './../../store'
 import SDScale from './../../SDScale'
+import PopStack from './../../PopStack'
 
 const PopupContent = ({ ...props }) => {
   const feature = props.feature
@@ -12,12 +13,18 @@ const PopupContent = ({ ...props }) => {
     activeMetric,
     activeYear,
     activeNorm,
+    hoveredFeature,
+    hoveredTract,
     remoteJson,
+    langs,
   } = useStore(state => ({
     activeMetric: state.activeMetric,
     activeYear: state.activeYear,
     activeNorm: state.activeNorm,
+    hoveredFeature: state.hoveredFeature,
+    hoveredTract: state.hoveredTract,
     remoteJson: state.remoteJson,
+    langs: state.langs,
   }))
 
   const styles = makeStyles(theme => ({
@@ -33,7 +40,6 @@ const PopupContent = ({ ...props }) => {
       lineHeight: '24px',
       letterSpacing: '0.15px',
       color: theme.extras.variables.colors.darkGray,
-      // border: '1px solid gray',
       margin: '0 0 3px 0',
     },
     tractId: {
@@ -41,7 +47,6 @@ const PopupContent = ({ ...props }) => {
       fontSize: '14px',
       lineHeight: '14px',
       letterSpacing: '0.25px',
-      // border: '1px solid gray',
       margin: '0 0 14px 0',
     },
     hr: {
@@ -83,31 +88,29 @@ const PopupContent = ({ ...props }) => {
 
   const classes = styles()
   // If no feature or tract data, return.
-  if (!feature || !remoteJson || !remoteJson.tracts) {
+  if (hoveredTract === 0) {
     return ''
   }
-  // Array of all tracts
-  const tracts = remoteJson.tracts.data
-
+  // Population items.
   const popItems = ['w', 'ai', 'hi', 'ap', 'b']
-
+  // Default array for scale.
   const scaleArr = [0, 0, 0, 0, 0]
   scaleArr[
-    feature.properties[
-      `${activeMetric}${activeNorm}${activeYear}`
-    ]
+    feature.properties[`${activeMetric}${activeNorm}`]
   ] = 1
-
+  const pop = remoteJson.pop.data.find(el => {
+    return Number(el.GEOID) === feature.id
+  })
   return (
     <div className={clsx('popup-parent', classes.root)}>
-      {feature.properties.msaid15 !== 0 && (
+      {feature.properties.m !== 0 && (
         <h3
           className={clsx(
             'popup-metro-name',
             classes.title,
           )}
         >
-          {i18n.translate(feature.properties.msaid15)}
+          {i18n.translate(feature.properties.m)}
         </h3>
       )}
       <span
@@ -136,38 +139,7 @@ const PopupContent = ({ ...props }) => {
         >
           {i18n.translate(`POPUP_POPULATION`)}
         </h4>
-        <div
-          className={clsx(
-            'popup-pop-items',
-            classes.popItems,
-          )}
-        >
-          {popItems.map((el, i) => {
-            const tract = tracts.find(tract => {
-              return Number(tract.GEOID) === feature.id
-            })
-            return (
-              <div
-                className={clsx(
-                  'popup-pop-item',
-                  classes.popItem,
-                )}
-                key={`popup-item-${i}`}
-              >
-                <span
-                  className={clsx('popup-pop-item-title')}
-                >
-                  {i18n.translate(
-                    `POP_${el.toUpperCase()}`,
-                  )}
-                </span>
-                <span className="popup-pop-item-data">
-                  {tract[`${el}${activeYear}`]}
-                </span>
-              </div>
-            )
-          })}
-        </div>
+        <PopStack pop={pop} />
       </div>
     </div>
   )
