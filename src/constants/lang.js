@@ -53,5 +53,8 @@ export const langSet = {
     SEARCH_PROMPT: `Search for a location (address, city, or state)`,
     BTN_SHOW_ALL: `SHOW ALL`,
     BTN_HIDE_ALL: `HIDE ALL`,
+    SCALE_MEAN: `Mean`,
+    SCALE_INDICATORS_SHOW: `Show indicators`,
+    SCALE_INDICATORS_HIDE: `Hide indicators`,
   },
 }

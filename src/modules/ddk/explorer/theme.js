@@ -7,6 +7,7 @@ export const variables = {
     darkGray: '#03171C',
     lightGray: '#616161',
     ddkRed: '#C9422C',
+    lighterGray: '#D3D3D3',
     lightLightGray: '#eee',
     bridalHeath: '#fffbf3',
     alabaster: '#f7f7f7',

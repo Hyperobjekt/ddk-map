@@ -31,7 +31,7 @@ export const DEFAULT_LOAD_YEARS = ['10', '15']
 export const DEFAULT_ACTIVE_POINTS = ''
 export const DEFAULT_METRIC = 'xc'
 export const DEFAULT_NORM = 'n'
-export const DEFAULT_DATA_VERSION = '1.0.5'
+export const DEFAULT_DATA_VERSION = '1.0.8'
 export const DEFAULT_LAT = '37.39'
 export const DEFAULT_LNG = '-96.78'
 export const DEFAULT_ZOOM = '3.15'
@@ -101,30 +101,42 @@ export const DATA_FILES = [
     filename: 'metros',
     ext: 'json',
     type: 'data',
+    yearDependent: 0,
   },
   {
-    id: 'tracts',
-    filename: 'tracts-sm',
+    id: 'pop',
+    filename: 'pop',
     ext: 'csv',
     type: 'data',
+    yearDependent: 1,
+  },
+  {
+    id: 'raw',
+    filename: 'raw',
+    ext: 'csv',
+    type: 'data',
+    yearDependent: 1,
   },
   {
     id: 'barcharts',
-    filename: 'barcharts/barcharts',
+    filename: 'barcharts',
     ext: 'json',
     type: 'data',
+    yearDependent: 0,
   },
   {
     id: 'indicators',
-    filename: 'helpers/indicators',
+    filename: 'indicators',
     ext: 'json',
     type: 'data',
+    yearDependent: 0,
   },
   {
     id: 'en_US',
-    filename: 'helpers/en_US',
+    filename: 'en_US',
     ext: 'json',
     type: 'dict',
+    yearDependent: 0,
   },
 ]
 

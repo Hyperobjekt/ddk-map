@@ -79,6 +79,8 @@ const useStore = create((set, get) => ({
   mapSources: false,
   // Stores the ID of the tract displayed in the slideout panel.
   slideoutTract: 0,
+  // Stores the feature of the tract displayed in the slideout panel.
+  slideoutFeature: null,
   // Map center tract, metro, and state tracking
   centerTract: 0,
   centerMetro: 0,
