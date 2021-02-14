@@ -13,6 +13,7 @@ import CloseIcon from '@material-ui/icons/Close'
 
 import useStore from './../store'
 import { variables } from '../theme'
+import TractPanel from './../TractPanel'
 
 const SlideoutPanel = () => {
   const {
@@ -114,6 +115,17 @@ const SlideoutPanel = () => {
 
   if (browserWidth < variables.largeTabletWidth) {
     return (
+    <>
+      <div className={clsx('panel-slideout', classes.root)}>
+        <IconButton
+          onClick={handleClose}
+          className={clsx(classes.button)}
+        >
+          <CloseIcon />
+        </IconButton>
+        <TractPanel />
+      </div>
+
       <Modal
         className={classes.modal}
         open={slideoutPanel.active}
@@ -136,6 +148,7 @@ const SlideoutPanel = () => {
           </div>
         </Fade>
       </Modal>
+    </>
     )
   } else {
     return (

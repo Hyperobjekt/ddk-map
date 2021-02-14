@@ -4,6 +4,11 @@ export const variables = {
   colors: {
     // primary: '#20232a',
     white: '#ffffff',
+    darkGray: '#03171C',
+    lightGray: '#616161',
+    ddkRed: '#C9422C',
+    lighterGray: '#D3D3D3',
+    lightLightGray: '#eee',
     bridalHeath: '#fffbf3',
     alabaster: '#f7f7f7',
     oldLace: '#fdf5e9',
@@ -48,16 +53,43 @@ export const variables = {
   breakpoints: [0, 320, 768, 992, 1280],
   largeTabletWidth: 1024,
   fonts: {
-    primary: 'halyard-text',
+    primary: 'Fira Sans',
   },
 }
 
 export const theme = createMuiTheme({
-  // Update theme here according to this documentation
+  // Update theme here according to the Mui documentation
+  palette: {
+    primary: {
+      main: '#6200EE',
+      dark: '#3700B3',
+    },
+    secondary: {
+      main: '#03DAC5', //Another orange-ish color
+      dark: '#018786',
+    },
+    error: {
+      main: '#B00020',
+    },
+  },
+  overrides: {
+    MuiTooltip: {
+      // Arrow styling.
+      arrow: {
+        color: variables.colors.black,
+      },
+      // Tooltip body and contents.
+      tooltipArrow: {
+        backgroundColor: variables.colors.black,
+        fontSize: '14px',
+        padding: '16px',
+      },
+    },
+  },
   extras: {
     Legend: {
-      width: '200px',
-      height: '200px',
+      width: '279px',
+      height: '300px',
       cushionRight: 15,
       cushionTop: 25,
       zIndex: 13,
@@ -67,12 +99,32 @@ export const theme = createMuiTheme({
       zIndex: 15,
     },
     slideoutPanel: {
-      width: '270px',
+      width: '416px',
       zIndex: 10,
     },
     colors: {
       svgFillHover: variables.colors.accentBlue,
       svgFillActive: variables.colors.secondary,
+    },
+    mapPopup: {
+      width: '329px',
+    },
+    variables: variables,
+    SDScale: {
+      offColors: [
+        'rgba(201, 232, 248, 0.3)',
+        'rgba(115, 160, 201, 0.3)',
+        'rgba(141, 212, 249, 0.3)',
+        'rgba(88, 141, 168, 0.3)',
+        'rgba(86, 119, 141, 0.3)',
+      ],
+      onColors: [
+        '#C9E8F8',
+        '#8DD4F9',
+        '#73A0C9',
+        '#588DA8',
+        '#56778D',
+      ],
     },
   },
 })

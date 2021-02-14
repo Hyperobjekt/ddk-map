@@ -7,6 +7,12 @@ import {
   DEFAULT_ROUTE,
 } from './../../../constants/map'
 
+export const getActiveArray = index => {
+  const arr = [0, 0, 0, 0, 0]
+  arr[Math.round(index)] = 1
+  return arr
+}
+
 /**
  * Loads map features based on a string of locations
  * @param {string} locations locations formed as `{id},{lat},{lon}` separated by a `+`
@@ -72,7 +78,12 @@ export const getRoundedValue = (
   isCurrency = false,
   isPercent = false,
 ) => {
-  // console.log('getRoundedValue()')
+  // console.log(
+  //   'getRoundedValue(), ',
+  //   value,
+  //   decimals,
+  //   isCurrency,
+  // )
   const type = typeof value
   if (!!isPercent) {
     value = value * 100

@@ -12,22 +12,16 @@ const LinkShareBtn = ({ children, ...props }) => {
   const setStoreValues = useStore(
     state => state.setStoreValues,
   )
-  const shareHash = useStore(state => state.shareHash)
-  const buttonTooltipPosition = useStore(
-    state => state.buttonTooltipPosition,
-  )
-  const shareLinkModal = useStore(
-    state => state.shareLinkModal,
-  )
-  const handleShare = () => {
+
+  const openModal = () => {
     setStoreValues({
-      shareLinkModal: !shareLinkModal,
+      shareLinkModal: true,
     })
   }
 
   return (
     <div
-      onClick={handleShare}
+      onClick={openModal}
       className={clsx(props.className)}
     >
       <IconButton

@@ -9,14 +9,16 @@ import {
   DEFAULT_ROUTE,
   DEFAULT_VIEWPORT,
   OPTIONS_MAP,
-  ROUTE_METRIC,
-  ROUTE_METRO,
-  ROUTE_NORM,
-  ROUTE_SHAPE,
-  ROUTE_TILESET,
   ROUTE_VIEW,
-  ROUTE_YEAR,
+  ROUTE_ACTIVE_SHAPE,
+  ROUTE_ACTIVE_YEAR,
+  ROUTE_LOAD_YEARS,
+  ROUTE_ACTIVE_POINTS,
+  ROUTE_METRIC,
+  ROUTE_NORM,
+  ROUTE_DATA_VERSION,
 } from './../../../../constants/map'
+import { validateRouteOption } from './utils/utils'
 
 /**
  * Get a route parameters object based on the string
@@ -52,17 +54,19 @@ export const isEmptyRoute = route =>
  * @param  {String} value
  * @return {Boolean}
  */
-const isRouteOptionValid = (route, value) => {
-  const validOptions = OPTIONS_MAP[route]
-  if (!validOptions) {
-    console.error('No valid options listed for: ', route)
-  }
-  console.log(
-    'isRouteOptionValid, ',
-    value,
-    validOptions.indexOf(value) > -1,
-  )
-  return validOptions.indexOf(value) > -1
+const isRouteOptionValid = (item, value) => {
+  // console.log(
+  //   'isRouteOptionValid, ',
+  //   OPTIONS_MAP,
+  //   item,
+  //   value,
+  // )
+  const optionsItem = OPTIONS_MAP[item]
+  const isValid = validateRouteOption(optionsItem, value)
+  // if (!isValid) {
+  //   console.log('invalid hash item: ', optionsItem, value)
+  // }
+  return isValid
 }
 
 const isLatLngValid = (lat, lng) => {
@@ -108,18 +112,19 @@ const isRouteValid = params => {
   // console.log('isRouteValid(), ', params)
   const enumerableRoutes = [
     ROUTE_VIEW,
-    ROUTE_SHAPE,
-    ROUTE_YEAR,
-    ROUTE_METRO,
+    ROUTE_ACTIVE_SHAPE,
+    ROUTE_ACTIVE_YEAR,
+    ROUTE_LOAD_YEARS,
+    ROUTE_ACTIVE_POINTS,
     ROUTE_METRIC,
     ROUTE_NORM,
-    ROUTE_TILESET,
+    ROUTE_DATA_VERSION,
   ] // routes with discrete options
 
   let isValid = true
   if (
-    !enumerableRoutes.every(route =>
-      isRouteOptionValid(route, params[route]),
+    !enumerableRoutes.every(el =>
+      isRouteOptionValid(el, params[el]),
     ) ||
     !isLatLngValid(params.lat, params.lng) ||
     !isZoomValid(params.zoom)
@@ -141,29 +146,40 @@ const isRouteValid = params => {
 // }
 
 const RouteManager = props => {
-  console.log('RouteManager!!!!!')
+  // console.log('RouteManager!!!!!')
   // track if initial route has loaded
   const isLoaded = useRef(false)
-  // Generic store value setter.
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
-  )
-  // Active view.
+  // Values from store.
   const {
     activeView,
     activeShape,
     activeYear,
-    activeMetro,
+    loadYears,
+    activePointLayers,
     activeMetric,
     activeNorm,
-    activeTileset,
-  } = useStore(state => state)
-
-  // Viewport.
-  const viewport = useStore(state => state.viewport)
-  const setViewport = useStore(state => state.setViewport)
-  // Track share hash and update when it changes
-  const shareHash = useStore(state => state.shareHash)
+    dataVersion,
+    setStoreValues,
+    viewport,
+    setViewport,
+    shareHash,
+  } = useStore(
+    state => ({
+      activeView: state.activeView,
+      activeShape: state.activeShape,
+      activeYear: state.activeYear,
+      loadYears: state.loadYears,
+      activePointLayers: state.activePointLayers,
+      activeMetric: state.activeMetric,
+      activeNorm: state.activeNorm,
+      dataVersion: state.dataVersion,
+      setStoreValues: state.setStoreValues,
+      viewport: state.viewport,
+      setViewport: state.setViewport,
+      shareHash: state.shareHash,
+    }),
+    shallow,
+  )
 
   const setMapViewport = useMapStore(
     state => state.setViewport,
@@ -174,35 +190,18 @@ const RouteManager = props => {
    * @return {String} [description]
    */
   const getHashFromState = () => {
-    const hash =
-      activeView +
-      '/' +
-      activeShape +
-      '/' +
-      activeYear +
-      '/' +
-      activeMetro +
-      '/' +
-      activeMetric +
-      '/' +
-      activeNorm +
-      '/' +
-      activeTileset +
-      '/' +
-      getRoundedValue(viewport.latitude, 4) +
-      '/' +
-      getRoundedValue(viewport.longitude, 4) +
-      '/' +
-      getRoundedValue(viewport.zoom, 2) +
-      '/'
-
+    const hash = `${activeView}/${activeShape}/${activeYear}/${loadYears.toString()}/${activePointLayers.toString()}/${activeMetric}/${activeNorm}/${dataVersion}/${getRoundedValue(
+      viewport.latitude,
+      4,
+    )}/${getRoundedValue(
+      viewport.longitude,
+      4,
+    )}/${getRoundedValue(viewport.zoom, 2)}/`
     return hash
   }
 
   // get the route params based on current view
   const route = getHashFromState()
-  console.log('!!!!!", ', route)
-
   // debounce the route so it updates every 1 second max
   const debouncedRoute = useDebounce(route, 500)
 
@@ -211,19 +210,38 @@ const RouteManager = props => {
    * @param {[type]} params [description]
    */
   const setStateFromHash = params => {
-    console.log('setStateFromHash(), ', params)
-
+    // console.log('setStateFromHash(), ', params)
     if (params.hasOwnProperty(ROUTE_VIEW)) {
       setStoreValues({ activeView: params[ROUTE_VIEW] })
     }
-    if (params.hasOwnProperty(ROUTE_SHAPE)) {
-      setStoreValues({ activeShape: params[ROUTE_SHAPE] })
+    if (params.hasOwnProperty(ROUTE_ACTIVE_SHAPE)) {
+      setStoreValues({
+        activeShape: Number(params[ROUTE_ACTIVE_SHAPE]),
+      })
     }
-    if (params.hasOwnProperty(ROUTE_YEAR)) {
-      setStoreValues({ activeYear: params[ROUTE_YEAR] })
+    if (params.hasOwnProperty(ROUTE_ACTIVE_YEAR)) {
+      setStoreValues({
+        activeYear: params[ROUTE_ACTIVE_YEAR],
+      })
     }
-    if (params.hasOwnProperty(ROUTE_METRO)) {
-      setStoreValues({ activeMetro: params[ROUTE_METRO] })
+    if (params.hasOwnProperty(ROUTE_LOAD_YEARS)) {
+      setStoreValues({
+        loadYears: params[ROUTE_LOAD_YEARS].split(','),
+      })
+    }
+    if (params.hasOwnProperty(ROUTE_ACTIVE_POINTS)) {
+      // If empty string, set empty array.
+      if (params[ROUTE_ACTIVE_POINTS] === '') {
+        setStoreValues({
+          activePointLayers: [],
+        })
+      } else {
+        setStoreValues({
+          activePointLayers: params[
+            ROUTE_ACTIVE_POINTS
+          ].split(','),
+        })
+      }
     }
     if (params.hasOwnProperty(ROUTE_METRIC)) {
       setStoreValues({ activeMetric: params[ROUTE_METRIC] })
@@ -231,9 +249,9 @@ const RouteManager = props => {
     if (params.hasOwnProperty(ROUTE_NORM)) {
       setStoreValues({ activeNorm: params[ROUTE_NORM] })
     }
-    if (params.hasOwnProperty(ROUTE_TILESET)) {
+    if (params.hasOwnProperty(ROUTE_DATA_VERSION)) {
       setStoreValues({
-        activeTileset: params[ROUTE_TILESET],
+        dataVersion: params[ROUTE_DATA_VERSION],
       })
     }
 
@@ -248,17 +266,18 @@ const RouteManager = props => {
       resetViewport = true
     }
     if (!!resetViewport) {
-      console.log('resetting viewport')
+      // console.log('resetting viewport')
       setViewport(viewport)
       setMapViewport(viewport)
     }
+    setStoreValues({ initialStateSetFromHash: true })
   }
 
   useEffect(() => {
     if (isLoaded.current) {
       // When hash changes, if route is valid, update route for sharing.
       window.addEventListener('hashchange', () => {
-        console.log('hashchange')
+        // console.log('hashchange')
         const path = window.location.hash
         // Construct params object from hash.
         const params = getParamsFromPathname(
@@ -270,7 +289,7 @@ const RouteManager = props => {
           isRouteValid(params, props.routeSet) &&
           path !== shareHash
         ) {
-          console.log('updating hash')
+          // console.log('updating hash')
           setStoreValues({
             shareHash: window.location.hash,
           })
@@ -284,7 +303,7 @@ const RouteManager = props => {
     // only change the hash if the initial route has loaded
     if (isLoaded.current) {
       // window.location.hash = '#/' + debouncedRoute
-      console.log('Route change')
+      // console.log('Route change')
       window.history.replaceState(
         { hash: '#/' + debouncedRoute },
         'Explorer state update',
@@ -304,7 +323,7 @@ const RouteManager = props => {
   // load the route when the application mounts
   useEffect(() => {
     async function loadRoute() {
-      console.log('loadRoute')
+      // console.log('loadRoute')
       isLoaded.current = true
       // Get path.
       const path = window.location.hash
@@ -321,24 +340,40 @@ const RouteManager = props => {
         isRouteValid(params, props.routeSet)
       ) {
         // Update state based on params
-        console.log('loadRoute 1')
+        // console.log(
+        //   'hash is valid, setting state from hash.',
+        // )
         setStateFromHash(params)
       } else if (!!localStorageHash) {
         if (localStorageHash.length > 0) {
-          console.log('loadRoute 2')
+          // console.log('localStorage exists')
           const lsparams = getParamsFromPathname(
             localStorageHash,
             props.routeSet,
           )
           if (isRouteValid(lsparams, props.routeSet)) {
-            console.log('loadRoute 3')
+            // console.log(
+            //   'localStorage is valid, setting state from localStorage',
+            // )
             setStateFromHash(lsparams)
+          } else {
+            // If a hash was passed in, but there is
+            // no valid hash in path or localStorage,
+            // set the hash from the default route and proceed.
+            setStateFromHash(DEFAULT_ROUTE)
+            setStoreValues({
+              showIntroModal: true,
+              initialStateSetFromHash: true,
+            })
           }
         }
       }
       if (isEmptyRoute(path) && !localStorageHash) {
-        console.log('showing intro modal')
-        setStoreValues({ showIntroModal: true })
+        // console.log('showing intro modal')
+        setStoreValues({
+          showIntroModal: true,
+          initialStateSetFromHash: true,
+        })
       }
     }
     loadRoute()

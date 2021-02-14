@@ -14,9 +14,9 @@ const MailShareBtn = ({ children, ...props }) => {
     state => state.setStoreValues,
   )
   const shareHash = useStore(state => state.shareHash)
-  const buttonTooltipPosition = useStore(
-    state => state.buttonTooltipPosition,
-  )
+  // const buttonTooltipPosition = useStore(
+  //   state => state.buttonTooltipPosition,
+  // )
   const eventShareEmail = useStore(
     state => state.eventShareEmail,
   )
@@ -34,14 +34,12 @@ const MailShareBtn = ({ children, ...props }) => {
   return (
     <div
       onClick={handleShare}
-      className={clsx(
-        props.className,
-      )}
+      className={clsx(props.className)}
     >
       <IconButton
         label={i18n.translate(`BUTTON_SHARE_EMAIL`)}
       >
-        <EmailIcon className='social-icon' />
+        <EmailIcon className="social-icon" />
         <span className="sr-only">
           {i18n.translate(`BUTTON_SHARE_EMAIL`)}
         </span>

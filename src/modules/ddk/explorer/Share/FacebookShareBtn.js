@@ -17,9 +17,9 @@ const FacebookShareBtn = ({ children, ...props }) => {
     state => state.setStoreValues,
   )
   const shareHash = useStore(state => state.shareHash)
-  const buttonTooltipPosition = useStore(
-    state => state.buttonTooltipPosition,
-  )
+  // const buttonTooltipPosition = useStore(
+  //   state => state.buttonTooltipPosition,
+  // )
   const eventShareFacebook = useStore(
     state => state.eventShareFacebook,
   )
@@ -27,7 +27,7 @@ const FacebookShareBtn = ({ children, ...props }) => {
   const handleShare = () => {
     onFacebookShare(
       encodeURIComponent(constructShareLink(shareHash)),
-      i18n.translate('DIALOG_SHARE_FACEBOOK'),
+      // i18n.translate('DIALOG_SHARE_FACEBOOK'),
     )
     setStoreValues({
       eventShareFacebook: eventShareFacebook + 1,

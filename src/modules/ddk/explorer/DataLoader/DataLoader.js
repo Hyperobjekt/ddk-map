@@ -6,24 +6,25 @@ import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import Typography from '@material-ui/core/Typography'
+import shallow from 'zustand/shallow'
+import Papa from 'papaparse'
 
 import useStore from './../store'
 import { theme } from './../theme'
 import { DATA_FILES } from './../../../../constants/map'
 
 // TODO:
-// - Error notification
-// - Hide animation
-// - Why is the percent thing running twice?
+// - Error notification if data loading fails.
 
 const DataLoaderContent = ({ ...props }) => {
   // console.log('DataLoaderContent, ', variables)
-  //
-  const dataLoadedPercent = useStore(
-    state => state.dataLoadedPercent,
-  )
-  const allDataLoaded = useStore(
-    state => state.allDataLoaded,
+  // Values from store.
+  const { dataLoadedPercent, allDataLoaded } = useStore(
+    state => ({
+      dataLoadedPercent: state.dataLoadedPercent,
+      allDataLoaded: state.allDataLoaded,
+    }),
+    shallow,
   )
 
   // Hack, hide this for a bit to avoid flashing empty string var.
@@ -44,7 +45,7 @@ const DataLoaderContent = ({ ...props }) => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      transition: 'top 1000ms ease-in-out 1500ms',
+      transition: 'top 1000ms ease-in-out',
     },
     content: {
       display: !!showContent ? 'block' : 'none', // Hack, hide this for a bit to avoid flashing empty string var.
@@ -110,96 +111,190 @@ const DataLoaderContent = ({ ...props }) => {
 
 const DataLoader = ({ ...props }) => {
   // console.log("Hey, it's the DataLoader!!!!!!")
-  // Generic store value setter.
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
+  // Values from store.
+  const {
+    initialStateSetFromHash,
+    setStoreValues,
+    setRemoteJson,
+    dataVersion,
+    setLang,
+    activeYear,
+    remoteJson,
+  } = useStore(
+    state => ({
+      initialStateSetFromHash:
+        state.initialStateSetFromHash,
+      // Generic store value setter.
+      setStoreValues: state.setStoreValues,
+      // Special setter to merge loaded json into existing obj.
+      setRemoteJson: state.setRemoteJson,
+      dataVersion: state.dataVersion,
+      setLang: state.setLang,
+      activeYear: state.activeYear,
+      remoteJson: state.remoteJson,
+    }),
+    shallow,
   )
-  // Special setter to merge loaded json into existing obj.
-  const setRemoteJson = useStore(
-    state => state.setRemoteJson,
-  )
-  const s3Path = useStore(state => state.s3Path)
+
+  const s3Path = `${process.env.AWS_ENDPOINT}${dataVersion}/gzip/`
 
   // Fetch each file, and update the objects you need to update.
   const files = DATA_FILES
   // Counter for loaded files.
   let loadedCount = 0
+  // Process a downloaded file outside of synch request.
+  const processFile = (el, response) => {
+    if (el.type === 'data' && el.ext === 'json') {
+      // console.log('parsing data.')
+      let obj = {}
+      obj[el.id] = {
+        type: el.type,
+        data: JSON.parse(response),
+      }
+      // obj[el.id] = JSON.parse(xhr.responseText)
+      // console.log('json file parsed, ', el.id)
+      setRemoteJson(obj)
+    }
+    // Parse CSV into JSON before sticking it into the store.
+    if (el.type === 'data' && el.ext === 'csv') {
+      // console.log('parsing csv.')
+      let obj = {}
+      // Parse asynchronously using papaparse to prevent UI from locking up.
+      const parsed = Papa.parse(response, {
+        header: true,
+        worker: true,
+        complete: function (results) {
+          // console.log('file parsed, ', el.id, results)
+          obj[el.id] = {
+            type: el.type,
+            data: results.data,
+          }
+          // console.log('csv file parsed, ', el.id)
+          setRemoteJson(obj)
+        },
+      })
+    }
+    if (el.type === 'dict') {
+      // Merge loaded dictionary values with existing dictionary.
+      const strings = { en_US: JSON.parse(response) }
+      // console.log('lang file parsed, ', el.id)
+      console.log('strings,', strings)
+      setLang(strings)
+    }
+    // console.log('remoteJSON, ', remoteJson)
+  }
 
-  // For testing. Remove when you load actual files.
-  // TODO: Comment this out once we are loading actual data.
-  setTimeout(() => {
-    console.log('timeout')
-    setStoreValues({
-      dataLoadedPercent: 20,
-      allDataLoaded: false,
+  const loadYearFiles = () => {
+    // console.log('loadYearFiles')
+    // Load each file.
+    // Set each file to the store.
+    // Update loaded percent.
+    // Update overall loading tracking.
+    const yearFiles = files.filter(el => {
+      return el.yearDependent === 1
     })
-  }, 1000)
-  setTimeout(() => {
-    console.log('timeout')
-    setStoreValues({
-      dataLoadedPercent: 70,
-      allDataLoaded: true,
+    yearFiles.forEach((el, i) => {
+      const xhr = new XMLHttpRequest()
+      const path = `${s3Path}${el.filename}${
+        !!el.yearDependent ? activeYear : ''
+      }.${el.ext}.gz`
+      // console.log('path, ', path)
+      xhr.open('GET', path, true)
+      xhr.onload = function (e) {
+        // console.log('loaded, ', xhr)
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            // console.log(`year file ${el.id} loaded.`)
+            processFile(el, xhr.responseText)
+          } else {
+            // console.error(xhr.statusText)
+            // Flag something failed.
+            setStoreValues({
+              dataLoaderFailed: true,
+            })
+          }
+        }
+      }
+      xhr.onerror = function (e) {
+        // console.error(xhr.statusText)
+        // Flag something failed.
+        setStoreValues({
+          dataLoaderFailed: true,
+        })
+      }
+      xhr.send(null)
     })
-  }, 3000)
+  }
 
-  // TODO: uncomment the request below to load files, once we have them.
-  // Load each file.
-  // Set each file to the store.
-  // Update loaded percent.
-  // Update overall loading tracking.
-  // files.forEach((el, i) => {
-  //   const xhr = new XMLHttpRequest()
-  //   const path =
-  //     s3Path +
-  //     process.env.NODE_ENV +
-  //     '/' +
-  //     el.filename +
-  //     '.' +
-  //     el.ext
-  //   // console.log('path, ', path)
-  //   xhr.open('GET', path, true)
-  //   xhr.onload = function (e) {
-  //     // console.log('loaded, ', xhr)
-  //     if (xhr.readyState === 4) {
-  //       if (xhr.status === 200) {
-  //         // Increment counter for loaded files.
-  //         loadedCount++
-  //         // console.log(
-  //         //   'file loaded ',
-  //         //   i,
-  //         //   (loadedCount / files.length) * 100,
-  //         // )
-  //         let obj = {}
-  //         obj[el.id] = {
-  //           type: `geojson`,
-  //           data: JSON.parse(xhr.responseText),
-  //         }
-  //         // obj[el.id] = JSON.parse(xhr.responseText)
-  //         setRemoteJson(obj)
-  //         setStoreValues({
-  //           dataLoadedPercent:
-  //             (loadedCount / files.length) * 100,
-  //           allDataLoaded:
-  //             loadedCount === files.length ? true : false,
-  //         })
-  //       } else {
-  //         // console.error(xhr.statusText)
-  //         // Flag something failed.
-  //         setStoreValues({
-  //           dataLoaderFailed: true,
-  //         })
-  //       }
-  //     }
-  //   }
-  //   xhr.onerror = function (e) {
-  //     console.error(xhr.statusText)
-  //     // Flag something failed.
-  //     setStoreValues({
-  //       dataLoaderFailed: true,
-  //     })
-  //   }
-  //   xhr.send(null)
-  // })
+  const loadFiles = () => {
+    // console.log('loadFiles')
+    // Load each file.
+    // Set each file to the store.
+    // Update loaded percent.
+    // Update overall loading tracking.
+    files.forEach((el, i) => {
+      const xhr = new XMLHttpRequest()
+      const path = `${s3Path}${el.filename}${
+        !!el.yearDependent ? activeYear : ''
+      }.${el.ext}.gz`
+      // console.log('path, ', path)
+      xhr.open('GET', path, true)
+      xhr.onload = function (e) {
+        // console.log('loaded, ', xhr)
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            // Increment counter for loaded files.
+            loadedCount++
+            // console.log(
+            //   'file loaded ',
+            //   el.id,
+            //   (loadedCount / files.length) * 100,
+            // )
+            setStoreValues({
+              dataLoadedPercent:
+                (loadedCount / files.length) * 100,
+              allDataLoaded:
+                loadedCount === files.length ? true : false,
+            })
+            processFile(el, xhr.responseText)
+          } else {
+            // console.error(xhr.statusText)
+            // Flag something failed.
+            setStoreValues({
+              dataLoaderFailed: true,
+            })
+          }
+        }
+      }
+      xhr.onerror = function (e) {
+        // console.error(xhr.statusText)
+        // Flag something failed.
+        setStoreValues({
+          dataLoaderFailed: true,
+        })
+      }
+      xhr.send(null)
+    })
+  }
+
+  useEffect(() => {
+    if (!initialStateSetFromHash) {
+      return
+    } else {
+      // console.log('initial state set.')
+      // console.log('activeYear, ', activeYear)
+      loadFiles()
+    }
+  }, [initialStateSetFromHash])
+
+  useEffect(() => {
+    if (!initialStateSetFromHash) {
+      return
+    } else {
+      // console.log('activeYear, ', activeYear)
+      loadYearFiles()
+    }
+  }, [activeYear])
 
   return <DataLoaderContent />
 }
