@@ -54,5 +54,7 @@ export const langSet = {
     BTN_SHOW_ALL: `SHOW ALL`,
     BTN_HIDE_ALL: `HIDE ALL`,
     SCALE_MEAN: `Mean`,
+    SCALE_INDICATORS_SHOW: `Show indicators`,
+    SCALE_INDICATORS_HIDE: `Hide indicators`,
   },
 }

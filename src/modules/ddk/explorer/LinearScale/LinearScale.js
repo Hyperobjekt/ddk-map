@@ -14,24 +14,46 @@ const styles = makeStyles(theme => ({
   },
   bar: {
     height: '3px',
-    width: '100%',
+    width: '100.2%',
     display: 'block',
-
     top: 0,
     left: 0,
-    // backgroundColor: 'black',
     backgroundImage:
       'linear-gradient(90deg, #C9E8F8 0%, #58798F 101.52%)',
     backgroundSize: '100% 3px',
   },
   hashGroup: {
     position: 'absolute',
-    boxSizing: 'border-box',
+    boxSizing: 'content-box',
   },
   hash: {
     width: '0.5px',
     height: '22px',
     backgroundColor: '#58798F',
+  },
+  hashMean: {
+    width: '0.5px',
+    height: '5px',
+    backgroundColor: '#58798F',
+  },
+  scaleLabelGroup: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  scaleLabel: {
+    fontSize: '12px',
+    lineHeight: '16px',
+    letterSpacing: '0.4px',
+  },
+  hashLabel: {
+    width: '60px',
+    marginLeft: '-50%',
+    // marginTop: '-1px',
+    display: 'block',
+    textAlign: 'center',
+  },
+  valueLabel: {
+    fontWeight: 500,
   },
 }))
 
@@ -41,43 +63,50 @@ const LinearScale = ({ ...props }) => {
   const classes = styles()
 
   const high_is_good = !!props.indicator.high_is_good
-  const currency = !!props.indicator.currency
-  const decimals = Number(props.indicator.decimals)
+  const currency = !!props.indicator.curr
+  const decimals = Number(props.indicator.dec)
   const alt_u = props.indicator.alt_u
-  const min = props.indicator.min
-  const max = props.indicator.max
-  const mean = props.indicator.mean
+  const min = Number(props.indicator.min)
+  const max = Number(props.indicator.max)
+  const mean = Number(props.indicator.mean)
   const percent = false
 
-  const rightLabel = getRoundedValue(
+  const rightLabel = `${getRoundedValue(
     !!high_is_good ? max : min,
     decimals,
+    true,
     currency,
     percent,
-  )
-  const leftLabel = getRoundedValue(
+  )}`
+  const leftLabel = `${getRoundedValue(
     !!high_is_good ? min : max,
     decimals,
+    true,
     currency,
     percent,
-  )
-  const valueLabel = getRoundedValue(
+  )}`
+  const valueLabel = `${getRoundedValue(
     props.value,
     decimals,
+    true,
     currency,
     percent,
-  )
+  )}`
 
   const meanLabel = i18n.translate(`SCALE_MEAN`)
-  const percentFromLeft = `${getHashLeft(
-    props.value,
-    min,
-    max,
+  const percentFromLeft = `${Math.round(
+    getHashLeft(
+      props.value,
+      !!high_is_good ? min : max,
+      !!high_is_good ? max : min,
+    ),
   )}%`
-  const meanPercentFromLeft = `${getHashLeft(
-    mean,
-    min,
-    max,
+  const meanPercentFromLeft = `${Math.round(
+    getHashLeft(
+      mean,
+      !!high_is_good ? min : max,
+      !!high_is_good ? max : min,
+    ),
   )}%`
 
   return (
@@ -98,7 +127,16 @@ const LinearScale = ({ ...props }) => {
             classes.hash,
           )}
         ></div>
-        <span className={clsx('label')}>{valueLabel}</span>
+        <span
+          className={clsx(
+            'label',
+            classes.scaleLabel,
+            classes.hashLabel,
+            classes.valueLabel,
+          )}
+        >
+          {valueLabel}
+        </span>
       </div>
       <div
         className={clsx(
@@ -108,15 +146,41 @@ const LinearScale = ({ ...props }) => {
         style={{ left: meanPercentFromLeft }}
       >
         <div
-          className={clsx('linear-scale-hash-mean')}
+          className={clsx(
+            'linear-scale-hash-mean',
+            classes.hashMean,
+          )}
         ></div>
-        <span className={clsx('label')}>{meanLabel}</span>
+        <span
+          className={clsx(
+            'label',
+            classes.scaleLabel,
+            classes.hashLabel,
+          )}
+        >
+          {meanLabel}
+        </span>
       </div>
-      <div className={clsx('linear-scale-label-left')}>
-        <span className={clsx('label')}>{leftLabel}</span>
-      </div>
-      <div className={clsx('linear-scale-label-right')}>
-        <span className={clsx('label')}>{rightLabel}</span>
+      <div
+        className={clsx(
+          'linear-scale-labels',
+          classes.scaleLabelGroup,
+        )}
+      >
+        <div className={clsx('linear-scale-label-left')}>
+          <span
+            className={clsx('label', classes.scaleLabel)}
+          >
+            {leftLabel}
+          </span>
+        </div>
+        <div className={clsx('linear-scale-label-right')}>
+          <span
+            className={clsx('label', classes.scaleLabel)}
+          >
+            {rightLabel}
+          </span>
+        </div>
       </div>
     </div>
   )

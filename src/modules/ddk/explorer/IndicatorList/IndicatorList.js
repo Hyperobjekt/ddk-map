@@ -4,13 +4,59 @@ import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
 import { Tooltip, Button } from '@material-ui/core'
+import { FiChevronDown } from 'react-icons/fi'
 
 import useStore from './../store'
 import LinearScale from './../LinearScale'
 
+const styles = makeStyles(theme => ({
+  root: {},
+  btn: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    '& > span': {
+      float: 'left',
+    },
+    margin: '8px 0 8px',
+  },
+  collapse: {
+    height: 0,
+    overflowY: 'hidden',
+    maxHeight: 0,
+    transition: 'max-height 200ms ease-in-out',
+    padding: '0 1.5rem',
+    '& .linear-scale': {
+      margin: '8px 0',
+    },
+  },
+  collapseOpen: {
+    height: 'auto',
+    maxHeight: '1200px',
+    transition: 'max-height 200ms ease-in-out',
+  },
+  caret: {
+    float: 'right',
+  },
+  caretUp: {
+    transform: 'rotate(180deg)',
+  },
+  heading: {
+    margin: '8px 0 0',
+    fontSize: '14px',
+    lineHeight: '20px',
+    letterSpacing: '0.25px',
+    fontWeight: 600,
+    borderBottom: `1px dashed ${theme.extras.variables.colors.darkGray}`,
+    color: theme.extras.variables.colors.darkGray,
+  },
+}))
+
 // Displays a list of indicator scales
 // Has a button that opens and collapses the list
 const IndicatorList = ({ ...props }) => {
+  const classes = styles()
+
   const {
     remoteJson,
     activeMetric,
@@ -32,44 +78,93 @@ const IndicatorList = ({ ...props }) => {
   const rawTractData = remoteJson.raw.data.find(el => {
     return Number(el.GEOID) === slideoutTract
   })
-  // console.log('prefix is ', prefix)
-  // console.log('indicators are, ', indicators)
+
+  const [isOpen, setIsOpen] = useState(!!props.isOpen)
+  const toggleIsOpen = () => {
+    setIsOpen(!isOpen)
+  }
+  const buttonLabel = !!isOpen
+    ? i18n.translate('SCALE_INDICATORS_HIDE')
+    : i18n.translate('SCALE_INDICATORS_SHOW')
+
+  // console.log('isOpen, ', isOpen)
   return (
     <div className="slideout-indicator-list">
-      <p>Button</p>
-
-      {indicators.map(el => {
-        const value = Number(rawTractData[el.id])
-        return (
-          <>
-            <Tooltip
-              title={
-                <React.Fragment>
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: i18n.translate(
-                        `${el.id}_desc`,
-                      ),
-                    }}
-                  ></span>
-                </React.Fragment>
-              }
-              arrow
+      <Button
+        onClick={toggleIsOpen}
+        aria-label={buttonLabel}
+        className={clsx(
+          'indicator-list-toggle',
+          classes.btn,
+        )}
+      >
+        <span>{buttonLabel}</span>
+        <FiChevronDown
+          className={clsx(
+            'indicator-btn-caret',
+            classes.caret,
+            !!isOpen ? classes.caretUp : null,
+          )}
+        />
+      </Button>
+      <div
+        className={clsx(
+          'slideout-indicator-collapse',
+          classes.collapse,
+          !!isOpen ? classes.collapseOpen : null,
+          !!isOpen ? 'open' : null,
+        )}
+      >
+        {indicators.map((el, i) => {
+          const value = Number(rawTractData[el.id])
+          return (
+            <div
+              className={clsx(
+                'indicator',
+                `indicator-${el.id}`,
+              )}
+              key={`indicator-${el.id}`}
             >
-              <span role="heading" aria-level="5">
-                {i18n.translate(el.id)}
-              </span>
-            </Tooltip>
-            <LinearScale indicator={el} value={value} />
-          </>
-        )
-      })}
+              <Tooltip
+                title={
+                  <React.Fragment>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: i18n.translate(
+                          `${el.id}_desc`,
+                        ),
+                      }}
+                    ></span>
+                  </React.Fragment>
+                }
+                arrow
+              >
+                <span
+                  role="heading"
+                  aria-level="5"
+                  className={clsx(classes.heading)}
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      `${i18n.translate(el.id)} ` +
+                      (el.alt_u
+                        ? `(${i18n.translate(el.alt_u)})`
+                        : ''),
+                  }}
+                ></span>
+              </Tooltip>
+              <LinearScale indicator={el} value={value} />
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
 
 IndicatorList.propTypes = {
   subindex: PropTypes.string,
+  isOpen: PropTypes.bool,
+  showAll: PropTypes.bool,
 }
 
 export default IndicatorList

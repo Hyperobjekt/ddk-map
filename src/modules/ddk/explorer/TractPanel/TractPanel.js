@@ -25,6 +25,7 @@ const styles = makeStyles(theme => ({
   },
   content: {
     padding: '42px 16px',
+    height: '100%',
   },
   h2: {
     fontWeight: 600,
@@ -49,7 +50,7 @@ const styles = makeStyles(theme => ({
   },
   popStack: {
     margin: '8px 4px 8px 4px',
-    width: '80%',
+    width: '95%',
     '& .pop-item': {
       borderBottom: `1px solid ${theme.extras.variables.colors.lighterGray}`,
     },
@@ -57,7 +58,7 @@ const styles = makeStyles(theme => ({
   pad: {
     backgroundColor: theme.extras.variables.colors.white,
     margin: '9px 0',
-    padding: '9px',
+    padding: '9px 9px 0 9px',
   },
   metricTitle: {
     fontSize: '18px',
@@ -83,6 +84,14 @@ const styles = makeStyles(theme => ({
     '&.hidden': {
       display: 'none',
     },
+  },
+  tractScrollGroup: {
+    overflowY: 'scroll',
+    height: '100%',
+    marginBottom: '15rem',
+  },
+  subindex: {
+    marginBottom: '20rem',
   },
 }))
 
@@ -215,126 +224,138 @@ const TractPanel = () => {
           </div>
           <div
             className={clsx(
-              'tract-panel-pad-index',
-              classes.pad,
-              classes.index,
+              'tract-panel-scroll-group',
+              classes.tractScrollGroup,
             )}
           >
-            <Tooltip
-              title={
-                <React.Fragment>
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: i18n.translate(
-                        `SLIDEOUT_TIP_COI`,
-                      ),
-                    }}
-                  ></span>
-                </React.Fragment>
-              }
-              arrow
+            <div
+              className={clsx(
+                'tract-panel-pad-index',
+                classes.pad,
+                classes.index,
+              )}
             >
-              <span
-                role="heading"
-                aria-level="4"
-                className={clsx(
-                  'slideout-metric-title',
-                  classes.metricTitle,
-                )}
+              <Tooltip
+                title={
+                  <React.Fragment>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: i18n.translate(
+                          `SLIDEOUT_TIP_COI`,
+                        ),
+                      }}
+                    ></span>
+                  </React.Fragment>
+                }
+                arrow
               >
-                {i18n.translate(
-                  `${MAIN_INDEX}${activeNorm}`,
-                )}
-              </span>
-            </Tooltip>
-            <SDScale
-              className={classes.sdScale}
-              active={getActiveArray(
-                feature.properties[
-                  `${MAIN_INDEX}${activeNorm}`
-                ],
-              )}
-            />
-          </div>
-          <div
-            className={clsx(
-              'btn-show-all',
-              classes.btnParent,
-            )}
-          >
-            <Button
-              className={clsx(
-                classes.btn,
-                !!showAll ? 'hidden' : 'visible',
-              )}
-              onClick={toggleShowAll}
-            >
-              {i18n.translate('BTN_SHOW_ALL')}
-            </Button>
-            <Button
-              className={clsx(
-                classes.btn,
-                !!showAll ? 'visible' : 'hidden',
-              )}
-              onClick={toggleShowAll}
-            >
-              {i18n.translate('BTN_HIDE_ALL')}
-            </Button>
-          </div>
-          <div
-            className={clsx(
-              'tract-panel-pad-subindices',
-              classes.pad,
-              classes.subindex,
-            )}
-          >
-            {SUB_INDICES.map((el, i) => {
-              return (
-                <div
-                  key={`subindex-${i}`}
+                <span
+                  role="heading"
+                  aria-level="4"
                   className={clsx(
-                    'tract-panel-pad-subindex',
-                    classes.pad,
-                    classes.index,
+                    'slideout-metric-title',
+                    classes.metricTitle,
                   )}
                 >
-                  <Tooltip
-                    title={
-                      <React.Fragment>
-                        <span
-                          dangerouslySetInnerHTML={{
-                            __html: i18n.translate(
-                              `SLIDEOUT_TIP_${el.toUpperCase()}`,
-                            ),
-                          }}
-                        ></span>
-                      </React.Fragment>
-                    }
-                    arrow
-                  >
-                    <span
-                      role="heading"
-                      aria-level="4"
-                      className={clsx(
-                        'slideout-metric-title',
-                        classes.metricTitle,
-                      )}
-                    >
-                      {i18n.translate(`${el}${activeNorm}`)}
-                    </span>
-                  </Tooltip>
-                  <SDScale
-                    className={classes.sdScale}
-                    active={getActiveArray(
-                      feature.properties[
-                        `${el}${activeNorm}`
-                      ],
+                  {i18n.translate(
+                    `${MAIN_INDEX}${activeNorm}`,
+                  )}
+                </span>
+              </Tooltip>
+              <SDScale
+                className={classes.sdScale}
+                active={getActiveArray(
+                  feature.properties[
+                    `${MAIN_INDEX}${activeNorm}`
+                  ],
+                )}
+              />
+            </div>
+            <div
+              className={clsx(
+                'btn-show-all',
+                classes.btnParent,
+              )}
+            >
+              <Button
+                className={clsx(
+                  classes.btn,
+                  !!showAll ? 'hidden' : 'visible',
+                )}
+                onClick={toggleShowAll}
+              >
+                {i18n.translate('BTN_SHOW_ALL')}
+              </Button>
+              <Button
+                className={clsx(
+                  classes.btn,
+                  !!showAll ? 'visible' : 'hidden',
+                )}
+                onClick={toggleShowAll}
+              >
+                {i18n.translate('BTN_HIDE_ALL')}
+              </Button>
+            </div>
+            <div
+              className={clsx(
+                'tract-panel-pad-subindices',
+                classes.subindex,
+              )}
+            >
+              {SUB_INDICES.map((el, i) => {
+                return (
+                  <div
+                    key={`subindex-${i}`}
+                    className={clsx(
+                      'tract-panel-pad-subindex',
+                      classes.pad,
+                      classes.index,
                     )}
-                  />
-                  <IndicatorList subindex={el} />
-                </div>
-              )
-            })}
+                  >
+                    <Tooltip
+                      title={
+                        <React.Fragment>
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: i18n.translate(
+                                `SLIDEOUT_TIP_${el.toUpperCase()}`,
+                              ),
+                            }}
+                          ></span>
+                        </React.Fragment>
+                      }
+                      arrow
+                    >
+                      <span
+                        role="heading"
+                        aria-level="4"
+                        className={clsx(
+                          'slideout-metric-title',
+                          classes.metricTitle,
+                        )}
+                      >
+                        {i18n.translate(
+                          `${el}${activeNorm}`,
+                        )}
+                      </span>
+                    </Tooltip>
+                    <SDScale
+                      className={classes.sdScale}
+                      active={getActiveArray(
+                        feature.properties[
+                          `${el}${activeNorm}`
+                        ],
+                      )}
+                    />
+                    <IndicatorList
+                      subindex={el}
+                      isOpen={i === 0}
+                      showAll={showAll}
+                    />
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
       </div>
