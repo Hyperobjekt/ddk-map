@@ -18,7 +18,10 @@ const styles = makeStyles(theme => ({
     '& > span': {
       float: 'left',
     },
-    margin: '8px 0 8px',
+    margin: '8px 0 0',
+    '&.open': {
+      margin: '8px 0 8px',
+    },
   },
   collapse: {
     height: 0,
@@ -96,6 +99,7 @@ const IndicatorList = ({ ...props }) => {
         className={clsx(
           'indicator-list-toggle',
           classes.btn,
+          !!isOpen ? 'open' : '',
         )}
       >
         <span>{buttonLabel}</span>

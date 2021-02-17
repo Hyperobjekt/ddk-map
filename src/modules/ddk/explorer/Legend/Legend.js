@@ -18,7 +18,11 @@ import arrow from './arrow.svg'
 import SelectButton from '../App/components/SelectButton'
 import useStore from './../store'
 import SDScale from '../SDScale'
-import { OPTIONS_ACTIVE_POINTS } from './../../../../constants/map'
+import {
+  OPTIONS_ACTIVE_POINTS,
+  OPTIONS_METRIC,
+  OPTIONS_NORM,
+} from './../../../../constants/map'
 
 const Legend = ({ ...props }) => {
   // Styles for this component.
@@ -120,21 +124,17 @@ const Legend = ({ ...props }) => {
   const {
     loadYears,
     activeYear,
-    optionsNorm,
     activeNorm,
     activePointLayers,
     activeMetric,
-    optionsMetric,
     setStoreValues,
     activeView,
   } = useStore(state => ({
     loadYears: state.loadYears,
     activeYear: state.activeYear,
-    optionsNorm: state.optionsNorm.options,
     activeNorm: state.activeNorm,
     activePointLayers: state.activePointLayers,
     activeMetric: state.activeMetric,
-    optionsMetric: state.optionsMetric.options,
     setStoreValues: state.setStoreValues,
     activeView: state.activeView,
   }))
@@ -204,7 +204,10 @@ const Legend = ({ ...props }) => {
       </div>
       <div className={classes.row}>
         <SelectButton
-          options={createOptions('LEGEND_', optionsMetric)}
+          options={createOptions(
+            'LEGEND_',
+            OPTIONS_METRIC.options,
+          )}
           current={activeMetric}
           handleChange={e =>
             handleChange('activeMetric', e)
@@ -215,7 +218,10 @@ const Legend = ({ ...props }) => {
       <div className={classes.row}>
         <div className={classes.col2}>
           <SelectButton
-            options={createOptions('LEGEND_', optionsNorm)}
+            options={createOptions(
+              'LEGEND_',
+              OPTIONS_NORM.options,
+            )}
             current={activeNorm}
             handleChange={e =>
               handleChange('activeNorm', e)

@@ -58,7 +58,7 @@ const styles = makeStyles(theme => ({
   pad: {
     backgroundColor: theme.extras.variables.colors.white,
     margin: '9px 0',
-    padding: '9px 9px 0 9px',
+    padding: '9px',
   },
   metricTitle: {
     fontSize: '18px',
