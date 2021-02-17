@@ -2,23 +2,25 @@ import React, { useEffect } from 'react'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
-import { Box, FormControl, FormControlLabel, FormHelperText, Checkbox } from '@material-ui/core'
-import { AiOutlineColumnHeight, AiOutlineControl } from 'react-icons/ai'
+import {
+  Box,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  Checkbox,
+} from '@material-ui/core'
+import {
+  AiOutlineColumnHeight,
+  AiOutlineControl,
+} from 'react-icons/ai'
 
 import arrow from './arrow.svg'
 import SelectButton from '../App/components/SelectButton'
 import useStore from './../store'
-import theme from './../theme'
 import SDScale from '../SDScale'
+import { OPTIONS_ACTIVE_POINTS } from './../../../../constants/map'
 
 const Legend = ({ ...props }) => {
-  // Header is not displayed if the view type is 'embed'
-  const activeView = useStore(state => state.activeView)
-  // Source data
-  // const remoteJson = useStore(state => state.remoteJson)
-  // useEffect(() => {
-  //   console.log('remoteJson changed, ', remoteJson)
-  // }, [remoteJson])
   // Styles for this component.
   const styles = makeStyles(theme => ({
     root: {
@@ -37,11 +39,11 @@ const Legend = ({ ...props }) => {
       alignItems: 'flex-start',
       borderRadius: 5,
       fontFamily: 'Fira Sans',
-      fontSize: '12px'
+      fontSize: '12px',
       // pointerEvents: 'none',
     },
     formControl: {
-      width: '100%'
+      width: '100%',
     },
     row: {
       paddingTop: '5px',
@@ -49,7 +51,7 @@ const Legend = ({ ...props }) => {
     },
     col1: {
       width: '100%',
-      display: 'block'
+      display: 'block',
     },
     col2: {
       boxSizing: 'border-box',
@@ -65,14 +67,14 @@ const Legend = ({ ...props }) => {
       justifyContent: 'left',
     },
     checkboxLabel: {
-      verticalAlign: 'middle'
+      verticalAlign: 'middle',
     },
     checkbox: {
       padding: '0px 9px',
       verticalAlign: 'middle',
     },
     labelText: {
-      color: '#616161'
+      color: '#616161',
     },
     showChart: {
       color: '#C9422C',
@@ -86,33 +88,33 @@ const Legend = ({ ...props }) => {
     checkboxColor_w: {
       color: '#66CC00',
       '&.Mui-checked': {
-        color: '#66CC00'
-      }
+        color: '#66CC00',
+      },
     },
     checkboxColor_hi: {
       color: '#7401B1',
       '&.Mui-checked': {
-        color: '#7401B1'
-      }
+        color: '#7401B1',
+      },
     },
     checkboxColor_b: {
       color: '#FFC31A',
       '&.Mui-checked': {
-        color: '#FFC31A'
-      }
+        color: '#FFC31A',
+      },
     },
     checkboxColor_ap: {
       color: '#FF730C',
       '&.Mui-checked': {
-        color: '#FF730C'
-      }
+        color: '#FF730C',
+      },
     },
     checkboxColor_ai: {
       color: '#FF00CC',
       '&.Mui-checked': {
-        color: '#FF00CC'
-      }
-    }
+        color: '#FF00CC',
+      },
+    },
   }))
 
   const {
@@ -120,52 +122,60 @@ const Legend = ({ ...props }) => {
     activeYear,
     optionsNorm,
     activeNorm,
-    optionsPointLayers,
     activePointLayers,
     activeMetric,
     optionsMetric,
-    setStoreValues
+    setStoreValues,
+    activeView,
   } = useStore(state => ({
     loadYears: state.loadYears,
     activeYear: state.activeYear,
     optionsNorm: state.optionsNorm.options,
     activeNorm: state.activeNorm,
-    optionsPointLayers: state.optionsPointLayers.options,
     activePointLayers: state.activePointLayers,
     activeMetric: state.activeMetric,
     optionsMetric: state.optionsMetric.options,
     setStoreValues: state.setStoreValues,
+    activeView: state.activeView,
   }))
 
   const makeOptionsObject = (options, active) => {
-    var diff = {};
+    var diff = {}
     options.forEach(el => {
-      diff[el] = false;
+      diff[el] = false
     })
     if (active) {
       active.forEach(el => {
-        diff[el] = true;
+        diff[el] = true
       })
     }
-    return diff;
+    return diff
   }
 
   const createOptions = (prefix, options) => {
     return options.map(el => {
-      return {val: el, display: i18n.translate(`${prefix}${el.toUpperCase()}`)}
+      return {
+        val: el,
+        display: i18n.translate(
+          `${prefix}${el.toUpperCase()}`,
+        ),
+      }
     })
   }
 
   const handleChange = (val, e) => {
     var data = {}
     if (val === 'activePointLayers') {
-      demos[e.target.name] = e.target.checked
-      var layers = [];
-      Object.entries(demos).forEach(el => {
-        if (el[1] === true) {
-          layers.push(el[0])
-        }
-      })
+      // console.log('e, ', e, e.currentTarget.name, e.target)
+      const name = e.currentTarget.name
+      let layers = activePointLayers.slice()
+      const ind = layers.indexOf(name)
+      if (ind >= 0) {
+        layers.splice(ind, 1)
+      } else {
+        layers.push(name)
+      }
+      // console.log('layers, ', layers)
       data[val] = layers
       setStoreValues(data)
     } else {
@@ -176,18 +186,19 @@ const Legend = ({ ...props }) => {
   }
 
   const classes = styles()
-  var demos = makeOptionsObject(optionsPointLayers, activePointLayers)
-
 
   return (
     <Box className={clsx('map-legend', classes.root)}>
       <div className={classes.row}>
-      <img className={classes.img} src={arrow}></img><div className={classes.showChart}>SHOW CHART</div>
+        <img className={classes.img} src={arrow}></img>
+        <div className={classes.showChart}>SHOW CHART</div>
       </div>
       <div className={classes.row}>
-        <span className={classes.labelText}>{i18n.translate(`${activeMetric}${activeNorm}`)}</span>
+        <span className={classes.labelText}>
+          {i18n.translate(`${activeMetric}${activeNorm}`)}
+        </span>
         <SDScale
-          active={[1,1,1,1,1]}
+          active={[1, 1, 1, 1, 1]}
           type={'legend'}
         ></SDScale>
       </div>
@@ -195,40 +206,65 @@ const Legend = ({ ...props }) => {
         <SelectButton
           options={createOptions('LEGEND_', optionsMetric)}
           current={activeMetric}
-          handleChange={(e) => handleChange('activeMetric', e)}
+          handleChange={e =>
+            handleChange('activeMetric', e)
+          }
           label={'Select an Index:'}
-        >
-        </SelectButton>
+        ></SelectButton>
       </div>
       <div className={classes.row}>
         <div className={classes.col2}>
           <SelectButton
             options={createOptions('LEGEND_', optionsNorm)}
             current={activeNorm}
-            handleChange={(e) => handleChange('activeNorm', e)}
+            handleChange={e =>
+              handleChange('activeNorm', e)
+            }
             label={'Compare to:'}
-          >
-          </SelectButton>
+          ></SelectButton>
         </div>
         <div className={classes.col2}>
           <SelectButton
             options={createOptions('LEGEND_', loadYears)}
             current={activeYear}
-            handleChange={(e) => handleChange('activeYear', e)}
+            handleChange={e =>
+              handleChange('activeYear', e)
+            }
             label={'Time Period:'}
-          >
-          </SelectButton>
+          ></SelectButton>
         </div>
       </div>
       <div className={classes.row}>
-        <span className={classes.labelText}>Select a race/ethnicity:</span>
+        <span className={classes.labelText}>
+          Select a race/ethnicity:
+        </span>
         <div>
-          {optionsPointLayers.map((el) => {
-            return <FormControlLabel
-              className={classes.checkboxContainer} classes={{label: classes.checkboxLabel}} control={<Checkbox className={classes.checkbox} classes={{root: classes[`checkboxColor_${el}`]}} checked={demos.el} onChange={(e) => handleChange('activePointLayers', e)} name={el} />}
-              label={i18n.translate(`POP_${el.toUpperCase()}`)}
-              key={el}
-            />
+          {OPTIONS_ACTIVE_POINTS.options.map((el, i) => {
+            return (
+              <FormControlLabel
+                className={classes.checkboxContainer}
+                classes={{ label: classes.checkboxLabel }}
+                control={
+                  <Checkbox
+                    className={classes.checkbox}
+                    classes={{
+                      root: classes[`checkboxColor_${el}`],
+                    }}
+                    checked={
+                      activePointLayers.indexOf(el) > -1
+                    }
+                    onChange={e =>
+                      handleChange('activePointLayers', e)
+                    }
+                    name={el}
+                  />
+                }
+                label={i18n.translate(
+                  `POP_${String(el).toUpperCase()}`,
+                )}
+                key={el}
+              />
+            )
           })}
         </div>
       </div>
