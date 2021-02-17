@@ -8,6 +8,10 @@ import {
   FormControlLabel,
   FormHelperText,
   Checkbox,
+  Backdrop,
+  Fade,
+  IconButton,
+  Modal,
 } from '@material-ui/core'
 import {
   AiOutlineColumnHeight,
@@ -18,6 +22,7 @@ import arrow from './arrow.svg'
 import SelectButton from '../App/components/SelectButton'
 import useStore from './../store'
 import SDScale from '../SDScale'
+import SlideoutPanel from '../SlideoutPanel'
 import {
   OPTIONS_ACTIVE_POINTS,
   OPTIONS_METRIC,
@@ -92,11 +97,13 @@ const Legend = ({ ...props }) => {
       color: '#C9422C',
       fontSize: '14px',
       verticalAlign: 'middle',
-      letterSpacing: '1.25px'
+      letterSpacing: '1.25px',
+      fontWeight: 500
     },
     img: {
       width: '27px',
       verticalAlign: 'middle',
+      marginLeft: '-2px'
     },
     checkboxColor_w: {
       color: '#66CC00',
@@ -130,6 +137,17 @@ const Legend = ({ ...props }) => {
     },
     indexSelect: {
       fontWeight: '500',
+    },
+    modal: {
+      top: '10vh !important',
+      bottom: '10vh !important',
+      left: '10vw !important',
+      right: '10vw !important',
+      [theme.breakpoints.up('sm')]: {
+        display: 'none',
+      },
+      boxShadow: theme.shadows[3],
+      outline: 0,
     }
   }))
 
@@ -139,16 +157,16 @@ const Legend = ({ ...props }) => {
     activeNorm,
     activePointLayers,
     activeMetric,
+    legendPanel,
     setStoreValues,
-    activeView,
   } = useStore(state => ({
     loadYears: state.loadYears,
     activeYear: state.activeYear,
     activeNorm: state.activeNorm,
     activePointLayers: state.activePointLayers,
     activeMetric: state.activeMetric,
+    legendPanel: state.legendPanel,
     setStoreValues: state.setStoreValues,
-    activeView: state.activeView,
   }))
 
   const createOptions = (prefix, options) => {
@@ -187,6 +205,7 @@ const Legend = ({ ...props }) => {
   const classes = styles()
 
   return (
+    <>
     <Box className={clsx('map-legend', classes.root)}>
       <div className={classes.row}>
         <img className={classes.img} src={arrow}></img>
@@ -275,6 +294,18 @@ const Legend = ({ ...props }) => {
         </div>
       </div>
     </Box>
+    <Box>
+      <Modal
+        className={clsx(classes.modal)}
+        closeAfterTransition
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+
+      </Modal>
+    </Box>
+    </>
   )
 }
 

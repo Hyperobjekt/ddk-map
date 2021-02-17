@@ -12,12 +12,11 @@ const styles = makeStyles(theme => ({
     root: {
         width: '100%',
         display: 'block',
+        fontFamily: 'Fira Sans',
     },
     label:{
         display: 'block',
         position: 'relative',
-        fontFamily: 'Fira Sans',
-        fontWeight: '400',
         fontSize: '12px',
         color: '#616161',
         width: '100%',

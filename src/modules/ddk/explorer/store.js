@@ -142,6 +142,9 @@ const useStore = create((set, get) => ({
     active: false,
     panel: 'tract', // 'tract' or 'info'
   },
+  legendPanel: {
+    active: false,
+  },
   defaultFilterTab: 'cri',
   activeFilterTab: 'cri',
   shareLinkModal: false,
