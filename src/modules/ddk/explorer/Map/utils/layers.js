@@ -63,6 +63,12 @@ export const getPoints = (source, layer, context) => {
         ['!=', ['get', 'm'], context.centerMetro],
       ],
       false,
+      [
+        'all',
+        ['==', ['string', context.activeNorm], 'm'],
+        ['==', ['get', 'm'], 0],
+      ],
+      false,
       true,
     ],
   })
