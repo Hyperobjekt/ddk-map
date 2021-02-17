@@ -16,6 +16,7 @@ import {
   DEFAULT_LOAD_YEARS,
   DEFAULT_ACTIVE_POINTS,
   DEFAULT_METRIC,
+  OPTIONS_METRIC,
   DEFAULT_NORM,
   DEFAULT_DATA_VERSION,
   DEFAULT_LAT,
@@ -27,7 +28,7 @@ import {
 
 const useStore = create((set, get) => ({
   // Set any store values by passing in an object of values to merge.
-  setStoreValues: obj => set({ ...obj }),
+  setStoreValues: obj => {set({ ...obj })},
   // Track loading of remote data files.
   allDataLoaded: false,
   // Percent loaded for remote data files.
@@ -73,6 +74,7 @@ const useStore = create((set, get) => ({
   activePointLayers: DEFAULT_ACTIVE_POINTS,
   // Which years of tilesets to load.
   loadYears: DEFAULT_LOAD_YEARS,
+  optionsMetric: OPTIONS_METRIC,
   activeMetric: DEFAULT_METRIC,
   // Norming info
   optionsNorm: OPTIONS_NORM,

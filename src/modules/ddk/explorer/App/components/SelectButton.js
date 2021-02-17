@@ -50,8 +50,8 @@ return (
             IconComponent={ExpandMoreIcon}
         >
             {props.options.map((el, i) => {
-                return <MenuItem className={classes.item} value={el} key={`item-${i}`}>
-                    {el}
+                return <MenuItem className={classes.item} value={el.val} key={`item-${i}`}>
+                    {el.display}
                 </MenuItem>
             })}
         </Select>
@@ -62,7 +62,7 @@ return (
 SelectButton.propTypes = {
     options: PropTypes.array,
     label: PropTypes.string,
-    current: PropTypes.number || propTypes.string,
+    current: PropTypes.string,
     handleChange: PropTypes.func,
 }
 
