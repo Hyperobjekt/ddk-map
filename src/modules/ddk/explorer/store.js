@@ -16,16 +16,19 @@ import {
   DEFAULT_LOAD_YEARS,
   DEFAULT_ACTIVE_POINTS,
   DEFAULT_METRIC,
+  OPTIONS_METRIC,
   DEFAULT_NORM,
   DEFAULT_DATA_VERSION,
   DEFAULT_LAT,
   DEFAULT_LNG,
   DEFAULT_ZOOM,
+  OPTIONS_NORM,
+  OPTIONS_ACTIVE_POINTS
 } from './../../../constants/map'
 
 const useStore = create((set, get) => ({
   // Set any store values by passing in an object of values to merge.
-  setStoreValues: obj => set({ ...obj }),
+  setStoreValues: obj => {set({ ...obj })},
   // Track loading of remote data files.
   allDataLoaded: false,
   // Percent loaded for remote data files.
@@ -66,10 +69,15 @@ const useStore = create((set, get) => ({
   // ID of the tract that's been clicked.
   activeShape: DEFAULT_ACTIVE_SHAPE,
   activeYear: DEFAULT_ACTIVE_YEAR,
+  // demographic dot density layers
+  optionsPointLayers: OPTIONS_ACTIVE_POINTS,
   activePointLayers: DEFAULT_ACTIVE_POINTS,
   // Which years of tilesets to load.
   loadYears: DEFAULT_LOAD_YEARS,
+  optionsMetric: OPTIONS_METRIC,
   activeMetric: DEFAULT_METRIC,
+  // Norming info
+  optionsNorm: OPTIONS_NORM,
   activeNorm: DEFAULT_NORM,
   // Version of data to load, can be passed in from hash.
   dataVersion: DEFAULT_DATA_VERSION,
