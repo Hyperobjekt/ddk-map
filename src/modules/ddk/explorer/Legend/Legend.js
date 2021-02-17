@@ -179,7 +179,7 @@ const Legend = ({ ...props }) => {
       data[val] = layers
       setStoreValues(data)
     } else {
-      console.log('hit')
+      // console.log('hit')
       data[val] = e.target.value
       setStoreValues(data)
     }

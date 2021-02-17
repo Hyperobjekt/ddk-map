@@ -178,7 +178,7 @@ const DataLoader = ({ ...props }) => {
       // Merge loaded dictionary values with existing dictionary.
       const strings = { en_US: JSON.parse(response) }
       // console.log('lang file parsed, ', el.id)
-      console.log('strings,', strings)
+      // console.log('strings,', strings)
       setLang(strings)
     }
     // console.log('remoteJSON, ', remoteJson)
