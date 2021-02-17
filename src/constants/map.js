@@ -75,7 +75,7 @@ export const OPTIONS_METRIC = {
   validate: 'one_exact_match',
 }
 export const OPTIONS_NORM = {
-  options: ['n', 'm', 's'],
+  options: ['n', 's', 'm'],
   validate: 'one_exact_match',
 }
 export const OPTIONS_DATA_VERSION = {
