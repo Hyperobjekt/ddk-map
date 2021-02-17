@@ -426,6 +426,38 @@ const BaseMap = ({ ...props }) => {
     // console.log('Map loaded.')
     setLoaded(true)
     updateCentered()
+    // If there is an active shape inherited from the hash
+    // then set the slideout tract id and feature
+    setTimeout(() => {
+      if (activeShape !== 0) {
+        localMapRef.setFeatureState(
+          {
+            id: activeShape,
+            source: 'ddkids_tracts',
+            sourceLayer: 'tracts',
+          },
+          { active: true },
+        )
+        const features = localMapRef.querySourceFeatures(
+          'ddkids_tracts',
+          {
+            sourceLayer: 'tracts',
+            filter: ['==', ['id'], activeShape],
+          },
+        )
+        // console.log('features, ', features)
+        if (features.length > 0) {
+          setStoreValues({
+            slideoutTract: activeShape,
+            slideoutFeature: features[0],
+            slideoutPanel: {
+              active: true,
+              panel: 'tract',
+            },
+          })
+        }
+      }
+    }, 400)
   }
 
   const getMapSources = () => {
