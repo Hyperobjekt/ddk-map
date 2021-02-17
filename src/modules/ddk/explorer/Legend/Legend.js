@@ -36,7 +36,7 @@ const Legend = ({ ...props }) => {
       height: theme.extras.Legend.height,
       // Adjust for different app bar height.
       top: theme.extras.Legend.cushionTop,
-      padding: theme.spacing(3),
+      padding: theme.spacing(2),
       boxShadow: theme.shadows[3],
       display: 'relative',
       justifyContent: 'center',
@@ -44,14 +44,17 @@ const Legend = ({ ...props }) => {
       borderRadius: 5,
       fontFamily: 'Fira Sans',
       fontSize: '12px',
+      cursor: 'default'
       // pointerEvents: 'none',
     },
     formControl: {
       width: '100%',
     },
     row: {
-      paddingTop: '5px',
       width: '100%',
+      '&:nth-child(n+2)': {
+        paddingTop: '7px',
+      },
     },
     col1: {
       width: '100%',
@@ -69,21 +72,27 @@ const Legend = ({ ...props }) => {
     checkboxContainer: {
       display: 'block',
       justifyContent: 'left',
+      paddingLeft: '9px'
     },
     checkboxLabel: {
       verticalAlign: 'middle',
+      paddingLeft: '6px',
+      fontSize: '14px'
     },
     checkbox: {
-      padding: '0px 9px',
+      padding: '0px 0px',
       verticalAlign: 'middle',
     },
     labelText: {
+      display: 'block',
       color: '#616161',
+      paddingBottom: '3px'
     },
     showChart: {
       color: '#C9422C',
-      fontSize: '16px',
+      fontSize: '14px',
       verticalAlign: 'middle',
+      letterSpacing: '1.25px'
     },
     img: {
       width: '27px',
@@ -119,6 +128,9 @@ const Legend = ({ ...props }) => {
         color: '#FF00CC',
       },
     },
+    indexSelect: {
+      fontWeight: '500',
+    }
   }))
 
   const {
@@ -138,19 +150,6 @@ const Legend = ({ ...props }) => {
     setStoreValues: state.setStoreValues,
     activeView: state.activeView,
   }))
-
-  const makeOptionsObject = (options, active) => {
-    var diff = {}
-    options.forEach(el => {
-      diff[el] = false
-    })
-    if (active) {
-      active.forEach(el => {
-        diff[el] = true
-      })
-    }
-    return diff
-  }
 
   const createOptions = (prefix, options) => {
     return options.map(el => {
@@ -191,7 +190,7 @@ const Legend = ({ ...props }) => {
     <Box className={clsx('map-legend', classes.root)}>
       <div className={classes.row}>
         <img className={classes.img} src={arrow}></img>
-        <div className={classes.showChart}>SHOW CHART</div>
+        <span className={classes.showChart}>{i18n.translate(`LEGEND_CHART_TOGGLE`)}</span>
       </div>
       <div className={classes.row}>
         <span className={classes.labelText}>
@@ -212,7 +211,7 @@ const Legend = ({ ...props }) => {
           handleChange={e =>
             handleChange('activeMetric', e)
           }
-          label={'Select an Index:'}
+          label={i18n.translate('LEGEND_SELECT_INDEX')}
         ></SelectButton>
       </div>
       <div className={classes.row}>
@@ -226,7 +225,8 @@ const Legend = ({ ...props }) => {
             handleChange={e =>
               handleChange('activeNorm', e)
             }
-            label={'Compare to:'}
+            showHelp={true}
+            label={i18n.translate('LEGEND_COMPARE')}
           ></SelectButton>
         </div>
         <div className={classes.col2}>
@@ -236,13 +236,13 @@ const Legend = ({ ...props }) => {
             handleChange={e =>
               handleChange('activeYear', e)
             }
-            label={'Time Period:'}
+            label={i18n.translate('LEGEND_TIME')}
           ></SelectButton>
         </div>
       </div>
       <div className={classes.row}>
         <span className={classes.labelText}>
-          Select a race/ethnicity:
+          {i18n.translate(`LEGEND_DEMO`)}
         </span>
         <div>
           {OPTIONS_ACTIVE_POINTS.options.map((el, i) => {

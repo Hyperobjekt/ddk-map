@@ -91,7 +91,7 @@ const SDScale = ({ ...props }) => {
       height: '12px',
       '&.legend': {
         fontWeight: 400,
-        fontSize: '8px',
+        fontSize: '10px',
         color: '#616161'
       }
     },
