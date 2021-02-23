@@ -174,6 +174,9 @@ const Legend = ({ ...props }) => {
       padding: '0px',
       marginLeft: '-2px'
     },
+    showButtonDisabled: {
+      color: '#616161'
+    },
     panelName: {
       fontSize: '14px',
       padding: '0px 0px 10px 20px',
@@ -254,6 +257,13 @@ const Legend = ({ ...props }) => {
     }
   }
 
+  useEffect(() => {
+    if(centerMetro === 0 && legendPanel.active) {
+      const data = {active: !legendPanel.active}
+      setStoreValues({legendPanel: data})
+    }
+  }, [centerMetro])
+
   const SDArray = [
     i18n.translate(`SDSCALE_VLOW`),
     i18n.translate(`SDSCALE_LOW`),
@@ -269,7 +279,7 @@ const Legend = ({ ...props }) => {
     <Box className={clsx('map-legend', classes.root)}>
       <div className={classes.controller}>
         <div className={classes.row}>
-          <IconButton className={classes.showButton} onClick={(e) => {handleEvent('showChart', e)}}><img className={classes.img} src={arrow}></img></IconButton>
+          <IconButton disabled={activeNorm != 'metros' && centerMetro === 0} className={classes.showButton} classes={{disabled: classes.showButtonDisabled}} onClick={(e) => {handleEvent('showChart', e)}}><img className={classes.img} src={arrow}></img></IconButton>
           <span className={classes.showChart}>{i18n.translate(legendPanel.active ? `LEGEND_CHART_TOGGLE_OFF` : `LEGEND_CHART_TOGGLE_ON`)}</span>
         </div>
         <div className={classes.row}>

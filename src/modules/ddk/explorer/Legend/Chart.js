@@ -109,7 +109,7 @@ const Chart = ({ ...props }) => {
         <rect style={{fill: '#8DD4F9'}} x={(1 * 311/5) + 34} y="5" height="230" width={311 - (1 * 311/5)}></rect>
         <rect style={{fill: '#73A0C9'}} x={(2 * 311/5) + 34} y="5" height="230" width={311 - (2 * 311/5)}></rect>
         <rect style={{fill: '#588DA8'}} x={(3 * 311/5) + 34} y="5" height="230" width={311 - (3 * 311/5)}></rect>
-        <rect style={{fill: '#56778D'}} x={(4 * 311/5) + 34} y="5" height="230" width={313 - (4 * 311/5)}></rect>
+        <rect style={{fill: '#56778D'}} x={(4 * 311/5) + 34} y="5" height="230" width={311 - (4 * 311/5)}></rect>
       </>
     )
   }
