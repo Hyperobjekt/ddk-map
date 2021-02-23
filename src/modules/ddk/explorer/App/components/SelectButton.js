@@ -13,6 +13,7 @@ const styles = makeStyles(theme => ({
         width: '100%',
         display: 'block',
         fontFamily: 'Fira Sans',
+        position: 'relative'
     },
     label:{
         display: 'block',
@@ -38,7 +39,8 @@ const styles = makeStyles(theme => ({
     },
     help: {
         position: 'absolute',
-        margin: '5px 0px 0px 100px',
+        right: '5px',
+        marginTop: '5px',
         fontSize: '18px',
         color: '#616161',
         zIndex: '1',

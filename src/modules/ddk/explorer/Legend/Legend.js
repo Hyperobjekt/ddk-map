@@ -14,13 +14,14 @@ import {
   Modal,
   Paper
 } from '@material-ui/core'
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import {
   AiOutlineColumnHeight,
   AiOutlineControl,
 } from 'react-icons/ai'
 
-import Chart from './Chart'
-import Arrow from './arrow.svg'
+import Chart from '../Chart'
+import Arrow from '../Icons'
 import SelectButton from '../App/components/SelectButton'
 import useStore from './../store'
 import SDScale from '../SDScale'
@@ -37,27 +38,50 @@ const Legend = ({ ...props }) => {
     root: {
       zIndex: theme.extras.Legend.zIndex,
       backgroundColor: theme.palette.background.paper,
-      position: 'absolute',
-      right: theme.extras.Legend.cushionRight,
+      position: 'fixed',
       transition: 'width 300ms ease-in-out',
-      width: legendPanel.active ? '668px' : '284px', //620px
+      width: '100vw', //620px
       // Adjust for different app bar height.
-      top: theme.extras.Legend.cushionTop,
+      top: '55px',
+      right: '0px',
       boxShadow: theme.shadows[3],
       justifyContent: 'center',
       alignItems: 'flex-start',
       fontFamily: 'Fira Sans',
       fontSize: '12px',
       cursor: 'default',
-      borderRadius: 5,
-      overflow: 'hidden'
-      //clip: 'rect(0px 284px 391px 0px)'    // pointerEvents: 'none',
+      overflow: 'hidden',
+      [theme.breakpoints.up('sm')]: {
+        width: legendPanel.active ? '668px' : '284px',
+        position: 'absolute',
+        right: theme.extras.Legend.cushionRight,
+        top: theme.extras.Legend.cushionTop,
+        borderRadius: 5,
+      }
+    },
+    controlGuts: {
+      paddingTop: '7px',
+      transition: 'height 300ms ease-in-out',
+      height: legendControl.active ? '251px' : '0px',
+      overflow: 'hidden',
     },
     row: {
       width: '100%',
       '&:nth-child(n+2)': {
         paddingTop: '7px',
+        display: 'block'
       },
+      '&.hide-mobile': {
+        display: 'none',
+        [theme.breakpoints.up('sm')]: {
+          display: 'initial'
+        }
+      },
+      '&.hide-desktop': {
+        [theme.breakpoints.up('sm')]: {
+          display: 'none'
+        }
+      }
     },
     col1: {
       width: '100%',
@@ -80,7 +104,8 @@ const Legend = ({ ...props }) => {
     checkboxLabel: {
       verticalAlign: 'middle',
       paddingLeft: '6px',
-      fontSize: '14px'
+      fontSize: '14px',
+      color: '#000'
     },
     checkbox: {
       padding: '0px 0px',
@@ -102,11 +127,20 @@ const Legend = ({ ...props }) => {
         color: '#616161',
       }
     },
-    imgStroke: {
-      stroke: "#C9422C" 
+    showControl: {
+      color: '#C9422C',
+      fontSize: '14px',
+      letterSpacing: '1.25px',
+      textAlign: 'center',
+      borderTop: '1px solid #EEE'
     },
-    imgStrokeDisabled: {
-      stroke: "#616161" 
+    controlIcon: {
+      verticalAlign: 'middle',
+      transition: 'transform 300ms ease-in-out',
+      transform: legendControl.active ? 'rotate(0deg)' : 'rotate(180deg)',
+    },
+    controlText: {
+      verticalAlign: 'middle'
     },
     checkboxColor_w: {
       color: '#96cc60',
@@ -142,12 +176,18 @@ const Legend = ({ ...props }) => {
       fontWeight: '500',
     },
     controller: {
+      boxSizing: 'border-box',
       borderRadius: 5,
-      padding: theme.spacing(2),
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2),
       background: theme.palette.background.paper,
-      width: '252px',
+      width: '100vw',
       height: '100%',
-      float: 'right',
+      [theme.breakpoints.up('sm')]: {
+        width: '284px',
+        float: 'right',
+        padding: theme.spacing(2),
+      }
     },
     panel: {
       top: '0px',
@@ -198,7 +238,7 @@ const Legend = ({ ...props }) => {
       display: 'flex',
     },
     sdsCell: {
-
+      width: '20%'
     }
   }))
 
@@ -209,6 +249,7 @@ const Legend = ({ ...props }) => {
     activePointLayers,
     activeMetric,
     legendPanel,
+    legendControl,
     centerMetro,
     remoteJson,
     setStoreValues,
@@ -219,6 +260,7 @@ const Legend = ({ ...props }) => {
     activePointLayers: state.activePointLayers,
     activeMetric: state.activeMetric,
     legendPanel: state.legendPanel,
+    legendControl: state.legendControl,
     centerMetro: state.centerMetro,
     remoteJson: state.remoteJson,
     setStoreValues: state.setStoreValues,
@@ -237,6 +279,10 @@ const Legend = ({ ...props }) => {
 
   const handleEvent = (val, e) => {
     var data = {}
+    if (val === 'showControl') {
+      const data = {active: !legendControl.active}
+      setStoreValues({legendControl: data})
+    }
     if (val === 'showChart') {
       const data = {active: !legendPanel.active}
       setStoreValues({legendPanel: data})
@@ -276,28 +322,7 @@ const Legend = ({ ...props }) => {
     i18n.translate(`SDSCALE_VHIGH`),
   ]
 
-  const ArrowSvg = () => {
-    return (
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g filter="url(#filter0_d)">
-          <circle cx="16" cy="16" r="12" fill="white"/>
-          <circle cx="16" cy="16" r="11.5" className={ activeNorm != 'metros' && centerMetro === 0 ? classes.imgStrokeDisabled : classes.imgStroke }/>
-        </g>
-        <path d="M18 11L12.1818 16.8182L18 22.6364" className={ activeNorm != 'metros' && centerMetro === 0 ? classes.imgStrokeDisabled : classes.imgStroke } strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        <defs>
-          <filter id="filter0_d" x="0" y="0" width="32" height="32" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
-            <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
-            <feOffset/>
-            <feGaussianBlur stdDeviation="2"/>
-            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
-            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
-          </filter>
-        </defs>
-      </svg>
-    )
-  }
+  const chartSubtitle = remoteJson.metros.data.find(el => el.GEOID === centerMetro.toString()).msaname15
 
   const classes = styles()
 
@@ -305,8 +330,8 @@ const Legend = ({ ...props }) => {
     <div>
       <Box className={clsx('map-legend', classes.root)}>
         <div className={classes.controller}>
-          <div className={classes.row}>
-            <IconButton disabled={ activeNorm != 'metros' && centerMetro === 0 } className={classes.showButton} onClick={(e) => {handleEvent('showChart', e)}}><ArrowSvg /></IconButton>
+          <div className={clsx(classes.row, 'hide-mobile')}>
+            <IconButton disabled={ activeNorm != 'metros' && centerMetro === 0 } className={classes.showButton} onClick={(e) => {handleEvent('showChart', e)}}><Arrow disabled={activeNorm != 'metros' && centerMetro === 0}/></IconButton>
             <span className={clsx(classes.showChart, (activeNorm != 'metros' && centerMetro === 0 ? 'disabled' : ''))}>{i18n.translate(legendPanel.active ? `LEGEND_CHART_TOGGLE_OFF` : `LEGEND_CHART_TOGGLE_ON`)}</span>
           </div>
           <div className={classes.row}>
@@ -318,77 +343,86 @@ const Legend = ({ ...props }) => {
               type={'legend'}
             ></SDScale>
           </div>
-          <div className={classes.row}>
-            <SelectButton
-              options={createOptions(
-                'LEGEND_',
-                OPTIONS_METRIC.options,
-              )}
-              current={activeMetric}
-              handleChange={e =>
-                handleEvent('activeMetric', e)
-              }
-              label={i18n.translate('LEGEND_SELECT_INDEX')}
-            ></SelectButton>
-          </div>
-          <div className={classes.row}>
-            <div className={classes.col2}>
+          <div className={classes.controlGuts}>
+
+            <div className={classes.row}>
               <SelectButton
                 options={createOptions(
                   'LEGEND_',
-                  OPTIONS_NORM.options,
+                  OPTIONS_METRIC.options,
                 )}
-                current={activeNorm}
+                current={activeMetric}
                 handleChange={e =>
-                  handleEvent('activeNorm', e)
+                  handleEvent('activeMetric', e)
                 }
-                showHelp={true}
-                label={i18n.translate('LEGEND_COMPARE')}
+                label={i18n.translate('LEGEND_SELECT_INDEX')}
               ></SelectButton>
             </div>
-            <div className={classes.col2}>
-              <SelectButton
-                options={createOptions('LEGEND_', loadYears)}
-                current={activeYear}
-                handleChange={e =>
-                  handleEvent('activeYear', e)
-                }
-                label={i18n.translate('LEGEND_TIME')}
-              ></SelectButton>
+            <div className={classes.row}>
+              <div className={classes.col2}>
+                <SelectButton
+                  options={createOptions(
+                    'LEGEND_',
+                    OPTIONS_NORM.options,
+                  )}
+                  current={activeNorm}
+                  handleChange={e =>
+                    handleEvent('activeNorm', e)
+                  }
+                  showHelp={true}
+                  label={i18n.translate('LEGEND_COMPARE')}
+                ></SelectButton>
+              </div>
+              <div className={classes.col2}>
+                <SelectButton
+                  options={createOptions('LEGEND_', loadYears)}
+                  current={activeYear}
+                  handleChange={e =>
+                    handleEvent('activeYear', e)
+                  }
+                  label={i18n.translate('LEGEND_TIME')}
+                ></SelectButton>
+              </div>
+            </div>
+            <div className={classes.row}>
+              <span className={classes.labelText}>
+                {i18n.translate(`LEGEND_DEMO`)}
+              </span>
+              <div>
+                {OPTIONS_ACTIVE_POINTS.options.map((el, i) => {
+                  return (
+                    <FormControlLabel
+                      className={classes.checkboxContainer}
+                      classes={{ label: classes.checkboxLabel }}
+                      control={
+                        <Checkbox
+                          className={classes.checkbox}
+                          classes={{
+                            root: classes[`checkboxColor_${el}`],
+                          }}
+                          checked={
+                            activePointLayers.indexOf(el) > -1
+                          }
+                          onChange={e =>
+                            handleEvent('activePointLayers', e)
+                          }
+                          name={el}
+                        />
+                      }
+                      label={i18n.translate(
+                        `POP_${String(el).toUpperCase()}`,
+                      )}
+                      key={el}
+                    />
+                  )
+                })}
+              </div>
             </div>
           </div>
-          <div className={classes.row}>
-            <span className={classes.labelText}>
-              {i18n.translate(`LEGEND_DEMO`)}
-            </span>
-            <div>
-              {OPTIONS_ACTIVE_POINTS.options.map((el, i) => {
-                return (
-                  <FormControlLabel
-                    className={classes.checkboxContainer}
-                    classes={{ label: classes.checkboxLabel }}
-                    control={
-                      <Checkbox
-                        className={classes.checkbox}
-                        classes={{
-                          root: classes[`checkboxColor_${el}`],
-                        }}
-                        checked={
-                          activePointLayers.indexOf(el) > -1
-                        }
-                        onChange={e =>
-                          handleEvent('activePointLayers', e)
-                        }
-                        name={el}
-                      />
-                    }
-                    label={i18n.translate(
-                      `POP_${String(el).toUpperCase()}`,
-                    )}
-                    key={el}
-                  />
-                )
-              })}
+          <div className={clsx(classes.row, 'hide-desktop')}>
+            <div className={classes.showControl} onClick={(e) => {handleEvent('showControl', e)}}>
+              <ExpandLessIcon className={classes.controlIcon}/>
+              <span className={classes.controlText}>{i18n.translate(`LEGEND_CONTROL_${legendControl.active.toString().toUpperCase()}`)}</span>
             </div>
           </div>
         </div>
@@ -396,18 +430,18 @@ const Legend = ({ ...props }) => {
           {remoteJson.barcharts && centerMetro > 0 &&
             <div className={classes.chart}>
               <div className={classes.panelName}>
-                Percentage of Children at Each Opportunity Level
+                {i18n.translate('LEGEND_CHART_TITLE')}
               </div>
-            <div className={clsx(classes.labelText, classes.panelLabel)}>
-              By race/ethnicity for {remoteJson.metros.data.find(el => el.GEOID === centerMetro.toString()).msaname15}
-            </div>
-            <div className={classes.panelSds}>
-            {SDArray.map((el, i) => {
-              return (
-                <span style={{width: '20%'}}>{el.toUpperCase()}</span>
-              )
-            })}
-            </div>
+              <div className={clsx(classes.labelText, classes.panelLabel)}>
+                {i18n.translate('LEGEND_CHART_SUBTITLE', { chartSubtitle: chartSubtitle })}
+              </div>
+              <div className={classes.panelSds}>
+                {SDArray.map((el, i) => {
+                  return (
+                    <span className={classes.sdsCell}>{el.toUpperCase()}</span>
+                  )
+                })}
+              </div>
               <Chart
                 data={remoteJson}
                 year={activeYear}

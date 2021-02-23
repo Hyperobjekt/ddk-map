@@ -9,7 +9,7 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
-import { Typography } from '@material-ui/core'
+import { Typography, useMediaQuery } from '@material-ui/core'
 import ReactMapGL, {
   NavigationControl,
   Popup,
@@ -148,6 +148,12 @@ const BaseMap = ({ ...props }) => {
     customAttribTxt: {
       marginLeft: '0.3rem',
     },
+    mobileGate: {
+      display: 'none',
+      [theme.breakpoints.up('sm')]: {
+        display: 'initial'
+      }
+    }
   }))
 
   const classes = styles()
@@ -684,7 +690,9 @@ const BaseMap = ({ ...props }) => {
       >
         {
           <>
-            <Legend />
+            {useMediaQuery('(min-width:600px)') &&
+              <Legend />
+            }
             <MapPopup />
             <div
               className={clsx(

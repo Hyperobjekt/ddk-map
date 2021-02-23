@@ -145,6 +145,9 @@ const useStore = create((set, get) => ({
   legendPanel: {
     active: false,
   },
+  legendControl: {
+    active: true,
+  },
   defaultFilterTab: 'cri',
   activeFilterTab: 'cri',
   shareLinkModal: false,

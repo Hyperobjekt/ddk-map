@@ -1,7 +1,7 @@
 import React from 'react'
 import i18n from '@pureartisan/simple-i18n'
 import AppBar from '@material-ui/core/AppBar'
-import { InputBase, Typography } from '@material-ui/core'
+import { InputBase, Typography, useMediaQuery } from '@material-ui/core'
 import useScrollTrigger from '@material-ui/core/useScrollTrigger'
 import Toolbar from '@material-ui/core/Toolbar'
 import { MdHome, MdSearch } from 'react-icons/md'
@@ -9,6 +9,7 @@ import { fade, makeStyles } from '@material-ui/core/styles'
 
 import useStore from './../store'
 import theme from './../theme'
+import Legend from '../Legend'
 
 const Header = ({ ...props }) => {
   // Header is not displayed if the view type is 'embed'
@@ -75,6 +76,12 @@ const Header = ({ ...props }) => {
         width: '20ch',
       },
     },
+    mobileGate: {
+      display: 'block',
+      [theme.breakpoints.up('sm')]: {
+        display: 'none'
+      }
+    },
   }))
 
   const classes = headerStyles()
@@ -102,6 +109,9 @@ const Header = ({ ...props }) => {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
+          {useMediaQuery('(max-width:600px)') &&
+            <Legend />
+          }
         </Toolbar>
       </AppBar>
     )
