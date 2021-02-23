@@ -81,7 +81,8 @@ const Chart = ({ ...props }) => {
   
     return (
       <div style={{
-        margin: '-20px 10px auto 65px',
+        width: '305px',
+        margin: '-20px 10px auto 57px',
         textAlign: 'center',
         backgroundColor: '#fff',
         borderRadius: '2px',
@@ -92,7 +93,6 @@ const Chart = ({ ...props }) => {
         {
           payload.map((entry, index) => (
             <div style={{display: 'inline-block', padding: '0px 5px'}}>
-              {/* <div style={{verticalAlign: 'middle', display: "inline-block", backgroundColor: "#000", width: '15px', height: '7px', marginRight: '3px', borderRadius: '2px'}}></div> */}
               <div className={clsx(classes.legendIndicator, `${entry.value}`)}></div>
               <span key={`item-${index}`}>{i18n.translate(`POP_${entry.value.toUpperCase()}`)}</span>
             </div>

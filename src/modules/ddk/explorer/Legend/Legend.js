@@ -179,11 +179,12 @@ const Legend = ({ ...props }) => {
     },
     panelName: {
       fontSize: '14px',
-      padding: '0px 0px 10px 20px',
+      padding: '6px 0px 10px 34px',
       letterSpacing: '.1px'
     },
     panelLabel: {
-      padding: '0px 0px 10px 20px'
+      padding: '0px 0px 0px 34px',
+      height: '39px'
     },
     panelSds: {
       width: 'calc(100% - 29px)',
