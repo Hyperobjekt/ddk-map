@@ -62,7 +62,7 @@ const Legend = ({ ...props }) => {
     controlGuts: {
       paddingTop: '7px',
       transition: 'height 300ms ease-in-out',
-      height: legendControl.active ? '251px' : '0px',
+      height: legendControl.active ? '243px' : '0px',
       overflow: 'hidden',
     },
     row: {
