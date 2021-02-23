@@ -20,7 +20,7 @@ import {
 } from 'react-icons/ai'
 
 import Chart from './Chart'
-import arrow from './arrow.svg'
+import Arrow from './arrow.svg'
 import SelectButton from '../App/components/SelectButton'
 import useStore from './../store'
 import SDScale from '../SDScale'
@@ -52,9 +52,6 @@ const Legend = ({ ...props }) => {
       borderRadius: 5,
       overflow: 'hidden'
       //clip: 'rect(0px 284px 391px 0px)'    // pointerEvents: 'none',
-    },
-    formControl: {
-      width: '100%',
     },
     row: {
       width: '100%',
@@ -100,13 +97,16 @@ const Legend = ({ ...props }) => {
       verticalAlign: 'middle',
       letterSpacing: '1.25px',
       fontWeight: 500,
-      paddingLeft: '3px'
+      paddingLeft: '3px',
+      '&.disabled': {
+        color: '#616161',
+      }
     },
-    img: {
-      transition: 'transform 300ms ease-in-out',
-      transform: legendPanel.active ? 'rotate(180deg)' : 'rotate(0deg)',
-      width: '27px',
-      verticalAlign: 'middle',
+    imgStroke: {
+      stroke: "#C9422C" 
+    },
+    imgStrokeDisabled: {
+      stroke: "#616161" 
     },
     checkboxColor_w: {
       color: '#96cc60',
@@ -172,10 +172,13 @@ const Legend = ({ ...props }) => {
       width: '27px',
       height: '27px',
       padding: '0px',
-      marginLeft: '-2px'
+      marginLeft: '-2px',
+      transition: 'transform 300ms ease-in-out',
+      transform: legendPanel.active ? 'rotate(180deg)' : 'rotate(0deg)',
+      cursor: 'pointer'
     },
     showButtonDisabled: {
-      color: '#616161'
+      stroke: '#616161'
     },
     panelName: {
       fontSize: '14px',
@@ -187,11 +190,11 @@ const Legend = ({ ...props }) => {
       height: '39px'
     },
     panelSds: {
-      width: 'calc(100% - 29px)',
-      margin: '0px 0px auto 31px',
+      width: '311px',
+      margin: '0px 0px 0px 35px',
       textAlign: 'center',
       fontSize: '12px',
-      padding: '4px',
+      paddingBottom: '4px',
       display: 'flex',
     },
     sdsCell: {
@@ -273,124 +276,147 @@ const Legend = ({ ...props }) => {
     i18n.translate(`SDSCALE_VHIGH`),
   ]
 
+  const ArrowSvg = () => {
+    return (
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g filter="url(#filter0_d)">
+          <circle cx="16" cy="16" r="12" fill="white"/>
+          <circle cx="16" cy="16" r="11.5" className={ activeNorm != 'metros' && centerMetro === 0 ? classes.imgStrokeDisabled : classes.imgStroke }/>
+        </g>
+        <path d="M18 11L12.1818 16.8182L18 22.6364" className={ activeNorm != 'metros' && centerMetro === 0 ? classes.imgStrokeDisabled : classes.imgStroke } strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <defs>
+          <filter id="filter0_d" x="0" y="0" width="32" height="32" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+            <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+            <feOffset/>
+            <feGaussianBlur stdDeviation="2"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+          </filter>
+        </defs>
+      </svg>
+    )
+  }
+
   const classes = styles()
 
   return (
     <div>
-    <Box className={clsx('map-legend', classes.root)}>
-      <div className={classes.controller}>
-        <div className={classes.row}>
-          <IconButton disabled={activeNorm != 'metros' && centerMetro === 0} className={classes.showButton} classes={{disabled: classes.showButtonDisabled}} onClick={(e) => {handleEvent('showChart', e)}}><img className={classes.img} src={arrow}></img></IconButton>
-          <span className={classes.showChart}>{i18n.translate(legendPanel.active ? `LEGEND_CHART_TOGGLE_OFF` : `LEGEND_CHART_TOGGLE_ON`)}</span>
-        </div>
-        <div className={classes.row}>
-          <span className={classes.labelText}>
-            {i18n.translate(`${activeMetric}${activeNorm}`)}
-          </span>
-          <SDScale
-            active={[1, 1, 1, 1, 1]}
-            type={'legend'}
-          ></SDScale>
-        </div>
-        <div className={classes.row}>
-          <SelectButton
-            options={createOptions(
-              'LEGEND_',
-              OPTIONS_METRIC.options,
-            )}
-            current={activeMetric}
-            handleChange={e =>
-              handleEvent('activeMetric', e)
-            }
-            label={i18n.translate('LEGEND_SELECT_INDEX')}
-          ></SelectButton>
-        </div>
-        <div className={classes.row}>
-          <div className={classes.col2}>
+      <Box className={clsx('map-legend', classes.root)}>
+        <div className={classes.controller}>
+          <div className={classes.row}>
+            <IconButton disabled={ activeNorm != 'metros' && centerMetro === 0 } className={classes.showButton} onClick={(e) => {handleEvent('showChart', e)}}><ArrowSvg /></IconButton>
+            <span className={clsx(classes.showChart, (activeNorm != 'metros' && centerMetro === 0 ? 'disabled' : ''))}>{i18n.translate(legendPanel.active ? `LEGEND_CHART_TOGGLE_OFF` : `LEGEND_CHART_TOGGLE_ON`)}</span>
+          </div>
+          <div className={classes.row}>
+            <span className={classes.labelText}>
+              {i18n.translate(`${activeMetric}${activeNorm}`)}
+            </span>
+            <SDScale
+              active={[1, 1, 1, 1, 1]}
+              type={'legend'}
+            ></SDScale>
+          </div>
+          <div className={classes.row}>
             <SelectButton
               options={createOptions(
                 'LEGEND_',
-                OPTIONS_NORM.options,
+                OPTIONS_METRIC.options,
               )}
-              current={activeNorm}
+              current={activeMetric}
               handleChange={e =>
-                handleEvent('activeNorm', e)
+                handleEvent('activeMetric', e)
               }
-              showHelp={true}
-              label={i18n.translate('LEGEND_COMPARE')}
+              label={i18n.translate('LEGEND_SELECT_INDEX')}
             ></SelectButton>
           </div>
-          <div className={classes.col2}>
-            <SelectButton
-              options={createOptions('LEGEND_', loadYears)}
-              current={activeYear}
-              handleChange={e =>
-                handleEvent('activeYear', e)
-              }
-              label={i18n.translate('LEGEND_TIME')}
-            ></SelectButton>
+          <div className={classes.row}>
+            <div className={classes.col2}>
+              <SelectButton
+                options={createOptions(
+                  'LEGEND_',
+                  OPTIONS_NORM.options,
+                )}
+                current={activeNorm}
+                handleChange={e =>
+                  handleEvent('activeNorm', e)
+                }
+                showHelp={true}
+                label={i18n.translate('LEGEND_COMPARE')}
+              ></SelectButton>
+            </div>
+            <div className={classes.col2}>
+              <SelectButton
+                options={createOptions('LEGEND_', loadYears)}
+                current={activeYear}
+                handleChange={e =>
+                  handleEvent('activeYear', e)
+                }
+                label={i18n.translate('LEGEND_TIME')}
+              ></SelectButton>
+            </div>
+          </div>
+          <div className={classes.row}>
+            <span className={classes.labelText}>
+              {i18n.translate(`LEGEND_DEMO`)}
+            </span>
+            <div>
+              {OPTIONS_ACTIVE_POINTS.options.map((el, i) => {
+                return (
+                  <FormControlLabel
+                    className={classes.checkboxContainer}
+                    classes={{ label: classes.checkboxLabel }}
+                    control={
+                      <Checkbox
+                        className={classes.checkbox}
+                        classes={{
+                          root: classes[`checkboxColor_${el}`],
+                        }}
+                        checked={
+                          activePointLayers.indexOf(el) > -1
+                        }
+                        onChange={e =>
+                          handleEvent('activePointLayers', e)
+                        }
+                        name={el}
+                      />
+                    }
+                    label={i18n.translate(
+                      `POP_${String(el).toUpperCase()}`,
+                    )}
+                    key={el}
+                  />
+                )
+              })}
+            </div>
           </div>
         </div>
-        <div className={classes.row}>
-          <span className={classes.labelText}>
-            {i18n.translate(`LEGEND_DEMO`)}
-          </span>
-          <div>
-            {OPTIONS_ACTIVE_POINTS.options.map((el, i) => {
+        <div className={classes.panel}>
+          {remoteJson.barcharts && centerMetro > 0 &&
+            <div className={classes.chart}>
+              <div className={classes.panelName}>
+                Percentage of Children at Each Opportunity Level
+              </div>
+            <div className={clsx(classes.labelText, classes.panelLabel)}>
+              By race/ethnicity for {remoteJson.metros.data.find(el => el.GEOID === centerMetro.toString()).msaname15}
+            </div>
+            <div className={classes.panelSds}>
+            {SDArray.map((el, i) => {
               return (
-                <FormControlLabel
-                  className={classes.checkboxContainer}
-                  classes={{ label: classes.checkboxLabel }}
-                  control={
-                    <Checkbox
-                      className={classes.checkbox}
-                      classes={{
-                        root: classes[`checkboxColor_${el}`],
-                      }}
-                      checked={
-                        activePointLayers.indexOf(el) > -1
-                      }
-                      onChange={e =>
-                        handleEvent('activePointLayers', e)
-                      }
-                      name={el}
-                    />
-                  }
-                  label={i18n.translate(
-                    `POP_${String(el).toUpperCase()}`,
-                  )}
-                  key={el}
-                />
+                <span style={{width: '20%'}}>{el.toUpperCase()}</span>
               )
             })}
-          </div>
-        </div>
-      </div>
-      <div className={classes.panel}>
-        {remoteJson.barcharts && centerMetro > 0 &&
-          <div className={classes.chart}>
-            <div className={classes.panelName}>
-              Percentage of Children at Each Opportunity Level
             </div>
-          <div className={clsx(classes.labelText, classes.panelLabel)}>
-            By race/ethnicity for {remoteJson.metros.data.find(el => el.GEOID === centerMetro.toString()).msaname15}
-          </div>
-          <div className={classes.panelSds}>
-          {SDArray.map((el, i) => {
-            return (
-              <span style={{width: '62.2px'}}>{el.toUpperCase()}</span>
-            )
-          })}
-          </div>
-            <Chart
-              data={remoteJson}
-              year={activeYear}
-              geo={{type: 'metros', id: centerMetro}}
-            />
-          </div>
-        } 
-    </div>
-    </Box>
+              <Chart
+                data={remoteJson}
+                year={activeYear}
+                geo={{type: 'metros', id: centerMetro}}
+              />
+            </div>
+          } 
+        </div>
+      </Box>
     </div>
   )
 }

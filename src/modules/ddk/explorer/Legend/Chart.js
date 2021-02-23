@@ -13,7 +13,6 @@ import {
   Legend,
   ResponsiveContainer,
   Customized,
-  ComposedChart
 } from 'recharts';
 
 const Chart = ({ ...props }) => {
@@ -56,7 +55,6 @@ const Chart = ({ ...props }) => {
         selected = data.barcharts.data[`20${year}`][props.geo.type]
       default:
         selected = data.barcharts.data[`20${year}`][geo.type][geo.id]
-        console.log(`20${year}`,geo.type,geo.id)
     }
     selected.map(el => {
       struct.push({
@@ -66,7 +64,6 @@ const Chart = ({ ...props }) => {
         w: el.w,
         b: el.b,
         hi: el.hi,
-        bg: 70
       })
     })
     return struct
@@ -92,9 +89,9 @@ const Chart = ({ ...props }) => {
         >
         {
           payload.map((entry, index) => (
-            <div style={{display: 'inline-block', padding: '0px 5px'}}>
+            <div key={`item-${index}`} style={{display: 'inline-block', padding: '0px 5px'}}>
               <div className={clsx(classes.legendIndicator, `${entry.value}`)}></div>
-              <span key={`item-${index}`}>{i18n.translate(`POP_${entry.value.toUpperCase()}`)}</span>
+              <span>{i18n.translate(`POP_${entry.value.toUpperCase()}`)}</span>
             </div>
           ))
         }
@@ -126,17 +123,17 @@ const Chart = ({ ...props }) => {
         height={200}
       >
         <CartesianGrid horizontal={false} vertical={false} />
-        <XAxis dataKey="name" xAxisId={1} tickLine={false} axisLine={false} />
+        <XAxis dataKey="name" tickLine={false} axisLine={false} />
         <YAxis axisLine={false} tickLine={false} domain={[0, 70]} tickCount={8} tickFormatter={addPercent}/>
         <Legend 
           content={renderLegend}
         />
         <Customized component={Background} />
-        <Bar radius={[2,2,0,0]} xAxisId={1} dataKey="ai" fill="#FF00CC" />
-        <Bar radius={[2,2,0,0]} xAxisId={1} dataKey="ap" fill="#FF730C" />
-        <Bar radius={[2,2,0,0]} xAxisId={1} dataKey="b" fill="#FFC31A" />
-        <Bar radius={[2,2,0,0]} xAxisId={1} dataKey="hi" fill="#7401B1" />
-        <Bar radius={[2,2,0,0]} xAxisId={1} dataKey="w" fill="#66CC00" />
+        <Bar radius={[2,2,0,0]} dataKey="ai" fill="#FF00CC" />
+        <Bar radius={[2,2,0,0]} dataKey="ap" fill="#FF730C" />
+        <Bar radius={[2,2,0,0]} dataKey="b" fill="#FFC31A" />
+        <Bar radius={[2,2,0,0]} dataKey="hi" fill="#7401B1" />
+        <Bar radius={[2,2,0,0]} dataKey="w" fill="#66CC00" />
       </BarChart>
     </ResponsiveContainer>
   )
