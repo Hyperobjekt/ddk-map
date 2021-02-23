@@ -158,11 +158,10 @@ const Legend = ({ ...props }) => {
       zIndex: '-1',
       background: '#EEE',
       position: 'absolute'
-
     },
     chart: {
       width: '100%',
-      height: '100%',
+      height: '270px',
     },
     graphContainer: {
       backgroundColor: '#000',
@@ -174,6 +173,25 @@ const Legend = ({ ...props }) => {
       height: '27px',
       padding: '0px',
       marginLeft: '-2px'
+    },
+    panelName: {
+      fontSize: '14px',
+      padding: '0px 0px 10px 20px',
+      letterSpacing: '.1px'
+    },
+    panelLabel: {
+      padding: '0px 0px 10px 20px'
+    },
+    panelSds: {
+      width: 'calc(100% - 29px)',
+      margin: '0px 0px auto 31px',
+      textAlign: 'center',
+      fontSize: '12px',
+      padding: '4px',
+      display: 'flex',
+    },
+    sdsCell: {
+
     }
   }))
 
@@ -235,6 +253,14 @@ const Legend = ({ ...props }) => {
       setStoreValues(data)
     }
   }
+
+  const SDArray = [
+    i18n.translate(`SDSCALE_VLOW`),
+    i18n.translate(`SDSCALE_LOW`),
+    i18n.translate(`SDSCALE_MOD`),
+    i18n.translate(`SDSCALE_HIGH`),
+    i18n.translate(`SDSCALE_VHIGH`),
+  ]
 
   const classes = styles()
 
@@ -330,15 +356,28 @@ const Legend = ({ ...props }) => {
         </div>
       </div>
       <div className={classes.panel}>
-        <div className={classes.chart}>
-          {remoteJson.barcharts && centerMetro > 0 &&
+        {remoteJson.barcharts && centerMetro > 0 &&
+          <div className={classes.chart}>
+            <div className={classes.panelName}>
+              Percentage of Children at Each Opportunity Level
+            </div>
+          <div className={clsx(classes.labelText, classes.panelLabel)}>
+            By race/ethnicity for {remoteJson.metros.data.find(el => el.GEOID === centerMetro.toString()).msaname15}
+          </div>
+          <div className={classes.panelSds}>
+          {SDArray.map((el, i) => {
+            return (
+              <span style={{width: '62.2px'}}>{el.toUpperCase()}</span>
+            )
+          })}
+          </div>
             <Chart
               data={remoteJson}
               year={activeYear}
               geo={{type: 'metros', id: centerMetro}}
-              />
-          } 
-        </div>
+            />
+          </div>
+        } 
     </div>
     </Box>
     </div>

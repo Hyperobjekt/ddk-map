@@ -111,5 +111,12 @@ export const theme = createMuiTheme({
         '#56778D',
       ],
     },
+    demos: {
+      ai: '#FF00CC',
+      ap: '#FF730C',
+      b: '#FFC31A',
+      hi: '#7401B1',
+      w: '#66CC00'
+    }
   },
 })
