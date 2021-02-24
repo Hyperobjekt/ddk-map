@@ -24,7 +24,6 @@ import {
 import Chart from '../Chart'
 import Arrow from '../Icons'
 import SelectBox from '../App/components/SelectBox'
-import TextButton from '../App/components/TextButton'
 import useStore from './../store'
 import SDScale from '../SDScale'
 import SlideoutPanel from '../SlideoutPanel'
