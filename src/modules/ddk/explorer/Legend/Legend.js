@@ -322,7 +322,9 @@ const Legend = ({ ...props }) => {
     i18n.translate(`SDSCALE_VHIGH`),
   ]
 
-  const chartSubtitle = remoteJson.metros.data.find(el => el.GEOID === centerMetro.toString()).msaname15
+  const getChartSubtitle = () => {
+    return remoteJson.metros.data.find(el => el.GEOID === centerMetro.toString()).msaname15
+  }
 
   const classes = styles()
 
@@ -433,7 +435,7 @@ const Legend = ({ ...props }) => {
                 {i18n.translate('LEGEND_CHART_TITLE')}
               </div>
               <div className={clsx(classes.labelText, classes.panelLabel)}>
-                {i18n.translate('LEGEND_CHART_SUBTITLE', { chartSubtitle: chartSubtitle })}
+                {i18n.translate('LEGEND_CHART_SUBTITLE', { chartSubtitle: getChartSubtitle() })}
               </div>
               <div className={classes.panelSds}>
                 {SDArray.map((el, i) => {
