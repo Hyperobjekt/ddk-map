@@ -45,7 +45,7 @@ export const langSet = {
     SLIDEOUT_THIS_METRO: `this metro area`,
     SLIDEOUT_THIS_STATE: `this state`,
     SLIDEOUT_THIS_NAT: `the nation`,
-    LEGEND_M : `Metro`,
+    LEGEND_M: `Metro`,
     LEGEND_S: `State`,
     LEGEND_N: `National`,
     LEGEND_10: `2010`,
@@ -75,5 +75,9 @@ export const langSet = {
     SCALE_MEAN: `Mean`,
     SCALE_INDICATORS_SHOW: `Show indicators`,
     SCALE_INDICATORS_HIDE: `Hide indicators`,
+    LABEL_XC: `Overall Child Opportunity`,
+    LABEL_XH: `Health & Environment`,
+    LABEL_XO: `Social & Economic`,
+    LABEL_XE: `Education`,
   },
 }
