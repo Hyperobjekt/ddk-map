@@ -219,6 +219,7 @@ const Legend = ({ ...props }) => {
       height: '39px'
     },
     panelSds: {
+      color: '#616161',
       width: '311px',
       margin: '0px 0px 0px 35px',
       textAlign: 'center',

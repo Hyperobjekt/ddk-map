@@ -41,8 +41,15 @@ const Chart = ({ ...props }) => {
         backgroundColor: '#66CC00'
       }
     },
-    legendName: {
-
+    legend: {
+      width: '305px',
+      margin: '-20px 10px auto 57px',
+      textAlign: 'center',
+      backgroundColor: '#fff',
+      borderRadius: '2px',
+      fontSize: '9px',
+      padding: '4px',
+      boxShadow: theme.shadows[1],
     },
     
   }))
@@ -77,16 +84,7 @@ const Chart = ({ ...props }) => {
     const { payload } = props;
   
     return (
-      <div style={{
-        width: '305px',
-        margin: '-20px 10px auto 57px',
-        textAlign: 'center',
-        backgroundColor: '#fff',
-        borderRadius: '2px',
-        fontSize: '9px',
-        padding: '4px'
-      }}
-        >
+      <div className={classes.legend}>
         {
           payload.map((entry, index) => (
             <div key={`item-${index}`} style={{display: 'inline-block', padding: '0px 5px'}}>
@@ -102,6 +100,7 @@ const Chart = ({ ...props }) => {
   const Background = () => {
     return(
       <>
+        <rect style={{fill: "#fff"}} x={32} y="3" height="234" width={315}></rect>
         <rect style={{fill: "#C9E8F8"}} x={(0 * 311/5) + 34} y="5" height="230" width={311 - (0 * 311/5)}></rect>
         <rect style={{fill: '#8DD4F9'}} x={(1 * 311/5) + 34} y="5" height="230" width={311 - (1 * 311/5)}></rect>
         <rect style={{fill: '#73A0C9'}} x={(2 * 311/5) + 34} y="5" height="230" width={311 - (2 * 311/5)}></rect>
@@ -118,7 +117,7 @@ const Chart = ({ ...props }) => {
       <BarChart
         data={processData(props.data, props.geo, props.year)}
         margin={{ top: 5, right: 5, bottom: 5, left: -24 }}
-        barCategoryGap='10%'
+        barCategoryGap='3%'
         barGap='0'
         height={200}
       >
