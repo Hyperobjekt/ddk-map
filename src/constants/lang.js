@@ -60,6 +60,7 @@ export const langSet = {
     SLIDEOUT_TIP_XH: `<b>Health and Environment Index</b> combines healthy environment, toxic exposure, and health resource indicators. `,
     SLIDEOUT_TIP_XE: `<b>Education Index</b> combines Early childhood education, Elementary education, Secondary and postsecondary education, and Educational and social resources indicators. `,
     SEARCH_PROMPT: `Search for a location (address, city, or state)`,
+    BTN_SEARCH: `Search`,
     BTN_SHOW_ALL: `SHOW ALL`,
     BTN_HIDE_ALL: `HIDE ALL`,
     SCALE_MEAN: `Mean`,
@@ -69,5 +70,6 @@ export const langSet = {
     LABEL_XH: `Health & Environment`,
     LABEL_XO: `Social & Economic`,
     LABEL_XE: `Education`,
+    BTN_MENU: `Menu`,
   },
 }

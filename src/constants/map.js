@@ -218,3 +218,8 @@ export const MAP_CONTROLS_CLASSES = ['map-legend']
  */
 export const MAIN_INDEX = 'xc'
 export const SUB_INDICES = ['xo', 'xh', 'xe']
+
+/**
+ * Above this zoom level, we provide additional functionality
+ */
+export const ADDL_FUNCT_ZOOM_THRESHOLD = 5
