@@ -17,6 +17,7 @@ import { ROUTE_SET } from './../../../../constants/map'
 import Language from './components/Language'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
+import './App.css'
 // Import fonts installed using fontsource: https://github.com/fontsource/fontsource
 import '@fontsource/fira-sans'
 import '@fontsource/merriweather'
