@@ -12,7 +12,8 @@ import {
   Fade,
   IconButton,
   Modal,
-  Paper
+  Paper,
+  Button
 } from '@material-ui/core'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import {
@@ -22,7 +23,8 @@ import {
 
 import Chart from '../Chart'
 import Arrow from '../Icons'
-import SelectButton from '../App/components/SelectButton'
+import SelectBox from '../App/components/SelectBox'
+import TextButton from '../App/components/TextButton'
 import useStore from './../store'
 import SDScale from '../SDScale'
 import SlideoutPanel from '../SlideoutPanel'
@@ -63,6 +65,9 @@ const Legend = ({ ...props }) => {
       paddingTop: '7px',
       transition: 'height 300ms ease-in-out',
       height: legendControl.active ? '243px' : '0px',
+      [theme.breakpoints.up('sm')]: {
+        height: '243px'
+      },
       overflow: 'hidden',
     },
     row: {
@@ -96,21 +101,6 @@ const Legend = ({ ...props }) => {
         padding: '0px 0px 0px 2px',
       },
     },
-    checkboxContainer: {
-      display: 'block',
-      justifyContent: 'left',
-      paddingLeft: '9px'
-    },
-    checkboxLabel: {
-      verticalAlign: 'middle',
-      paddingLeft: '6px',
-      fontSize: '14px',
-      color: '#000'
-    },
-    checkbox: {
-      padding: '0px 0px',
-      verticalAlign: 'middle',
-    },
     labelText: {
       display: 'block',
       color: '#616161',
@@ -128,19 +118,36 @@ const Legend = ({ ...props }) => {
       }
     },
     showControl: {
-      color: '#C9422C',
-      fontSize: '14px',
-      letterSpacing: '1.25px',
       textAlign: 'center',
-      borderTop: '1px solid #EEE'
+      borderTop: '1px solid #EEE',
     },
     controlIcon: {
-      verticalAlign: 'middle',
       transition: 'transform 300ms ease-in-out',
       transform: legendControl.active ? 'rotate(0deg)' : 'rotate(180deg)',
     },
-    controlText: {
-      verticalAlign: 'middle'
+    controlButton: {
+      textAlign: 'center'
+    },
+    controlBtnLabel: {
+      color: '#C9422C',
+      fontSize: '14px',
+      letterSpacing: '1.25px',
+      verticalAlign: 'middle',
+    },
+    checkboxContainer: {
+      display: 'block',
+      justifyContent: 'left',
+      paddingLeft: '9px'
+    },
+    checkboxLabel: {
+      verticalAlign: 'middle',
+      paddingLeft: '6px',
+      fontSize: '14px',
+      color: '#000'
+    },
+    checkbox: {
+      padding: '0px 0px',
+      verticalAlign: 'middle',
     },
     checkboxColor_w: {
       color: '#96cc60',
@@ -199,26 +206,9 @@ const Legend = ({ ...props }) => {
       background: '#EEE',
       position: 'absolute'
     },
-    chart: {
+    panelChart: {
       width: '100%',
       height: '270px',
-    },
-    graphContainer: {
-      backgroundColor: '#000',
-      height: '100px',
-      width: '100px'
-    },
-    showButton: {
-      width: '27px',
-      height: '27px',
-      padding: '0px',
-      marginLeft: '-2px',
-      transition: 'transform 300ms ease-in-out',
-      transform: legendPanel.active ? 'rotate(180deg)' : 'rotate(0deg)',
-      cursor: 'pointer'
-    },
-    showButtonDisabled: {
-      stroke: '#616161'
     },
     panelName: {
       fontSize: '14px',
@@ -239,6 +229,23 @@ const Legend = ({ ...props }) => {
     },
     sdsCell: {
       width: '20%'
+    },
+    graphContainer: {
+      backgroundColor: '#000',
+      height: '100px',
+      width: '100px'
+    },
+    showButton: {
+      width: '27px',
+      height: '27px',
+      padding: '0px',
+      marginLeft: '-2px',
+      transition: 'transform 300ms ease-in-out',
+      transform: legendPanel.active ? 'rotate(180deg)' : 'rotate(0deg)',
+      cursor: 'pointer'
+    },
+    showButtonDisabled: {
+      stroke: '#616161'
     }
   }))
 
@@ -332,10 +339,12 @@ const Legend = ({ ...props }) => {
     <div>
       <Box className={clsx('map-legend', classes.root)}>
         <div className={classes.controller}>
+
           <div className={clsx(classes.row, 'hide-mobile')}>
             <IconButton disabled={ activeNorm != 'metros' && centerMetro === 0 } className={classes.showButton} onClick={(e) => {handleEvent('showChart', e)}}><Arrow disabled={activeNorm != 'metros' && centerMetro === 0}/></IconButton>
             <span className={clsx(classes.showChart, (activeNorm != 'metros' && centerMetro === 0 ? 'disabled' : ''))}>{i18n.translate(legendPanel.active ? `LEGEND_CHART_TOGGLE_OFF` : `LEGEND_CHART_TOGGLE_ON`)}</span>
           </div>
+
           <div className={classes.row}>
             <span className={classes.labelText}>
               {i18n.translate(`${activeMetric}${activeNorm}`)}
@@ -345,10 +354,12 @@ const Legend = ({ ...props }) => {
               type={'legend'}
             ></SDScale>
           </div>
+
+          {/* CONTIANER FOR CONTROLS THAT WILL BE HIDDEN ON MOBILE */}
           <div className={classes.controlGuts}>
 
             <div className={classes.row}>
-              <SelectButton
+              <SelectBox
                 options={createOptions(
                   'LEGEND_',
                   OPTIONS_METRIC.options,
@@ -358,11 +369,13 @@ const Legend = ({ ...props }) => {
                   handleEvent('activeMetric', e)
                 }
                 label={i18n.translate('LEGEND_SELECT_INDEX')}
-              ></SelectButton>
+              ></SelectBox>
             </div>
+
             <div className={classes.row}>
+
               <div className={classes.col2}>
-                <SelectButton
+                <SelectBox
                   options={createOptions(
                     'LEGEND_',
                     OPTIONS_NORM.options,
@@ -373,19 +386,22 @@ const Legend = ({ ...props }) => {
                   }
                   showHelp={true}
                   label={i18n.translate('LEGEND_COMPARE')}
-                ></SelectButton>
+                ></SelectBox>
               </div>
+
               <div className={classes.col2}>
-                <SelectButton
+                <SelectBox
                   options={createOptions('LEGEND_', loadYears)}
                   current={activeYear}
                   handleChange={e =>
                     handleEvent('activeYear', e)
                   }
                   label={i18n.translate('LEGEND_TIME')}
-                ></SelectButton>
+                ></SelectBox>
               </div>
+
             </div>
+
             <div className={classes.row}>
               <span className={classes.labelText}>
                 {i18n.translate(`LEGEND_DEMO`)}
@@ -420,23 +436,34 @@ const Legend = ({ ...props }) => {
                 })}
               </div>
             </div>
+
           </div>
+
+          {/* EXPAND LESS/MORE FOR MOBILE */}
           <div className={clsx(classes.row, 'hide-desktop')}>
-            <div className={classes.showControl} onClick={(e) => {handleEvent('showControl', e)}}>
-              <ExpandLessIcon className={classes.controlIcon}/>
-              <span className={classes.controlText}>{i18n.translate(`LEGEND_CONTROL_${legendControl.active.toString().toUpperCase()}`)}</span>
+            <div className={classes.controlButton}>
+              <Button onClick = {(e) => {handleEvent('showControl', e)}} classes={{label: classes.controlBtnLabel}}>
+                <ExpandLessIcon className={classes.controlIcon}/>
+                <span>{i18n.translate(`LEGEND_CONTROL_${legendControl.active.toString().toUpperCase()}`)}</span>
+              </Button>
             </div>
           </div>
         </div>
+
+        {/* CHART PANEL */}
         <div className={classes.panel}>
+          {/* DONT RENDER WITHOUT NECESSARY DATA OR CORRECT CONDITIONS*/}
           {remoteJson.barcharts && centerMetro > 0 &&
-            <div className={classes.chart}>
+            <div className={classes.panelChart}>
+
               <div className={classes.panelName}>
                 {i18n.translate('LEGEND_CHART_TITLE')}
               </div>
+
               <div className={clsx(classes.labelText, classes.panelLabel)}>
                 {i18n.translate('LEGEND_CHART_SUBTITLE', { chartSubtitle: getChartSubtitle() })}
               </div>
+
               <div className={classes.panelSds}>
                 {SDArray.map((el, i) => {
                   return (
@@ -444,11 +471,13 @@ const Legend = ({ ...props }) => {
                   )
                 })}
               </div>
+
               <Chart
                 data={remoteJson}
                 year={activeYear}
                 geo={{type: 'metros', id: centerMetro}}
               />
+
             </div>
           } 
         </div>
