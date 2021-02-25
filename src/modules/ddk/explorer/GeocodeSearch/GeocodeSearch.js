@@ -6,6 +6,7 @@ import Autosuggest from 'react-autosuggest'
 import { FiSearch } from 'react-icons/fi'
 import { MdClose } from 'react-icons/md'
 import { fade, makeStyles } from '@material-ui/core/styles'
+import { Button } from '@material-ui/core'
 
 import { ADDL_FUNCT_ZOOM_THRESHOLD } from './../../../../constants/map'
 import useStore from '../store'
@@ -23,19 +24,19 @@ const GeocodeSearch = ({ ...props }) => {
     setStoreValues,
     showIntroModal,
     eventGeocodeSearch,
-    flyToLatLng,
-    flyToBounds,
     viewport,
+    flyToBounds,
+    flyToLatLon,
   } = useStore(state => ({
     setStoreValues: state.setStoreValues,
     showIntroModal: state.showIntroModal,
     eventGeocodeSearch: state.eventGeocodeSearch,
-    flyToLatLng: state.flyToLatLng,
-    flyToBounds: state.flyToBounds,
     viewport: state.viewport,
+    flyToBounds: state.flyToBounds,
+    flyToLatLon: state.flyToLatLon,
   }))
 
-  console.log('geocodeSearch, ', viewport)
+  // console.log('geocodeSearch, ', viewport)
 
   // Tracking autosuggest suggestions
   const [suggestions, setSuggestions] = useState([])
@@ -43,7 +44,7 @@ const GeocodeSearch = ({ ...props }) => {
 
   // Update the UI according to the context.
   const updateUIWithResult = suggestion => {
-    // console.log('updateUIWithResult, ', suggestion)
+    console.log('updateUIWithResult, ', suggestion)
     // If feature has a bounding box, use the
     // bounding box to fly, otherwise treat it
     // like a point.
@@ -59,10 +60,10 @@ const GeocodeSearch = ({ ...props }) => {
         ],
       ])
     } else {
-      // flyToFeature(suggestion.suggestion)
-      flyToLatLng(
+      flyToLatLon(
         suggestion.suggestion.center[1],
         suggestion.suggestion.center[0],
+        12,
       )
     }
     // If intro panel is dsplayed, hide it.
@@ -187,19 +188,18 @@ const GeocodeSearch = ({ ...props }) => {
         aria-hidden="true"
         style={{ display: !!value ? 'none' : 'block' }}
       />
-      <button
+      <Button
         id="button_search_clear"
         aria-label={i18n.translate(`BTN_SEARCH`)}
         onClick={handleClear}
-        color="none"
-        className={clsx('button-search-clear')}
-        style={{ display: !!value ? 'block' : 'none' }}
+        className={clsx(
+          'button-search-clear',
+          classes.clearButton,
+        )}
+        style={{ display: !!value ? 'flex' : 'none' }}
       >
         <MdClose />
-        <span className="sr-only">
-          {i18n.translate(`BTN_SEARCH`)}
-        </span>
-      </button>
+      </Button>
     </div>
   )
 }
@@ -208,8 +208,7 @@ const GeocodeSearch = ({ ...props }) => {
 const styles = makeStyles(theme => ({
   root: {
     position: 'relative',
-    minWidth: '320px',
-    maxWidth: '420px',
+    width: '338px',
     border: `1px solid ${theme.extras.variables.colors.lightLightGray}`,
     color: theme.extras.variables.colors.lightGray,
     borderRadius: theme.shape.borderRadius,
@@ -223,20 +222,71 @@ const styles = makeStyles(theme => ({
     marginRight: theme.spacing(1),
     marginLeft: 'auto',
     width: '100%',
-    height: '28px',
+    height: '40px',
     [theme.breakpoints.up('sm')]: {
       marginLeft: 'auto',
       marginRight: theme.spacing(1),
       width: 'auto',
     },
     '& .react-autosuggest__container': {
-      // backgroundColor: 'red',
-      '& input': {
+      flex: '1 1 80%',
+      width: '338px',
+      '& .react-autosuggest__input': {
+        fontFamily: 'Fira Sans',
+        height: '40px',
         width: '100%',
-        height: '28px',
         border: 0,
-        padding: '0 6px',
-        // backgroundColor: 'red',
+        padding: '0 34px 0 16px',
+        fontSize: '14px',
+        color: theme.extras.variables.colors.lightGray,
+        '&:focus': {
+          border: 0,
+          outline: 'none',
+        },
+        '&::-webkit-search-cancel-button': {
+          display: 'none',
+        },
+      },
+      '& .react-autosuggest__suggestions-container': {
+        top: '20px',
+        zIndex: '3000',
+        backgroundColor: 'transparent',
+        width: '100%',
+        '& .react-autosuggest__suggestions-list': {
+          border: '1px solid #ddd',
+          backgroundColor: '#fff',
+          listStyleType: 'none',
+          padding: 0,
+          marginBlockStart: '4px',
+          '& .react-autosuggest__suggestion': {
+            height: 'auto',
+            lineHeight: '1.5',
+            padding: '8px 8px 8px 16px',
+            fontSize: '14px',
+            textOverflow: 'ellipsis',
+            fontWeight: '300',
+            '& > div': {
+              width: '100%',
+              whiteSpace: 'wrap',
+              overflow: 'hidden',
+            },
+          },
+          '& .react-autosuggest__suggestion--highlighted': {
+            backgroundColor:
+              theme.extras.SDScale.offColors[1],
+          },
+          '& .react-autosuggest__suggestions-container--open': {
+            top: 'auto',
+          },
+        },
+      },
+    },
+    '& .react-autosuggest__container--open': {
+      '& ~ svg.icon-search': {
+        // display: 'none',
+      },
+      '& .button-search-clear': {
+        display: 'none',
       },
     },
   },
@@ -251,25 +301,33 @@ const styles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  autoSuggest: {
-    color: 'inherit',
-    backgroundColor: 'red',
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: theme.spacing(2),
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-    '&.react-autosuggest__container': {
-      backgroundColor: 'red',
-      '& input': {
-        width: '100%',
-      },
-    },
+  clearButton: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    width: '40px',
+    minWidth: '40px',
+    height: '40px',
+    // display: 'flex !important',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }))
+
+// container:                'react-autosuggest__container',
+//   containerOpen:            'react-autosuggest__container--open',
+//   input:                    'react-autosuggest__input',
+//   inputOpen:                'react-autosuggest__input--open',
+//   inputFocused:             'react-autosuggest__input--focused',
+//   suggestionsContainer:     'react-autosuggest__suggestions-container',
+//   suggestionsContainerOpen: 'react-autosuggest__suggestions-container--open',
+//   suggestionsList:          'react-autosuggest__suggestions-list',
+//   suggestion:               'react-autosuggest__suggestion',
+//   suggestionFirst:          'react-autosuggest__suggestion--first',
+//   suggestionHighlighted:    'react-autosuggest__suggestion--highlighted',
+//   sectionContainer:         'react-autosuggest__section-container',
+//   sectionContainerFirst:    'react-autosuggest__section-container--first',
+//   sectionTitle:             'react-autosuggest__section-title'
 
 GeocodeSearch.propTypes = {}
 
