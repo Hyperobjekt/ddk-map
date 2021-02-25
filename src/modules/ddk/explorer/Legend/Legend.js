@@ -284,6 +284,27 @@ const Legend = ({ ...props }) => {
     })
   }
 
+  const processData = (data, geo, year) => {
+    var struct = [];
+    var selected = [];
+    switch(geo.type){
+      case 'national':
+        selected = data.barcharts.data[`20${year}`][props.geo.type]
+      default:
+        selected = data.barcharts.data[`20${year}`][geo.type][geo.id]
+    }
+    selected.map(el => {
+      struct.push({
+        ai: el.ai,
+        ap: el.ap,
+        w: el.w,
+        b: el.b,
+        hi: el.hi,
+      })
+    })
+    return struct
+  }
+
   const handleEvent = (val, e) => {
     var data = {}
     if (val === 'showControl') {
@@ -467,15 +488,14 @@ const Legend = ({ ...props }) => {
               <div className={classes.panelSds}>
                 {SDArray.map((el, i) => {
                   return (
-                    <span className={classes.sdsCell}>{el.toUpperCase()}</span>
+                    <span key={el} className={classes.sdsCell}>{el.toUpperCase()}</span>
                   )
                 })}
               </div>
 
               <Chart
-                data={remoteJson}
-                year={activeYear}
-                geo={{type: 'metros', id: centerMetro}}
+                data={processData(remoteJson, {type: 'metros', id: centerMetro}, activeYear)}
+                activeBars={activePointLayers}
               />
 
             </div>

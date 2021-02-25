@@ -26,24 +26,25 @@ const Chart = ({ ...props }) => {
       marginRight: '3px',
       borderRadius: '2px',
       '&.ai':{
-        backgroundColor: '#FF00CC'
+        backgroundColor: theme.extras.demos.ai
       },
       '&.ap':{
-        backgroundColor: '#FF730C'
+        backgroundColor: theme.extras.demos.ap
       },
       '&.b':{
-        backgroundColor: '#FFC31A'
+        backgroundColor: theme.extras.demos.b
       },
       '&.hi':{
-        backgroundColor: '#7401B1'
+        backgroundColor: theme.extras.demos.hi
       },
       '&.w':{
-        backgroundColor: '#66CC00'
+        backgroundColor: theme.extras.demos.w
       }
     },
     legend: {
       width: '305px',
-      margin: '-20px 10px auto 57px',
+      height: '11px',
+      margin: '-20px 10px 6px 57px',
       textAlign: 'center',
       backgroundColor: '#fff',
       borderRadius: '2px',
@@ -51,30 +52,50 @@ const Chart = ({ ...props }) => {
       padding: '4px',
       boxShadow: theme.shadows[1],
     },
-    
+    background: {
+      '&.vl': {fill: theme.extras.SDScale.onColors[0]},
+      '&.l': {fill: theme.extras.SDScale.onColors[1]},
+      '&.m': {fill: theme.extras.SDScale.onColors[2]},
+      '&.h': {fill: theme.extras.SDScale.onColors[3]},
+      '&.vh': {fill: theme.extras.SDScale.onColors[4]}
+    },
+    ai:{
+      fill: theme.extras.demos.ai
+    },
+    ap:{
+      fill: theme.extras.demos.ap
+    },
+    b:{
+      fill: theme.extras.demos.b
+    },
+    hi:{
+      fill: theme.extras.demos.hi
+    },
+    w:{
+      fill: theme.extras.demos.w
+    }
   }))
 
-  const processData = (data, geo, year) => {
-    var struct = [];
-    var selected = [];
-    switch(geo.type){
-      case 'national':
-        selected = data.barcharts.data[`20${year}`][props.geo.type]
-      default:
-        selected = data.barcharts.data[`20${year}`][geo.type][geo.id]
-    }
-    selected.map(el => {
-      struct.push({
-        grp: el.grp,
-        ai: el.ai,
-        ap: el.ap,
-        w: el.w,
-        b: el.b,
-        hi: el.hi,
-      })
-    })
-    return struct
-  }
+  // const processData = (data, geo, year) => {
+  //   var struct = [];
+  //   var selected = [];
+  //   switch(geo.type){
+  //     case 'national':
+  //       selected = data.barcharts.data[`20${year}`][props.geo.type]
+  //     default:
+  //       selected = data.barcharts.data[`20${year}`][geo.type][geo.id]
+  //   }
+  //   selected.map(el => {
+  //     struct.push({
+  //       ai: el.ai,
+  //       ap: el.ap,
+  //       w: el.w,
+  //       b: el.b,
+  //       hi: el.hi,
+  //     })
+  //   })
+  //   return struct
+  // }
 
   const addPercent = (el) => {
     return `${el}%`
@@ -98,26 +119,33 @@ const Chart = ({ ...props }) => {
   }
 
   const Background = () => {
+    const bgWidth = 311
+    const bgHeight = 225
+    const xOffset = 36
+    const yOffset = 5
+    const indexes = ['vl', 'l', 'm', 'h', 'vh']
+
     return(
       <>
-        <rect style={{fill: "#fff"}} x={32} y="3" height="234" width={315}></rect>
-        <rect style={{fill: "#C9E8F8"}} x={(0 * 311/5) + 34} y="5" height="230" width={311 - (0 * 311/5)}></rect>
-        <rect style={{fill: '#8DD4F9'}} x={(1 * 311/5) + 34} y="5" height="230" width={311 - (1 * 311/5)}></rect>
-        <rect style={{fill: '#73A0C9'}} x={(2 * 311/5) + 34} y="5" height="230" width={311 - (2 * 311/5)}></rect>
-        <rect style={{fill: '#588DA8'}} x={(3 * 311/5) + 34} y="5" height="230" width={311 - (3 * 311/5)}></rect>
-        <rect style={{fill: '#56778D'}} x={(4 * 311/5) + 34} y="5" height="230" width={311 - (4 * 311/5)}></rect>
+        <rect style={{fill: "#fff"}} x={xOffset - 2} y={yOffset - 2} height={bgHeight + 4} width={bgWidth + 4}></rect>
+        {indexes.map((val, i) => {
+          return <rect key={i} className={clsx(classes.background, val)} x={(i * bgWidth/indexes.length) + xOffset} y={yOffset} height={bgHeight} width={bgWidth - (i * bgWidth/indexes.length)}></rect>
+        })}
       </>
     )
   }
+
+  console.log(props.activeBars)
 
   const classes = styles()
   
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart
-        data={processData(props.data, props.geo, props.year)}
+        data={props.data}
+        // data={processData(props.data, props.geo, props.year)}
         margin={{ top: 5, right: 5, bottom: 5, left: -24 }}
-        barCategoryGap='3%'
+        barCategoryGap='5%'
         barGap='0'
         height={200}
       >
@@ -128,11 +156,13 @@ const Chart = ({ ...props }) => {
           content={renderLegend}
         />
         <Customized component={Background} />
-        <Bar radius={[2,2,0,0]} dataKey="ai" fill="#FF00CC" />
-        <Bar radius={[2,2,0,0]} dataKey="ap" fill="#FF730C" />
+        {props.activeBars.map((el, i) => {
+          return <Bar radius={[2,2,0,0]} dataKey={el} className={classes[el]} />
+        })}
+        {/* <Bar radius={[2,2,0,0]} dataKey="ap" fill="#FF730C" />
         <Bar radius={[2,2,0,0]} dataKey="b" fill="#FFC31A" />
         <Bar radius={[2,2,0,0]} dataKey="hi" fill="#7401B1" />
-        <Bar radius={[2,2,0,0]} dataKey="w" fill="#66CC00" />
+        <Bar radius={[2,2,0,0]} dataKey="w" fill="#66CC00" /> */}
       </BarChart>
     </ResponsiveContainer>
   )
@@ -140,8 +170,8 @@ const Chart = ({ ...props }) => {
 
 Chart.propTypes = {
   data: PropTypes.object,
-  year: PropTypes.string,
-  geo: PropTypes.object
+  activeBars: PropTypes.array,
+  // geo: PropTypes.object
 }
 
 Chart.defaultProps = {}
