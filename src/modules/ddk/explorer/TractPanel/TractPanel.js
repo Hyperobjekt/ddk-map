@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
 import { Tooltip, Button } from '@material-ui/core'
+import shallow from 'zustand/shallow'
 
 import useStore from './../store'
 import {
@@ -100,23 +101,23 @@ const styles = makeStyles(theme => ({
  * panel or modal dialog)
  */
 const TractPanel = () => {
+  // console.log('TractPanel')
   const {
     slideoutPanel,
-    slideoutTract,
     slideoutFeature,
     allDataLoaded,
     activeNorm,
-    activeYear,
     remoteJson,
-  } = useStore(state => ({
-    slideoutPanel: state.slideoutPanel,
-    slideoutTract: state.slideoutTract,
-    slideoutFeature: state.slideoutFeature,
-    allDataLoaded: state.allDataLoaded,
-    activeNorm: state.activeNorm,
-    activeYear: state.activeYear,
-    remoteJson: state.remoteJson,
-  }))
+  } = useStore(
+    state => ({
+      slideoutPanel: state.slideoutPanel,
+      slideoutFeature: state.slideoutFeature,
+      allDataLoaded: state.allDataLoaded,
+      activeNorm: state.activeNorm,
+      remoteJson: state.remoteJson,
+    }),
+    shallow,
+  )
 
   const classes = styles()
 

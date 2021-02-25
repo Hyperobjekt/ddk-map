@@ -7,6 +7,7 @@ import { FiSearch } from 'react-icons/fi'
 import { MdClose } from 'react-icons/md'
 import { fade, makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
+import shallow from 'zustand/shallow'
 
 import { ADDL_FUNCT_ZOOM_THRESHOLD } from './../../../../constants/map'
 import useStore from '../store'
@@ -27,14 +28,17 @@ const GeocodeSearch = ({ ...props }) => {
     viewport,
     flyToBounds,
     flyToLatLon,
-  } = useStore(state => ({
-    setStoreValues: state.setStoreValues,
-    showIntroModal: state.showIntroModal,
-    eventGeocodeSearch: state.eventGeocodeSearch,
-    viewport: state.viewport,
-    flyToBounds: state.flyToBounds,
-    flyToLatLon: state.flyToLatLon,
-  }))
+  } = useStore(
+    state => ({
+      setStoreValues: state.setStoreValues,
+      showIntroModal: state.showIntroModal,
+      eventGeocodeSearch: state.eventGeocodeSearch,
+      viewport: state.viewport,
+      flyToBounds: state.flyToBounds,
+      flyToLatLon: state.flyToLatLon,
+    }),
+    shallow,
+  )
 
   // console.log('geocodeSearch, ', viewport)
 

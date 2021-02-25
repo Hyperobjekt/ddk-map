@@ -15,6 +15,7 @@ import useStore from './../store'
 import TractPanel from './../TractPanel'
 
 const SlideoutPanel = ({ ...props }) => {
+  // console.log('SlideoutPanel()')
   // Generic store value setter.
   const setStoreValues = useStore(
     state => state.setStoreValues,

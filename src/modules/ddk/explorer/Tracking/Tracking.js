@@ -1,6 +1,7 @@
 import React from 'react'
 import i18n from '@pureartisan/simple-i18n'
 import { useEffect, useRef, useState } from 'react'
+import shallow from 'zustand/shallow'
 
 import useStore from './../store'
 import { DEFAULT_VIEWPORT } from './../../../../constants/map'
@@ -8,81 +9,48 @@ import { useDebounce } from './../utils'
 // import { constructShareLink } from './../Share/Share'
 
 const Tracking = ({ ...props }) => {
-  const shareHash = useStore(state => state.shareHash)
-  const activeView = useStore(state => state.activeView)
-  const activeMetric = useStore(state => state.activeMetric)
-  const activeQuintiles = useStore(
-    state => state.activeQuintiles,
+  const {
+    shareHash,
+    activeView,
+    activeQuintiles,
+    activeLayers,
+    hovered,
+    viewport,
+    eventShareTwitter,
+    eventShareFacebook,
+    eventShareEmail,
+    eventShareLink,
+    eventMapReset,
+    eventMapCapture,
+    eventError,
+    eventLaunchTour,
+    eventCloseTour,
+    eventCloseTourStep,
+    interactionsMobile,
+    doTrackEvents,
+  } = useStore(
+    state => ({
+      shareHash: state.shareHash,
+      activeView: state.activeView,
+      activeQuintiles: state.activeQuintiles,
+      activeLayers: state.activeLayers,
+      hovered: state.hovered,
+      viewport: state.viewport,
+      eventShareTwitter: state.eventShareTwitter,
+      eventShareFacebook: state.eventShareFacebook,
+      eventShareEmail: state.eventShareEmail,
+      eventShareLink: state.eventShareLink,
+      eventMapReset: state.eventMapReset,
+      eventMapCapture: state.eventMapCapture,
+      eventError: state.eventError,
+      eventLaunchTour: state.eventLaunchTour,
+      eventCloseTour: state.eventCloseTour,
+      eventCloseTourStep: state.eventCloseTourStep,
+      interactionsMobile: state.interactionsMobile,
+      doTrackEvents: state.doTrackEvents,
+    }),
+    shallow,
   )
-  const activeLayers = useStore(state => state.activeLayers)
-  const hovered = useStore(state => state.hovered)
-  const activeFeeder = useStore(state => state.activeFeeder)
-  const viewport = useStore(state => state.viewport)
-  const feederLocked = useStore(state => state.feederLocked)
-  const highlightedSchool = useStore(
-    state => state.highlightedSchool,
-  )
-  const eventShareTwitter = useStore(
-    state => state.eventShareTwitter,
-  )
-  const eventShareFacebook = useStore(
-    state => state.eventShareFacebook,
-  )
-  const eventShareEmail = useStore(
-    state => state.eventShareEmail,
-  )
-  const eventShareLink = useStore(
-    state => state.eventShareLink,
-  )
-  const eventMapReset = useStore(
-    state => state.eventMapReset,
-  )
-  const eventMapCapture = useStore(
-    state => state.eventMapCapture,
-  )
-  const eventSchoolSearch = useStore(
-    state => state.eventSchoolSearch,
-  )
-  const eventSchoolPage = useStore(
-    state => state.eventSchoolPage,
-  )
-  const flyToSchoolSLN = useStore(
-    state => state.flyToSchoolSLN,
-  )
-  const accessedSchool = useStore(
-    state => state.accessedSchool,
-  )
-  const eventError = useStore(state => state.eventError)
-  // Tour is launched.
-  const eventLaunchTour = useStore(
-    state => state.eventLaunchTour,
-  )
-  // Tour is closed.
-  const eventCloseTour = useStore(
-    state => state.eventCloseTour,
-  )
-  // Step when tour is closed.
-  const eventCloseTourStep = useStore(
-    state => state.eventCloseTourStep,
-  )
-  const interactionsMobile = useStore(
-    state => state.interactionsMobile,
-  )
-  // Overall boolean preventing event tracking before
-  // the map is loaded.
-  const doTrackEvents = useStore(
-    state => state.doTrackEvents,
-  )
-
-  // Get school from schools collection.
-  const getSchool = id => {
-    const schools = useStore(
-      state => state.remoteJson.schools,
-    )
-    return schools.filter(el => {
-      return Number(el.TEA) === Number(id)
-    })[0]
-  }
 
   const trackCustomEvent = data => {
     // console.log('trackCustomEvent, ', data)
@@ -154,53 +122,6 @@ const Tracking = ({ ...props }) => {
         eventCategory = 'Configure map view'
         eventAction = 'Update layers'
         eventLabel = activeLayers.toString()
-        break
-      case params.type === 'search_school':
-        eventCategory = 'Interact with school'
-        eventAction = 'Search for school'
-        var id =
-          activeView === 'map'
-            ? flyToSchoolSLN
-            : highlightedSchool
-        if (!!id) {
-          eventLabel = getSchool(id).SCHOOLNAME
-            ? getSchool(id).SCHOOLNAME
-            : null
-          eventValue = id
-        }
-        break
-      case params.type === 'select_feeder':
-        eventCategory = 'Update feeder view'
-        eventAction = 'Select a feeder'
-        const feeder = CPAL_FEEDERS.filter(el => {
-          return Number(el.id) === Number(activeFeeder)
-        })[0]
-        eventLabel = feeder.title
-        eventValue = activeFeeder
-        // code block
-        break
-      case params.type === 'view_school_details':
-        eventCategory = 'Interact with school'
-        eventAction = 'View school details (hover or touch)'
-        var id = hovered ? hovered : false
-        if (!!id) {
-          eventLabel = getSchool(id).SCHOOLNAME
-            ? getSchool(id).SCHOOLNAME
-            : null
-          eventValue = id
-        }
-        break
-      case params.type === 'access_school_page':
-        eventCategory = 'Interact with school'
-        eventAction = 'Navigate to school page (click)'
-        var id =
-          activeView === 'map' ? hovered : accessedSchool
-        if (!!id) {
-          eventLabel = getSchool(id).SCHOOLNAME
-            ? getSchool(id).SCHOOLNAME
-            : null
-          eventValue = id
-        }
         break
       case params.type === 'map_zoom':
         eventCategory = 'Use map controls'
@@ -314,12 +235,6 @@ const Tracking = ({ ...props }) => {
   useEffect(() => {
     trackEvent({ type: 'update_layers' })
   }, [activeLayers])
-  // When feeder locked in, record the changes.
-  useEffect(() => {
-    if (!!feederLocked && highlightedSchool.length === 0) {
-      trackEvent({ type: 'select_feeder' })
-    }
-  }, [activeFeeder])
   // When zoom changes, record the change.
   // Debounce the value to avoid recording every
   // minor transition during a zoom action.
@@ -361,16 +276,6 @@ const Tracking = ({ ...props }) => {
   useEffect(() => {
     trackEvent({ type: 'map_screencap' })
   }, [eventMapCapture])
-  // When school searched, record.
-  useEffect(() => {
-    trackEvent({ type: 'search_school' })
-  }, [eventSchoolSearch])
-  // When school page accessed, record.
-  useEffect(() => {
-    if (!!hovered || !!accessedSchool) {
-      trackEvent({ type: 'access_school_page' })
-    }
-  }, [eventSchoolPage])
   // Detect and submit errors.
   useEffect(() => {
     trackEvent({ type: 'error' })
