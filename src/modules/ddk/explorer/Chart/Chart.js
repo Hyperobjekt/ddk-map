@@ -42,9 +42,9 @@ const Chart = ({ ...props }) => {
       }
     },
     legend: {
-      width: '305px',
+      width: '307px',
       height: '11px',
-      margin: '-20px 10px 6px 57px',
+      margin: '-20px 10px 6px 58px',
       textAlign: 'center',
       backgroundColor: '#fff',
       borderRadius: '2px',
@@ -135,8 +135,6 @@ const Chart = ({ ...props }) => {
     )
   }
 
-  console.log(props.activeBars)
-
   const classes = styles()
   
   return (
@@ -157,21 +155,16 @@ const Chart = ({ ...props }) => {
         />
         <Customized component={Background} />
         {props.activeBars.map((el, i) => {
-          return <Bar radius={[2,2,0,0]} dataKey={el} className={classes[el]} />
+          return <Bar key={i} radius={[2,2,0,0]} dataKey={el} className={classes[el]} />
         })}
-        {/* <Bar radius={[2,2,0,0]} dataKey="ap" fill="#FF730C" />
-        <Bar radius={[2,2,0,0]} dataKey="b" fill="#FFC31A" />
-        <Bar radius={[2,2,0,0]} dataKey="hi" fill="#7401B1" />
-        <Bar radius={[2,2,0,0]} dataKey="w" fill="#66CC00" /> */}
       </BarChart>
     </ResponsiveContainer>
   )
 }
 
 Chart.propTypes = {
-  data: PropTypes.object,
+  data: PropTypes.array,
   activeBars: PropTypes.array,
-  // geo: PropTypes.object
 }
 
 Chart.defaultProps = {}

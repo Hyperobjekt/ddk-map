@@ -31,6 +31,7 @@ import {
   OPTIONS_ACTIVE_POINTS,
   OPTIONS_METRIC,
   OPTIONS_NORM,
+  STATES,
 } from './../../../../constants/map'
 
 const Legend = ({ ...props }) => {
@@ -258,6 +259,7 @@ const Legend = ({ ...props }) => {
     legendPanel,
     legendControl,
     centerMetro,
+    centerState,
     remoteJson,
     setStoreValues,
   } = useStore(state => ({
@@ -269,6 +271,7 @@ const Legend = ({ ...props }) => {
     legendPanel: state.legendPanel,
     legendControl: state.legendControl,
     centerMetro: state.centerMetro,
+    centerState: state.centerState,
     remoteJson: state.remoteJson,
     setStoreValues: state.setStoreValues,
   }))
@@ -287,11 +290,19 @@ const Legend = ({ ...props }) => {
   const processData = (data, geo, year) => {
     var struct = [];
     var selected = [];
-    switch(geo.type){
-      case 'national':
-        selected = data.barcharts.data[`20${year}`][props.geo.type]
-      default:
-        selected = data.barcharts.data[`20${year}`][geo.type][geo.id]
+    switch(geo) {
+      case 'n':
+        selected = data.barcharts.data[`20${year}`].nation
+        break
+      case 's':
+        if(centerState > 0){
+          selected = data.barcharts.data[`20${year}`].states[STATES[centerState].abbr]
+        }
+        break
+      case 'm':
+        if(centerMetro > 0){
+          selected = data.barcharts.data[`20${year}`].metros[centerMetro]
+        }
     }
     selected.map(el => {
       struct.push({
@@ -336,11 +347,17 @@ const Legend = ({ ...props }) => {
   }
 
   useEffect(() => {
-    if(centerMetro === 0 && legendPanel.active) {
+    if(activeNorm === 'm' && centerMetro === 0 && legendPanel.active) {
+      const data = {active: !legendPanel.active}
+      setStoreValues({legendPanel: data})
+    } else if (activeNorm === 's' && centerState === 0 && legendPanel.active) {
+      const data = {active: !legendPanel.active}
+      setStoreValues({legendPanel: data})
+    } else if(activeNorm === 'n' && legendPanel.active) {
       const data = {active: !legendPanel.active}
       setStoreValues({legendPanel: data})
     }
-  }, [centerMetro])
+  }, [centerMetro, centerState, activeNorm])
 
   const SDArray = [
     i18n.translate(`SDSCALE_VLOW`),
@@ -350,8 +367,25 @@ const Legend = ({ ...props }) => {
     i18n.translate(`SDSCALE_VHIGH`),
   ]
 
-  const getChartSubtitle = () => {
-    return remoteJson.metros.data.find(el => el.GEOID === centerMetro.toString()).msaname15
+  const getChartSubtitle = (geo) => {
+    switch(geo) {
+      case 'n':
+        return 'the U.S'
+        break
+      case 's':
+        if(centerState > 0) {
+          return STATES[centerState].full
+        }
+        break
+      case 'm':
+        if(centerMetro > 0){
+          return remoteJson.metros.data.find(el => el.GEOID === centerMetro.toString()).msaname15
+        }
+    }
+  }
+
+  const getRenderChart = () => {
+    return ((remoteJson.barcharts) && (activeNorm != 'n') && (centerMetro > 0 || centerState > 0))
   }
 
   const classes = styles()
@@ -362,8 +396,8 @@ const Legend = ({ ...props }) => {
         <div className={classes.controller}>
 
           <div className={clsx(classes.row, 'hide-mobile')}>
-            <IconButton disabled={ activeNorm != 'metros' && centerMetro === 0 } className={classes.showButton} onClick={(e) => {handleEvent('showChart', e)}}><Arrow disabled={activeNorm != 'metros' && centerMetro === 0}/></IconButton>
-            <span className={clsx(classes.showChart, (activeNorm != 'metros' && centerMetro === 0 ? 'disabled' : ''))}>{i18n.translate(legendPanel.active ? `LEGEND_CHART_TOGGLE_OFF` : `LEGEND_CHART_TOGGLE_ON`)}</span>
+            <IconButton disabled={ !getRenderChart() } className={classes.showButton} onClick={(e) => {handleEvent('showChart', e)}}><Arrow disabled={!getRenderChart()}/></IconButton>
+            <span className={clsx(classes.showChart, (!getRenderChart() ? 'disabled' : ''))}>{i18n.translate(legendPanel.active ? `LEGEND_CHART_TOGGLE_OFF` : `LEGEND_CHART_TOGGLE_ON`)}</span>
           </div>
 
           <div className={classes.row}>
@@ -474,7 +508,7 @@ const Legend = ({ ...props }) => {
         {/* CHART PANEL */}
         <div className={classes.panel}>
           {/* DONT RENDER WITHOUT NECESSARY DATA OR CORRECT CONDITIONS*/}
-          {remoteJson.barcharts && centerMetro > 0 &&
+          {getRenderChart() &&
             <div className={classes.panelChart}>
 
               <div className={classes.panelName}>
@@ -482,7 +516,7 @@ const Legend = ({ ...props }) => {
               </div>
 
               <div className={clsx(classes.labelText, classes.panelLabel)}>
-                {i18n.translate('LEGEND_CHART_SUBTITLE', { chartSubtitle: getChartSubtitle() })}
+                {i18n.translate('LEGEND_CHART_SUBTITLE', { chartSubtitle: getChartSubtitle(activeNorm) })}
               </div>
 
               <div className={classes.panelSds}>
@@ -494,7 +528,7 @@ const Legend = ({ ...props }) => {
               </div>
 
               <Chart
-                data={processData(remoteJson, {type: 'metros', id: centerMetro}, activeYear)}
+                data={processData(remoteJson, activeNorm, activeYear)}
                 activeBars={activePointLayers}
               />
 

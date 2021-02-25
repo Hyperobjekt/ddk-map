@@ -71,7 +71,6 @@ const SlideoutPanel = ({ ...props }) => {
       backgroundColor: theme.palette.background.paper,
       padding: theme.spacing(3, 4, 3),
       height: '100%',
-      // width: '100%',
     },
     button: {
       padding: '1.5rem',
