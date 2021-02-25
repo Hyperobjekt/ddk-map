@@ -416,7 +416,7 @@ const Legend = ({ ...props }) => {
             <div className={classes.row}>
               <SelectBox
                 options={createOptions(
-                  'LEGEND_',
+                  'LABEL_',
                   OPTIONS_METRIC.options,
                 )}
                 current={activeMetric}
