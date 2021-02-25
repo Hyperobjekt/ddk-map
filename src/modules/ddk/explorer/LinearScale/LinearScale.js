@@ -71,21 +71,22 @@ const LinearScale = ({ ...props }) => {
   const mean = Number(props.indicator.mean)
   const percent = false
 
-  if (props.indicator.id === 'epe') {
-    console.log(
-      'min is',
-      min,
-      String(min).indexOf('e') > 0,
-      parseFloat(Number(String(min))),
-      `${getRoundedValue(
-        min,
-        20,
-        false,
-        currency,
-        percent,
-      )}`,
-    )
-  }
+  // For checking a particular indicator, if there are issues with its presentation.
+  // if (props.indicator.id === 'epe') {
+  //   console.log(
+  //     'min is',
+  //     min,
+  //     String(min).indexOf('e') > 0,
+  //     parseFloat(Number(String(min))),
+  //     `${getRoundedValue(
+  //       min,
+  //       20,
+  //       false,
+  //       currency,
+  //       percent,
+  //     )}`,
+  //   )
+  // }
 
   const rightVal = !!high_is_good ? max : min
   const leftVal = !!high_is_good ? min : max

@@ -12,6 +12,7 @@ const Tracking = ({ ...props }) => {
   const {
     shareHash,
     activeView,
+    activeMetric,
     activeQuintiles,
     activeLayers,
     hovered,
@@ -32,6 +33,7 @@ const Tracking = ({ ...props }) => {
     state => ({
       shareHash: state.shareHash,
       activeView: state.activeView,
+      activeMetric: state.activeMetric,
       activeQuintiles: state.activeQuintiles,
       activeLayers: state.activeLayers,
       hovered: state.hovered,

@@ -35,13 +35,12 @@ const GenericShareModal = ({
     eventShareEmbed,
     setStoreValues,
   } = useStore(
-    state =>
-      state({
-        shareHash: state.shareHash,
-        eventShareLink: state.eventShareLink,
-        eventShareEmbed: state.eventShareEmbed,
-        eventShareEmbed: state.setStoreValues,
-      }),
+    state => ({
+      shareHash: state.shareHash,
+      eventShareLink: state.eventShareLink,
+      eventShareEmbed: state.eventShareEmbed,
+      eventShareEmbed: state.setStoreValues,
+    }),
     shallow,
   )
 
