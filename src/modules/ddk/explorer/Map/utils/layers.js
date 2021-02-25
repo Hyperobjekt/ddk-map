@@ -50,12 +50,12 @@ export const getPoints = (source, layer, context) => {
     filter: [
       'case',
       // If you're a tract in another state and norming is set to state...
-      [
-        'all',
-        ['==', ['string', context.activeNorm], 's'],
-        ['!=', ['get', 's'], context.centerState],
-      ],
-      false,
+      // [
+      //   'all',
+      //   ['==', ['string', context.activeNorm], 's'],
+      //   ['!=', ['get', 's'], context.centerState],
+      // ],
+      // false,
       // If you're a tract not in a metro and norming is set to metro...
       [
         'all',
@@ -63,6 +63,7 @@ export const getPoints = (source, layer, context) => {
         ['!=', ['get', 'm'], context.centerMetro],
       ],
       false,
+      // Only display dots in the active metro area.
       [
         'all',
         ['==', ['string', context.activeNorm], 'm'],
@@ -119,15 +120,15 @@ const getShapeFilters = (type, context) => {
       return [
         'case',
         // If you're a tract in another state and norming is set to state...
-        [
-          'all',
-          ['==', ['string', context.activeNorm], 's'],
-          ['!=', ['get', 's'], context.centerState],
-        ],
-        false,
+        // [
+        //   'all',
+        //   ['==', ['string', context.activeNorm], 's'],
+        //   ['!=', ['get', 's'], context.centerState],
+        // ],
+        // false,
         // If zoom is lower than min zoom set for shape type...
-        ['<', ['zoom'], minZoom],
-        false,
+        // ['<', ['zoom'], minZoom],
+        // false,
         // If you're a tract not in a metro and norming is set to metro...
         [
           'all',
@@ -137,17 +138,17 @@ const getShapeFilters = (type, context) => {
         false,
         // If you're a tract not in the centered metro,
         // and norming is set to metro, don't display.
-        [
-          'all',
-          ['>', ['zoom'], 5],
-          ['==', ['string', context.activeNorm], 'm'],
-          [
-            '!=',
-            ['number', ['get', 'm']],
-            context.centerMetro,
-          ],
-        ],
-        false,
+        // [
+        //   'all',
+        //   ['>', ['zoom'], 5],
+        //   ['==', ['string', context.activeNorm], 'm'],
+        //   [
+        //     '!=',
+        //     ['number', ['get', 'm']],
+        //     context.centerMetro,
+        //   ],
+        // ],
+        // false,
         ['==', ['number', ['get', 's']], ['number', 43]],
         false,
         true,

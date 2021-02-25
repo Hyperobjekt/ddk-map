@@ -157,9 +157,9 @@ const TractPanel = () => {
       return Number(el.GEOID) === feature.id
     })
     // Raw feature data
-    const raw = remoteJson.raw.data.find(el => {
-      return Number(el.GEOID) === feature.id
-    })
+    // const raw = remoteJson.raw.data.find(el => {
+    //   return Number(el.GEOID) === feature.id
+    // })
     return (
       <div
         className={clsx('tract-panel-parent', classes.root)}

@@ -71,27 +71,55 @@ const LinearScale = ({ ...props }) => {
   const mean = Number(props.indicator.mean)
   const percent = false
 
-  const rightLabel = `${getRoundedValue(
-    !!high_is_good ? max : min,
-    decimals,
-    true,
-    currency,
-    percent,
-  )}`
-  const leftLabel = `${getRoundedValue(
-    !!high_is_good ? min : max,
-    decimals,
-    true,
-    currency,
-    percent,
-  )}`
-  const valueLabel = `${getRoundedValue(
-    props.value,
-    decimals,
-    true,
-    currency,
-    percent,
-  )}`
+  if (props.indicator.id === 'epe') {
+    console.log(
+      'min is',
+      min,
+      String(min).indexOf('e') > 0,
+      parseFloat(Number(String(min))),
+      `${getRoundedValue(
+        min,
+        20,
+        false,
+        currency,
+        percent,
+      )}`,
+    )
+  }
+
+  const rightVal = !!high_is_good ? max : min
+  const leftVal = !!high_is_good ? min : max
+
+  const rightLabel =
+    String(rightVal).indexOf('e') > 0
+      ? String(rightVal)
+      : `${getRoundedValue(
+          rightVal,
+          decimals,
+          true,
+          currency,
+          percent,
+        )}`
+  const leftLabel =
+    String(leftVal).indexOf('e') > 0
+      ? String(leftVal)
+      : `${getRoundedValue(
+          leftVal,
+          decimals,
+          true,
+          currency,
+          percent,
+        )}`
+  const valueLabel =
+    String(props.value).indexOf('e') > 0
+      ? String(props.value)
+      : `${getRoundedValue(
+          props.value,
+          decimals,
+          true,
+          currency,
+          percent,
+        )}`
 
   const meanLabel = i18n.translate(`SCALE_MEAN`)
   const percentFromLeft = `${Math.round(

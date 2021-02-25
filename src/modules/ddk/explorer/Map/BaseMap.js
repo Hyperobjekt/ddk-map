@@ -62,9 +62,6 @@ const BaseMap = ({ ...props }) => {
     hoveredTract,
     controlHovered,
     mouseXY,
-    // flyToBounds,
-    flyToFeature,
-    flyToLatLon,
   } = useStore(
     state => ({
       activeView: state.activeView,
@@ -82,9 +79,6 @@ const BaseMap = ({ ...props }) => {
       hoveredTract: state.hoveredTract,
       controlHovered: state.controlHovered,
       mouseXY: state.mouseXY,
-      // flyToBounds: state.flyToBounds,
-      flyToFeature: state.flyToFeature,
-      flyToLatLon: state.flyToLatLon,
     }),
     shallow,
   )

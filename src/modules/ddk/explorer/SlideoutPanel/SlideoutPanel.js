@@ -39,7 +39,7 @@ const SlideoutPanel = ({ ...props }) => {
       left: slideoutPanel.active
         ? theme.extras.controlPanel.width
         : '-' + theme.extras.slideoutPanel.width,
-      transition: 'left 500ms ease-in-out',
+      transition: 'left 200ms linear',
       width: theme.extras.slideoutPanel.width,
       // Adjust for different app bar height.
       height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px)`,
