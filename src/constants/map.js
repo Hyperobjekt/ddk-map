@@ -1,3 +1,8 @@
+// Base URL for the map app
+export const BASE_URL = 'https://diversitydatakids.org/map/'
+export const FB_APP_ID = '527190134911454'
+
+// Routing
 export const ROUTE_VIEW = 'activeView' // View type, 'explorer' or 'embed'
 export const ROUTE_ACTIVE_SHAPE = 'activeShape' // ID of active (clicked) shape on map (tract)
 export const ROUTE_ACTIVE_YEAR = 'activeYear' // 2010 or 2015
