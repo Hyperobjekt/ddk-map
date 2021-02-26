@@ -212,6 +212,7 @@ export const DDK_RED = '#C9422C'
 export const MAP_CONTROLS_CLASSES = [
   'map-legend',
   'mapboxgl-ctrl',
+  'block-click',
 ]
 
 /**
@@ -225,4 +226,4 @@ export const SUB_INDICES = ['xo', 'xh', 'xe']
 /**
  * Above this zoom level, we provide additional functionality
  */
-export const ADDL_FUNCT_ZOOM_THRESHOLD = 5
+export const FULL_FUNCT_ZOOM_THRESHOLD = 5

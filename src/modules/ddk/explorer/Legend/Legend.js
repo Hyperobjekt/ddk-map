@@ -217,6 +217,7 @@ const Legend = ({ ...props }) => {
             handleChange('activeMetric', e)
           }
           label={'Select an Index:'}
+          className={clsx('block-click')}
         ></SelectButton>
       </div>
       <div className={classes.row}>
@@ -231,6 +232,7 @@ const Legend = ({ ...props }) => {
               handleChange('activeNorm', e)
             }
             label={'Compare to:'}
+            className={clsx('block-click')}
           ></SelectButton>
         </div>
         <div className={classes.col2}>
@@ -241,6 +243,7 @@ const Legend = ({ ...props }) => {
               handleChange('activeYear', e)
             }
             label={'Time Period:'}
+            className={clsx('block-click')}
           ></SelectButton>
         </div>
       </div>

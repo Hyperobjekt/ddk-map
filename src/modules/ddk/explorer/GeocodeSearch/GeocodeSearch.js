@@ -9,7 +9,7 @@ import { fade, makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import shallow from 'zustand/shallow'
 
-import { ADDL_FUNCT_ZOOM_THRESHOLD } from './../../../../constants/map'
+import { FULL_FUNCT_ZOOM_THRESHOLD } from './../../../../constants/map'
 import useStore from '../store'
 import { DEFAULT_VIEWPORT } from './../../../../constants/map'
 
@@ -95,7 +95,7 @@ const GeocodeSearch = ({ ...props }) => {
       }&cachebuster=${Math.floor(
         Date.now(),
       )}&autocomplete=true&country=US${
-        viewport.zoom > ADDL_FUNCT_ZOOM_THRESHOLD
+        viewport.zoom > FULL_FUNCT_ZOOM_THRESHOLD
           ? `&proximity=${viewport.longitude},${viewport.latitude}`
           : ``
       }`

@@ -253,3 +253,22 @@ export const getNormPhrase = activeNorm => {
       return i18n.translate(`NATION`)
   }
 }
+
+// Get all parents of an element.
+// https://gomakethings.com/how-to-get-all-parent-elements-with-vanilla-javascript/
+export const getParents = function (elem) {
+  // Set up a parent array
+  var parents = []
+
+  // Push each parent element to the array
+  for (
+    ;
+    elem && elem !== document;
+    elem = elem.parentNode
+  ) {
+    parents.push(elem)
+  }
+
+  // Return our parent array
+  return parents
+}

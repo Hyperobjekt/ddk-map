@@ -76,5 +76,7 @@ export const langSet = {
     LABEL_XE: `Education`,
     BTN_MENU: `Menu`,
     POPUP_CLICK_PROMPT: `Click the census tract for location details.`,
+    POPUP_ZOOM_PROMPT: `Double-click to zoom in and see tract data.`,
+    POPUP_METRO_PROMPT: `Click a metro area to explore the tracts.`,
   },
 }
