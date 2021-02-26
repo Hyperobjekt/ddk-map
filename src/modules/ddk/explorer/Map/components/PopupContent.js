@@ -4,8 +4,7 @@ import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 
 import useStore from './../../store'
-import SDScale from './../../SDScale'
-import PopStack from './../../PopStack'
+import { getNormPhrase } from './../../utils'
 
 const PopupContent = ({ ...props }) => {
   const feature = props.feature
@@ -30,13 +29,14 @@ const PopupContent = ({ ...props }) => {
   const styles = makeStyles(theme => ({
     root: {
       width: theme.extras.mapPopup.width,
-      padding: '16px',
-      'font-family': 'Fira Sans',
+      padding: '0 6px',
+      fontFamily: 'Fira Sans',
       zIndex: '30',
+      marginBottom: '-10px',
     },
     title: {
       fontWeight: 600,
-      fontSize: '20px',
+      fontSize: '16px',
       lineHeight: '24px',
       letterSpacing: '0.15px',
       color: theme.extras.variables.colors.darkGray,
@@ -48,9 +48,13 @@ const PopupContent = ({ ...props }) => {
       lineHeight: '14px',
       letterSpacing: '0.25px',
       margin: '0 0 14px 0',
+      color:
+        !!feature && feature.properties.m == 0
+          ? theme.extras.variables.colors.darkGray
+          : theme.extras.variables.colors.lightGray,
     },
     hr: {
-      height: '1px',
+      height: '0.5px',
       color: theme.extras.variables.colors.lightLightGray,
       margin: '0 0 12px 0',
     },
@@ -60,50 +64,68 @@ const PopupContent = ({ ...props }) => {
       lineHeight: '24px',
       letterSpacing: '0.1px',
       margin: '0 0 6px 0',
-    },
-    popWrapper: {
-      margin: '10px 0 0 0',
-    },
-    popItems: {
       display: 'flex',
       flexWrap: 'wrap',
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'top',
-      margin: '0',
     },
-    popItem: {
-      flex: '0 0 46%',
-      margin: '2px 4% 0px 0px',
-      borderBottom: `1px solid ${theme.extras.variables.colors.lightLightGray}`,
-      textAlign: 'bottom',
-      color: theme.extras.variables.colors.lightGray,
-      fontSize: '14px',
-      lineHeight: '24px',
+    clickPrompt: {
+      fontStyle: 'italic',
+      fontSize: '12px',
+      lineHeight: '12px',
       letterSpacing: '0.25px',
+      color: theme.extras.variables.colors.lightGray,
+    },
+    sdSwatchParent: {
       display: 'flex',
-      justifyContent: 'space-between',
+      flex: '1 1 35%',
+    },
+    metricName: {
+      flex: '1 1 65%',
+      color: theme.extras.variables.colors.lightGray,
+    },
+    sdSwatch: {
+      width: '19px',
+      height: '19px',
+      marginRight: '7px',
+      backgroundColor: !!feature
+        ? theme.extras.SDScale.onColors[
+            feature.properties[
+              `${activeMetric}${activeNorm}`
+            ]
+          ]
+        : 'transparent',
+      fontSize: '12px',
+    },
+    comparedTo: {
+      width: '100%',
+      fontSize: '14px',
+      lineHeight: '10px',
+      margin: 'auto auto 14px',
+      color: theme.extras.variables.colors.lightGray,
     },
   }))
 
   const classes = styles()
+
+  const SDArray = [
+    i18n.translate(`SDSCALE_VLOW`),
+    i18n.translate(`SDSCALE_LOW`),
+    i18n.translate(`SDSCALE_MOD`),
+    i18n.translate(`SDSCALE_HIGH`),
+    i18n.translate(`SDSCALE_VHIGH`),
+  ]
+
   // If no feature or tract data, return.
   if (hoveredTract === 0) {
     return ''
   }
-  // Population items.
-  const popItems = ['w', 'ai', 'hi', 'ap', 'b']
   // Default array for scale.
   const scaleArr = [0, 0, 0, 0, 0]
   scaleArr[
     feature.properties[`${activeMetric}${activeNorm}`]
   ] = 1
-  const pop = remoteJson.pop.data.find(el => {
-    return Number(el.GEOID) === feature.id
-  })
   return (
     <div className={clsx('popup-parent', classes.root)}>
-      {feature.properties.m !== 0 && (
+      {!!feature && feature.properties.m !== 0 && (
         <h3
           className={clsx(
             'popup-metro-name',
@@ -121,26 +143,57 @@ const PopupContent = ({ ...props }) => {
         })}
       </span>
       <hr />
-      <h4 className={clsx('popup-metric-name', classes.h4)}>
-        {i18n.translate(`${activeMetric}${activeNorm}`)}
-      </h4>
-      <SDScale
-        className={clsx(classes.SDScale)}
-        active={scaleArr}
-      />
       <div
+        className={clsx('popup-metric-name', classes.h4)}
+      >
+        <div
+          className={
+            (clsx('popup-metric-name-text'),
+            classes.metricName)
+          }
+        >
+          {i18n.translate(
+            `LABEL_${String(activeMetric).toUpperCase()}`,
+          )}
+        </div>
+        <div
+          className={clsx(
+            'popup-metric-swatch-parent',
+            classes.sdSwatchParent,
+          )}
+        >
+          <div
+            className={clsx(
+              'popup-metric-swatch',
+              classes.sdSwatch,
+            )}
+          ></div>
+          <div className={clsx('popup-metric-block-label')}>
+            {String(
+              SDArray[
+                feature.properties[
+                  `${activeMetric}${activeNorm}`
+                ]
+              ],
+            ).toUpperCase()}
+          </div>
+        </div>
+      </div>
+      <div
+        className={clsx('compared-to', classes.comparedTo)}
+      >
+        {i18n.translate(`POPUP_COMPARED_TO`, {
+          normPhrase: getNormPhrase(activeNorm),
+        })}
+      </div>
+      <p
         className={clsx(
-          'popup-pop-wrapper',
-          classes.popWrapper,
+          'popup-prompt-click',
+          classes.clickPrompt,
         )}
       >
-        <h4
-          className={clsx('popup-pop-heading', classes.h4)}
-        >
-          {i18n.translate(`POPUP_POPULATION`)}
-        </h4>
-        <PopStack pop={pop} />
-      </div>
+        {i18n.translate(`POPUP_CLICK_PROMPT`)}
+      </p>
     </div>
   )
 }

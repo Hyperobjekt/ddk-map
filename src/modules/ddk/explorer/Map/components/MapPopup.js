@@ -13,11 +13,13 @@ const MapPopup = ({ ...props }) => {
     mouseXY,
     hoveredTract,
     hoveredFeature,
+    displayPopup,
   } = useStore(state => ({
     coords: state.coords,
     mouseXY: state.mouseXY,
     hoveredTract: state.hoveredTract,
     hoveredFeature: state.hoveredFeature,
+    displayPopup: state.displayPopup,
   }))
 
   const [popupCoords, setPopupCoords] = useState([
@@ -63,6 +65,7 @@ const MapPopup = ({ ...props }) => {
   }, [hoveredTract])
 
   return (
+    !!displayPopup &&
     !!showPopup &&
     !!popupCoords && (
       <Popup

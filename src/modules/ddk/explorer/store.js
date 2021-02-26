@@ -186,6 +186,8 @@ const useStore = create((set, get) => ({
   showPanelModal: false,
   enableTour: true, // Set this true to show the launch tour button in intro modal.
   showMapModal: false,
+  // Display tooltip, boolean
+  displayPopup: true,
   // Position of tooltips in control panel, changes with breakpoint
   buttonTooltipPosition: 'auto',
   showMobileLegend: false,

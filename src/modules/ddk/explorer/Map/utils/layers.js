@@ -7,6 +7,7 @@ import {
   SHAPE_ZOOM_LEVELS,
   DDK_RED,
 } from './../../../../../constants/map'
+import { theme } from './../../theme'
 
 let z = 150
 const dotSize = 2
@@ -201,7 +202,7 @@ export const getPolygonLines = (source, type, context) => {
         ['==', type, 'states'],
         '#fff',
         ['==', type, 'metros'],
-        DDK_RED, // '#D65743',
+        theme.extras.variables.colors.ddkRed, // DDK_RED, // '#D65743',
         ['==', type, 'tracts'],
         [
           'case',

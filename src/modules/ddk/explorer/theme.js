@@ -92,7 +92,7 @@ export const theme = createMuiTheme({
       zIndex: 10,
     },
     mapPopup: {
-      width: '329px',
+      width: '287px',
     },
     variables: variables,
     SDScale: {
