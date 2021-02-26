@@ -2,7 +2,7 @@ export const langSet = {
   en_US: {
     SITE_TITLE: `DDK Map`,
     MAP_LOADING_DATA: `Loading map data`,
-    MAP_UI_POWERED_BY: `Custom Attribution ©`,
+    MAP_UI_POWERED_BY: `© diversitydatakids.org`,
     MAP_TEST_MERGE_EXTRA: `Test`,
     SHARE: 'Share',
     BUTTON_SHARE_TWITTER: 'Share on Twitter',
