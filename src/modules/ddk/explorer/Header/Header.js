@@ -8,7 +8,8 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import useStore from './../store'
 import GeocodeSearch from './../GeocodeSearch'
-import { HamburgerIcon } from './../../../core/Icons'
+import { HamburgerIcon } from './../../../assets/Icons'
+import { ddkLogoSvg } from './../../../assets/img'
 
 const Header = ({ ...props }) => {
   // Header is not displayed if the view type is 'embed'
@@ -28,6 +29,11 @@ const Header = ({ ...props }) => {
     },
     h1: {
       fontSize: '1.2rem',
+      backgroundImage: `url(${ddkLogoSvg})`,
+      width: '186px',
+      height: '33px',
+      backgroundSize: 'contain',
+      backgroundRepeat: 'no-repeat',
     },
     inputRoot: {
       color: 'inherit',
@@ -55,10 +61,11 @@ const Header = ({ ...props }) => {
     return (
       <AppBar className={classes.root}>
         <Toolbar>
-          <MdHome className={classes.icon} />
-          <Typography className={classes.h1} variant="h1">
-            {i18n.translate('SITE_TITLE')}
-          </Typography>
+          <Typography
+            className={classes.h1}
+            variant="h1"
+            aria-label={i18n.translate('SITE_TITLE')}
+          ></Typography>
           <GeocodeSearch />
           <Button className={classes.menuButton}>
             <HamburgerIcon />
