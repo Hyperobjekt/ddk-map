@@ -2,9 +2,11 @@ import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
+import shallow from 'zustand/shallow'
 
 import useStore from './../../store'
 import { getNormPhrase } from './../../utils'
+import { FULL_FUNCT_ZOOM_THRESHOLD } from './../../../../../constants/map'
 
 const PopupContent = ({ ...props }) => {
   const feature = props.feature
@@ -16,15 +18,20 @@ const PopupContent = ({ ...props }) => {
     hoveredTract,
     remoteJson,
     langs,
-  } = useStore(state => ({
-    activeMetric: state.activeMetric,
-    activeYear: state.activeYear,
-    activeNorm: state.activeNorm,
-    hoveredFeature: state.hoveredFeature,
-    hoveredTract: state.hoveredTract,
-    remoteJson: state.remoteJson,
-    langs: state.langs,
-  }))
+    viewport,
+  } = useStore(
+    state => ({
+      activeMetric: state.activeMetric,
+      activeYear: state.activeYear,
+      activeNorm: state.activeNorm,
+      hoveredFeature: state.hoveredFeature,
+      hoveredTract: state.hoveredTract,
+      remoteJson: state.remoteJson,
+      langs: state.langs,
+      viewport: state.viewport,
+    }),
+    shallow,
+  )
 
   const styles = makeStyles(theme => ({
     root: {
@@ -123,79 +130,116 @@ const PopupContent = ({ ...props }) => {
   scaleArr[
     feature.properties[`${activeMetric}${activeNorm}`]
   ] = 1
-  return (
-    <div className={clsx('popup-parent', classes.root)}>
-      {!!feature && feature.properties.m !== 0 && (
-        <h3
+
+  if (viewport.zoom < FULL_FUNCT_ZOOM_THRESHOLD) {
+    // Zoomed out, don't show tract data.
+    return (
+      <div className={clsx('popup-parent', classes.root)}>
+        {activeNorm === 'm' && (
+          <p
+            className={clsx(
+              'popup-prompt-click',
+              classes.clickPrompt,
+            )}
+          >
+            {i18n.translate(`POPUP_METRO_PROMPT`)}
+          </p>
+        )}
+        {activeNorm !== 'm' && (
+          <p
+            className={clsx(
+              'popup-prompt-click',
+              classes.clickPrompt,
+            )}
+          >
+            {i18n.translate(`POPUP_ZOOM_PROMPT`)}
+          </p>
+        )}
+      </div>
+    )
+  } else {
+    return (
+      <div className={clsx('popup-parent', classes.root)}>
+        {!!feature && feature.properties.m !== 0 && (
+          <h3
+            className={clsx(
+              'popup-metro-name',
+              classes.title,
+            )}
+          >
+            {i18n.translate(feature.properties.m)}
+          </h3>
+        )}
+        <span
           className={clsx(
-            'popup-metro-name',
-            classes.title,
+            'popup-tract-id',
+            classes.tractId,
           )}
         >
-          {i18n.translate(feature.properties.m)}
-        </h3>
-      )}
-      <span
-        className={clsx('popup-tract-id', classes.tractId)}
-      >
-        {i18n.translate(`POPUP_CENSUS_TRACT`, {
-          id: feature.id,
-        })}
-      </span>
-      <hr />
-      <div
-        className={clsx('popup-metric-name', classes.h4)}
-      >
+          {i18n.translate(`POPUP_CENSUS_TRACT`, {
+            id: feature.id,
+          })}
+        </span>
+        <hr />
         <div
-          className={
-            (clsx('popup-metric-name-text'),
-            classes.metricName)
-          }
-        >
-          {i18n.translate(
-            `LABEL_${String(activeMetric).toUpperCase()}`,
-          )}
-        </div>
-        <div
-          className={clsx(
-            'popup-metric-swatch-parent',
-            classes.sdSwatchParent,
-          )}
+          className={clsx('popup-metric-name', classes.h4)}
         >
           <div
-            className={clsx(
-              'popup-metric-swatch',
-              classes.sdSwatch,
+            className={
+              (clsx('popup-metric-name-text'),
+              classes.metricName)
+            }
+          >
+            {i18n.translate(
+              `LABEL_${String(activeMetric).toUpperCase()}`,
             )}
-          ></div>
-          <div className={clsx('popup-metric-block-label')}>
-            {String(
-              SDArray[
-                feature.properties[
-                  `${activeMetric}${activeNorm}`
-                ]
-              ],
-            ).toUpperCase()}
+          </div>
+          <div
+            className={clsx(
+              'popup-metric-swatch-parent',
+              classes.sdSwatchParent,
+            )}
+          >
+            <div
+              className={clsx(
+                'popup-metric-swatch',
+                classes.sdSwatch,
+              )}
+            ></div>
+            <div
+              className={clsx('popup-metric-block-label')}
+            >
+              {String(
+                SDArray[
+                  feature.properties[
+                    `${activeMetric}${activeNorm}`
+                  ]
+                ],
+              ).toUpperCase()}
+            </div>
           </div>
         </div>
+        <div
+          className={clsx(
+            'compared-to',
+            classes.comparedTo,
+          )}
+        >
+          {i18n.translate(`POPUP_COMPARED_TO`, {
+            normPhrase: getNormPhrase(activeNorm),
+          })}
+        </div>
+        <p
+          className={clsx(
+            'popup-prompt-click',
+            classes.clickPrompt,
+          )}
+        >
+          {i18n.translate(`POPUP_CLICK_PROMPT`)}
+        </p>
       </div>
-      <div
-        className={clsx('compared-to', classes.comparedTo)}
-      >
-        {i18n.translate(`POPUP_COMPARED_TO`, {
-          normPhrase: getNormPhrase(activeNorm),
-        })}
-      </div>
-      <p
-        className={clsx(
-          'popup-prompt-click',
-          classes.clickPrompt,
-        )}
-      >
-        {i18n.translate(`POPUP_CLICK_PROMPT`)}
-      </p>
-    </div>
-  )
+    )
+  }
 }
 
 export default PopupContent

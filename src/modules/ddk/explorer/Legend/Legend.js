@@ -418,6 +418,7 @@ const Legend = ({ ...props }) => {
               handleEvent('activeMetric', e)
             }
             label={i18n.translate('LEGEND_SELECT_INDEX')}
+            className={clsx('block-click')}
           ></SelectBox>
         </div>
         <div className={classes.row}>
@@ -433,6 +434,7 @@ const Legend = ({ ...props }) => {
               }
               showHelp={true}
               label={i18n.translate('LEGEND_COMPARE')}
+              className={clsx('block-click')}
             ></SelectBox>
           </div>
           <div className={classes.col2}>
@@ -443,6 +445,7 @@ const Legend = ({ ...props }) => {
                 handleEvent('activeYear', e)
               }
               label={i18n.translate('LEGEND_TIME')}
+              className={clsx('block-click')}
             ></SelectBox>
           </div>
         </div>

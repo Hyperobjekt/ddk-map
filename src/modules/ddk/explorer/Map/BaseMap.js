@@ -32,16 +32,16 @@ import {
   DEFAULT_VIEWPORT,
   CENTER_TRACKED_SHAPES,
   MAP_CONTROLS_CLASSES,
+  FULL_FUNCT_ZOOM_THRESHOLD,
 } from './../../../../constants/map'
 import { defaultMapStyle } from './utils/selectors'
 import { getLayers } from './utils/layers'
 import { getSources } from './utils/sources'
-import { useDebounce, usePrevious } from './../utils'
 import {
-  getFeaturesAtPoint,
-  getMouseXY,
-  getClosest,
-} from './utils/utils'
+  useDebounce,
+  usePrevious,
+  getParents,
+} from './../utils'
 import MapPopup from './components/MapPopup'
 
 const BaseMap = ({ ...props }) => {
@@ -62,6 +62,7 @@ const BaseMap = ({ ...props }) => {
     hoveredTract,
     controlHovered,
     mouseXY,
+    flyToFeature,
   } = useStore(
     state => ({
       activeView: state.activeView,
@@ -80,6 +81,7 @@ const BaseMap = ({ ...props }) => {
       hoveredTract: state.hoveredTract,
       controlHovered: state.controlHovered,
       mouseXY: state.mouseXY,
+      flyToFeature: state.flyToFeature,
     }),
     shallow,
   )
@@ -194,45 +196,64 @@ const BaseMap = ({ ...props }) => {
 
   const handleClick = feature => {
     // console.log('Map click, ', feature)
-    if (!!controlHovered) {
+    if (controlHovered) {
+      // console.log('control is hovered')
       return
     }
-    const tracts = localMapRef.queryRenderedFeatures(
-      mouseXY,
-      {
-        layers: ['tractsShapes', 'tractsLines'],
-      },
-    )
-    if (!!tracts && tracts.length > 0) {
-      // If the clicked item is new, reset.
-      if (tracts[0].id !== prev.activeShape) {
-        // Set states for both.
+    // If zoomed out, don't offer the same click funct.
+    if (viewport.zoom < FULL_FUNCT_ZOOM_THRESHOLD) {
+      if (activeNorm === 'm') {
+        // If norming is metro, click on metro area zooms to metro
+        const metros = localMapRef.queryRenderedFeatures(
+          mouseXY,
+          {
+            layers: ['metrosShapes', 'metrosLines'],
+          },
+        )
+        if (!!metros && metros.length > 0) {
+          flyToFeature(metros[0])
+        }
+      }
+    } else {
+      // Zoomed in. Handling tracts.
+      // console.log('after return statement')
+      const tracts = localMapRef.queryRenderedFeatures(
+        mouseXY,
+        {
+          layers: ['tractsShapes', 'tractsLines'],
+        },
+      )
+      if (!!tracts && tracts.length > 0) {
+        // If the clicked item is new, reset.
+        if (tracts[0].id !== prev.activeShape) {
+          // Set states for both.
+          localMapRef.setFeatureState(
+            {
+              id: prev.activeShape,
+              source: 'ddkids_tracts',
+              sourceLayer: 'tracts',
+            },
+            { active: false },
+          )
+        }
         localMapRef.setFeatureState(
           {
-            id: prev.activeShape,
+            id: tracts[0].id,
             source: 'ddkids_tracts',
             sourceLayer: 'tracts',
           },
-          { active: false },
+          { active: true },
         )
+        setStoreValues({
+          activeShape: tracts[0].id,
+          slideoutTract: tracts[0].id,
+          slideoutFeature: tracts[0],
+          slideoutPanel: {
+            panel: 'tract',
+            active: true,
+          },
+        })
       }
-      localMapRef.setFeatureState(
-        {
-          id: tracts[0].id,
-          source: 'ddkids_tracts',
-          sourceLayer: 'tracts',
-        },
-        { active: true },
-      )
-      setStoreValues({
-        activeShape: tracts[0].id,
-        slideoutTract: tracts[0].id,
-        slideoutFeature: tracts[0],
-        slideoutPanel: {
-          panel: 'tract',
-          active: true,
-        },
-      })
     }
   }
 
@@ -274,13 +295,28 @@ const BaseMap = ({ ...props }) => {
     const hoveredElements = document.querySelectorAll(
       ':hover',
     )
-    const nodeList = Object.values(hoveredElements)
-    const isControl = nodeList.some(node => {
-      // console.log('node, ', node, node.classList)
-      return MAP_CONTROLS_CLASSES.some(item =>
-        node.classList.contains(item),
-      )
+    const parents = []
+    hoveredElements.forEach(el => {
+      parents.push(getParents(el))
     })
+    const parentsList = Object.values(parents)
+    const nodeList = Object.values(hoveredElements)
+    const isControl =
+      nodeList.some(node => {
+        // console.log('node, ', node, node.classList)
+        return MAP_CONTROLS_CLASSES.some(item =>
+          node.classList.contains(item),
+        )
+      }) ||
+      parentsList.some(node => {
+        // console.log('node, ', node, node.classList)
+        return MAP_CONTROLS_CLASSES.some(
+          item =>
+            node &&
+            node.classlist &&
+            node.classList.contains(item),
+        )
+      })
     // console.log('isControl, ', isControl)
 
     // If we have moved the mouse outside of any tracts, remove

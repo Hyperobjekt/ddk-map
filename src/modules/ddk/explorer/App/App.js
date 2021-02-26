@@ -15,6 +15,7 @@ import { theme } from './../theme'
 import { langSet } from './../../../../constants/lang'
 import { ROUTE_SET } from './../../../../constants/map'
 import Language from './components/Language'
+import SEO from './components/SEO'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
 import './App.css'
@@ -36,46 +37,6 @@ const App = props => {
   const setStoreValues = useStore(
     state => state.setStoreValues,
   )
-  //
-  // // Language management.
-  // const activeLang = useStore(state => state.activeLang)
-  // const langs = useStore(state => state.langs)
-  // const setLang = useStore(state => state.setLang)
-  //
-  // // Initializes the languages in use.
-  // const initLang = () => {
-  //   i18n.init({
-  //     locale: activeLang,
-  //     languages: langs,
-  //   })
-  // }
-  // useEffect(() => {
-  //   console.log('change to languages. re-initializing.')
-  //   initLang()
-  // }, [activeLang, langs])
-  //
-  // if (!!props.lang) {
-  //   setStoreValues({
-  //     activeLang: props.lang,
-  //   })
-  // }
-  // let lang
-  // if (!!props.langSet) {
-  //   setStoreValues({
-  //     langs: merge(langs, props.lang),
-  //   })
-  //   // lang = merge(langSet, props.langSet)
-  // }
-  // initLang()
-
-  // Updates menu state and calls handler in parent component.
-  // if (!!props.toggleMenu) {
-  //   // console.log(
-  //   //   'props.toggleMenu exists, ',
-  //   //   props.toggleMenu,
-  //   // )
-  //   setStoreValues({ handleToggleMenu: props.toggleMenu })
-  // }
 
   const setBrowserWidthAndBreakpoint = () => {
     // console.log('setBrowserWidthAndBreakpoint')
@@ -214,6 +175,7 @@ const App = props => {
   return (
     <ThemeProvider theme={theme}>
       <Language props={props} />
+      <SEO />
       <DataLoader />
       <RouteManager routeSet={ROUTE_SET} />
       <Tracking />

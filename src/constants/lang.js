@@ -2,7 +2,10 @@ export const langSet = {
   en_US: {
     SITE_TITLE: `DDK Map`,
     MAP_LOADING_DATA: `Loading map data`,
-    MAP_UI_POWERED_BY: `Custom Attribution ©`,
+    MAP_UI_POWERED_BY: `© diversitydatakids.org`,
+    MAP_AUTHOR: `diversitydatakids.org`,
+    SITE_DESCRIPTION: `Exploratory map developed by diversitydatakids.org`,
+    SITE_KEYWORDS: `child, opportunity, measure, index, metric, health, social, economic, education, national, state, metro`,
     MAP_TEST_MERGE_EXTRA: `Test`,
     SHARE: 'Share',
     BUTTON_SHARE_TWITTER: 'Share on Twitter',
@@ -86,5 +89,7 @@ export const langSet = {
     LABEL_XE: `Education`,
     BTN_MENU: `Menu`,
     POPUP_CLICK_PROMPT: `Click the census tract for location details.`,
+    POPUP_ZOOM_PROMPT: `Double-click to zoom in and see tract data.`,
+    POPUP_METRO_PROMPT: `Click a metro area to explore the tracts.`,
   },
 }
