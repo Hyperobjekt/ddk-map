@@ -1,15 +1,22 @@
 import React from 'react'
 import i18n from '@pureartisan/simple-i18n'
 import AppBar from '@material-ui/core/AppBar'
+<<<<<<< HEAD
 import { InputBase, Typography, useMediaQuery } from '@material-ui/core'
 import useScrollTrigger from '@material-ui/core/useScrollTrigger'
+=======
+import { Button, Typography } from '@material-ui/core'
+>>>>>>> d322e18e4a92558c3477dcb613680b781cebcbb7
 import Toolbar from '@material-ui/core/Toolbar'
-import { MdHome, MdSearch } from 'react-icons/md'
-import { fade, makeStyles } from '@material-ui/core/styles'
+import { MdHome } from 'react-icons/md'
+import { makeStyles } from '@material-ui/core/styles'
 
 import useStore from './../store'
 import theme from './../theme'
 import Legend from '../Legend'
+import GeocodeSearch from './../GeocodeSearch'
+import { HamburgerIcon } from './../../../assets/Icons'
+import { ddkLogoSvg } from './../../../assets/img'
 
 const Header = ({ ...props }) => {
   // Header is not displayed if the view type is 'embed'
@@ -19,6 +26,8 @@ const Header = ({ ...props }) => {
   const headerStyles = makeStyles(theme => ({
     root: {
       backgroundColor: theme.extras.variables.colors.white,
+      fontFamily: `'Fira Sans', helvetica, arial`,
+      color: 'black',
     },
     icon: {
       height: '24px',
@@ -27,41 +36,11 @@ const Header = ({ ...props }) => {
     },
     h1: {
       fontSize: '1.2rem',
-    },
-    search: {
-      position: 'relative',
-      minWidth: '320px',
-      border: `1px solid ${theme.extras.variables.colors.lightLightGray}`,
-      color: theme.extras.variables.colors.lightGray,
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(
-        theme.palette.common.white,
-        0.15,
-      ),
-      '&:hover': {
-        backgroundColor: fade(
-          theme.palette.common.white,
-          0.25,
-        ),
-      },
-      marginRight: theme.spacing(1),
-      marginLeft: 'auto',
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: 'auto',
-        marginRight: theme.spacing(1),
-        width: 'auto',
-      },
-    },
-    searchIcon: {
-      padding: theme.spacing(0, 2),
-      height: '100%',
-      position: 'absolute',
-      right: 0,
-      pointerEvents: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+      backgroundImage: `url(${ddkLogoSvg})`,
+      width: '186px',
+      height: '33px',
+      backgroundSize: 'contain',
+      backgroundRepeat: 'no-repeat',
     },
     inputRoot: {
       color: 'inherit',
@@ -82,6 +61,9 @@ const Header = ({ ...props }) => {
         display: 'none'
       }
     },
+    menuButton: {
+      textTransform: 'none',
+    },
   }))
 
   const classes = headerStyles()
@@ -92,23 +74,16 @@ const Header = ({ ...props }) => {
     return (
       <AppBar className={classes.root}>
         <Toolbar>
-          <MdHome className={classes.icon} />
-          <Typography className={classes.h1} variant="h1">
-            {i18n.translate('SITE_TITLE')}
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <MdSearch />
-            </div>
-            <InputBase
-              placeholder={i18n.translate('SEARCH_PROMPT')}
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
+          <Typography
+            className={classes.h1}
+            variant="h1"
+            aria-label={i18n.translate('SITE_TITLE')}
+          ></Typography>
+          <GeocodeSearch />
+          <Button className={classes.menuButton}>
+            <HamburgerIcon />
+            {i18n.translate(`BTN_MENU`)}
+          </Button>
           {useMediaQuery('(max-width:600px)') &&
             <Legend />
           }

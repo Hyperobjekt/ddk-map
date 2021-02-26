@@ -26,6 +26,58 @@ import {
   OPTIONS_ACTIVE_POINTS,
 } from './../../../constants/map'
 
+const getFeatureGeometryType = feature => {
+  if (!feature.geometry || !feature.geometry.type)
+    return null
+  return feature.geometry.type
+}
+
+const getViewportForFeature = (
+  feature,
+  initialViewport,
+) => {
+  const type = getFeatureGeometryType(feature)
+  if (!type) return {}
+  if (type === 'Point') {
+    console.log('type is point')
+    const [
+      longitude,
+      latitude,
+    ] = feature.geometry.coordinates
+    return {
+      latitude,
+      longitude,
+      zoom: 14,
+    }
+  }
+  const featureBbox = bbox(feature)
+  const bounds = [
+    [featureBbox[0], featureBbox[1]],
+    [featureBbox[2], featureBbox[3]],
+  ]
+  return getViewportForBounds(bounds, initialViewport)
+}
+
+const getViewportForBounds = (
+  bounds,
+  baseViewport,
+  options = {},
+) => {
+  const width = baseViewport.width
+  const height = baseViewport.height
+  const padding = options.padding || 20
+  const vp = new WebMercatorViewport({
+    width,
+    height,
+  }).fitBounds(bounds, { padding })
+  return {
+    ...baseViewport,
+    latitude: vp.latitude,
+    longitude: vp.longitude,
+    zoom: vp.zoom,
+  }
+}
+
 const useStore = create((set, get) => ({
   // Set any store values by passing in an object of values to merge.
   setStoreValues: obj => {
@@ -102,6 +154,8 @@ const useStore = create((set, get) => ({
   // Mouse coords.
   coords: [0, 0],
   setCoords: coords => set({ coords }),
+  // Map dimensions, [width, height]
+  mapSize: [],
   // Tracks whether a control is hovered.
   controlHovered: false,
   // Settings pertaining to viewport state.
@@ -111,33 +165,10 @@ const useStore = create((set, get) => ({
     set(state => ({
       viewport: { ...state.viewport, ...viewport },
     })),
-  flyToReset: () => {
-    set(state => ({
-      viewport: {
-        ...state.resetViewport,
-        transitionDuration: 3000,
-        transitionInterpolator: new FlyToInterpolator(),
-        transitionEasing: ease.easeCubic,
-      },
-    }))
-  },
-  flyToSchool: (lat, lng) => {
-    // console.log('fly to school, ', lat)
-    const newViewport = {
-      latitude: lat,
-      longitude: lng,
-      zoom: 14,
-    }
-    set(state => ({
-      viewport: {
-        ...state.viewport,
-        ...newViewport,
-        transitionDuration: 3000,
-        transitionInterpolator: new FlyToInterpolator(),
-        transitionEasing: ease.easeCubic,
-      },
-    }))
-  },
+  flyToBounds: null,
+  flyToFeature: null,
+  flyToLatLon: null,
+  flyToReset: null,
   slideoutPanel: {
     active: false,
     panel: 'tract', // 'tract' or 'info'
@@ -163,6 +194,8 @@ const useStore = create((set, get) => ({
   showPanelModal: false,
   enableTour: true, // Set this true to show the launch tour button in intro modal.
   showMapModal: false,
+  // Display tooltip, boolean
+  displayPopup: true,
   // Position of tooltips in control panel, changes with breakpoint
   buttonTooltipPosition: 'auto',
   showMobileLegend: false,

@@ -17,8 +17,12 @@ import ReactMapGL, {
 import Mapbox, {
   useMapStore,
   useMapViewport,
+  useFlyToBounds,
+  useFlyToFeature,
+  useFlyToLatLon,
+  useFlyToReset,
 } from '@hyperobjekt/mapbox'
-import { fromJS } from 'immutable'
+import { fromJS, set } from 'immutable'
 import shallow from 'zustand/shallow'
 
 import Legend from './../Legend'
@@ -138,7 +142,30 @@ const BaseMap = ({ ...props }) => {
     navControls: {
       position: 'absolute',
       right: '16px',
-      top: '50%',
+      bottom: '26px',
+      '& .mapboxgl-ctrl.mapboxgl-ctrl-group': {
+        borderRadius: 0,
+        '& .mapboxgl-ctrl-icon': {
+          width: '18px',
+          height: '18px',
+          margin: 'auto',
+          fontWeight: 200,
+        },
+        '& button.mapboxgl-ctrl-zoom-in': {
+          width: '40px',
+          height: '40px',
+          '& .mapboxgl-ctrl-icon': {
+            backgroundImage: `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABkSURBVHgB7ZSxCoAwEENz1n/ooEP9/4+yi4MfIZHiIjrFIlK8B7cchJAjHOA0RYjDXEbR9JCwBJEOL+MG3xvYdXHU0BIewbyty3Te3BKwIhRrDxLiyDKKxlv0AwPpmxKW4TTHDu+rDrVuNRmMAAAAAElFTkSuQmCC)`,
+          },
+        },
+        '& .mapboxgl-ctrl-zoom-out': {
+          width: '40px',
+          height: '40px',
+          '& .mapboxgl-ctrl-icon': {
+            backgroundImage: `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAA/SURBVHgB7cyxEQAQEETRRRECCf0XRSJQhEFoXMAQ2hf+uVuAiGhLrcFYF0f2uNJSLTnMRYsTmc7nH36J6GsdzSMIBsOVRsEAAAAASUVORK5CYII=)`,
+          },
+        },
+      },
     },
     customAttrib: {
       position: 'absolute',
@@ -157,6 +184,12 @@ const BaseMap = ({ ...props }) => {
   }))
 
   const classes = styles()
+
+  setStoreValues({
+    flyToFeature: useFlyToFeature(),
+    flyToBounds: useFlyToBounds(),
+    flyToLatLon: useFlyToLatLon(),
+  })
 
   const handleClick = feature => {
     // console.log('Map click, ', feature)
@@ -200,88 +233,10 @@ const BaseMap = ({ ...props }) => {
         },
       })
     }
-    // 2021-02-17: Switching to using rendered feature query
-    // because points seem to interfere with click detection.
-    // Leaving old code temporarily in case we need to switch back.
-    // if (
-    //   !!feature &&
-    //   !!feature.layer &&
-    //   feature.layer['source-layer'] === 'tracts'
-    // ) {
-    //   // If the hovered item is new, reset.
-    //   if (feature.id !== prev.activeShape) {
-    //     // Set states for both.
-    //     localMapRef.setFeatureState(
-    //       {
-    //         id: prev.activeShape,
-    //         source: 'ddkids_tracts',
-    //         sourceLayer: 'tracts',
-    //       },
-    //       { active: false },
-    //     )
-    //   }
-    //   localMapRef.setFeatureState(
-    //     {
-    //       id: feature.id,
-    //       source: 'ddkids_tracts',
-    //       sourceLayer: 'tracts',
-    //     },
-    //     { active: true },
-    //   )
-    //   setStoreValues({
-    //     activeShape: feature.id,
-    //     slideoutTract: feature.id,
-    //     slideoutFeature: feature,
-    //     slideoutPanel: {
-    //       panel: 'tract',
-    //       active: true,
-    //     },
-    //   })
-    // }
   }
 
   const handleHover = feature => {
     // console.log('Map hover, ', feature)
-    // if (!!controlHovered) {
-    //   return
-    // }
-    // 2021-02-17: Moving this funct to mousemove because
-    // dot layers seem to interfere with standard hover event.
-    // Preserve in case we need to switch back.
-    // if (
-    //   !!feature &&
-    //   !!feature.layer &&
-    //   feature.layer['source-layer'] === 'tracts'
-    // ) {
-    // console.log('feature exists, setting')
-    // console.log('Map hover, ', feature)
-    // If the hovered item is new, reset hovered
-    // features state for currently and previously hovered tracts.
-    // if (feature.id !== prev.hoveredTract) {
-    //   // Set states for both.
-    //   localMapRef.setFeatureState(
-    //     {
-    //       id: prev.hoveredTract,
-    //       source: 'ddkids_tracts',
-    //       sourceLayer: 'tracts',
-    //     },
-    //     { hovered: false },
-    //   )
-    //   localMapRef.setFeatureState(
-    //     {
-    //       id: feature.id,
-    //       source: 'ddkids_tracts',
-    //       sourceLayer: 'tracts',
-    //     },
-    //     { hovered: true },
-    //   )
-    //   // Set new hovered hovered feature in store.
-    //   setStoreValues({
-    //     hoveredTract: feature.id,
-    //     hoveredFeature: feature,
-    //   })
-    // }
-    // }
   }
 
   const handleMouseOut = e => {
@@ -505,6 +460,21 @@ const BaseMap = ({ ...props }) => {
     }
   }
 
+  const getMapDimensions = () => {
+    // console.log('getMapDimensions()')
+    const map = document.getElementById('map')
+    // console.log('map, ', map)
+    return [map.offsetWidth, map.offsetHeight]
+  }
+
+  const handleResize = () => {
+    // console.log('handleResize()')
+    // Set map dimensions
+    setStoreValues({
+      mapSize: getMapDimensions(),
+    })
+  }
+
   const handleLoad = () => {
     // console.log('Map loaded.')
     setLoaded(true)
@@ -541,6 +511,10 @@ const BaseMap = ({ ...props }) => {
         }
       }
     }, 400)
+    // Set map dimensions
+    setStoreValues({
+      mapSize: getMapDimensions(),
+    })
   }
 
   const getMapSources = () => {
@@ -674,6 +648,7 @@ const BaseMap = ({ ...props }) => {
     mapStyle: mapStyle,
     onMouseMove: handleMouseMove,
     onMouseOut: handleMouseOut,
+    onResize: handleResize,
   }
 
   return (

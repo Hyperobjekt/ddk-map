@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
 import { Tooltip, Button } from '@material-ui/core'
+import shallow from 'zustand/shallow'
 
 import useStore from './../store'
 import {
@@ -100,30 +101,44 @@ const styles = makeStyles(theme => ({
  * panel or modal dialog)
  */
 const TractPanel = () => {
+  // console.log('TractPanel')
   const {
     slideoutPanel,
-    slideoutTract,
     slideoutFeature,
     allDataLoaded,
     activeNorm,
-    activeYear,
     remoteJson,
-  } = useStore(state => ({
-    slideoutPanel: state.slideoutPanel,
-    slideoutTract: state.slideoutTract,
-    slideoutFeature: state.slideoutFeature,
-    allDataLoaded: state.allDataLoaded,
-    activeNorm: state.activeNorm,
-    activeYear: state.activeYear,
-    remoteJson: state.remoteJson,
-  }))
+  } = useStore(
+    state => ({
+      slideoutPanel: state.slideoutPanel,
+      slideoutFeature: state.slideoutFeature,
+      allDataLoaded: state.allDataLoaded,
+      activeNorm: state.activeNorm,
+      remoteJson: state.remoteJson,
+    }),
+    shallow,
+  )
 
   const classes = styles()
 
-  const [showAll, setShowAll] = useState(false)
+  const [showSubs, setShowSubs] = useState([1, 0, 0])
 
-  const toggleShowAll = () => {
-    setShowAll(!showAll)
+  const toggleShowSubs = () => {
+    // console.log('toggleShowSubs')
+    if (showSubs.every(item => item === 1)) {
+      // console.log('all shown')
+      setShowSubs([0, 0, 0])
+    } else {
+      // console.log('some shown')
+      setShowSubs([1, 1, 1])
+    }
+  }
+
+  const toggleSub = i => {
+    // console.log('toggleSub')
+    const subsSlice = showSubs.slice()
+    subsSlice[i] = subsSlice[i] === 1 ? 0 : 1
+    setShowSubs(subsSlice)
   }
 
   const getNormPhrase = () => {
@@ -154,10 +169,6 @@ const TractPanel = () => {
     const feature = slideoutFeature
     // Population feature data
     const pop = remoteJson.pop.data.find(el => {
-      return Number(el.GEOID) === feature.id
-    })
-    // Raw feature data
-    const raw = remoteJson.raw.data.find(el => {
       return Number(el.GEOID) === feature.id
     })
     return (
@@ -280,18 +291,22 @@ const TractPanel = () => {
               <Button
                 className={clsx(
                   classes.btn,
-                  !!showAll ? 'hidden' : 'visible',
+                  !showSubs.every(item => item === 1)
+                    ? 'visible'
+                    : 'hidden',
                 )}
-                onClick={toggleShowAll}
+                onClick={toggleShowSubs}
               >
                 {i18n.translate('BTN_SHOW_ALL')}
               </Button>
               <Button
                 className={clsx(
                   classes.btn,
-                  !!showAll ? 'visible' : 'hidden',
+                  showSubs.every(item => item === 1)
+                    ? 'visible'
+                    : 'hidden',
                 )}
-                onClick={toggleShowAll}
+                onClick={toggleShowSubs}
               >
                 {i18n.translate('BTN_HIDE_ALL')}
               </Button>
@@ -349,8 +364,9 @@ const TractPanel = () => {
                     />
                     <IndicatorList
                       subindex={el}
-                      isOpen={i === 0}
-                      showAll={showAll}
+                      isOpen={showSubs[i] === 1}
+                      toggleSub={toggleSub}
+                      subIndex={i}
                     />
                   </div>
                 )

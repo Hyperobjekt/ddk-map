@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
+import shallow from 'zustand/shallow'
 import {
   Box,
   FormControl,
@@ -261,20 +262,25 @@ const Legend = ({ ...props }) => {
     centerMetro,
     centerState,
     remoteJson,
+    activeView,
     setStoreValues,
-  } = useStore(state => ({
-    loadYears: state.loadYears,
-    activeYear: state.activeYear,
-    activeNorm: state.activeNorm,
-    activePointLayers: state.activePointLayers,
-    activeMetric: state.activeMetric,
-    legendPanel: state.legendPanel,
-    legendControl: state.legendControl,
-    centerMetro: state.centerMetro,
-    centerState: state.centerState,
-    remoteJson: state.remoteJson,
-    setStoreValues: state.setStoreValues,
-  }))
+  } = useStore(
+    state => ({
+      loadYears: state.loadYears,
+      activeYear: state.activeYear,
+      activeNorm: state.activeNorm,
+      activePointLayers: state.activePointLayers,
+      activeMetric: state.activeMetric,
+      legendPanel: state.legendPanel,
+      legendControl: state.legendControl,
+      centerMetro: state.centerMetro,
+      centerState: state.centerState,
+      remoteJson: state.remoteJson,
+      activeView: state.remoteJson,
+      setStoreValues: state.setStoreValues,
+    }),
+    shallow,
+  )
 
   const createOptions = (prefix, options) => {
     return options.map(el => {
