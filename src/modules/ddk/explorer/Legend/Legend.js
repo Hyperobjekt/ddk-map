@@ -34,6 +34,7 @@ import {
   OPTIONS_NORM,
   STATES,
 } from './../../../../constants/map'
+import { ShowChart } from '@material-ui/icons'
 
 const Legend = ({ ...props }) => {
   // Styles for this component.
@@ -75,19 +76,7 @@ const Legend = ({ ...props }) => {
       width: '100%',
       '&:nth-child(n+2)': {
         paddingTop: '7px',
-        display: 'block'
       },
-      '&.hide-mobile': {
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-          display: 'initial'
-        }
-      },
-      '&.hide-desktop': {
-        [theme.breakpoints.up('sm')]: {
-          display: 'none'
-        }
-      }
     },
     col1: {
       width: '100%',
@@ -153,31 +142,31 @@ const Legend = ({ ...props }) => {
     checkboxColor_w: {
       color: '#96cc60',
       '&.Mui-checked': {
-        color: '#66CC00',
+        color: theme.extras.demos.w,
       },
     },
     checkboxColor_hi: {
       color: '#9d70b5',
       '&.Mui-checked': {
-        color: '#7401B1',
+        color: theme.extras.demos.hi,
       },
     },
     checkboxColor_b: {
       color: '#fcdb7c',
       '&.Mui-checked': {
-        color: '#FFC31A',
+        color: theme.extras.demos.b,
       },
     },
     checkboxColor_ap: {
       color: '#ffb178',
       '&.Mui-checked': {
-        color: '#FF730C',
+        color: theme.extras.demos.ap,
       },
     },
     checkboxColor_ai: {
       color: '#ff85e7',
       '&.Mui-checked': {
-        color: '#FF00CC',
+        color: theme.extras.demos.ai,
       },
     },
     indexSelect: {
@@ -185,7 +174,6 @@ const Legend = ({ ...props }) => {
     },
     controller: {
       boxSizing: 'border-box',
-      borderRadius: 5,
       paddingLeft: theme.spacing(2),
       paddingRight: theme.spacing(2),
       background: theme.palette.background.paper,
@@ -195,6 +183,7 @@ const Legend = ({ ...props }) => {
         width: '284px',
         float: 'right',
         padding: theme.spacing(2),
+        borderRadius: 5,
       }
     },
     panel: {
@@ -204,7 +193,7 @@ const Legend = ({ ...props }) => {
       width: '352px',
       padding: '16px 16px',
       zIndex: '-1',
-      background: '#EEE',
+      background: theme.extras.variables.colors.lightLightGray,
       position: 'absolute'
     },
     panelChart: {
@@ -233,11 +222,6 @@ const Legend = ({ ...props }) => {
     sdsCell: {
       width: '20%'
     },
-    graphContainer: {
-      backgroundColor: '#000',
-      height: '100px',
-      width: '100px'
-    },
     showButton: {
       width: '27px',
       height: '27px',
@@ -248,8 +232,8 @@ const Legend = ({ ...props }) => {
       cursor: 'pointer'
     },
     showButtonDisabled: {
-      stroke: '#616161'
-    }
+      stroke: theme.extras.variables.colors.lightGray
+    },
   }))
 
   const {
@@ -264,6 +248,7 @@ const Legend = ({ ...props }) => {
     centerState,
     remoteJson,
     activeView,
+    breakpoint,
     setStoreValues,
   } = useStore(
     state => ({
@@ -277,7 +262,8 @@ const Legend = ({ ...props }) => {
       centerMetro: state.centerMetro,
       centerState: state.centerState,
       remoteJson: state.remoteJson,
-      activeView: state.remoteJson,
+      activeView: state.activeView,
+      breakpoint: state.breakpoint,
       setStoreValues: state.setStoreValues,
     }),
     shallow,
@@ -395,155 +381,186 @@ const Legend = ({ ...props }) => {
     return ((remoteJson.barcharts) && ((activeNorm === 'm' && centerMetro > 0) || (activeNorm === 's' && centerState > 0)))
   }
 
+  const ChartToggle = () => {
+    return (
+      <div className={classes.row}>
+        <IconButton disabled={ !renderChart() } className={classes.showButton} onClick={(e) => {handleEvent('showChart', e)}}><Arrow disabled={!renderChart()}/></IconButton>
+        <span className={clsx(classes.showChart, (!renderChart() ? 'disabled' : ''))}>{i18n.translate(legendPanel.active ? `LEGEND_CHART_TOGGLE_OFF` : `LEGEND_CHART_TOGGLE_ON`)}</span>
+      </div>
+    )
+  }
+
+  const SdsScale = () => {
+    return(
+      <div className={classes.row}>
+        <span className={classes.labelText}>
+          {i18n.translate(`${activeMetric}${activeNorm}`)}
+        </span>
+        <SDScale
+          active={[1, 1, 1, 1, 1]}
+          type={'legend'}
+        ></SDScale>
+      </div>
+    )
+  }
+  
+  const Control = () => {
+    return (
+      <div className={classes.controlGuts}>
+        <div className={classes.row}>
+          <SelectBox
+            options={createOptions(
+              'LABEL_',
+              OPTIONS_METRIC.options,
+            )}
+            current={activeMetric}
+            handleChange={e =>
+              handleEvent('activeMetric', e)
+            }
+            label={i18n.translate('LEGEND_SELECT_INDEX')}
+          ></SelectBox>
+        </div>
+        <div className={classes.row}>
+          <div className={classes.col2}>
+            <SelectBox
+              options={createOptions(
+                'LEGEND_',
+                OPTIONS_NORM.options,
+              )}
+              current={activeNorm}
+              handleChange={e =>
+                handleEvent('activeNorm', e)
+              }
+              showHelp={true}
+              label={i18n.translate('LEGEND_COMPARE')}
+            ></SelectBox>
+          </div>
+          <div className={classes.col2}>
+            <SelectBox
+              options={createOptions('LEGEND_', loadYears)}
+              current={activeYear}
+              handleChange={e =>
+                handleEvent('activeYear', e)
+              }
+              label={i18n.translate('LEGEND_TIME')}
+            ></SelectBox>
+          </div>
+        </div>
+        <div className={classes.row}>
+          <span className={classes.labelText}>
+            {i18n.translate(`LEGEND_DEMO`)}
+          </span>
+          <div>
+            {OPTIONS_ACTIVE_POINTS.options.map((el, i) => {
+              return (
+                <FormControlLabel
+                  className={classes.checkboxContainer}
+                  classes={{ label: classes.checkboxLabel }}
+                  control={
+                    <Checkbox
+                      className={classes.checkbox}
+                      classes={{
+                        root: classes[`checkboxColor_${el}`],
+                      }}
+                      checked={
+                        activePointLayers.indexOf(el) > -1
+                      }
+                      onChange={e =>
+                        handleEvent('activePointLayers', e)
+                      }
+                      name={el}
+                    />
+                  }
+                  label={i18n.translate(
+                    `POP_${String(el).toUpperCase()}`,
+                  )}
+                  key={el}
+                />
+              )
+            })}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const ControlToggle = () => {
+    return (
+      <div className={clsx(classes.row)}>
+        <div className={classes.controlButton}>
+          <Button onClick = {(e) => {handleEvent('showControl', e)}} classes={{label: classes.controlBtnLabel}}>
+            <ExpandLessIcon className={classes.controlIcon}/>
+            <span>{i18n.translate(`LEGEND_CONTROL_${legendControl.active.toString().toUpperCase()}`)}</span>
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  const ChartHeaders = () => {
+    return(
+      <>
+        <div className={classes.panelName}>
+          {i18n.translate('LEGEND_CHART_TITLE')}
+        </div>
+        <div className={clsx(classes.labelText, classes.panelLabel)}>
+          {i18n.translate('LEGEND_CHART_SUBTITLE', { chartSubtitle: getChartSubtitle(activeNorm) })}
+        </div>
+        <div className={classes.panelSds}>
+          {SDArray.map((el, i) => {
+            return (
+              <span key={el} className={classes.sdsCell}>{el.toUpperCase()}</span>
+            )
+          })}
+        </div>
+      </>
+    )
+  }
+
   const classes = styles()
 
   return (
-    <div>
+  <>
+    {/* DESKTOP VIEW */}
+    {breakpoint != 'xs' && activeView === 'explorer' && 
       <Box className={clsx('map-legend', classes.root)}>
         <div className={classes.controller}>
-
-          <div className={clsx(classes.row, 'hide-mobile')}>
-            <IconButton disabled={ !renderChart() } className={classes.showButton} onClick={(e) => {handleEvent('showChart', e)}}><Arrow disabled={!renderChart()}/></IconButton>
-            <span className={clsx(classes.showChart, (!renderChart() ? 'disabled' : ''))}>{i18n.translate(legendPanel.active ? `LEGEND_CHART_TOGGLE_OFF` : `LEGEND_CHART_TOGGLE_ON`)}</span>
-          </div>
-
-          <div className={classes.row}>
-            <span className={classes.labelText}>
-              {i18n.translate(`${activeMetric}${activeNorm}`)}
-            </span>
-            <SDScale
-              active={[1, 1, 1, 1, 1]}
-              type={'legend'}
-            ></SDScale>
-          </div>
-
-          {/* CONTIANER FOR CONTROLS THAT WILL BE HIDDEN ON MOBILE */}
-          <div className={classes.controlGuts}>
-
-            <div className={classes.row}>
-              <SelectBox
-                options={createOptions(
-                  'LABEL_',
-                  OPTIONS_METRIC.options,
-                )}
-                current={activeMetric}
-                handleChange={e =>
-                  handleEvent('activeMetric', e)
-                }
-                label={i18n.translate('LEGEND_SELECT_INDEX')}
-              ></SelectBox>
-            </div>
-
-            <div className={classes.row}>
-
-              <div className={classes.col2}>
-                <SelectBox
-                  options={createOptions(
-                    'LEGEND_',
-                    OPTIONS_NORM.options,
-                  )}
-                  current={activeNorm}
-                  handleChange={e =>
-                    handleEvent('activeNorm', e)
-                  }
-                  showHelp={true}
-                  label={i18n.translate('LEGEND_COMPARE')}
-                ></SelectBox>
-              </div>
-
-              <div className={classes.col2}>
-                <SelectBox
-                  options={createOptions('LEGEND_', loadYears)}
-                  current={activeYear}
-                  handleChange={e =>
-                    handleEvent('activeYear', e)
-                  }
-                  label={i18n.translate('LEGEND_TIME')}
-                ></SelectBox>
-              </div>
-
-            </div>
-
-            <div className={classes.row}>
-              <span className={classes.labelText}>
-                {i18n.translate(`LEGEND_DEMO`)}
-              </span>
-              <div>
-                {OPTIONS_ACTIVE_POINTS.options.map((el, i) => {
-                  return (
-                    <FormControlLabel
-                      className={classes.checkboxContainer}
-                      classes={{ label: classes.checkboxLabel }}
-                      control={
-                        <Checkbox
-                          className={classes.checkbox}
-                          classes={{
-                            root: classes[`checkboxColor_${el}`],
-                          }}
-                          checked={
-                            activePointLayers.indexOf(el) > -1
-                          }
-                          onChange={e =>
-                            handleEvent('activePointLayers', e)
-                          }
-                          name={el}
-                        />
-                      }
-                      label={i18n.translate(
-                        `POP_${String(el).toUpperCase()}`,
-                      )}
-                      key={el}
-                    />
-                  )
-                })}
-              </div>
-            </div>
-
-          </div>
-
-          {/* EXPAND LESS/MORE FOR MOBILE */}
-          <div className={clsx(classes.row, 'hide-desktop')}>
-            <div className={classes.controlButton}>
-              <Button onClick = {(e) => {handleEvent('showControl', e)}} classes={{label: classes.controlBtnLabel}}>
-                <ExpandLessIcon className={classes.controlIcon}/>
-                <span>{i18n.translate(`LEGEND_CONTROL_${legendControl.active.toString().toUpperCase()}`)}</span>
-              </Button>
-            </div>
-          </div>
+          <ChartToggle />
+          <SdsScale />
+          <Control />
         </div>
-
-        {/* CHART PANEL */}
         <div className={classes.panel}>
-          {/* DONT RENDER WITHOUT NECESSARY DATA OR CORRECT CONDITIONS*/}
           {renderChart() &&
             <div className={classes.panelChart}>
-
-              <div className={classes.panelName}>
-                {i18n.translate('LEGEND_CHART_TITLE')}
-              </div>
-
-              <div className={clsx(classes.labelText, classes.panelLabel)}>
-                {i18n.translate('LEGEND_CHART_SUBTITLE', { chartSubtitle: getChartSubtitle(activeNorm) })}
-              </div>
-
-              <div className={classes.panelSds}>
-                {SDArray.map((el, i) => {
-                  return (
-                    <span key={el} className={classes.sdsCell}>{el.toUpperCase()}</span>
-                  )
-                })}
-              </div>
-
+              <ChartHeaders />
               <Chart
                 data={processData(remoteJson, activeNorm, activeYear)}
                 activeBars={activePointLayers}
               />
-
             </div>
-          } 
+          }
         </div>
       </Box>
-    </div>
+    }
+    {/* MOBILE VIEW */}
+    {breakpoint === 'xs' && activeView === 'explorer' && 
+      <Box className={clsx('map-legend', classes.root)}>
+        <div className={classes.controller}>
+          <SdsScale />
+          <Control />
+          <ControlToggle />
+        </div>
+      </Box>
+    }
+    {/* EMBEDDED VIEW */}
+    {activeView === 'embed' && 
+      <Box className={clsx('map-legend', classes.root)}>
+        <div className={classes.controller}>
+          <SdsScale />
+        </div>
+      </Box>
+    }
+    </>
   )
 }
 

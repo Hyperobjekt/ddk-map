@@ -49,7 +49,7 @@ const BaseMap = ({ ...props }) => {
   const {
     activeView,
     dataVersion,
-    loadYears,
+    breakpoint,
     activeYear,
     activePointLayers,
     activeMetric,
@@ -66,6 +66,7 @@ const BaseMap = ({ ...props }) => {
     state => ({
       activeView: state.activeView,
       dataVersion: state.dataVersion,
+      breakpoint: state.breakpoint,
       loadYears: state.loadYears,
       activeYear: state.activeYear,
       activePointLayers: state.activePointLayers,
@@ -665,7 +666,7 @@ const BaseMap = ({ ...props }) => {
       >
         {
           <>
-            {useMediaQuery('(min-width:600px)') &&
+            {breakpoint != 'xs' &&
               <Legend />
             }
             <MapPopup />

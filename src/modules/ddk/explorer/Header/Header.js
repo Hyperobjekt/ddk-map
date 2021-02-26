@@ -1,10 +1,8 @@
 import React from 'react'
 import i18n from '@pureartisan/simple-i18n'
 import AppBar from '@material-ui/core/AppBar'
-import { Button, InputBase, Typography, useMediaQuery } from '@material-ui/core'
-import useScrollTrigger from '@material-ui/core/useScrollTrigger'
+import { Button, Typography } from '@material-ui/core'
 import Toolbar from '@material-ui/core/Toolbar'
-import { MdHome } from 'react-icons/md'
 import { makeStyles } from '@material-ui/core/styles'
 
 import useStore from './../store'
@@ -16,7 +14,17 @@ import { ddkLogoSvg } from './../../../assets/img'
 
 const Header = ({ ...props }) => {
   // Header is not displayed if the view type is 'embed'
-  const activeView = useStore(state => state.activeView)
+  const {
+    activeView,
+    breakpoint
+  } = useStore(
+    state => (
+      {
+        activeView: state.activeView,
+        breakpoint: state.breakpoint
+      }
+    )
+  )
 
   // Styles for component.
   const headerStyles = makeStyles(theme => ({
@@ -80,7 +88,7 @@ const Header = ({ ...props }) => {
             <HamburgerIcon />
             {i18n.translate(`BTN_MENU`)}
           </Button>
-          {useMediaQuery('(max-width:600px)') &&
+          {breakpoint === 'xs' &&
             <Legend />
           }
         </Toolbar>
