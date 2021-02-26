@@ -9,18 +9,10 @@ import { AiOutlineControl } from 'react-icons/ai'
 import shallow from 'zustand/shallow'
 
 import useStore from './../store'
-import theme from './../theme'
 import { DesktopUnifiedShareBtn } from '../Share'
 
 const ControlPanel = ({ ...props }) => {
   // Header is not displayed if the view type is 'embed'
-  // const activeView = useStore(state => state.activeView)
-  // const slideoutPanel = useStore(
-  //   state => state.slideoutPanel,
-  // )
-  // const setStoreValues = useStore(
-  //   state => state.setStoreValues,
-  // )
   const {
     slideoutTract,
     activeView,

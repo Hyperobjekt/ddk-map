@@ -58,8 +58,8 @@ const styles = makeStyles(theme => ({
 
 // Displays a list of indicator scales
 // Has a button that opens and collapses the list
-const IndicatorList = ({ ...props }) => {
-  // console.log('IndicatorList()')
+const IndicatorList = props => {
+  // console.log('IndicatorList(), ', props)
   const classes = styles()
 
   const { remoteJson, slideoutTract } = useStore(
@@ -81,11 +81,11 @@ const IndicatorList = ({ ...props }) => {
     return Number(el.GEOID) === slideoutTract
   })
 
-  const [isOpen, setIsOpen] = useState(!!props.isOpen)
-  const toggleIsOpen = () => {
-    setIsOpen(!isOpen)
+  const callToggleSub = () => {
+    props.toggleSub(props.subIndex)
   }
-  const buttonLabel = !!isOpen
+
+  const buttonLabel = props.isOpen
     ? i18n.translate('SCALE_INDICATORS_HIDE')
     : i18n.translate('SCALE_INDICATORS_SHOW')
 
@@ -93,12 +93,12 @@ const IndicatorList = ({ ...props }) => {
   return (
     <div className="slideout-indicator-list">
       <Button
-        onClick={toggleIsOpen}
+        onClick={callToggleSub}
         aria-label={buttonLabel}
         className={clsx(
           'indicator-list-toggle',
           classes.btn,
-          !!isOpen ? 'open' : '',
+          props.isOpen ? 'open' : '',
         )}
       >
         <span>{buttonLabel}</span>
@@ -106,7 +106,7 @@ const IndicatorList = ({ ...props }) => {
           className={clsx(
             'indicator-btn-caret',
             classes.caret,
-            !!isOpen ? classes.caretUp : null,
+            props.isOpen ? classes.caretUp : null,
           )}
         />
       </Button>
@@ -114,8 +114,8 @@ const IndicatorList = ({ ...props }) => {
         className={clsx(
           'slideout-indicator-collapse',
           classes.collapse,
-          !!isOpen ? classes.collapseOpen : null,
-          !!isOpen ? 'open' : null,
+          props.isOpen ? classes.collapseOpen : null,
+          props.isOpen ? 'open' : null,
         )}
       >
         {indicators.map((el, i) => {
@@ -167,7 +167,8 @@ const IndicatorList = ({ ...props }) => {
 IndicatorList.propTypes = {
   subindex: PropTypes.string,
   isOpen: PropTypes.bool,
-  showAll: PropTypes.bool,
+  toggleSub: PropTypes.func,
+  subIndex: PropTypes.number,
 }
 
 export default IndicatorList
