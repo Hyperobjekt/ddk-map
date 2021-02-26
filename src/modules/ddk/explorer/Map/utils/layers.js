@@ -39,13 +39,13 @@ export const getPoints = (source, layer, context) => {
         ['zoom'],
         3,
         // 0.5,
-        ['case', ['in', ['get', 'type'], 'ai'], 14, 0.5],
+        ['case', ['in', ['get', 'type'], 'ai'], 14, 0.01],
         6,
         // 1,
-        ['case', ['in', ['get', 'type'], 'ai'], 2, 1],
+        ['case', ['in', ['get', 'type'], 'ai'], 2, 0.5],
         13,
         // 2,
-        ['case', ['in', ['get', 'type'], 'ai'], 4, 2],
+        ['case', ['in', ['get', 'type'], 'ai'], 4, 1],
       ],
     },
     filter: [
@@ -80,10 +80,9 @@ const pointIndex = 200
 const getPointIndex = layer => {
   const ind =
     OPTIONS_ACTIVE_POINTS.options.length -
-    OPTIONS_ACTIVE_POINTS.options.indexOf(
-      getDemographic(layer),
-    )
-  return pointIndex + ind
+    OPTIONS_ACTIVE_POINTS.options.indexOf(layer)
+  // console.log('getting point layer index, ', layer, ind)
+  return pointIndex + ind * 10
 }
 
 export const getPointLayers = (source, layer, context) => {
@@ -216,7 +215,7 @@ export const getPolygonLines = (source, type, context) => {
               ['==', ['feature-state', 'active'], true],
             ],
           ],
-          CHOROPLETH_COLORS[4],
+          theme.extras.variables.colors.ddkRed, // CHOROPLETH_COLORS[4],
           [
             '==',
             [
@@ -439,7 +438,7 @@ export const getPolygonLayers = (source, type, context) => {
       type: `${type}Shapes`,
     },
     {
-      z: lIndex,
+      z: type === 'tracts' ? 100 : lIndex,
       style: getPolygonLines(source, type, context),
       idMap: true,
       hasFeatureId: true, // isCircleId,
@@ -457,11 +456,11 @@ export const getLayers = (sources, context) => {
   layers.push(
     ...getPolygonLayers('ddkids_shapes', 'metros', context),
   )
-  layers.push(
-    ...getPolygonLayers('ddkids_tracts', 'tracts', context),
-  )
+  // layers.push(
+  //   ...getPolygonLayers('ddkids_tracts', 'tracts', context),
+  // )
   if (context.activePointLayers.length > 0) {
-    context.activePointLayers.forEach(point => {
+    context.activePointLayers.reverse().forEach(point => {
       // console.log('adding active point layer for ', point)
       layers.push(
         ...getPointLayers(
@@ -472,5 +471,8 @@ export const getLayers = (sources, context) => {
       )
     })
   }
+  layers.push(
+    ...getPolygonLayers('ddkids_tracts', 'tracts', context),
+  )
   return layers
 }
