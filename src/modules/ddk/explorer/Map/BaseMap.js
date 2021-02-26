@@ -142,7 +142,30 @@ const BaseMap = ({ ...props }) => {
     navControls: {
       position: 'absolute',
       right: '16px',
-      top: '50%',
+      bottom: '26px',
+      '& .mapboxgl-ctrl.mapboxgl-ctrl-group': {
+        borderRadius: 0,
+        '& .mapboxgl-ctrl-icon': {
+          width: '18px',
+          height: '18px',
+          margin: 'auto',
+          fontWeight: 200,
+        },
+        '& button.mapboxgl-ctrl-zoom-in': {
+          width: '40px',
+          height: '40px',
+          '& .mapboxgl-ctrl-icon': {
+            backgroundImage: `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABkSURBVHgB7ZSxCoAwEENz1n/ooEP9/4+yi4MfIZHiIjrFIlK8B7cchJAjHOA0RYjDXEbR9JCwBJEOL+MG3xvYdXHU0BIewbyty3Te3BKwIhRrDxLiyDKKxlv0AwPpmxKW4TTHDu+rDrVuNRmMAAAAAElFTkSuQmCC)`,
+          },
+        },
+        '& .mapboxgl-ctrl-zoom-out': {
+          width: '40px',
+          height: '40px',
+          '& .mapboxgl-ctrl-icon': {
+            backgroundImage: `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAA/SURBVHgB7cyxEQAQEETRRRECCf0XRSJQhEFoXMAQ2hf+uVuAiGhLrcFYF0f2uNJSLTnMRYsTmc7nH36J6GsdzSMIBsOVRsEAAAAASUVORK5CYII=)`,
+          },
+        },
+      },
     },
     customAttrib: {
       position: 'absolute',
