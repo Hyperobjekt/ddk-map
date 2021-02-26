@@ -391,8 +391,8 @@ const Legend = ({ ...props }) => {
     }
   }
 
-  const getRenderChart = () => {
-    return ((remoteJson.barcharts) && (activeNorm != 'n') && (centerMetro > 0 || centerState > 0))
+  const renderChart = () => {
+    return ((remoteJson.barcharts) && ((activeNorm === 'm' && centerMetro > 0) || (activeNorm === 's' && centerState > 0)))
   }
 
   const classes = styles()
@@ -403,8 +403,8 @@ const Legend = ({ ...props }) => {
         <div className={classes.controller}>
 
           <div className={clsx(classes.row, 'hide-mobile')}>
-            <IconButton disabled={ !getRenderChart() } className={classes.showButton} onClick={(e) => {handleEvent('showChart', e)}}><Arrow disabled={!getRenderChart()}/></IconButton>
-            <span className={clsx(classes.showChart, (!getRenderChart() ? 'disabled' : ''))}>{i18n.translate(legendPanel.active ? `LEGEND_CHART_TOGGLE_OFF` : `LEGEND_CHART_TOGGLE_ON`)}</span>
+            <IconButton disabled={ !renderChart() } className={classes.showButton} onClick={(e) => {handleEvent('showChart', e)}}><Arrow disabled={!renderChart()}/></IconButton>
+            <span className={clsx(classes.showChart, (!renderChart() ? 'disabled' : ''))}>{i18n.translate(legendPanel.active ? `LEGEND_CHART_TOGGLE_OFF` : `LEGEND_CHART_TOGGLE_ON`)}</span>
           </div>
 
           <div className={classes.row}>
@@ -515,7 +515,7 @@ const Legend = ({ ...props }) => {
         {/* CHART PANEL */}
         <div className={classes.panel}>
           {/* DONT RENDER WITHOUT NECESSARY DATA OR CORRECT CONDITIONS*/}
-          {getRenderChart() &&
+          {renderChart() &&
             <div className={classes.panelChart}>
 
               <div className={classes.panelName}>
