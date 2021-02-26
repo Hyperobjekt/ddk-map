@@ -55,6 +55,7 @@ const MapPopup = ({ ...props }) => {
       // console.log('off the bottom edge, resetting')
       closetoBottom = true
     }
+    setPopupAnchor('top-left')
     setPopupOffset([offset, offset])
     if (closeToRight) {
       setPopupAnchor('top-right')
