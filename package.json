@@ -38,6 +38,7 @@
     "nwb": "0.25.x",
     "papaparse": "^5.3.0",
     "prop-types": "^15.7.2",
+    "react-autosuggest": "^10.1.0",
     "react-device-detect": "^1.14.0",
     "react-icons": "^3.11.0",
     "react-map-gl": "^5.2.10",

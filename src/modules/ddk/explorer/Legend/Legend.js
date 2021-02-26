@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
+import shallow from 'zustand/shallow'
 import {
   Box,
   FormControl,
@@ -129,15 +130,18 @@ const Legend = ({ ...props }) => {
     activeMetric,
     setStoreValues,
     activeView,
-  } = useStore(state => ({
-    loadYears: state.loadYears,
-    activeYear: state.activeYear,
-    activeNorm: state.activeNorm,
-    activePointLayers: state.activePointLayers,
-    activeMetric: state.activeMetric,
-    setStoreValues: state.setStoreValues,
-    activeView: state.activeView,
-  }))
+  } = useStore(
+    state => ({
+      loadYears: state.loadYears,
+      activeYear: state.activeYear,
+      activeNorm: state.activeNorm,
+      activePointLayers: state.activePointLayers,
+      activeMetric: state.activeMetric,
+      setStoreValues: state.setStoreValues,
+      activeView: state.activeView,
+    }),
+    shallow,
+  )
 
   const makeOptionsObject = (options, active) => {
     var diff = {}

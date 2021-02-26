@@ -17,6 +17,7 @@ import { ROUTE_SET } from './../../../../constants/map'
 import Language from './components/Language'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
+import './App.css'
 // Import fonts installed using fontsource: https://github.com/fontsource/fontsource
 import '@fontsource/fira-sans'
 import '@fontsource/merriweather'
@@ -27,7 +28,7 @@ import '@fontsource/merriweather'
  */
 const App = props => {
   // Logging theme during dev to facilitate front-end work
-  console.log('App, theme: ', theme)
+  // console.log('App, theme: ', theme)
 
   const BREAKPOINTS = theme.breakpoints.keys
   const BREAKPOINTS_OBJ = theme.breakpoints.values

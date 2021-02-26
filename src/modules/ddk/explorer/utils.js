@@ -237,3 +237,19 @@ export const useDebounce = (value, delay) => {
 
   return debouncedValue
 }
+
+export const getNormPhrase = activeNorm => {
+  switch (activeNorm) {
+    case 'n':
+      return i18n.translate(`NATION`)
+      break
+    case 's':
+      return i18n.translate(`STATE`)
+      break
+    case 'm':
+      return i18n.translate(`METRO`)
+      break
+    default:
+      return i18n.translate(`NATION`)
+  }
+}

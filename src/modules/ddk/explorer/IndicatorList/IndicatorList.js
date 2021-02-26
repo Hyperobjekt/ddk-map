@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
 import { Tooltip, Button } from '@material-ui/core'
 import { FiChevronDown } from 'react-icons/fi'
+import shallow from 'zustand/shallow'
 
 import useStore from './../store'
 import LinearScale from './../LinearScale'
@@ -57,20 +58,18 @@ const styles = makeStyles(theme => ({
 
 // Displays a list of indicator scales
 // Has a button that opens and collapses the list
-const IndicatorList = ({ ...props }) => {
+const IndicatorList = props => {
+  // console.log('IndicatorList(), ', props)
   const classes = styles()
 
-  const {
-    remoteJson,
-    activeMetric,
-    activeNorm,
-    slideoutTract,
-  } = useStore(state => ({
-    remoteJson: state.remoteJson,
-    activeMetric: state.activeMetric,
-    activeNorm: state.activeNorm,
-    slideoutTract: state.slideoutTract,
-  }))
+  const { remoteJson, slideoutTract } = useStore(
+    state => ({
+      remoteJson: state.remoteJson,
+      slideoutTract: state.slideoutTract,
+    }),
+    shallow,
+  )
+
   // console.log('remoteJson, ', remoteJson)
   const prefix = props.subindex.replace('x', '')
   const indicators = remoteJson.indicators.data.filter(
@@ -82,11 +81,11 @@ const IndicatorList = ({ ...props }) => {
     return Number(el.GEOID) === slideoutTract
   })
 
-  const [isOpen, setIsOpen] = useState(!!props.isOpen)
-  const toggleIsOpen = () => {
-    setIsOpen(!isOpen)
+  const callToggleSub = () => {
+    props.toggleSub(props.subIndex)
   }
-  const buttonLabel = !!isOpen
+
+  const buttonLabel = props.isOpen
     ? i18n.translate('SCALE_INDICATORS_HIDE')
     : i18n.translate('SCALE_INDICATORS_SHOW')
 
@@ -94,12 +93,12 @@ const IndicatorList = ({ ...props }) => {
   return (
     <div className="slideout-indicator-list">
       <Button
-        onClick={toggleIsOpen}
+        onClick={callToggleSub}
         aria-label={buttonLabel}
         className={clsx(
           'indicator-list-toggle',
           classes.btn,
-          !!isOpen ? 'open' : '',
+          props.isOpen ? 'open' : '',
         )}
       >
         <span>{buttonLabel}</span>
@@ -107,7 +106,7 @@ const IndicatorList = ({ ...props }) => {
           className={clsx(
             'indicator-btn-caret',
             classes.caret,
-            !!isOpen ? classes.caretUp : null,
+            props.isOpen ? classes.caretUp : null,
           )}
         />
       </Button>
@@ -115,8 +114,8 @@ const IndicatorList = ({ ...props }) => {
         className={clsx(
           'slideout-indicator-collapse',
           classes.collapse,
-          !!isOpen ? classes.collapseOpen : null,
-          !!isOpen ? 'open' : null,
+          props.isOpen ? classes.collapseOpen : null,
+          props.isOpen ? 'open' : null,
         )}
       >
         {indicators.map((el, i) => {
@@ -168,7 +167,8 @@ const IndicatorList = ({ ...props }) => {
 IndicatorList.propTypes = {
   subindex: PropTypes.string,
   isOpen: PropTypes.bool,
-  showAll: PropTypes.bool,
+  toggleSub: PropTypes.func,
+  subIndex: PropTypes.number,
 }
 
 export default IndicatorList

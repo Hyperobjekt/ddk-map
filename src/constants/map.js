@@ -152,8 +152,8 @@ export const DEFAULT_VIEWPORT = {
   touchZoom: true,
   touchRotate: true,
   preserveDrawingBuffer: true,
-  height: '100%',
-  width: '100%',
+  height: 800, // '800px', // '100%',
+  width: 1200, // '1200px', // '100%',
   maxBounds: [
     // [-107.6, 33.8], // southwest.
     [-176, 13.8], // southwest.
@@ -209,7 +209,10 @@ export const CHOROPLETH_COLORS = [
 
 export const DDK_RED = '#C9422C'
 
-export const MAP_CONTROLS_CLASSES = ['map-legend']
+export const MAP_CONTROLS_CLASSES = [
+  'map-legend',
+  'mapboxgl-ctrl',
+]
 
 /**
  * Main index and four sub-indices that will be displayed for every
@@ -218,3 +221,8 @@ export const MAP_CONTROLS_CLASSES = ['map-legend']
  */
 export const MAIN_INDEX = 'xc'
 export const SUB_INDICES = ['xo', 'xh', 'xe']
+
+/**
+ * Above this zoom level, we provide additional functionality
+ */
+export const ADDL_FUNCT_ZOOM_THRESHOLD = 5

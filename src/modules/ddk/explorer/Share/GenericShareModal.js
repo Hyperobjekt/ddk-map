@@ -5,6 +5,7 @@ import Modal from '@material-ui/core/Modal'
 import { makeStyles } from '@material-ui/core/styles'
 import i18n from '@pureartisan/simple-i18n'
 import copy from 'copy-to-clipboard'
+import shallow from 'zustand/shallow'
 
 import { TwitterShareBtn } from '.'
 import { FacebookShareBtn } from '.'
@@ -33,7 +34,15 @@ const GenericShareModal = ({
     eventShareLink,
     eventShareEmbed,
     setStoreValues,
-  } = useStore(state => state)
+  } = useStore(
+    state => ({
+      shareHash: state.shareHash,
+      eventShareLink: state.eventShareLink,
+      eventShareEmbed: state.eventShareEmbed,
+      eventShareEmbed: state.setStoreValues,
+    }),
+    shallow,
+  )
 
   // Update value for share link only when window object exists.
   const [shareLinkValue, setShareLinkValue] = useState('')
