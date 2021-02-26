@@ -91,5 +91,8 @@ export const langSet = {
     POPUP_CLICK_PROMPT: `Click the census tract for location details.`,
     POPUP_ZOOM_PROMPT: `Double-click to zoom in and see tract data.`,
     POPUP_METRO_PROMPT: `Click a metro area to explore the tracts.`,
+    WARN_METRO_COMPARISON: `Your location is being compared to others in the metro area. To make comparisons across metro areas switch to state or national norming.`,
+    WARN_STATE_COMPARISON: `Your location is being compared to others in the state. To make comparisons across states switch to national norming.`,
+    WARN_NATL_COMPARISON: `Your location is being compared to others across the nation.`,
   },
 }
