@@ -112,7 +112,7 @@ const Legend = ({ ...props }) => {
       fontSize: '14px',
       verticalAlign: 'middle',
       letterSpacing: '1.25px',
-      fontWeight: 500,
+      fontWeight: '500',
       paddingLeft: '3px',
       '&.disabled': {
         color: '#616161',

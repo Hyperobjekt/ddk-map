@@ -149,11 +149,10 @@ const Chart = ({ ...props }) => {
         margin={{ top: 5, right: 5, bottom: 5, left: -24 }}
         barCategoryGap='5%'
         barGap='0'
-        height={200}
       >
         <CartesianGrid horizontal={false} vertical={false} />
         <XAxis dataKey="name" tickLine={false} axisLine={false} />
-        <YAxis axisLine={false} tickLine={false} domain={[0, 70]} tickCount={8} tickFormatter={addPercent}/>
+        <YAxis minTickGap={0} axisLine={false} tickLine={false} domain={[0, 80]} tickCount={9} tickFormatter={addPercent}/>
         <Legend 
           content={renderLegend}
         />
