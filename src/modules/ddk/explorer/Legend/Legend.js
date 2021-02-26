@@ -364,12 +364,10 @@ const Legend = ({ ...props }) => {
     switch(geo) {
       case 'n':
         return 'the U.S'
-        break
       case 's':
         if(centerState > 0) {
           return STATES[centerState].full
         }
-        break
       case 'm':
         if(centerMetro > 0){
           return remoteJson.metros.data.find(el => el.GEOID === centerMetro.toString()).msaname15
