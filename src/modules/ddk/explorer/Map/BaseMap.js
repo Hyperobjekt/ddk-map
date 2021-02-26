@@ -149,6 +149,10 @@ const BaseMap = ({ ...props }) => {
       root: {},
     },
     navControls: {
+      display: 'none',
+      [theme.breakpoints.up('sm')]: {
+        display: 'block',
+      },
       position: 'absolute',
       right: '16px',
       bottom: '26px',
