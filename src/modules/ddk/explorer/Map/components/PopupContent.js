@@ -28,7 +28,7 @@ const PopupContent = ({ ...props }) => {
 
   const styles = makeStyles(theme => ({
     root: {
-      width: theme.extras.mapPopup.width,
+      width: `${theme.extras.mapPopup.width}px`,
       padding: '0 6px',
       fontFamily: 'Fira Sans',
       zIndex: '30',

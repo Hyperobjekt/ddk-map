@@ -22,7 +22,7 @@ import Mapbox, {
   useFlyToLatLon,
   useFlyToReset,
 } from '@hyperobjekt/mapbox'
-import { fromJS } from 'immutable'
+import { fromJS, set } from 'immutable'
 import shallow from 'zustand/shallow'
 
 import Legend from './../Legend'
@@ -431,6 +431,21 @@ const BaseMap = ({ ...props }) => {
     }
   }
 
+  const getMapDimensions = () => {
+    console.log('getMapDimensions()')
+    const map = document.getElementById('map')
+    console.log('map, ', map)
+    return [map.offsetWidth, map.offsetHeight]
+  }
+
+  const handleResize = () => {
+    console.log('handleResize()')
+    // Set map dimensions
+    setStoreValues({
+      mapSize: getMapDimensions(),
+    })
+  }
+
   const handleLoad = () => {
     // console.log('Map loaded.')
     setLoaded(true)
@@ -467,6 +482,10 @@ const BaseMap = ({ ...props }) => {
         }
       }
     }, 400)
+    // Set map dimensions
+    setStoreValues({
+      mapSize: getMapDimensions(),
+    })
   }
 
   const getMapSources = () => {
@@ -600,6 +619,7 @@ const BaseMap = ({ ...props }) => {
     mapStyle: mapStyle,
     onMouseMove: handleMouseMove,
     onMouseOut: handleMouseOut,
+    onResize: handleResize,
   }
 
   return (

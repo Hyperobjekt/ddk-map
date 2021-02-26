@@ -154,6 +154,8 @@ const useStore = create((set, get) => ({
   // Mouse coords.
   coords: [0, 0],
   setCoords: coords => set({ coords }),
+  // Map dimensions, [width, height]
+  mapSize: [],
   // Tracks whether a control is hovered.
   controlHovered: false,
   // Settings pertaining to viewport state.

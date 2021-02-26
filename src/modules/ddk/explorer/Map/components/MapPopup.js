@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Popup } from 'react-map-gl'
 import shallow from 'zustand/shallow'
-// import * as turf from '@turf/turf'
 
 import useStore from './../../store'
 import PopupContent from './PopupContent'
+import { theme } from './../../theme'
 
 const MapPopup = ({ ...props }) => {
   // console.log('MapPopup')
@@ -14,45 +14,61 @@ const MapPopup = ({ ...props }) => {
     hoveredTract,
     hoveredFeature,
     displayPopup,
-  } = useStore(state => ({
-    coords: state.coords,
-    mouseXY: state.mouseXY,
-    hoveredTract: state.hoveredTract,
-    hoveredFeature: state.hoveredFeature,
-    displayPopup: state.displayPopup,
-  }))
+    mapSize,
+  } = useStore(
+    state => ({
+      coords: state.coords,
+      mouseXY: state.mouseXY,
+      hoveredTract: state.hoveredTract,
+      hoveredFeature: state.hoveredFeature,
+      displayPopup: state.displayPopup,
+      mapSize: state.mapSize,
+    }),
+    shallow,
+  )
 
   const [popupCoords, setPopupCoords] = useState([
     coords[0],
     coords[1],
   ])
 
-  const [popupAnchor, setPopupAnchor] = useState('top')
+  const [popupAnchor, setPopupAnchor] = useState('top-left')
+  const [popupOffset, setPopupOffset] = useState([50, 50])
 
   const updatePopupCoords = () => {
-    // console.log('feature', hoveredFeature)
-    // if (
-    //   !!hoveredFeature &&
-    //   !!hoveredFeature.geometry &&
-    //   !!hoveredFeature.geometry.coordinates
-    // ) {
-    //   console.log(
-    //     'coordinates, ',
-    //     hoveredFeature.geometry.coordinates,
-    //   )
-    //   var line = turf.lineString(
-    //     hoveredFeature.geometry.coordinates[0],
-    //   )
-    //   const featureBox = turf.bbox(line)
-    //   // console.log('featureBox, ', featureBox)
-    //   const boxWidth = featureBox[2] - featureBox[0]
-    //   const boxHeight = featureBox[3] - featureBox[1]
-    //   setPopupCoords([
-    //     featureBox[0] + boxWidth / 2,
-    //     featureBox[1],
-    //   ])
+    // console.log('mapSize, ', mapSize, mouseXY)
+    const popupWidth = theme.extras.mapPopup.width
+    const popupHeight = theme.extras.mapPopup.height
+    const padding = theme.extras.mapPopup.edgePadding
+    const offset = theme.extras.mapPopup.offset
+    let setX = mouseXY[0] + offset
+    let setY = mouseXY[1] + offset
+    let closeToRight = false
+    let closetoBottom = false
+    // If mouse is close to right edge...
+    if (setX + popupWidth + padding > mapSize[0]) {
+      // console.log('off the right edge, resetting')
+      closeToRight = true
+    }
+    // If mouse is close to bottom...
+    if (setY + popupHeight + padding > mapSize[1]) {
+      // console.log('off the bottom edge, resetting')
+      closetoBottom = true
+    }
+    setPopupOffset([offset, offset])
+    if (closeToRight) {
+      setPopupAnchor('top-right')
+      setPopupOffset([offset * -1, offset])
+    }
+    if (closetoBottom) {
+      setPopupAnchor('bottom-left')
+      setPopupOffset([offset, offset * -1])
+    }
+    if (closeToRight && closetoBottom) {
+      setPopupAnchor('bottom-right')
+      setPopupOffset([offset * -1, offset * -1])
+    }
     setPopupCoords([coords[0], coords[1]])
-    // }
   }
 
   const [showPopup, setShowPopup] = useState(false)
@@ -74,7 +90,8 @@ const MapPopup = ({ ...props }) => {
         closeButton={false}
         tipSize={0}
         anchor={popupAnchor}
-        offsetTop={100}
+        offsetTop={popupOffset[1]}
+        offsetLeft={popupOffset[0]}
       >
         <PopupContent feature={hoveredFeature} />
       </Popup>
