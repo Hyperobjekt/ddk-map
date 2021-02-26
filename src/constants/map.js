@@ -209,7 +209,10 @@ export const CHOROPLETH_COLORS = [
 
 export const DDK_RED = '#C9422C'
 
-export const MAP_CONTROLS_CLASSES = ['map-legend']
+export const MAP_CONTROLS_CLASSES = [
+  'map-legend',
+  'mapboxgl-ctrl',
+]
 
 /**
  * Main index and four sub-indices that will be displayed for every

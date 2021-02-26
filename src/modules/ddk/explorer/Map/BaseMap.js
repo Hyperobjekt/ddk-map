@@ -455,14 +455,14 @@ const BaseMap = ({ ...props }) => {
   }
 
   const getMapDimensions = () => {
-    console.log('getMapDimensions()')
+    // console.log('getMapDimensions()')
     const map = document.getElementById('map')
-    console.log('map, ', map)
+    // console.log('map, ', map)
     return [map.offsetWidth, map.offsetHeight]
   }
 
   const handleResize = () => {
-    console.log('handleResize()')
+    // console.log('handleResize()')
     // Set map dimensions
     setStoreValues({
       mapSize: getMapDimensions(),
