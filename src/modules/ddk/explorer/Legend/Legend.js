@@ -144,7 +144,7 @@ const Legend = ({ ...props }) => {
       verticalAlign: 'middle',
       paddingLeft: '6px',
       fontSize: '14px',
-      color: '#000'
+      color: theme.extras.variables.colors.darkGray
     },
     checkbox: {
       padding: '0px 0px',
@@ -214,7 +214,8 @@ const Legend = ({ ...props }) => {
     panelName: {
       fontSize: '14px',
       padding: '6px 0px 10px 34px',
-      letterSpacing: '.1px'
+      letterSpacing: '.1px',
+      color: theme.extras.variables.colors.darkGray
     },
     panelLabel: {
       padding: '0px 0px 0px 34px',
@@ -223,7 +224,7 @@ const Legend = ({ ...props }) => {
     panelSds: {
       color: '#616161',
       width: '311px',
-      margin: '0px 0px 0px 35px',
+      margin: '0px 0px 0px 36px',
       textAlign: 'center',
       fontSize: '12px',
       paddingBottom: '4px',

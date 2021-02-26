@@ -13,7 +13,8 @@ const styles = makeStyles(theme => ({
         width: '100%',
         display: 'block',
         fontFamily: 'Fira Sans',
-        position: 'relative'
+        position: 'relative',
+        color: theme.extras.variables.colors.darkGray
     },
     label:{
         display: 'block',

@@ -51,6 +51,7 @@ const Chart = ({ ...props }) => {
       fontSize: '9px',
       padding: '4px',
       boxShadow: theme.shadows[1],
+      color: '#616161'
     },
     background: {
       '&.vl': {fill: theme.extras.SDScale.onColors[0]},
@@ -106,13 +107,16 @@ const Chart = ({ ...props }) => {
   
     return (
       <div className={classes.legend}>
-        {
+        {payload.length > 0 &&
           payload.map((entry, index) => (
             <div key={`item-${index}`} style={{display: 'inline-block', padding: '0px 5px'}}>
               <div className={clsx(classes.legendIndicator, `${entry.value}`)}></div>
               <span>{i18n.translate(`POP_${entry.value.toUpperCase()}`)}</span>
             </div>
           ))
+        }
+        {payload.length === 0 &&
+          <span>{i18n.translate(`LEGEND_DEMO`).replace(':', '')}</span>
         }
       </div>
     );

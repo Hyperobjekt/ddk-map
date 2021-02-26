@@ -1,12 +1,8 @@
 import React from 'react'
 import i18n from '@pureartisan/simple-i18n'
 import AppBar from '@material-ui/core/AppBar'
-<<<<<<< HEAD
-import { InputBase, Typography, useMediaQuery } from '@material-ui/core'
+import { Button, InputBase, Typography, useMediaQuery } from '@material-ui/core'
 import useScrollTrigger from '@material-ui/core/useScrollTrigger'
-=======
-import { Button, Typography } from '@material-ui/core'
->>>>>>> d322e18e4a92558c3477dcb613680b781cebcbb7
 import Toolbar from '@material-ui/core/Toolbar'
 import { MdHome } from 'react-icons/md'
 import { makeStyles } from '@material-ui/core/styles'
