@@ -175,6 +175,8 @@ const useStore = create((set, get) => ({
   },
   legendPanel: {
     active: false,
+    activated: false,
+    glow: false
   },
   legendControl: {
     active: true,

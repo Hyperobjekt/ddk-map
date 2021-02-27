@@ -229,11 +229,22 @@ const Legend = ({ ...props }) => {
       marginLeft: '-2px',
       transition: 'transform 300ms ease-in-out',
       transform: legendPanel.active ? 'rotate(180deg)' : 'rotate(0deg)',
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     showButtonDisabled: {
       stroke: theme.extras.variables.colors.lightGray
     },
+    showButtonGlow: {
+      position: 'absolute',
+      borderRadius: '50%',
+      width: '100%',
+      height: '100%',
+      transition: 'opacity 300ms ease-in-out',
+      backgroundColor: '#fff',
+      boxShadow: '0 0 60px 30px #fff, 0 0 100px 60px #f0f, 0 0 140px 90px #0ff',
+      opacity: legendPanel.glow ? 1 : 0,
+      zIndex: -1,
+    }
   }))
 
   const {
@@ -376,13 +387,28 @@ const Legend = ({ ...props }) => {
   }
 
   const renderChart = () => {
-    return ((remoteJson.barcharts) && ((activeNorm === 'm' && centerMetro > 0) || (activeNorm === 's' && centerState > 0)))
+    if ((remoteJson.barcharts) && ((activeNorm === 'm' && centerMetro > 0) || (activeNorm === 's' && centerState > 0))) {
+      if (legendPanel.activated === false) {
+        var data = {active: legendPanel.active, activated: true, glow: true}
+        setStoreValues({legendPanel: data})
+        setTimeout(function(){
+          data = {active: legendPanel.active, activated: true, glow: false}
+          setStoreValues({legendPanel: data})
+        }, 3000)
+      }
+      return true
+    } else {
+      return false
+    }
   }
 
   const ChartToggle = () => {
     return (
       <div className={classes.row}>
-        <IconButton disabled={ !renderChart() } className={classes.showButton} onClick={(e) => {handleEvent('showChart', e)}}><Arrow disabled={!renderChart()}/></IconButton>
+        <IconButton disabled={ !renderChart() } className={classes.showButton} onClick={(e) => {handleEvent('showChart', e)}}>
+          <div className={classes.showButtonGlow}></div>
+          <Arrow disabled={!renderChart()}/>
+        </IconButton>
         <span className={clsx(classes.showChart, (!renderChart() ? 'disabled' : ''))}>{i18n.translate(legendPanel.active ? `LEGEND_CHART_TOGGLE_OFF` : `LEGEND_CHART_TOGGLE_ON`)}</span>
       </div>
     )
@@ -526,7 +552,13 @@ const Legend = ({ ...props }) => {
     {breakpoint != 'xs' && activeView === 'explorer' && 
       <Box className={clsx('map-legend', classes.root)}>
         <div className={classes.controller}>
-          <ChartToggle />
+          <div className={classes.row}>
+            <IconButton disabled={ !renderChart() } className={classes.showButton} onClick={(e) => {handleEvent('showChart', e)}}>
+              <div className={classes.showButtonGlow}></div>
+              <Arrow disabled={!renderChart()}/>
+            </IconButton>
+            <span className={clsx(classes.showChart, (!renderChart() ? 'disabled' : ''))}>{i18n.translate(legendPanel.active ? `LEGEND_CHART_TOGGLE_OFF` : `LEGEND_CHART_TOGGLE_ON`)}</span>
+          </div>
           <SdsScale />
           <Control />
         </div>
@@ -553,7 +585,7 @@ const Legend = ({ ...props }) => {
         </div>
       </Box>
     }
-    {/* EMBEDDED VIEW */}
+    {/* EMBED VIEW */}
     {activeView === 'embed' && 
       <Box className={clsx('map-legend', classes.root)}>
         <div className={classes.controller}>
