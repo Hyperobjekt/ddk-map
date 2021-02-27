@@ -241,7 +241,7 @@ const Legend = ({ ...props }) => {
       height: '100%',
       transition: 'opacity 300ms ease-in-out',
       backgroundColor: '#fff',
-      boxShadow: '0 0 60px 30px #fff, 0 0 100px 60px #f0f, 0 0 140px 90px #0ff',
+      boxShadow: `0 0 4px 2px #fff, 0 0 20px 12px ${theme.extras.SDScale.onColors[1]}, 0 0 28px 18px ${theme.extras.SDScale.onColors[2]}`,
       opacity: legendPanel.glow ? 1 : 0,
       zIndex: -1,
     }
@@ -394,10 +394,14 @@ const Legend = ({ ...props }) => {
         setTimeout(function(){
           data = {active: legendPanel.active, activated: true, glow: false}
           setStoreValues({legendPanel: data})
-        }, 3000)
+        }, 1500)
       }
       return true
     } else {
+      if (legendPanel.activated === true) {
+        var data = {active: legendPanel.active, activated: false, glow: false}
+        setStoreValues({legendPanel: data})
+      }
       return false
     }
   }
