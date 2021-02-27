@@ -34,7 +34,7 @@ const FlyToMyLocationBtn = ({ children, ...props }) => {
       navigator.permissions &&
       navigator.permissions.query({ name: 'geolocation' })
     ) {
-      console.log('loaded. setting position.')
+      // console.log('loaded. setting position.')
       navigator.geolocation.getCurrentPosition(position => {
         setPosition(position)
       })
