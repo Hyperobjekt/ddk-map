@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
@@ -16,17 +16,30 @@ const FlyToMyLocationBtn = ({ children, ...props }) => {
     shallow,
   )
 
+  const [position, setPosition] = useState(null)
+
   const handleClick = () => {
-    // console.log('handleClick')
-    navigator.geolocation.getCurrentPosition(position => {
-      // console.log('position, ', position)
-      flyToLatLon(
-        position.coords.latitude,
-        position.coords.longitude,
-        14,
-      )
-    })
+    console.log('handleClick')
+    flyToLatLon(
+      position.coords.latitude,
+      position.coords.longitude,
+      12,
+    )
   }
+
+  useEffect(() => {
+    // Store the user's location when the app loads, to save time.
+    if (
+      'geolocation' in navigator &&
+      navigator.permissions &&
+      navigator.permissions.query({ name: 'geolocation' })
+    ) {
+      console.log('loaded. setting position.')
+      navigator.geolocation.getCurrentPosition(position => {
+        setPosition(position)
+      })
+    }
+  }, [])
 
   if (
     'geolocation' in navigator &&

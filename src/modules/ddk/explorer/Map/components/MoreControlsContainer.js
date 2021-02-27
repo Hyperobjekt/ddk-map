@@ -37,9 +37,7 @@ const MoreControlsContainer = () => {
       <FlyToStateBtn fips="15" placement={'left'}>
         {'HI'}
       </FlyToStateBtn>
-      <FlyToResetBtn placement="left-start">
-        R
-      </FlyToResetBtn>
+      <FlyToResetBtn placement="left">R</FlyToResetBtn>
       <FlyToMyLocationBtn placement="left">
         L
       </FlyToMyLocationBtn>

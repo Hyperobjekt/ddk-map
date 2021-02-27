@@ -31,7 +31,6 @@ import shallow from 'zustand/shallow'
 
 import Legend from './../Legend'
 import useStore from './../store'
-import theme from './../theme'
 import {
   DEFAULT_VIEWPORT,
   CENTER_TRACKED_SHAPES,
@@ -706,7 +705,7 @@ const BaseMap = ({ ...props }) => {
     <div className={clsx(classes.parent)}>
       <Mapbox
         ref={mapRef}
-        defaultViewport={DEFAULT_VIEWPORT}
+        defaultViewport={{ ...DEFAULT_VIEWPORT }}
         MapGLProps={mapProps}
         style={{ width: '100%', height: '100%' }}
         onClick={handleClick}
