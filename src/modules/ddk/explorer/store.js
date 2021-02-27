@@ -169,6 +169,7 @@ const useStore = create((set, get) => ({
   flyToFeature: null,
   flyToLatLon: null,
   flyToReset: null,
+  flyToState: null,
   slideoutPanel: {
     active: false,
     panel: 'tract', // 'tract' or 'info'

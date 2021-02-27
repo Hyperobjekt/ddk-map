@@ -24,6 +24,7 @@ import Mapbox, {
   useFlyToFeature,
   useFlyToLatLon,
   useFlyToReset,
+  useFlyToState,
 } from '@hyperobjekt/mapbox'
 import { fromJS, set } from 'immutable'
 import shallow from 'zustand/shallow'
@@ -47,6 +48,7 @@ import {
 } from './../utils'
 import MapPopup from './components/MapPopup'
 import Notifications from './components/Notifications'
+import MoreControlsContainer from './components/MoreControlsContainer'
 
 const BaseMap = ({ ...props }) => {
   // Values from store.
@@ -202,6 +204,8 @@ const BaseMap = ({ ...props }) => {
     flyToFeature: useFlyToFeature(),
     flyToBounds: useFlyToBounds(),
     flyToLatLon: useFlyToLatLon(),
+    flyToState: useFlyToState(),
+    flyToReset: useFlyToReset(),
   })
 
   const handleClick = feature => {
@@ -702,7 +706,7 @@ const BaseMap = ({ ...props }) => {
     <div className={clsx(classes.parent)}>
       <Mapbox
         ref={mapRef}
-        defaultViewport={{ ...DEFAULT_VIEWPORT }}
+        defaultViewport={DEFAULT_VIEWPORT}
         MapGLProps={mapProps}
         style={{ width: '100%', height: '100%' }}
         onClick={handleClick}
@@ -742,6 +746,9 @@ const BaseMap = ({ ...props }) => {
                 </>
               )}
             </div>
+            {activeView === 'explorer' && (
+              <MoreControlsContainer />
+            )}
           </>
         }
       </Mapbox>

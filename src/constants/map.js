@@ -157,8 +157,8 @@ export const DEFAULT_VIEWPORT = {
   touchZoom: true,
   touchRotate: true,
   preserveDrawingBuffer: true,
-  height: 800, // '800px', // '100%',
-  width: 1200, // '1200px', // '100%',
+  height: '100%', // 800, // '800px', // '100%',
+  width: '100%', // 1200, // '1200px', // '100%',
   maxBounds: [
     // [-107.6, 33.8], // southwest.
     [-176, 13.8], // southwest.
@@ -219,6 +219,7 @@ export const MAP_CONTROLS_CLASSES = [
   'mapboxgl-ctrl',
   'block-click',
   'map-notifications',
+  'more-controls',
 ]
 
 /**

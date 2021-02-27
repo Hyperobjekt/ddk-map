@@ -94,5 +94,8 @@ export const langSet = {
     WARN_METRO_COMPARISON: `Your location is being compared to others in the metro area. To make comparisons across metro areas switch to state or national norming.`,
     WARN_STATE_COMPARISON: `Your location is being compared to others in the state. To make comparisons across states switch to national norming.`,
     WARN_NATL_COMPARISON: `Your location is being compared to others across the nation.`,
+    MAP_FLY_TO_STATE: `Fly to {state}`,
+    MAP_RESET: `Reset map viewport`,
+    MAP_FLY_TO_MY: `Fly to my location`,
   },
 }
