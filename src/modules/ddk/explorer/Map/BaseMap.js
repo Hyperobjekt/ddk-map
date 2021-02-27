@@ -712,7 +712,7 @@ const BaseMap = ({ ...props }) => {
       >
         {
           <>
-            {breakpoint != 'xs' && <Legend />}
+            <Legend />
             <MapPopup />
             <Notifications />
             <div

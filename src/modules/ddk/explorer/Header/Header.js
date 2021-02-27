@@ -7,7 +7,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import shallow from 'zustand/shallow'
 
 import useStore from './../store'
-import Legend from '../Legend'
 import GeocodeSearch from './../GeocodeSearch'
 import { HamburgerIcon } from './../../../assets/Icons'
 import { ddkLogoSvg } from './../../../assets/img'
@@ -28,6 +27,10 @@ const Header = ({ ...props }) => {
       backgroundColor: theme.extras.variables.colors.white,
       fontFamily: `'Fira Sans', helvetica, arial`,
       color: 'black',
+      boxShadow: 'none',
+      [theme.breakpoints.up('sm')]: {
+        boxShadow: '0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)',
+      }
     },
     icon: {
       height: '24px',
@@ -88,7 +91,6 @@ const Header = ({ ...props }) => {
             <HamburgerIcon />
             {i18n.translate(`BTN_MENU`)}
           </Button>
-          {breakpoint === 'xs' && <Legend />}
         </Toolbar>
       </AppBar>
     )

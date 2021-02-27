@@ -48,7 +48,6 @@ const Legend = ({ ...props }) => {
       // Adjust for different app bar height.
       top: '55px',
       right: '0px',
-      boxShadow: theme.shadows[3],
       justifyContent: 'center',
       alignItems: 'flex-start',
       fontFamily: 'Fira Sans',
@@ -56,6 +55,7 @@ const Legend = ({ ...props }) => {
       cursor: 'default',
       overflow: 'hidden',
       [theme.breakpoints.up('sm')]: {
+        boxShadow: theme.shadows[3],
         width: legendPanel.active ? '668px' : '284px',
         position: 'absolute',
         right: theme.extras.Legend.cushionRight,
