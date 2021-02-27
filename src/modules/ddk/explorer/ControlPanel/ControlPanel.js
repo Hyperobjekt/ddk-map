@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
@@ -18,12 +18,16 @@ const ControlPanel = ({ ...props }) => {
     activeView,
     slideoutPanel,
     setStoreValues,
+    isMobile,
+    breakpoint,
   } = useStore(
     state => ({
       slideoutTract: state.slideoutTract,
       activeView: state.activeView,
       slideoutPanel: state.slideoutPanel,
       setStoreValues: state.setStoreValues,
+      isMobile: state.isMobile,
+      breakpoint: state.breakpoint,
     }),
     shallow,
   )
@@ -37,9 +41,16 @@ const ControlPanel = ({ ...props }) => {
     })
   }
 
+  const hideControlPanel =
+    activeView === 'embed' ||
+    !!isMobile ||
+    breakpoint === 'xs' ||
+    breakpoint === 'sm'
+
   // Styles for this component.
   const styles = makeStyles(theme => ({
     root: {
+      display: hideControlPanel ? 'none' : 'flex',
       zIndex: theme.extras.controlPanel.zIndex,
       backgroundColor: theme.palette.background.paper,
       position: 'absolute',
@@ -54,7 +65,6 @@ const ControlPanel = ({ ...props }) => {
         top: `${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px`,
       },
       boxShadow: theme.shadows[3],
-      display: 'flex',
       flexDirection: 'column',
       justifyContent: 'flex-start',
     },
@@ -65,25 +75,21 @@ const ControlPanel = ({ ...props }) => {
 
   const classes = styles()
 
-  if (activeView === 'embed') {
-    return ''
-  } else {
-    return (
-      <Box className={clsx('control-panel', classes.root)}>
-        <IconButton
-          onClick={toggleSlideout}
-          className={clsx(
-            'control-panel-button',
-            classes.button,
-          )}
-          disabled={slideoutTract === 0 ? true : false}
-        >
-          <AiOutlineControl />
-        </IconButton>
-        <DesktopUnifiedShareBtn />
-      </Box>
-    )
-  }
+  return (
+    <Box className={clsx('control-panel', classes.root)}>
+      <IconButton
+        onClick={toggleSlideout}
+        className={clsx(
+          'control-panel-button',
+          classes.button,
+        )}
+        disabled={slideoutTract === 0 ? true : false}
+      >
+        <AiOutlineControl />
+      </IconButton>
+      <DesktopUnifiedShareBtn />
+    </Box>
+  )
 }
 
 ControlPanel.propTypes = {}

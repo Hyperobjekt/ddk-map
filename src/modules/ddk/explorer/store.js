@@ -179,8 +179,21 @@ const useStore = create((set, get) => ({
   legendControl: {
     active: true,
   },
-  defaultFilterTab: 'cri',
-  activeFilterTab: 'cri',
+  // Notifications tracking
+  notifications: {
+    n: 0,
+    s: 0,
+    m: 0,
+  },
+  updateNotifications: norm => {
+    console.log('updateNotifications, ', norm)
+    const nots = get().notifications
+    nots[norm] = nots[norm] + 1
+    console.log('nots, ', nots)
+    set({ notifications: nots })
+  },
+  // defaultFilterTab: 'cri',
+  // activeFilterTab: 'cri',
   shareLinkModal: false,
   shareEmbedModal: false,
   unifiedShareModal: false,
@@ -188,8 +201,8 @@ const useStore = create((set, get) => ({
   shareHash: null,
   breakpoint: null,
   browserWidth: null,
-  flyToSchoolSLN: null,
-  schoolHint: null,
+  // flyToSchoolSLN: null,
+  // schoolHint: null,
   showIntroModal: false,
   showPanelModal: false,
   enableTour: true, // Set this true to show the launch tour button in intro modal.

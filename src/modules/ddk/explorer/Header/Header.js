@@ -4,9 +4,9 @@ import AppBar from '@material-ui/core/AppBar'
 import { Button, Typography } from '@material-ui/core'
 import Toolbar from '@material-ui/core/Toolbar'
 import { makeStyles } from '@material-ui/core/styles'
+import shallow from 'zustand/shallow'
 
 import useStore from './../store'
-import theme from './../theme'
 import Legend from '../Legend'
 import GeocodeSearch from './../GeocodeSearch'
 import { HamburgerIcon } from './../../../assets/Icons'
@@ -14,16 +14,12 @@ import { ddkLogoSvg } from './../../../assets/img'
 
 const Header = ({ ...props }) => {
   // Header is not displayed if the view type is 'embed'
-  const {
-    activeView,
-    breakpoint
-  } = useStore(
-    state => (
-      {
-        activeView: state.activeView,
-        breakpoint: state.breakpoint
-      }
-    )
+  const { activeView, breakpoint } = useStore(
+    state => ({
+      activeView: state.activeView,
+      breakpoint: state.breakpoint,
+    }),
+    shallow,
   )
 
   // Styles for component.
@@ -45,6 +41,10 @@ const Header = ({ ...props }) => {
       height: '33px',
       backgroundSize: 'contain',
       backgroundRepeat: 'no-repeat',
+      display: 'none',
+      [theme.breakpoints.up('sm')]: {
+        display: 'block',
+      },
     },
     inputRoot: {
       color: 'inherit',
@@ -62,8 +62,8 @@ const Header = ({ ...props }) => {
     mobileGate: {
       display: 'block',
       [theme.breakpoints.up('sm')]: {
-        display: 'none'
-      }
+        display: 'none',
+      },
     },
     menuButton: {
       textTransform: 'none',
@@ -88,9 +88,7 @@ const Header = ({ ...props }) => {
             <HamburgerIcon />
             {i18n.translate(`BTN_MENU`)}
           </Button>
-          {breakpoint === 'xs' &&
-            <Legend />
-          }
+          {breakpoint === 'xs' && <Legend />}
         </Toolbar>
       </AppBar>
     )
