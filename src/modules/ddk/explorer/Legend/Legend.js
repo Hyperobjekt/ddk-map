@@ -14,7 +14,8 @@ import {
   IconButton,
   Modal,
   Paper,
-  Button
+  Button,
+  Switch
 } from '@material-ui/core'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import {
@@ -64,7 +65,6 @@ const Legend = ({ ...props }) => {
       }
     },
     controlGuts: {
-      paddingTop: '7px',
       transition: 'height 300ms ease-in-out',
       height: legendControl.active ? '243px' : '0px',
       [theme.breakpoints.up('sm')]: {
@@ -78,13 +78,31 @@ const Legend = ({ ...props }) => {
         paddingTop: '7px',
       },
     },
-    col1: {
+    col6: {
       width: '100%',
       display: 'block',
     },
-    col2: {
+    col3: {
       boxSizing: 'border-box',
       width: '50%',
+      display: 'inline-block',
+      padding: '0px 2px 0px 0px',
+      '&:nth-child(2)': {
+        padding: '0px 0px 0px 2px',
+      },
+    },
+    col4: {
+      boxSizing: 'border-box',
+      width: '66%',
+      display: 'inline-block',
+      padding: '0px 2px 0px 0px',
+      '&:nth-child(2)': {
+        padding: '0px 0px 0px 2px',
+      },
+    },
+    col2: {
+      boxSizing: 'border-box',
+      width: '33%',
       display: 'inline-block',
       padding: '0px 2px 0px 0px',
       '&:nth-child(2)': {
@@ -119,10 +137,18 @@ const Legend = ({ ...props }) => {
       textAlign: 'center'
     },
     controlBtnLabel: {
-      color: '#C9422C',
+      color: theme.extras.variables.colors.ddkRed,
       fontSize: '14px',
       letterSpacing: '1.25px',
       verticalAlign: 'middle',
+    },
+    switchContainer: {
+      float: 'right'
+    },
+    switchLabel: {
+      fontSize: '14px',
+      letterSpacing: '1.25px',
+      color: theme.extras.variables.colors.lightGray
     },
     checkboxContainer: {
       display: 'block',
@@ -260,6 +286,7 @@ const Legend = ({ ...props }) => {
     remoteJson,
     activeView,
     breakpoint,
+    displayPopup,
     setStoreValues,
   } = useStore(
     state => ({
@@ -275,6 +302,7 @@ const Legend = ({ ...props }) => {
       remoteJson: state.remoteJson,
       activeView: state.activeView,
       breakpoint: state.breakpoint,
+      displayPopup: state.displayPopup,
       setStoreValues: state.setStoreValues,
     }),
     shallow,
@@ -322,6 +350,9 @@ const Legend = ({ ...props }) => {
 
   const handleEvent = (val, e) => {
     var data = {}
+    if (val === 'showPopup') {
+      setStoreValues({displayPopup: !displayPopup})
+    }
     if (val === 'showControl') {
       const data = {active: !legendControl.active}
       setStoreValues({legendControl: data})
@@ -406,18 +437,6 @@ const Legend = ({ ...props }) => {
     }
   }
 
-  const ChartToggle = () => {
-    return (
-      <div className={classes.row}>
-        <IconButton disabled={ !renderChart() } className={classes.showButton} onClick={(e) => {handleEvent('showChart', e)}}>
-          <div className={classes.showButtonGlow}></div>
-          <Arrow disabled={!renderChart()}/>
-        </IconButton>
-        <span className={clsx(classes.showChart, (!renderChart() ? 'disabled' : ''))}>{i18n.translate(legendPanel.active ? `LEGEND_CHART_TOGGLE_OFF` : `LEGEND_CHART_TOGGLE_ON`)}</span>
-      </div>
-    )
-  }
-
   const SdsScale = () => {
     return(
       <div className={classes.row}>
@@ -450,7 +469,7 @@ const Legend = ({ ...props }) => {
           ></SelectBox>
         </div>
         <div className={classes.row}>
-          <div className={classes.col2}>
+          <div className={classes.col3}>
             <SelectBox
               options={createOptions(
                 'LEGEND_',
@@ -465,7 +484,7 @@ const Legend = ({ ...props }) => {
               className={clsx('block-click')}
             ></SelectBox>
           </div>
-          <div className={classes.col2}>
+          <div className={classes.col3}>
             <SelectBox
               options={createOptions('LEGEND_', loadYears)}
               current={activeYear}
@@ -562,6 +581,20 @@ const Legend = ({ ...props }) => {
               <Arrow disabled={!renderChart()}/>
             </IconButton>
             <span className={clsx(classes.showChart, (!renderChart() ? 'disabled' : ''))}>{i18n.translate(legendPanel.active ? `LEGEND_CHART_TOGGLE_OFF` : `LEGEND_CHART_TOGGLE_ON`)}</span>
+            <FormControlLabel
+            classes={{ label: classes.switchLabel }}
+            className={classes.switchContainer}
+            control={
+              <Switch
+                size="small"
+                checked={displayPopup}
+                onChange={((e)=>{handleEvent('showPopup' , e)})}
+                name="ToolCheck"
+                color="primary"
+              />
+            }
+            label="Tooltip"
+          />
           </div>
           <SdsScale />
           <Control />
