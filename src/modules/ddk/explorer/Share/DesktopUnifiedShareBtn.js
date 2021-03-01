@@ -89,7 +89,7 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
         onClick={openShareModal}
         className={clsx(classes.popperButton)}
       >
-        <ShareOutlinedIcon className={classes.shareIcon} />
+        <ShareOutlinedIcon fontSize={'large'} className={classes.shareIcon} />
         <Popper
           id={id}
           open={open}
