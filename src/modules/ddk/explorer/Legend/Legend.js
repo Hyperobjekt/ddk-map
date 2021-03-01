@@ -453,7 +453,7 @@ const Legend = ({ ...props }) => {
   
   const Control = () => {
     return (
-      <div className={classes.controlGuts}>
+      <>
         <div className={classes.row}>
           <SelectBox
             options={createOptions(
@@ -530,20 +530,7 @@ const Legend = ({ ...props }) => {
             })}
           </div>
         </div>
-      </div>
-    )
-  }
-
-  const ControlToggle = () => {
-    return (
-      <div className={clsx(classes.row)}>
-        <div className={classes.controlButton}>
-          <Button onClick = {(e) => {handleEvent('showControl', e)}} classes={{label: classes.controlBtnLabel}}>
-            <ExpandLessIcon className={classes.controlIcon}/>
-            <span>{i18n.translate(`LEGEND_CONTROL_${legendControl.active.toString().toUpperCase()}`)}</span>
-          </Button>
-        </div>
-      </div>
+      </>
     )
   }
 
@@ -597,7 +584,9 @@ const Legend = ({ ...props }) => {
           />
           </div>
           <SdsScale />
-          <Control />
+          <div className={classes.controlGuts}>
+            <Control />
+          </div>
         </div>
         <div className={classes.panel}>
           {renderChart() &&
@@ -617,8 +606,17 @@ const Legend = ({ ...props }) => {
       <Box className={clsx('map-legend', classes.root)}>
         <div className={classes.controller}>
           <SdsScale />
-          <Control />
-          <ControlToggle />
+          <div className={classes.controlGuts}>
+            <Control />
+          </div>
+          <div className={clsx(classes.row)}>
+            <div className={classes.controlButton}>
+              <Button onClick = {(e) => {handleEvent('showControl', e)}} classes={{label: classes.controlBtnLabel}}>
+                <ExpandLessIcon className={classes.controlIcon}/>
+                <span>{i18n.translate(`LEGEND_CONTROL_${legendControl.active.toString().toUpperCase()}`)}</span>
+              </Button>
+            </div>
+          </div>
         </div>
       </Box>
     }
