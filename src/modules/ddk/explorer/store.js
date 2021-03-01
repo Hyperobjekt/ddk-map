@@ -171,7 +171,7 @@ const useStore = create((set, get) => ({
   flyToReset: null,
   slideoutPanel: {
     active: false,
-    panel: 'tract', // 'tract' or 'info'
+    panel: 'tract', // 'tract' or 'info' or 'help'
   },
   legendPanel: {
     active: false,

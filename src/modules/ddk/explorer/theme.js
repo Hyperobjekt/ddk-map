@@ -35,6 +35,7 @@ export const variables = {
     criColor3: '#cabbf5',
     barHighlight: '#e94f34',
     cpLabelColor: '#606b44',
+    ddkBlue: '#013457'
   },
   dimensions: {
     navbarHeight: '64px',

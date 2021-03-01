@@ -7,7 +7,7 @@ import Box from '@material-ui/core/Box'
 import { IconButton } from '@material-ui/core'
 import { AiOutlineControl } from 'react-icons/ai'
 import shallow from 'zustand/shallow'
-
+import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import useStore from './../store'
 import { DesktopUnifiedShareBtn } from '../Share'
 
@@ -41,7 +41,7 @@ const ControlPanel = ({ ...props }) => {
   const styles = makeStyles(theme => ({
     root: {
       zIndex: theme.extras.controlPanel.zIndex,
-      backgroundColor: theme.palette.background.paper,
+      backgroundColor: theme.extras.variables.colors.ddkBlue,
       position: 'absolute',
       top: 0,
       left: 0,
@@ -53,13 +53,13 @@ const ControlPanel = ({ ...props }) => {
         height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px)`,
         top: `${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px`,
       },
-      boxShadow: theme.shadows[3],
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'flex-start',
     },
     button: {
       padding: '1.5rem',
+      color: 'white'
     },
   }))
 
@@ -70,17 +70,28 @@ const ControlPanel = ({ ...props }) => {
   } else {
     return (
       <Box className={clsx('control-panel', classes.root)}>
-        <IconButton
-          onClick={toggleSlideout}
-          className={clsx(
-            'control-panel-button',
-            classes.button,
-          )}
-          disabled={slideoutTract === 0 ? true : false}
-        >
-          <AiOutlineControl />
-        </IconButton>
-        <DesktopUnifiedShareBtn />
+        <div className={'buttonGroup'}>
+          <IconButton
+            onClick={toggleSlideout}
+            className={clsx(
+              'control-panel-button',
+              classes.button,
+            )}
+            disabled={slideoutTract === 0 ? true : false}
+          >
+            <RoomOutlinedIcon />
+          </IconButton>
+          <IconButton
+            onClick={toggleSlideout}
+            className={clsx(
+              'control-panel-button',
+              classes.button,
+            )}
+          >
+            <HelpOutlineIcon />
+          </IconButton>
+          <DesktopUnifiedShareBtn />
+        </div>
       </Box>
     )
   }

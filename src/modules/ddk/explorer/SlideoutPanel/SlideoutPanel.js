@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import {
   Backdrop,
   Fade,
+  Hidden,
   IconButton,
   Modal,
 } from '@material-ui/core'
@@ -34,6 +35,7 @@ const SlideoutPanel = ({ ...props }) => {
   const styles = makeStyles(theme => ({
     root: {
       zIndex: theme.extras.slideoutPanel.zIndex,
+      overflow: 'hidden',
       backgroundColor: theme.palette.background.paper,
       position: 'absolute',
       top: 0,
@@ -67,11 +69,13 @@ const SlideoutPanel = ({ ...props }) => {
       outline: 0,
     },
     modalContent: {
-      border: '1px solid #000',
+      //border: '1px solid #000',
       outline: 0,
       backgroundColor: theme.palette.background.paper,
       padding: theme.spacing(3, 4, 3),
       height: '100%',
+      borderRadius: '5px',
+      overflow: 'hidden'
     },
     button: {
       padding: '1.5rem',
