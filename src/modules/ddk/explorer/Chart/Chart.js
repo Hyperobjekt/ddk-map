@@ -153,10 +153,10 @@ const Chart = ({ ...props }) => {
         <CartesianGrid horizontal={false} vertical={false} />
         <XAxis dataKey="name" tickLine={false} axisLine={false} />
         <YAxis minTickGap={0} axisLine={false} tickLine={false} domain={[0, 80]} tickCount={9} tickFormatter={addPercent}/>
-        <Legend 
+        <Legend
           content={renderLegend}
         />
-        <Customized component={Background} />
+        <Customized key={'bg'} component={Background} />
         {props.activeBars.map((el, i) => {
           return <Bar key={i} radius={[2,2,0,0]} dataKey={el} className={classes[el]} />
         })}
