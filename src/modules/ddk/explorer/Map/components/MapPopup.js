@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Popup } from 'react-map-gl'
 import shallow from 'zustand/shallow'
 
 import useStore from './../../store'
 import PopupContent from './PopupContent'
 import { theme } from './../../theme'
-
-let count = 0
 
 /**
  * Get the anchor and offset based on x / y and map size
@@ -52,8 +50,7 @@ const getPopupProps = ({ mouseXY, mapSize }) => {
   }
 }
 
-const MapPopup = ({ ...props }) => {
-  // console.log('MapPopup')
+function usePopupState() {
   const {
     coords,
     mouseXY,
@@ -72,28 +69,54 @@ const MapPopup = ({ ...props }) => {
     }),
     shallow,
   )
+
+  const showPopup =
+    Boolean(coords) &&
+    Boolean(displayPopup) &&
+    hoveredTract !== 0
+  const popupCoords = showPopup ? coords : null
   const { popupAnchor, popupOffset } = getPopupProps({
     mouseXY,
     mapSize,
   })
-  const showPopup = hoveredTract !== 0
+  return useMemo(() => {
+    return {
+      show: showPopup,
+      coords: popupCoords,
+      anchor: popupAnchor,
+      offset: popupOffset,
+      feature: hoveredFeature,
+    }
+  }, [
+    showPopup,
+    popupCoords,
+    popupAnchor,
+    popupOffset,
+    hoveredFeature,
+  ])
+}
 
-  console.log('popup render count', count++)
+const MapPopup = ({ ...props }) => {
+  const {
+    show,
+    coords,
+    anchor,
+    offset,
+    feature,
+  } = usePopupState()
 
   return (
-    !!displayPopup &&
-    !!showPopup &&
-    !!coords && (
+    show && (
       <Popup
         latitude={coords[1]}
         longitude={coords[0]}
         closeButton={false}
         tipSize={0}
-        anchor={popupAnchor}
-        offsetTop={popupOffset[1]}
-        offsetLeft={popupOffset[0]}
+        anchor={anchor}
+        offsetTop={offset[1]}
+        offsetLeft={offset[0]}
       >
-        <PopupContent feature={hoveredFeature} />
+        <PopupContent feature={feature} />
       </Popup>
     )
   )

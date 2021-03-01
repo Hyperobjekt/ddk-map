@@ -47,6 +47,15 @@ export const variables = {
   },
 }
 
+/** "on" colors for color scale */
+export const onColors = [
+  '#C9E8F8',
+  '#8DD4F9',
+  '#73A0C9',
+  '#588DA8',
+  '#56778D',
+]
+
 export const theme = createMuiTheme({
   // Update theme here according to the Mui documentation
   palette: {
@@ -106,20 +115,14 @@ export const theme = createMuiTheme({
         'rgba(88, 141, 168, 0.3)',
         'rgba(86, 119, 141, 0.3)',
       ],
-      onColors: [
-        '#C9E8F8',
-        '#8DD4F9',
-        '#73A0C9',
-        '#588DA8',
-        '#56778D',
-      ],
+      onColors: onColors,
     },
     demos: {
       ai: '#FF00CC',
       ap: '#FF730C',
       b: '#FFC31A',
       hi: '#7401B1',
-      w: '#66CC00'
-    }
+      w: '#66CC00',
+    },
   },
 })

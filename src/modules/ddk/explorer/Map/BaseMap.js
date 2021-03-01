@@ -126,7 +126,7 @@ const BaseMap = ({ ...props }) => {
   const {
     activeView,
     dataVersion,
-    breakpoint,
+    // breakpoint,
     activeYear,
     activePointLayers,
     activeMetric,
@@ -144,7 +144,7 @@ const BaseMap = ({ ...props }) => {
     state => ({
       activeView: state.activeView,
       dataVersion: state.dataVersion,
-      breakpoint: state.breakpoint,
+      // breakpoint: state.breakpoint,
       loadYears: state.loadYears,
       activeYear: state.activeYear,
       activePointLayers: state.activePointLayers,
@@ -291,34 +291,35 @@ const BaseMap = ({ ...props }) => {
   }
 
   const handleMouseMove = e => {
+    let updates = {}
     // console.log('mousemove, ', e)
     // If the cursor is over the legend or another control,
     // we need to clear hovered states.
-    const hoveredElements = document.querySelectorAll(
-      ':hover',
-    )
-    const parents = []
-    hoveredElements.forEach(el => {
-      parents.push(getParents(el))
-    })
-    const parentsList = Object.values(parents)
-    const nodeList = Object.values(hoveredElements)
-    const isControl =
-      nodeList.some(node => {
-        // console.log('node, ', node, node.classList)
-        return MAP_CONTROLS_CLASSES.some(item =>
-          node.classList.contains(item),
-        )
-      }) ||
-      parentsList.some(node => {
-        // console.log('node, ', node, node.classList)
-        return MAP_CONTROLS_CLASSES.some(
-          item =>
-            node &&
-            node.classlist &&
-            node.classList.contains(item),
-        )
-      })
+    // const hoveredElements = document.querySelectorAll(
+    //   ':hover',
+    // )
+    // const parents = []
+    // hoveredElements.forEach(el => {
+    //   parents.push(getParents(el))
+    // })
+    // const parentsList = Object.values(parents)
+    // const nodeList = Object.values(hoveredElements)
+    const isControl = false
+    // nodeList.some(node => {
+    //   // console.log('node, ', node, node.classList)
+    //   return MAP_CONTROLS_CLASSES.some(item =>
+    //     node.classList.contains(item),
+    //   )
+    // }) ||
+    // parentsList.some(node => {
+    //   // console.log('node, ', node, node.classList)
+    //   return MAP_CONTROLS_CLASSES.some(
+    //     item =>
+    //       node &&
+    //       node.classlist &&
+    //       node.classList.contains(item),
+    //   )
+    // })
     // console.log('isControl, ', isControl)
 
     // If we have moved the mouse outside of any tracts, remove
@@ -342,27 +343,32 @@ const BaseMap = ({ ...props }) => {
         { hovered: false },
       )
       // Set previous hovered to null
-      setStoreValues({
+      updates = {
+        ...updates,
         hoveredTract: 0,
         hoveredFeature: null,
-      })
+      }
+      // setStoreValues({
+      //   hoveredTract: 0,
+      //   hoveredFeature: null,
+      // })
     }
     // If hovering a control, remove currently hovered.
-    if (isControl) {
-      localMapRef.setFeatureState(
-        {
-          id: hoveredTract,
-          source: 'ddkids_tracts',
-          sourceLayer: 'tracts',
-        },
-        { hovered: false },
-      )
-      // Set previous hovered to null
-      setStoreValues({
-        hoveredTract: 0,
-        hoveredFeature: null,
-      })
-    }
+    // if (isControl) {
+    //   localMapRef.setFeatureState(
+    //     {
+    //       id: hoveredTract,
+    //       source: 'ddkids_tracts',
+    //       sourceLayer: 'tracts',
+    //     },
+    //     { hovered: false },
+    //   )
+    //   // Set previous hovered to null
+    //   setStoreValues({
+    //     hoveredTract: 0,
+    //     hoveredFeature: null,
+    //   })
+    // }
     // If hovering a tract, and tract is different,
     // reset hovered.
     if (!!tracts && tracts.length > 0 && !isControl) {
@@ -389,19 +395,26 @@ const BaseMap = ({ ...props }) => {
           { hovered: true },
         )
         // Set new hovered hovered feature in store.
-        setStoreValues({
+        updates = {
+          ...updates,
           hoveredTract: tracts[0].id,
           hoveredFeature: tracts[0],
-        })
+        }
+        // setStoreValues({
+        //   hoveredTract: tracts[0].id,
+        //   hoveredFeature: tracts[0],
+        // })
       }
     }
     // Setting mouse coords and lnglat
     // for general use by tooltips, etc.
-    setStoreValues({
+    updates = {
+      ...updates,
       mouseXY: e.point,
       coords: e.lngLat,
       controlHovered: isControl,
-    })
+    }
+    setStoreValues(updates)
   }
 
   const updateCentered = () => {
@@ -708,7 +721,6 @@ const BaseMap = ({ ...props }) => {
       >
         {
           <>
-            <Legend />
             <MapPopup />
             <Notifications />
             <div

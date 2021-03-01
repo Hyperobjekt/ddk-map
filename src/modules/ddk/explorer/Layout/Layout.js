@@ -1,18 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
-import ReactMapGL, {
-  NavigationControl,
-  Popup,
-} from 'react-map-gl'
 import { Paper } from '@material-ui/core'
 
 import Header from './../Header'
 import ControlPanel from './../ControlPanel'
 import SlideoutPanel from './../SlideoutPanel'
 import Map from './../Map'
+import Legend from '../Legend'
 
 const useLayoutStyles = makeStyles(theme => ({
   root: {
@@ -42,6 +38,7 @@ const Layout = ({ ...props }) => {
       <main className={clsx(classes.main)}>
         <ControlPanel />
         <SlideoutPanel />
+        <Legend />
         <Map />
       </main>
     </Paper>

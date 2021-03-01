@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
@@ -7,6 +7,7 @@ import shallow from 'zustand/shallow'
 import useStore from './../../store'
 import { getNormPhrase } from './../../utils'
 import { FULL_FUNCT_ZOOM_THRESHOLD } from './../../../../../constants/map'
+import { onColors } from '../../theme'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -68,11 +69,7 @@ const useStyles = makeStyles(theme => ({
     width: '19px',
     height: '19px',
     marginRight: '7px',
-    // backgroundColor: !!feature
-    //   ? theme.extras.SDScale.onColors[
-    //       feature.properties[`${activeMetric}${activeNorm}`]
-    //     ]
-    //   : 'transparent',
+
     fontSize: '12px',
   },
   comparedTo: {
@@ -172,6 +169,10 @@ const PopupContent = ({ ...props }) => {
           className={clsx(
             'popup-tract-id',
             classes.tractId,
+            {
+              [classes.tractIdDark]:
+                feature && feature.properties.m == 0,
+            },
           )}
         >
           {i18n.translate(`POPUP_CENSUS_TRACT`, {
@@ -203,6 +204,15 @@ const PopupContent = ({ ...props }) => {
                 'popup-metric-swatch',
                 classes.sdSwatch,
               )}
+              style={{
+                backgroundColor: !!feature
+                  ? onColors[
+                      feature.properties[
+                        `${activeMetric}${activeNorm}`
+                      ]
+                    ]
+                  : 'transparent',
+              }}
             ></div>
             <div
               className={clsx('popup-metric-block-label')}

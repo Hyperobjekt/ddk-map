@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import i18n from '@pureartisan/simple-i18n'
 import { isMobile } from 'react-device-detect'
 import { ThemeProvider } from '@material-ui/core/styles'
-import * as merge from 'deepmerge'
 
 import Layout from '../Layout/Layout'
 import { DataLoader } from './../DataLoader'

@@ -16,7 +16,6 @@ import { DATA_FILES } from './../../../../constants/map'
 // TODO:
 // - Error notification if data loading fails.
 
-
 const useLoaderStyles = makeStyles({
   root: {
     position: 'absolute',
@@ -32,17 +31,17 @@ const useLoaderStyles = makeStyles({
     transition: 'top 1000ms ease-in-out',
   },
   dataLoaded: {
-    top: `-100vh`
+    top: `-100vh`,
   },
   content: {
-    display: 'block', 
+    display: 'block',
     width: '90%',
     [theme.breakpoints.up('md')]: {
       width: '60%',
     },
   },
   hideContent: {
-    display: 'none'
+    display: 'none',
   },
   '@global': {
     '@keyframes fadeIn': {
@@ -78,13 +77,20 @@ const DataLoaderContent = ({ ...props }) => {
     setShowContent(true)
   }, 500)
 
-
   const styles = useLoaderStyles()
 
   return (
-    <Box className={clsx(styles.root, { [styles.dataLoaded]: allDataLoaded })}>
+    <Box
+      className={clsx(styles.root, {
+        [styles.dataLoaded]: allDataLoaded,
+      })}
+    >
       {/* hideContent Hack, hide this for a bit to avoid flashing empty string var. */}
-      <Box className={clsx(styles.content, { [styles.hideContent]: !showContent})}>
+      <Box
+        className={clsx(styles.content, {
+          [styles.hideContent]: !showContent,
+        })}
+      >
         <Typography variant="h4" gutterBottom>
           {i18n.translate(`MAP_LOADING_DATA`)}
           <Box component="span" className={styles.dots}>
@@ -128,7 +134,7 @@ const DataLoader = ({ ...props }) => {
     dataVersion,
     setLang,
     activeYear,
-    remoteJson,
+    // remoteJson,
   } = useStore(
     state => ({
       initialStateSetFromHash:
@@ -140,7 +146,7 @@ const DataLoader = ({ ...props }) => {
       dataVersion: state.dataVersion,
       setLang: state.setLang,
       activeYear: state.activeYear,
-      remoteJson: state.remoteJson,
+      // remoteJson: state.remoteJson,
     }),
     shallow,
   )

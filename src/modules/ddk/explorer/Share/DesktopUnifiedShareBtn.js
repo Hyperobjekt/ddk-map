@@ -15,6 +15,7 @@ import { ShareEmbedModal } from '.'
 import { IconButton, Popper } from '@material-ui/core'
 import ShareIcon from '@material-ui/icons/Share'
 import useStore from '../store'
+import shallow from 'zustand/shallow'
 
 // Styles for this component.
 const useStyles = makeStyles(theme => ({
@@ -49,8 +50,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const DesktopUnifiedShareBtn = ({ ...props }) => {
-  const { interactionsMobile, setStoreValues } = useStore(
-    state => state,
+  const [interactionsMobile, setStoreValues] = useStore(
+    state => [
+      state.interactionsMobile,
+      state.setStoreValues,
+    ],
+    shallow,
   )
 
   const [anchorEl, setAnchorEl] = useState(null)
