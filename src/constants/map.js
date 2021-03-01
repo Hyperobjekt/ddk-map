@@ -191,7 +191,7 @@ export const CENTER_TRACKED_SHAPES = [
   {
     id: 'metros',
     minZoom: 3,
-    require_props: [['in100', 1]],
+    require_props: [['i', 1]],
     storeHandle: `centerMetro`,
     source: `ddkids_shapes`,
   },
