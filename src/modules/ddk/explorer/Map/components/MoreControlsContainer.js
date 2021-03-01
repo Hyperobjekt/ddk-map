@@ -1,12 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
-import { FiCamera } from 'react-icons/fi'
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-} from 'react-simple-maps'
 
 import FlyToStateBtn from './FlyToStateBtn'
 import FlyToResetBtn from './FlyToResetBtn'

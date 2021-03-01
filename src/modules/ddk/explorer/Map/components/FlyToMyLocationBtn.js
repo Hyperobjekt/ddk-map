@@ -19,7 +19,7 @@ const FlyToMyLocationBtn = ({ children, ...props }) => {
   const [position, setPosition] = useState(null)
 
   const handleClick = () => {
-    console.log('handleClick')
+    // console.log('handleClick')
     flyToLatLon(
       position.coords.latitude,
       position.coords.longitude,

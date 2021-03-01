@@ -13,6 +13,7 @@ const ScreenshotBtn = ({ children, ...props }) => {
       setStoreValues: state.setStoreValues,
       eventMapCapture: state.eventMapCapture,
     }),
+    shallow,
   )
 
   const handleClick = () => {
