@@ -39,13 +39,13 @@ export const getPoints = (source, layer, context) => {
         ['zoom'],
         3,
         // 0.5,
-        ['case', ['in', ['get', 'type'], 'ai'], 14, 0.01],
+        ['case', ['==', layer, 'ai'], 0.5, 0.01],
         6,
         // 1,
-        ['case', ['in', ['get', 'type'], 'ai'], 2, 0.5],
+        ['case', ['==', layer, 'ai'], 1, 0.5],
         13,
         // 2,
-        ['case', ['in', ['get', 'type'], 'ai'], 4, 1],
+        ['case', ['==', layer, 'ai'], 2, 1],
       ],
     },
     filter: [
@@ -61,16 +61,22 @@ export const getPoints = (source, layer, context) => {
       [
         'all',
         ['==', ['string', context.activeNorm], 'm'],
-        ['!=', ['get', 'm'], context.centerMetro],
+        ['==', ['get', 'i'], 1],
       ],
-      false,
-      // Only display dots in the active metro area.
+      true,
       [
         'all',
         ['==', ['string', context.activeNorm], 'm'],
-        ['==', ['get', 'm'], 0],
+        ['!=', ['get', 'i'], 1],
       ],
       false,
+      // Only display dots in the active metro area.
+      // [
+      //   'all',
+      //   ['==', ['string', context.activeNorm], 'm'],
+      //   ['==', ['get', 'm'], 0],
+      // ],
+      // false,
       true,
     ],
   })
@@ -133,7 +139,7 @@ const getShapeFilters = (type, context) => {
         [
           'all',
           ['==', ['string', context.activeNorm], 'm'],
-          ['!=', ['number', ['get', 'in100']], 1],
+          ['!=', ['number', ['get', 'i']], 1],
         ],
         false,
         // If you're a tract not in the centered metro,
@@ -166,7 +172,7 @@ const getShapeFilters = (type, context) => {
         ['==', ['string', context.activeNorm], 's'],
         false,
         // Not in top 100, don't display.
-        ['!=', ['get', 'in100'], 1],
+        ['!=', ['get', 'i'], 1],
         false,
         true,
       ]
@@ -182,7 +188,7 @@ const getShapeFilters = (type, context) => {
 }
 
 export const getPolygonLines = (source, type, context) => {
-  // console.log('getPolygonLines(), ', source, type, context
+  // console.log('getPolygonLines(), ', source, type, context)
   return fromJS({
     id: `${type}Lines`,
     source: source,
@@ -300,7 +306,7 @@ export const getPolygonLines = (source, type, context) => {
           ['==', context.activeNorm, 'm'],
           ['==', ['feature-state', 'centered'], true],
         ],
-        10,
+        6,
         // Metro area that is not centered.
         ['all', ['==', type, 'metros']],
         3,

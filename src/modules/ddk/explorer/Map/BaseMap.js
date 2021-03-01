@@ -24,13 +24,13 @@ import Mapbox, {
   useFlyToFeature,
   useFlyToLatLon,
   useFlyToReset,
+  useFlyToState,
 } from '@hyperobjekt/mapbox'
 import { fromJS, set } from 'immutable'
 import shallow from 'zustand/shallow'
 
 import Legend from './../Legend'
 import useStore from './../store'
-import theme from './../theme'
 import {
   DEFAULT_VIEWPORT,
   CENTER_TRACKED_SHAPES,
@@ -47,6 +47,7 @@ import {
 } from './../utils'
 import MapPopup from './components/MapPopup'
 import Notifications from './components/Notifications'
+import MoreControlsContainer from './components/MoreControlsContainer'
 
 const useStyles = makeStyles(theme => ({
   parent: {
@@ -194,6 +195,8 @@ const BaseMap = ({ ...props }) => {
     flyToFeature: useFlyToFeature(),
     flyToBounds: useFlyToBounds(),
     flyToLatLon: useFlyToLatLon(),
+    flyToState: useFlyToState(),
+    flyToReset: useFlyToReset(),
   })
 
   const handleClick = feature => {
@@ -698,6 +701,7 @@ const BaseMap = ({ ...props }) => {
     minZoom: DEFAULT_VIEWPORT.minZoom,
     maxZoom: DEFAULT_VIEWPORT.maxZoom,
     mapStyle: mapStyle,
+    preserveDrawingBuffer: true,
     onMouseMove: handleMouseMove,
     onMouseOut: handleMouseOut,
     onResize: handleResize,
@@ -750,6 +754,9 @@ const BaseMap = ({ ...props }) => {
                 </>
               )}
             </div>
+            {activeView === 'explorer' && (
+              <MoreControlsContainer mapRef={localMapRef} />
+            )}
           </>
         }
       </Mapbox>

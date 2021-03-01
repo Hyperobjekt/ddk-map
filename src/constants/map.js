@@ -36,10 +36,10 @@ export const DEFAULT_LOAD_YEARS = ['10', '15']
 export const DEFAULT_ACTIVE_POINTS = ''
 export const DEFAULT_METRIC = 'xc'
 export const DEFAULT_NORM = 'n'
-export const DEFAULT_DATA_VERSION = '1.0.12'
-export const DEFAULT_LAT = '37.39'
-export const DEFAULT_LNG = '-96.78'
-export const DEFAULT_ZOOM = '3.15'
+export const DEFAULT_DATA_VERSION = '1.0.14'
+export const DEFAULT_LAT = '40.364' // '37.39'
+export const DEFAULT_LNG = '-96.128' // '-96.78'
+export const DEFAULT_ZOOM = '4' // '3.15'
 
 // #/explorer//2015/2010,2015//coi/1.0.4/1.0.4/37.39/-96.78/3.15/
 export const DEFAULT_ROUTE = `#/${DEFAULT_VIEW}/${DEFAULT_ACTIVE_SHAPE}/${DEFAULT_ACTIVE_YEAR}/${DEFAULT_LOAD_YEARS}/${DEFAULT_ACTIVE_POINTS}/${DEFAULT_METRIC}/${DEFAULT_NORM}/${DEFAULT_DATA_VERSION}/${DEFAULT_LAT}/${DEFAULT_LNG}/${DEFAULT_ZOOM}`
@@ -157,8 +157,8 @@ export const DEFAULT_VIEWPORT = {
   touchZoom: true,
   touchRotate: true,
   preserveDrawingBuffer: true,
-  height: 800, // '800px', // '100%',
-  width: 1200, // '1200px', // '100%',
+  height: '100%', // 800, // '800px', // '100%',
+  width: '100%', // 1200, // '1200px', // '100%',
   maxBounds: [
     // [-107.6, 33.8], // southwest.
     [-176, 13.8], // southwest.
@@ -191,7 +191,7 @@ export const CENTER_TRACKED_SHAPES = [
   {
     id: 'metros',
     minZoom: 3,
-    require_props: [['in100', 1]],
+    require_props: [['i', 1]],
     storeHandle: `centerMetro`,
     source: `ddkids_shapes`,
   },
@@ -219,6 +219,7 @@ export const MAP_CONTROLS_CLASSES = [
   'mapboxgl-ctrl',
   'block-click',
   'map-notifications',
+  'more-controls',
 ]
 
 /**
