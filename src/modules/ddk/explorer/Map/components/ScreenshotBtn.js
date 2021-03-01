@@ -2,30 +2,42 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
-import { makeStyles } from '@material-ui/core/styles'
 import { Tooltip, Button } from '@material-ui/core'
 import shallow from 'zustand/shallow'
 
 import useStore from './../../store'
 
 const ScreenshotBtn = ({ children, ...props }) => {
-  const { flyToReset } = useStore(
+  const { setStoreValues, eventMapCapture } = useStore(
     state => ({
-      flyToReset: state.flyToReset,
+      setStoreValues: state.setStoreValues,
+      eventMapCapture: state.eventMapCapture,
     }),
-    shallow,
   )
 
   const handleClick = () => {
-    flyToReset()
+    console.log('handleClick', props.mapRef)
+    // console.log('captureMap')
+    const dataURL = props.mapRef
+      .getCanvas()
+      .toDataURL('image/png')
+    const a = document.createElement('a')
+    a.href = dataURL
+    a.setAttribute('download', 'ddk-explorer-capture.png')
+    a.click()
+    a.remove()
+    setStoreValues({
+      eventMapCapture: eventMapCapture + 1,
+    })
   }
 
   return (
-    <Tooltip title={i18n.translate(`MAP_RESET`)} arrow>
+    <Tooltip title={i18n.translate(`MAP_SCREENSHOT`)} arrow>
       <Button
-        aria-label={i18n.translate(`MAP_RESET`)}
+        aria-label={i18n.translate(`MAP_SCREENSHOT`)}
         onClick={handleClick}
         placement={props.placement}
+        className={props.className}
       >
         {children}
       </Button>

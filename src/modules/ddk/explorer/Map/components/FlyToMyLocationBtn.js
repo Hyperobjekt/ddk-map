@@ -55,6 +55,7 @@ const FlyToMyLocationBtn = ({ children, ...props }) => {
           aria-label={i18n.translate(`MAP_FLY_TO_MY`)}
           onClick={handleClick}
           placement={props.placement}
+          className={props.className}
         >
           {children}
         </Button>

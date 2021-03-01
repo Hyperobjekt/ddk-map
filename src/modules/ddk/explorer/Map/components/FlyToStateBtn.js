@@ -34,6 +34,7 @@ const FlyToStateBtn = ({ children, ...props }) => {
         })}
         onClick={handleClick}
         placement={props.placement}
+        className={props.className}
       >
         {children}
       </Button>

@@ -37,9 +37,9 @@ export const DEFAULT_ACTIVE_POINTS = ''
 export const DEFAULT_METRIC = 'xc'
 export const DEFAULT_NORM = 'n'
 export const DEFAULT_DATA_VERSION = '1.0.12'
-export const DEFAULT_LAT = '37.39'
-export const DEFAULT_LNG = '-96.78'
-export const DEFAULT_ZOOM = '3.15'
+export const DEFAULT_LAT = '40.364' // '37.39'
+export const DEFAULT_LNG = '-96.128' // '-96.78'
+export const DEFAULT_ZOOM = '4' // '3.15'
 
 // #/explorer//2015/2010,2015//coi/1.0.4/1.0.4/37.39/-96.78/3.15/
 export const DEFAULT_ROUTE = `#/${DEFAULT_VIEW}/${DEFAULT_ACTIVE_SHAPE}/${DEFAULT_ACTIVE_YEAR}/${DEFAULT_LOAD_YEARS}/${DEFAULT_ACTIVE_POINTS}/${DEFAULT_METRIC}/${DEFAULT_NORM}/${DEFAULT_DATA_VERSION}/${DEFAULT_LAT}/${DEFAULT_LNG}/${DEFAULT_ZOOM}`

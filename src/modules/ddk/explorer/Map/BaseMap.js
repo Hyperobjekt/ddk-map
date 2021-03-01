@@ -696,6 +696,7 @@ const BaseMap = ({ ...props }) => {
     minZoom: DEFAULT_VIEWPORT.minZoom,
     maxZoom: DEFAULT_VIEWPORT.maxZoom,
     mapStyle: mapStyle,
+    preserveDrawingBuffer: true,
     onMouseMove: handleMouseMove,
     onMouseOut: handleMouseOut,
     onResize: handleResize,
@@ -746,7 +747,7 @@ const BaseMap = ({ ...props }) => {
               )}
             </div>
             {activeView === 'explorer' && (
-              <MoreControlsContainer />
+              <MoreControlsContainer mapRef={localMapRef} />
             )}
           </>
         }

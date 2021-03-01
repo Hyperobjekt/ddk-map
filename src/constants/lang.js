@@ -97,5 +97,6 @@ export const langSet = {
     MAP_FLY_TO_STATE: `Fly to {state}`,
     MAP_RESET: `Reset map viewport`,
     MAP_FLY_TO_MY: `Fly to my location`,
+    MAP_SCREENSHOT: `Take a screenshot of the map`,
   },
 }

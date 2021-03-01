@@ -16,9 +16,9 @@ const FlyToResetBtn = ({ children, ...props }) => {
     }),
     shallow,
   )
+  // console.log('DEFAULT_VIEWPORT', DEFAULT_VIEWPORT)
 
   const handleClick = () => {
-    // flyToReset()
     flyToLatLon(
       DEFAULT_VIEWPORT.latitude,
       DEFAULT_VIEWPORT.longitude,
@@ -32,6 +32,7 @@ const FlyToResetBtn = ({ children, ...props }) => {
         aria-label={i18n.translate(`MAP_RESET`)}
         onClick={handleClick}
         placement={props.placement}
+        className={props.className}
       >
         {children}
       </Button>
