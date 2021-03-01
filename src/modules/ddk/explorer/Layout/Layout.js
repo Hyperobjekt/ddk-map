@@ -14,24 +14,24 @@ import ControlPanel from './../ControlPanel'
 import SlideoutPanel from './../SlideoutPanel'
 import Map from './../Map'
 
-const Layout = ({ ...props }) => {
-  const layoutStyles = makeStyles(theme => ({
-    root: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh',
-      backgroundColor: theme.palette.background.default,
-    },
-    main: {
-      // marginTop:
-      //   theme.extras.variables.dimensions.navbarHeight,
-      // height: `calc(100vh - ${theme.extras.variables.dimensions.navbarHeight})`,
-    },
-  }))
+const useLayoutStyles = makeStyles(theme => ({
+  root: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+    backgroundColor: theme.palette.background.default,
+  },
+  main: {
+    // marginTop:
+    //   theme.extras.variables.dimensions.navbarHeight,
+    // height: `calc(100vh - ${theme.extras.variables.dimensions.navbarHeight})`,
+  },
+}))
 
-  const classes = layoutStyles()
+const Layout = ({ ...props }) => {
+  const classes = useLayoutStyles()
 
   return (
     <Paper

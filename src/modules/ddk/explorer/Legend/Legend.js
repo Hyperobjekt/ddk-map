@@ -5,274 +5,280 @@ import { makeStyles } from '@material-ui/core/styles'
 import shallow from 'zustand/shallow'
 import {
   Box,
-  FormControl,
   FormControlLabel,
-  FormHelperText,
   Checkbox,
-  Backdrop,
-  Fade,
   IconButton,
-  Modal,
-  Paper,
   Button,
-  Switch
+  Switch,
 } from '@material-ui/core'
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import {
-  AiOutlineColumnHeight,
-  AiOutlineControl,
-} from 'react-icons/ai'
-
+import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import Chart from '../Chart'
 import Arrow from '../Icons'
 import SelectBox from '../App/components/SelectBox'
 import useStore from './../store'
 import SDScale from '../SDScale'
-import SlideoutPanel from '../SlideoutPanel'
 import {
   OPTIONS_ACTIVE_POINTS,
   OPTIONS_METRIC,
   OPTIONS_NORM,
   STATES,
 } from './../../../../constants/map'
-import { ShowChart } from '@material-ui/icons'
+
+// Styles for this component.
+const useLegendStyles = makeStyles(theme => ({
+  root: {
+    zIndex: theme.extras.Legend.zIndex,
+    backgroundColor: theme.palette.background.paper,
+    position: 'fixed',
+    transition: 'width 300ms ease-in-out',
+    width: '100vw', //620px
+    // Adjust for different app bar height.
+    top: '55px',
+    right: '0px',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    fontFamily: 'Fira Sans',
+    fontSize: '12px',
+    cursor: 'default',
+    overflow: 'hidden',
+    [theme.breakpoints.up('sm')]: {
+      boxShadow: theme.shadows[3],
+      width: 284,
+      position: 'absolute',
+      right: theme.extras.Legend.cushionRight,
+      top: theme.extras.Legend.cushionTop,
+      borderRadius: 5,
+    },
+  },
+  /** styles when legendPanel.active is truthy */
+  active: {
+    '& $showButton': {
+      transform: 'rotate(180deg)',
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: 668,
+    },
+  },
+  controlGuts: {
+    transition: 'height 300ms ease-in-out',
+    height: 0,
+    [theme.breakpoints.up('sm')]: {
+      height: '243px',
+    },
+    overflow: 'hidden',
+  },
+  controlActive: {
+    height: 243,
+  },
+  row: {
+    width: '100%',
+    '&:nth-child(n+2)': {
+      paddingTop: '7px',
+    },
+  },
+  col6: {
+    width: '100%',
+    display: 'block',
+  },
+  col3: {
+    boxSizing: 'border-box',
+    width: '50%',
+    display: 'inline-block',
+    padding: '0px 2px 0px 0px',
+    '&:nth-child(2)': {
+      padding: '0px 0px 0px 2px',
+    },
+  },
+  col4: {
+    boxSizing: 'border-box',
+    width: '66%',
+    display: 'inline-block',
+    padding: '0px 2px 0px 0px',
+    '&:nth-child(2)': {
+      padding: '0px 0px 0px 2px',
+    },
+  },
+  col2: {
+    boxSizing: 'border-box',
+    width: '33%',
+    display: 'inline-block',
+    padding: '0px 2px 0px 0px',
+    '&:nth-child(2)': {
+      padding: '0px 0px 0px 2px',
+    },
+  },
+  labelText: {
+    display: 'block',
+    color: '#616161',
+    paddingBottom: '3px',
+  },
+  showChart: {
+    color: '#C9422C',
+    fontSize: '14px',
+    verticalAlign: 'middle',
+    letterSpacing: '1.25px',
+    fontWeight: '500',
+    paddingLeft: '3px',
+    '&.disabled': {
+      color: '#616161',
+    },
+  },
+  showControl: {
+    textAlign: 'center',
+    borderTop: '1px solid #EEE',
+  },
+  controlIcon: {
+    transition: 'transform 300ms ease-in-out',
+    transform: 'rotate(180deg)',
+  },
+  controlIconActive: {
+    transform: 'rotate(0deg)',
+  },
+  controlButton: {
+    textAlign: 'center',
+  },
+  controlBtnLabel: {
+    color: theme.extras.variables.colors.ddkRed,
+    fontSize: '14px',
+    letterSpacing: '1.25px',
+    verticalAlign: 'middle',
+  },
+  switchContainer: {
+    float: 'right',
+  },
+  switchLabel: {
+    fontSize: '14px',
+    letterSpacing: '1.25px',
+    color: theme.extras.variables.colors.lightGray,
+  },
+  checkboxContainer: {
+    display: 'block',
+    justifyContent: 'left',
+    paddingLeft: '9px',
+  },
+  checkboxLabel: {
+    verticalAlign: 'middle',
+    paddingLeft: '6px',
+    fontSize: '14px',
+    color: theme.extras.variables.colors.darkGray,
+  },
+  checkbox: {
+    padding: '0px 0px',
+    verticalAlign: 'middle',
+  },
+  checkboxColor_w: {
+    color: '#96cc60',
+    '&.Mui-checked': {
+      color: theme.extras.demos.w,
+    },
+  },
+  checkboxColor_hi: {
+    color: '#9d70b5',
+    '&.Mui-checked': {
+      color: theme.extras.demos.hi,
+    },
+  },
+  checkboxColor_b: {
+    color: '#fcdb7c',
+    '&.Mui-checked': {
+      color: theme.extras.demos.b,
+    },
+  },
+  checkboxColor_ap: {
+    color: '#ffb178',
+    '&.Mui-checked': {
+      color: theme.extras.demos.ap,
+    },
+  },
+  checkboxColor_ai: {
+    color: '#ff85e7',
+    '&.Mui-checked': {
+      color: theme.extras.demos.ai,
+    },
+  },
+  indexSelect: {
+    fontWeight: '500',
+  },
+  controller: {
+    boxSizing: 'border-box',
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    background: theme.palette.background.paper,
+    width: '100vw',
+    height: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '284px',
+      float: 'right',
+      padding: theme.spacing(2),
+      borderRadius: 5,
+    },
+  },
+  panel: {
+    top: '0px',
+    right: '284px',
+    height: '352px',
+    width: '352px',
+    padding: '16px 16px',
+    zIndex: '-1',
+    background:
+      theme.extras.variables.colors.lightLightGray,
+    position: 'absolute',
+  },
+  panelChart: {
+    width: '100%',
+    height: '270px',
+  },
+  panelName: {
+    fontSize: '14px',
+    padding: '6px 0px 10px 34px',
+    letterSpacing: '.1px',
+    color: theme.extras.variables.colors.darkGray,
+  },
+  panelLabel: {
+    padding: '0px 0px 0px 34px',
+    height: '39px',
+  },
+  panelSds: {
+    color: '#616161',
+    width: '311px',
+    margin: '0px 0px 0px 36px',
+    textAlign: 'center',
+    fontSize: '12px',
+    paddingBottom: '4px',
+    display: 'flex',
+  },
+  sdsCell: {
+    width: '20%',
+  },
+  showButton: {
+    width: '27px',
+    height: '27px',
+    padding: '0px',
+    marginLeft: '-2px',
+    transition: 'transform 300ms ease-in-out',
+    transform: 'rotate(0deg)',
+    cursor: 'pointer',
+  },
+  showButtonDisabled: {
+    stroke: theme.extras.variables.colors.lightGray,
+  },
+  showButtonGlow: {
+    position: 'absolute',
+    borderRadius: '50%',
+    width: '100%',
+    height: '100%',
+    transition: 'opacity 300ms ease-in-out',
+    backgroundColor: '#fff',
+    boxShadow: `0 0 4px 2px #fff, 0 0 20px 12px ${theme.extras.SDScale.onColors[1]}, 0 0 28px 18px ${theme.extras.SDScale.onColors[2]}`,
+    opacity: 0,
+    zIndex: -1,
+  },
+  showButtonGlowVisible: {
+    opacity: 1,
+  },
+}))
 
 const Legend = ({ ...props }) => {
-  // Styles for this component.
-  const styles = makeStyles(theme => ({
-    root: {
-      zIndex: theme.extras.Legend.zIndex,
-      backgroundColor: theme.palette.background.paper,
-      position: 'fixed',
-      transition: 'width 300ms ease-in-out',
-      width: '100vw', //620px
-      // Adjust for different app bar height.
-      top: '55px',
-      right: '0px',
-      justifyContent: 'center',
-      alignItems: 'flex-start',
-      fontFamily: 'Fira Sans',
-      fontSize: '12px',
-      cursor: 'default',
-      overflow: 'hidden',
-      [theme.breakpoints.up('sm')]: {
-        boxShadow: theme.shadows[3],
-        width: legendPanel.active ? '668px' : '284px',
-        position: 'absolute',
-        right: theme.extras.Legend.cushionRight,
-        top: theme.extras.Legend.cushionTop,
-        borderRadius: 5,
-      }
-    },
-    controlGuts: {
-      transition: 'height 300ms ease-in-out',
-      height: legendControl.active ? '243px' : '0px',
-      [theme.breakpoints.up('sm')]: {
-        height: '243px'
-      },
-      overflow: 'hidden',
-    },
-    row: {
-      width: '100%',
-      '&:nth-child(n+2)': {
-        paddingTop: '7px',
-      },
-    },
-    col6: {
-      width: '100%',
-      display: 'block',
-    },
-    col3: {
-      boxSizing: 'border-box',
-      width: '50%',
-      display: 'inline-block',
-      padding: '0px 2px 0px 0px',
-      '&:nth-child(2)': {
-        padding: '0px 0px 0px 2px',
-      },
-    },
-    col4: {
-      boxSizing: 'border-box',
-      width: '66%',
-      display: 'inline-block',
-      padding: '0px 2px 0px 0px',
-      '&:nth-child(2)': {
-        padding: '0px 0px 0px 2px',
-      },
-    },
-    col2: {
-      boxSizing: 'border-box',
-      width: '33%',
-      display: 'inline-block',
-      padding: '0px 2px 0px 0px',
-      '&:nth-child(2)': {
-        padding: '0px 0px 0px 2px',
-      },
-    },
-    labelText: {
-      display: 'block',
-      color: '#616161',
-      paddingBottom: '3px'
-    },
-    showChart: {
-      color: '#C9422C',
-      fontSize: '14px',
-      verticalAlign: 'middle',
-      letterSpacing: '1.25px',
-      fontWeight: '500',
-      paddingLeft: '3px',
-      '&.disabled': {
-        color: '#616161',
-      }
-    },
-    showControl: {
-      textAlign: 'center',
-      borderTop: '1px solid #EEE',
-    },
-    controlIcon: {
-      transition: 'transform 300ms ease-in-out',
-      transform: legendControl.active ? 'rotate(0deg)' : 'rotate(180deg)',
-    },
-    controlButton: {
-      textAlign: 'center'
-    },
-    controlBtnLabel: {
-      color: theme.extras.variables.colors.ddkRed,
-      fontSize: '14px',
-      letterSpacing: '1.25px',
-      verticalAlign: 'middle',
-    },
-    switchContainer: {
-      float: 'right'
-    },
-    switchLabel: {
-      fontSize: '14px',
-      letterSpacing: '1.25px',
-      color: theme.extras.variables.colors.lightGray
-    },
-    checkboxContainer: {
-      display: 'block',
-      justifyContent: 'left',
-      paddingLeft: '9px'
-    },
-    checkboxLabel: {
-      verticalAlign: 'middle',
-      paddingLeft: '6px',
-      fontSize: '14px',
-      color: theme.extras.variables.colors.darkGray
-    },
-    checkbox: {
-      padding: '0px 0px',
-      verticalAlign: 'middle',
-    },
-    checkboxColor_w: {
-      color: '#96cc60',
-      '&.Mui-checked': {
-        color: theme.extras.demos.w,
-      },
-    },
-    checkboxColor_hi: {
-      color: '#9d70b5',
-      '&.Mui-checked': {
-        color: theme.extras.demos.hi,
-      },
-    },
-    checkboxColor_b: {
-      color: '#fcdb7c',
-      '&.Mui-checked': {
-        color: theme.extras.demos.b,
-      },
-    },
-    checkboxColor_ap: {
-      color: '#ffb178',
-      '&.Mui-checked': {
-        color: theme.extras.demos.ap,
-      },
-    },
-    checkboxColor_ai: {
-      color: '#ff85e7',
-      '&.Mui-checked': {
-        color: theme.extras.demos.ai,
-      },
-    },
-    indexSelect: {
-      fontWeight: '500',
-    },
-    controller: {
-      boxSizing: 'border-box',
-      paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(2),
-      background: theme.palette.background.paper,
-      width: '100vw',
-      height: '100%',
-      [theme.breakpoints.up('sm')]: {
-        width: '284px',
-        float: 'right',
-        padding: theme.spacing(2),
-        borderRadius: 5,
-      }
-    },
-    panel: {
-      top: '0px',
-      right: '284px',
-      height: '352px',
-      width: '352px',
-      padding: '16px 16px',
-      zIndex: '-1',
-      background: theme.extras.variables.colors.lightLightGray,
-      position: 'absolute'
-    },
-    panelChart: {
-      width: '100%',
-      height: '270px',
-    },
-    panelName: {
-      fontSize: '14px',
-      padding: '6px 0px 10px 34px',
-      letterSpacing: '.1px',
-      color: theme.extras.variables.colors.darkGray
-    },
-    panelLabel: {
-      padding: '0px 0px 0px 34px',
-      height: '39px'
-    },
-    panelSds: {
-      color: '#616161',
-      width: '311px',
-      margin: '0px 0px 0px 36px',
-      textAlign: 'center',
-      fontSize: '12px',
-      paddingBottom: '4px',
-      display: 'flex',
-    },
-    sdsCell: {
-      width: '20%'
-    },
-    showButton: {
-      width: '27px',
-      height: '27px',
-      padding: '0px',
-      marginLeft: '-2px',
-      transition: 'transform 300ms ease-in-out',
-      transform: legendPanel.active ? 'rotate(180deg)' : 'rotate(0deg)',
-      cursor: 'pointer',
-    },
-    showButtonDisabled: {
-      stroke: theme.extras.variables.colors.lightGray
-    },
-    showButtonGlow: {
-      position: 'absolute',
-      borderRadius: '50%',
-      width: '100%',
-      height: '100%',
-      transition: 'opacity 300ms ease-in-out',
-      backgroundColor: '#fff',
-      boxShadow: `0 0 4px 2px #fff, 0 0 20px 12px ${theme.extras.SDScale.onColors[1]}, 0 0 28px 18px ${theme.extras.SDScale.onColors[2]}`,
-      opacity: legendPanel.glow ? 1 : 0,
-      zIndex: -1,
-    }
-  }))
-
   const {
     loadYears,
     activeYear,
@@ -320,20 +326,26 @@ const Legend = ({ ...props }) => {
   }
 
   const processData = (data, geo, year) => {
-    var struct = [];
-    var selected = [];
-    switch(geo) {
+    var struct = []
+    var selected = []
+    switch (geo) {
       case 'n':
         selected = data.barcharts.data[`20${year}`].nation
         break
       case 's':
-        if(centerState > 0){
-          selected = data.barcharts.data[`20${year}`].states[STATES[centerState].abbr]
+        if (centerState > 0) {
+          selected =
+            data.barcharts.data[`20${year}`].states[
+              STATES[centerState].abbr
+            ]
         }
         break
       case 'm':
-        if(centerMetro > 0){
-          selected = data.barcharts.data[`20${year}`].metros[centerMetro]
+        if (centerMetro > 0) {
+          selected =
+            data.barcharts.data[`20${year}`].metros[
+              centerMetro
+            ]
         }
     }
     selected.map(el => {
@@ -351,15 +363,15 @@ const Legend = ({ ...props }) => {
   const handleEvent = (val, e) => {
     var data = {}
     if (val === 'showPopup') {
-      setStoreValues({displayPopup: !displayPopup})
+      setStoreValues({ displayPopup: !displayPopup })
     }
     if (val === 'showControl') {
-      const data = {active: !legendControl.active}
-      setStoreValues({legendControl: data})
+      const data = { active: !legendControl.active }
+      setStoreValues({ legendControl: data })
     }
     if (val === 'showChart') {
-      const data = {active: !legendPanel.active}
-      setStoreValues({legendPanel: data})
+      const data = { active: !legendPanel.active }
+      setStoreValues({ legendPanel: data })
     }
     if (val === 'activePointLayers') {
       // console.log('e, ', e, e.currentTarget.name, e.target)
@@ -382,15 +394,23 @@ const Legend = ({ ...props }) => {
   }
 
   useEffect(() => {
-    if(activeNorm === 'm' && centerMetro === 0 && legendPanel.active) {
-      const data = {active: !legendPanel.active}
-      setStoreValues({legendPanel: data})
-    } else if (activeNorm === 's' && centerState === 0 && legendPanel.active) {
-      const data = {active: !legendPanel.active}
-      setStoreValues({legendPanel: data})
-    } else if(activeNorm === 'n' && legendPanel.active) {
-      const data = {active: !legendPanel.active}
-      setStoreValues({legendPanel: data})
+    if (
+      activeNorm === 'm' &&
+      centerMetro === 0 &&
+      legendPanel.active
+    ) {
+      const data = { active: !legendPanel.active }
+      setStoreValues({ legendPanel: data })
+    } else if (
+      activeNorm === 's' &&
+      centerState === 0 &&
+      legendPanel.active
+    ) {
+      const data = { active: !legendPanel.active }
+      setStoreValues({ legendPanel: data })
+    } else if (activeNorm === 'n' && legendPanel.active) {
+      const data = { active: !legendPanel.active }
+      setStoreValues({ legendPanel: data })
     }
   }, [centerMetro, centerState, activeNorm])
 
@@ -402,43 +422,61 @@ const Legend = ({ ...props }) => {
     i18n.translate(`SDSCALE_VHIGH`),
   ]
 
-  const getChartSubtitle = (geo) => {
-    switch(geo) {
+  const getChartSubtitle = geo => {
+    switch (geo) {
       case 'n':
         return 'the U.S'
       case 's':
-        if(centerState > 0) {
+        if (centerState > 0) {
           return STATES[centerState].full
         }
       case 'm':
-        if(centerMetro > 0){
-          return remoteJson.metros.data.find(el => el.GEOID === centerMetro.toString()).msaname15
+        if (centerMetro > 0) {
+          return remoteJson.metros.data.find(
+            el => el.GEOID === centerMetro.toString(),
+          ).msaname15
         }
     }
   }
 
   const renderChart = () => {
-    if ((remoteJson.barcharts) && ((activeNorm === 'm' && centerMetro > 0) || (activeNorm === 's' && centerState > 0))) {
+    if (
+      remoteJson.barcharts &&
+      ((activeNorm === 'm' && centerMetro > 0) ||
+        (activeNorm === 's' && centerState > 0))
+    ) {
       if (legendPanel.activated === false) {
-        var data = {active: legendPanel.active, activated: true, glow: true}
-        setStoreValues({legendPanel: data})
-        setTimeout(function(){
-          data = {active: legendPanel.active, activated: true, glow: false}
-          setStoreValues({legendPanel: data})
+        var data = {
+          active: legendPanel.active,
+          activated: true,
+          glow: true,
+        }
+        setStoreValues({ legendPanel: data })
+        setTimeout(function () {
+          data = {
+            active: legendPanel.active,
+            activated: true,
+            glow: false,
+          }
+          setStoreValues({ legendPanel: data })
         }, 1500)
       }
       return true
     } else {
       if (legendPanel.activated === true) {
-        var data = {active: legendPanel.active, activated: false, glow: false}
-        setStoreValues({legendPanel: data})
+        var data = {
+          active: legendPanel.active,
+          activated: false,
+          glow: false,
+        }
+        setStoreValues({ legendPanel: data })
       }
       return false
     }
   }
 
   const SdsScale = () => {
-    return(
+    return (
       <div className={classes.row}>
         <span className={classes.labelText}>
           {i18n.translate(`${activeMetric}${activeNorm}`)}
@@ -450,7 +488,7 @@ const Legend = ({ ...props }) => {
       </div>
     )
   }
-  
+
   const Control = () => {
     return (
       <>
@@ -510,7 +548,8 @@ const Legend = ({ ...props }) => {
                     <Checkbox
                       className={classes.checkbox}
                       classes={{
-                        root: classes[`checkboxColor_${el}`],
+                        root:
+                          classes[`checkboxColor_${el}`],
                       }}
                       checked={
                         activePointLayers.indexOf(el) > -1
@@ -535,18 +574,27 @@ const Legend = ({ ...props }) => {
   }
 
   const ChartHeaders = () => {
-    return(
+    return (
       <>
         <div className={classes.panelName}>
           {i18n.translate('LEGEND_CHART_TITLE')}
         </div>
-        <div className={clsx(classes.labelText, classes.panelLabel)}>
-          {i18n.translate('LEGEND_CHART_SUBTITLE', { chartSubtitle: getChartSubtitle(activeNorm) })}
+        <div
+          className={clsx(
+            classes.labelText,
+            classes.panelLabel,
+          )}
+        >
+          {i18n.translate('LEGEND_CHART_SUBTITLE', {
+            chartSubtitle: getChartSubtitle(activeNorm),
+          })}
         </div>
         <div className={classes.panelSds}>
           {SDArray.map((el, i) => {
             return (
-              <span key={el} className={classes.sdsCell}>{el.toUpperCase()}</span>
+              <span key={el} className={classes.sdsCell}>
+                {el.toUpperCase()}
+              </span>
             )
           })}
         </div>
@@ -554,80 +602,140 @@ const Legend = ({ ...props }) => {
     )
   }
 
-  const classes = styles()
+  const classes = useLegendStyles()
 
   return (
-  <>
-    {/* DESKTOP VIEW */}
-    {breakpoint != 'xs' && activeView === 'explorer' && 
-      <Box className={clsx('map-legend', classes.root)}>
-        <div className={classes.controller}>
-          <div className={classes.row}>
-            <IconButton disabled={ !renderChart() } className={classes.showButton} onClick={(e) => {handleEvent('showChart', e)}}>
-              <div className={classes.showButtonGlow}></div>
-              <Arrow disabled={!renderChart()}/>
-            </IconButton>
-            <span className={clsx(classes.showChart, (!renderChart() ? 'disabled' : ''))}>{i18n.translate(legendPanel.active ? `LEGEND_CHART_TOGGLE_OFF` : `LEGEND_CHART_TOGGLE_ON`)}</span>
-            <FormControlLabel
-            classes={{ label: classes.switchLabel }}
-            className={classes.switchContainer}
-            control={
-              <Switch
-                size="small"
-                checked={displayPopup}
-                onChange={((e)=>{handleEvent('showPopup' , e)})}
-                name="ToolCheck"
-                color="primary"
-              />
-            }
-            label="Tooltip"
-          />
-          </div>
-          <SdsScale />
-          <div className={classes.controlGuts}>
-            <Control />
-          </div>
-        </div>
-        <div className={classes.panel}>
-          {renderChart() &&
-            <div className={classes.panelChart}>
-              <ChartHeaders />
-              <Chart
-                data={processData(remoteJson, activeNorm, activeYear)}
-                activeBars={activePointLayers}
+    <>
+      {/* DESKTOP VIEW */}
+      {breakpoint != 'xs' && activeView === 'explorer' && (
+        <Box
+          className={clsx('map-legend', classes.root, {
+            [classes.active]: legendPanel.active,
+          })}
+        >
+          <div className={classes.controller}>
+            <div className={classes.row}>
+              <IconButton
+                disabled={!renderChart()}
+                className={classes.showButton}
+                onClick={e => {
+                  handleEvent('showChart', e)
+                }}
+              >
+                <div
+                  className={clsx(classes.showButtonGlow, {
+                    [classes.showButtonGlowVisible]:
+                      legendPanel.glow,
+                  })}
+                ></div>
+                <Arrow disabled={!renderChart()} />
+              </IconButton>
+              <span
+                className={clsx(
+                  classes.showChart,
+                  !renderChart() ? 'disabled' : '',
+                )}
+              >
+                {i18n.translate(
+                  legendPanel.active
+                    ? `LEGEND_CHART_TOGGLE_OFF`
+                    : `LEGEND_CHART_TOGGLE_ON`,
+                )}
+              </span>
+              <FormControlLabel
+                classes={{ label: classes.switchLabel }}
+                className={classes.switchContainer}
+                control={
+                  <Switch
+                    size="small"
+                    checked={displayPopup}
+                    onChange={e => {
+                      handleEvent('showPopup', e)
+                    }}
+                    name="ToolCheck"
+                    color="primary"
+                  />
+                }
+                label="Tooltip"
               />
             </div>
-          }
-        </div>
-      </Box>
-    }
-    {/* MOBILE VIEW */}
-    {breakpoint === 'xs' && activeView === 'explorer' && 
-      <Box className={clsx('map-legend', classes.root)}>
-        <div className={classes.controller}>
-          <SdsScale />
-          <div className={classes.controlGuts}>
-            <Control />
-          </div>
-          <div className={clsx(classes.row)}>
-            <div className={classes.controlButton}>
-              <Button onClick = {(e) => {handleEvent('showControl', e)}} classes={{label: classes.controlBtnLabel}}>
-                <ExpandLessIcon className={classes.controlIcon}/>
-                <span>{i18n.translate(`LEGEND_CONTROL_${legendControl.active.toString().toUpperCase()}`)}</span>
-              </Button>
+            <SdsScale />
+            <div
+              className={clsx(classes.controlGuts, {
+                [classes.controlActive]:
+                  legendControl.active,
+              })}
+            >
+              <Control />
             </div>
           </div>
-        </div>
-      </Box>
-    }
-    {/* EMBED VIEW */}
-    {activeView === 'embed' && 
-      <Box className={clsx('map-legend', classes.root)}>
-        <div className={classes.controller}>
-          <SdsScale />
-        </div>
-      </Box>
-    }
+          <div className={classes.panel}>
+            {renderChart() && (
+              <div className={classes.panelChart}>
+                <ChartHeaders />
+                <Chart
+                  data={processData(
+                    remoteJson,
+                    activeNorm,
+                    activeYear,
+                  )}
+                  activeBars={activePointLayers}
+                />
+              </div>
+            )}
+          </div>
+        </Box>
+      )}
+      {/* MOBILE VIEW */}
+      {breakpoint === 'xs' && activeView === 'explorer' && (
+        <Box className={clsx('map-legend', classes.root)}>
+          <div className={classes.controller}>
+            <SdsScale />
+            <div
+              className={clsx(classes.controlGuts, {
+                [classes.controlActive]:
+                  legendControl.active,
+              })}
+            >
+              <Control />
+            </div>
+            <div className={clsx(classes.row)}>
+              <div className={classes.controlButton}>
+                <Button
+                  onClick={e => {
+                    handleEvent('showControl', e)
+                  }}
+                  classes={{
+                    label: classes.controlBtnLabel,
+                  }}
+                >
+                  <ExpandLessIcon
+                    className={clsx(classes.controlIcon, {
+                      [classes.controlIconActive]:
+                        legendControl.active,
+                    })}
+                  />
+                  <span>
+                    {i18n.translate(
+                      `LEGEND_CONTROL_${legendControl.active
+                        .toString()
+                        .toUpperCase()}`,
+                    )}
+                  </span>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Box>
+      )}
+      {/* EMBED VIEW */}
+      {activeView === 'embed' && (
+        <Box className={clsx('map-legend', classes.root)}>
+          <div className={classes.controller}>
+            <SdsScale />
+          </div>
+        </Box>
+      )}
     </>
   )
 }

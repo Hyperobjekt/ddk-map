@@ -48,6 +48,79 @@ import {
 import MapPopup from './components/MapPopup'
 import Notifications from './components/Notifications'
 
+const useStyles = makeStyles(theme => ({
+  parent: {
+    position: 'absolute',
+    left: 0,
+    height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px)`,
+    width: '100vw',
+    top: `${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px`,
+    [theme.breakpoints.up('md')]: {
+      height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px)`,
+      top: `${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px`,
+      left: theme.extras.controlPanel.width,
+      width: `calc(100vw - ${theme.extras.controlPanel.width})`,
+    },
+    root: {},
+  },
+  embed: {
+    height: `100vh`,
+    top: 0,
+    [theme.breakpoints.up('md')]: {
+      height: `100vh`,
+      top: 0,
+      left: 0,
+      width: `100vw`,
+    },
+  },
+  navControls: {
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
+    },
+    position: 'absolute',
+    right: '16px',
+    bottom: '26px',
+    '& .mapboxgl-ctrl.mapboxgl-ctrl-group': {
+      borderRadius: 0,
+      '& .mapboxgl-ctrl-icon': {
+        width: '18px',
+        height: '18px',
+        margin: 'auto',
+        fontWeight: 200,
+      },
+      '& button.mapboxgl-ctrl-zoom-in': {
+        width: '40px',
+        height: '40px',
+        '& .mapboxgl-ctrl-icon': {
+          backgroundImage: `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABkSURBVHgB7ZSxCoAwEENz1n/ooEP9/4+yi4MfIZHiIjrFIlK8B7cchJAjHOA0RYjDXEbR9JCwBJEOL+MG3xvYdXHU0BIewbyty3Te3BKwIhRrDxLiyDKKxlv0AwPpmxKW4TTHDu+rDrVuNRmMAAAAAElFTkSuQmCC)`,
+        },
+      },
+      '& .mapboxgl-ctrl-zoom-out': {
+        width: '40px',
+        height: '40px',
+        '& .mapboxgl-ctrl-icon': {
+          backgroundImage: `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAA/SURBVHgB7cyxEQAQEETRRRECCf0XRSJQhEFoXMAQ2hf+uVuAiGhLrcFYF0f2uNJSLTnMRYsTmc7nH36J6GsdzSMIBsOVRsEAAAAASUVORK5CYII=)`,
+        },
+      },
+    },
+  },
+  customAttrib: {
+    position: 'absolute',
+    left: '100px',
+    bottom: '6px',
+  },
+  customAttribTxt: {
+    marginLeft: '0.3rem',
+  },
+  mobileGate: {
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'initial',
+    },
+  },
+}))
+
 const BaseMap = ({ ...props }) => {
   // Values from store.
   const {
@@ -115,88 +188,7 @@ const BaseMap = ({ ...props }) => {
     activeShape,
   })
 
-  const styles = makeStyles(theme => ({
-    parent: {
-      position: 'absolute',
-      left: 0,
-      height:
-        activeView === 'embed'
-          ? '100vh'
-          : `calc(100vh - ${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px)`,
-      width: '100vw',
-      top:
-        activeView === 'embed'
-          ? 0
-          : `${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px`,
-      [theme.breakpoints.up('md')]: {
-        height:
-          activeView === 'embed'
-            ? '100vh'
-            : `calc(100vh - ${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px)`,
-        top:
-          activeView === 'embed'
-            ? 0
-            : `${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px`,
-        left:
-          activeView === 'embed'
-            ? 0
-            : theme.extras.controlPanel.width,
-        width:
-          activeView === 'embed'
-            ? '100vw'
-            : `calc(100vw - ${theme.extras.controlPanel.width})`,
-      },
-      root: {},
-    },
-    navControls: {
-      display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'block',
-      },
-      position: 'absolute',
-      right: '16px',
-      bottom: '26px',
-      '& .mapboxgl-ctrl.mapboxgl-ctrl-group': {
-        borderRadius: 0,
-        '& .mapboxgl-ctrl-icon': {
-          width: '18px',
-          height: '18px',
-          margin: 'auto',
-          fontWeight: 200,
-        },
-        '& button.mapboxgl-ctrl-zoom-in': {
-          width: '40px',
-          height: '40px',
-          '& .mapboxgl-ctrl-icon': {
-            backgroundImage: `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABkSURBVHgB7ZSxCoAwEENz1n/ooEP9/4+yi4MfIZHiIjrFIlK8B7cchJAjHOA0RYjDXEbR9JCwBJEOL+MG3xvYdXHU0BIewbyty3Te3BKwIhRrDxLiyDKKxlv0AwPpmxKW4TTHDu+rDrVuNRmMAAAAAElFTkSuQmCC)`,
-          },
-        },
-        '& .mapboxgl-ctrl-zoom-out': {
-          width: '40px',
-          height: '40px',
-          '& .mapboxgl-ctrl-icon': {
-            backgroundImage: `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAA/SURBVHgB7cyxEQAQEETRRRECCf0XRSJQhEFoXMAQ2hf+uVuAiGhLrcFYF0f2uNJSLTnMRYsTmc7nH36J6GsdzSMIBsOVRsEAAAAASUVORK5CYII=)`,
-          },
-        },
-      },
-    },
-    customAttrib: {
-      position: 'absolute',
-      left: '100px',
-      bottom: '6px',
-    },
-    customAttribTxt: {
-      marginLeft: '0.3rem',
-    },
-    mobileGate: {
-      display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'initial',
-      },
-    },
-  }))
-
-  const classes = styles()
+  const classes = useStyles()
 
   setStoreValues({
     flyToFeature: useFlyToFeature(),
@@ -699,7 +691,11 @@ const BaseMap = ({ ...props }) => {
   }
 
   return (
-    <div className={clsx(classes.parent)}>
+    <div
+      className={clsx(classes.parent, {
+        [classes.embed]: activeView === 'embed',
+      })}
+    >
       <Mapbox
         ref={mapRef}
         defaultViewport={{ ...DEFAULT_VIEWPORT }}

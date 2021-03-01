@@ -11,18 +11,9 @@ import GeocodeSearch from './../GeocodeSearch'
 import { HamburgerIcon } from './../../../assets/Icons'
 import { ddkLogoSvg } from './../../../assets/img'
 
-const Header = ({ ...props }) => {
-  // Header is not displayed if the view type is 'embed'
-  const { activeView, breakpoint } = useStore(
-    state => ({
-      activeView: state.activeView,
-      breakpoint: state.breakpoint,
-    }),
-    shallow,
-  )
 
   // Styles for component.
-  const headerStyles = makeStyles(theme => ({
+  const useHeaderStyles = makeStyles(theme => ({
     root: {
       backgroundColor: theme.extras.variables.colors.white,
       fontFamily: `'Fira Sans', helvetica, arial`,
@@ -73,7 +64,18 @@ const Header = ({ ...props }) => {
     },
   }))
 
-  const classes = headerStyles()
+
+const Header = ({ ...props }) => {
+  // Header is not displayed if the view type is 'embed'
+  const { activeView, breakpoint } = useStore(
+    state => ({
+      activeView: state.activeView,
+      breakpoint: state.breakpoint,
+    }),
+    shallow,
+  )
+
+  const classes = useHeaderStyles()
 
   if (activeView === 'embed') {
     return ''

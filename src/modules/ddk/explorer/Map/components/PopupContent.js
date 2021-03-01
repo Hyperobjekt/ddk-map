@@ -8,110 +8,108 @@ import useStore from './../../store'
 import { getNormPhrase } from './../../utils'
 import { FULL_FUNCT_ZOOM_THRESHOLD } from './../../../../../constants/map'
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: `${theme.extras.mapPopup.width}px`,
+    padding: '0 6px',
+    fontFamily: 'Fira Sans',
+    zIndex: '30',
+    marginBottom: '-10px',
+  },
+  title: {
+    fontWeight: 600,
+    fontSize: '16px',
+    lineHeight: '24px',
+    letterSpacing: '0.15px',
+    color: theme.extras.variables.colors.darkGray,
+    margin: '0 0 3px 0',
+  },
+  tractId: {
+    fontWeight: 400,
+    fontSize: '14px',
+    lineHeight: '14px',
+    letterSpacing: '0.25px',
+    margin: '0 0 14px 0',
+    color: theme.extras.variables.colors.lightGray,
+  },
+  tractIdDark: {
+    color: theme.extras.variables.colors.darkGray,
+  },
+  hr: {
+    height: '0.5px',
+    color: theme.extras.variables.colors.lightLightGray,
+    margin: '0 0 12px 0',
+  },
+  h4: {
+    fontWeight: 600,
+    fontSize: '14px',
+    lineHeight: '24px',
+    letterSpacing: '0.1px',
+    margin: '0 0 6px 0',
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  clickPrompt: {
+    fontStyle: 'italic',
+    fontSize: '12px',
+    lineHeight: '12px',
+    letterSpacing: '0.25px',
+    color: theme.extras.variables.colors.lightGray,
+  },
+  sdSwatchParent: {
+    display: 'flex',
+    flex: '1 1 35%',
+  },
+  metricName: {
+    flex: '1 1 65%',
+    color: theme.extras.variables.colors.lightGray,
+  },
+  sdSwatch: {
+    width: '19px',
+    height: '19px',
+    marginRight: '7px',
+    // backgroundColor: !!feature
+    //   ? theme.extras.SDScale.onColors[
+    //       feature.properties[`${activeMetric}${activeNorm}`]
+    //     ]
+    //   : 'transparent',
+    fontSize: '12px',
+  },
+  comparedTo: {
+    width: '100%',
+    fontSize: '14px',
+    lineHeight: '10px',
+    margin: 'auto auto 14px',
+    color: theme.extras.variables.colors.lightGray,
+  },
+}))
+
 const PopupContent = ({ ...props }) => {
   const feature = props.feature
   const {
     activeMetric,
-    activeYear,
+    // activeYear,
     activeNorm,
-    hoveredFeature,
+    // hoveredFeature,
     hoveredTract,
-    remoteJson,
-    langs,
+    // remoteJson,
+    // langs,
     viewport,
   } = useStore(
     state => ({
       activeMetric: state.activeMetric,
-      activeYear: state.activeYear,
+      // activeYear: state.activeYear,
       activeNorm: state.activeNorm,
-      hoveredFeature: state.hoveredFeature,
+      // hoveredFeature: state.hoveredFeature,
       hoveredTract: state.hoveredTract,
-      remoteJson: state.remoteJson,
-      langs: state.langs,
+      // remoteJson: state.remoteJson,
+      // langs: state.langs,
       viewport: state.viewport,
     }),
     shallow,
   )
 
-  const styles = makeStyles(theme => ({
-    root: {
-      width: `${theme.extras.mapPopup.width}px`,
-      padding: '0 6px',
-      fontFamily: 'Fira Sans',
-      zIndex: '30',
-      marginBottom: '-10px',
-    },
-    title: {
-      fontWeight: 600,
-      fontSize: '16px',
-      lineHeight: '24px',
-      letterSpacing: '0.15px',
-      color: theme.extras.variables.colors.darkGray,
-      margin: '0 0 3px 0',
-    },
-    tractId: {
-      fontWeight: 400,
-      fontSize: '14px',
-      lineHeight: '14px',
-      letterSpacing: '0.25px',
-      margin: '0 0 14px 0',
-      color:
-        !!feature && feature.properties.m == 0
-          ? theme.extras.variables.colors.darkGray
-          : theme.extras.variables.colors.lightGray,
-    },
-    hr: {
-      height: '0.5px',
-      color: theme.extras.variables.colors.lightLightGray,
-      margin: '0 0 12px 0',
-    },
-    h4: {
-      fontWeight: 600,
-      fontSize: '14px',
-      lineHeight: '24px',
-      letterSpacing: '0.1px',
-      margin: '0 0 6px 0',
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-    clickPrompt: {
-      fontStyle: 'italic',
-      fontSize: '12px',
-      lineHeight: '12px',
-      letterSpacing: '0.25px',
-      color: theme.extras.variables.colors.lightGray,
-    },
-    sdSwatchParent: {
-      display: 'flex',
-      flex: '1 1 35%',
-    },
-    metricName: {
-      flex: '1 1 65%',
-      color: theme.extras.variables.colors.lightGray,
-    },
-    sdSwatch: {
-      width: '19px',
-      height: '19px',
-      marginRight: '7px',
-      backgroundColor: !!feature
-        ? theme.extras.SDScale.onColors[
-            feature.properties[
-              `${activeMetric}${activeNorm}`
-            ]
-          ]
-        : 'transparent',
-      fontSize: '12px',
-    },
-    comparedTo: {
-      width: '100%',
-      fontSize: '14px',
-      lineHeight: '10px',
-      margin: 'auto auto 14px',
-      color: theme.extras.variables.colors.lightGray,
-    },
-  }))
-
-  const classes = styles()
+  const classes = useStyles()
 
   const SDArray = [
     i18n.translate(`SDSCALE_VLOW`),

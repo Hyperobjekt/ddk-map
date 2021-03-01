@@ -16,6 +16,51 @@ import { DATA_FILES } from './../../../../constants/map'
 // TODO:
 // - Error notification if data loading fails.
 
+
+const useLoaderStyles = makeStyles({
+  root: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    height: '100vh',
+    width: '100vw',
+    backgroundColor: theme.palette.common.white,
+    zIndex: 5000,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    transition: 'top 1000ms ease-in-out',
+  },
+  dataLoaded: {
+    top: `-100vh`
+  },
+  content: {
+    display: 'block', 
+    width: '90%',
+    [theme.breakpoints.up('md')]: {
+      width: '60%',
+    },
+  },
+  hideContent: {
+    display: 'none'
+  },
+  '@global': {
+    '@keyframes fadeIn': {
+      '0%': {
+        opacity: 0,
+      },
+      '100%': {
+        opacity: 1,
+      },
+    },
+  },
+  dots: {
+    animationName: 'fadeIn',
+    animationDuration: '1s',
+    animationIterationCount: 'infinite',
+  },
+})
+
 const DataLoaderContent = ({ ...props }) => {
   // console.log('DataLoaderContent, ', variables)
   // Values from store.
@@ -28,54 +73,18 @@ const DataLoaderContent = ({ ...props }) => {
   )
 
   // Hack, hide this for a bit to avoid flashing empty string var.
-  const [showContent, setShowContent] = useState(0)
+  const [showContent, setShowContent] = useState(false)
   setTimeout(() => {
-    setShowContent(1)
+    setShowContent(true)
   }, 500)
 
-  const loaderStyles = makeStyles({
-    root: {
-      position: 'absolute',
-      left: 0,
-      top: allDataLoaded ? '-100vh' : 0,
-      height: '100vh',
-      width: '100vw',
-      backgroundColor: theme.palette.common.white,
-      zIndex: 5000,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      transition: 'top 1000ms ease-in-out',
-    },
-    content: {
-      display: !!showContent ? 'block' : 'none', // Hack, hide this for a bit to avoid flashing empty string var.
-      width: '90%',
-      [theme.breakpoints.up('md')]: {
-        width: '60%',
-      },
-    },
-    '@global': {
-      '@keyframes fadeIn': {
-        '0%': {
-          opacity: 0,
-        },
-        '100%': {
-          opacity: 1,
-        },
-      },
-    },
-    dots: {
-      animationName: 'fadeIn',
-      animationDuration: '1s',
-      animationIterationCount: 'infinite',
-    },
-  })
 
-  const styles = loaderStyles()
+  const styles = useLoaderStyles()
 
   return (
-    <Box className={clsx(styles.root)}>
-      <Box className={styles.content}>
+    <Box className={clsx(styles.root, { [styles.dataLoaded]: allDataLoaded })}>
+      {/* hideContent Hack, hide this for a bit to avoid flashing empty string var. */}
+      <Box className={clsx(styles.content, { [styles.hideContent]: !showContent})}>
         <Typography variant="h4" gutterBottom>
           {i18n.translate(`MAP_LOADING_DATA`)}
           <Box component="span" className={styles.dots}>

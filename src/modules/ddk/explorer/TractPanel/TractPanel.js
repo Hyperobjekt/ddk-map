@@ -16,7 +16,7 @@ import PopStack from './../PopStack'
 import IndicatorList from './../IndicatorList'
 
 // Styles for this component.
-const styles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
     height: '100%',
@@ -119,7 +119,7 @@ const TractPanel = () => {
     shallow,
   )
 
-  const classes = styles()
+  const classes = useStyles()
 
   const [showSubs, setShowSubs] = useState([1, 0, 0])
 

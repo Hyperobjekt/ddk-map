@@ -10,7 +10,7 @@ import shallow from 'zustand/shallow'
 import useStore from './../store'
 import LinearScale from './../LinearScale'
 
-const styles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   root: {},
   btn: {
     width: '100%',
@@ -60,7 +60,7 @@ const styles = makeStyles(theme => ({
 // Has a button that opens and collapses the list
 const IndicatorList = props => {
   // console.log('IndicatorList(), ', props)
-  const classes = styles()
+  const classes = useStyles()
 
   const { remoteJson, slideoutTract } = useStore(
     state => ({

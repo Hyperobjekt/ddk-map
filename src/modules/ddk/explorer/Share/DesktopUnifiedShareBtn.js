@@ -16,6 +16,38 @@ import { IconButton, Popper } from '@material-ui/core'
 import ShareIcon from '@material-ui/icons/Share'
 import useStore from '../store'
 
+// Styles for this component.
+const useStyles = makeStyles(theme => ({
+  root: {
+    marginTop: 'auto',
+    marginBottom: '1.5rem',
+    '&:hover svg': {
+      fill: 'black',
+    },
+  },
+  popperButton: {
+    padding: '1.5rem',
+  },
+  popper: {
+    border: '1px solid',
+    padding: theme.spacing(1),
+    margin: theme.spacing(1),
+    minWidth: 190,
+    backgroundColor: theme.palette.background.paper,
+  },
+  shareButton: {
+    '&:hover': {
+      '& .social-icon': {
+        fill: 'black',
+      },
+      background: '#eaebf4',
+
+      cursor: 'pointer',
+    },
+    '& .sr-only': { display: 'none' },
+  },
+}))
+
 const DesktopUnifiedShareBtn = ({ ...props }) => {
   const { interactionsMobile, setStoreValues } = useStore(
     state => state,
@@ -44,39 +76,7 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
     setStoreValues({ unifiedShareModal: true })
   }
 
-  // Styles for this component.
-  const styles = makeStyles(theme => ({
-    root: {
-      marginTop: 'auto',
-      marginBottom: '1.5rem',
-      '&:hover svg': {
-        fill: 'black',
-      },
-    },
-    popperButton: {
-      padding: '1.5rem',
-    },
-    popper: {
-      border: '1px solid',
-      padding: theme.spacing(1),
-      margin: theme.spacing(1),
-      minWidth: 190,
-      backgroundColor: theme.palette.background.paper,
-    },
-    shareButton: {
-      '&:hover': {
-        '& .social-icon': {
-          fill: 'black',
-        },
-        background: '#eaebf4',
-
-        cursor: 'pointer',
-      },
-      '& .sr-only': { display: 'none' },
-    },
-  }))
-
-  const classes = styles()
+  const classes = useStyles()
 
   return (
     <div className={clsx(classes.root)}>

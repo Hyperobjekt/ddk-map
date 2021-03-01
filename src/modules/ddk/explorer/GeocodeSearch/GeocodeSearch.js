@@ -19,7 +19,7 @@ import { DEFAULT_VIEWPORT } from './../../../../constants/map'
 const GeocodeSearch = ({ ...props }) => {
   const isLoaded = useRef(false)
 
-  const classes = styles()
+  const classes = useStyles()
 
   const {
     setStoreValues,
@@ -209,7 +209,7 @@ const GeocodeSearch = ({ ...props }) => {
 }
 
 // Styles for component.
-const styles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     position: 'relative',
     width: '338px',
