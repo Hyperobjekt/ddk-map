@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
+import shallow from 'zustand/shallow'
 
 import { TwitterShareBtn } from '.'
 import { FacebookShareBtn } from '.'
@@ -18,7 +19,11 @@ import useStore from '../store'
 
 const DesktopUnifiedShareBtn = ({ ...props }) => {
   const { interactionsMobile, setStoreValues } = useStore(
-    state => state,
+    state => ({
+      interactionsMobile: state.interactionsMobile,
+      setStoreValues: state.setStoreValues,
+    }),
+    shallow,
   )
 
   const [anchorEl, setAnchorEl] = useState(null)
