@@ -9,7 +9,10 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
-import { Typography, useMediaQuery } from '@material-ui/core'
+import {
+  Typography,
+  useMediaQuery,
+} from '@material-ui/core'
 import ReactMapGL, {
   NavigationControl,
   Popup,
@@ -43,6 +46,7 @@ import {
   getParents,
 } from './../utils'
 import MapPopup from './components/MapPopup'
+import Notifications from './components/Notifications'
 
 const BaseMap = ({ ...props }) => {
   // Values from store.
@@ -114,18 +118,12 @@ const BaseMap = ({ ...props }) => {
   const styles = makeStyles(theme => ({
     parent: {
       position: 'absolute',
-      left:
-        activeView === 'embed'
-          ? 0
-          : theme.extras.controlPanel.width,
+      left: 0,
       height:
         activeView === 'embed'
           ? '100vh'
           : `calc(100vh - ${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px)`,
-      width:
-        activeView === 'embed'
-          ? '100vw'
-          : `calc(100vw - ${theme.extras.controlPanel.width})`,
+      width: '100vw',
       top:
         activeView === 'embed'
           ? 0
@@ -139,10 +137,22 @@ const BaseMap = ({ ...props }) => {
           activeView === 'embed'
             ? 0
             : `${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px`,
+        left:
+          activeView === 'embed'
+            ? 0
+            : theme.extras.controlPanel.width,
+        width:
+          activeView === 'embed'
+            ? '100vw'
+            : `calc(100vw - ${theme.extras.controlPanel.width})`,
       },
       root: {},
     },
     navControls: {
+      display: 'none',
+      [theme.breakpoints.up('sm')]: {
+        display: 'block',
+      },
       position: 'absolute',
       right: '16px',
       bottom: '26px',
@@ -181,9 +191,9 @@ const BaseMap = ({ ...props }) => {
     mobileGate: {
       display: 'none',
       [theme.breakpoints.up('sm')]: {
-        display: 'initial'
-      }
-    }
+        display: 'initial',
+      },
+    },
   }))
 
   const classes = styles()
@@ -702,10 +712,9 @@ const BaseMap = ({ ...props }) => {
       >
         {
           <>
-            {breakpoint != 'xs' &&
-              <Legend />
-            }
+            {breakpoint != 'xs' && <Legend />}
             <MapPopup />
+            <Notifications />
             <div
               className={clsx(
                 'custom-attribution',
