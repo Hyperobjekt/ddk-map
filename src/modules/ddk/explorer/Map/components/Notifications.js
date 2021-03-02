@@ -5,6 +5,7 @@ import i18n from '@pureartisan/simple-i18n'
 import shallow from 'zustand/shallow'
 import { MdClose } from 'react-icons/md'
 import { IconButton } from '@material-ui/core'
+import { getStateFromFips } from '@hyperobjekt/us-states'
 
 import useStore from './../../store'
 
@@ -65,7 +66,7 @@ const Notifications = () => {
     if (norm === 's') {
       if (centerState !== 0) {
         str = i18n.translate(`WARN_STATE_NORM`, {
-          state: 'Alaska',
+          state: getStateFromFips(centerState).full,
         })
       } else {
         str = i18n.translate(`WARN_STATE_NORM_GENERIC`)
