@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
@@ -91,19 +91,33 @@ const styles = makeStyles(theme => ({
 }))
 
 const FaqPanel = () => {
-  const {
-    faqAllExpanded,
-    setStoreValues,
-  } = useStore(
-    state => ({
-      faqAllExpanded: state.faqAllExpanded,
-      setStoreValues: state.setStoreValues,
-    }),
-    shallow,
+  
+  const [expanded, setExpanded] = useState(
+    () => {
+      var data = []
+      i18n.translate('FAQ', { returnObjects: true }).forEach((el) => {
+        data.push(false);
+      })
+      return data
+    }
   )
 
   const handleEvent = (val, e) => {
-    setStoreValues({faqAllExpanded: !faqAllExpanded})
+    if (typeof val === 'number') {
+      var data = []
+      expanded.forEach((el) => {
+        data.push(el)
+      })
+      data[val] = !data[val]
+      setExpanded(data)
+    }
+    if (val === 'openAll') {
+      var data = []
+      expanded.forEach((el) => {
+        data.push(true)
+      })
+      setExpanded(data)
+    }
   }
 
   const classes = styles()
@@ -115,7 +129,7 @@ const FaqPanel = () => {
           Frequently Asked Questions
         </div>
         <div className={classes.allContainer}>
-          <Button onClick={(e) => {handleEvent('open', e)}} className={classes.all}>
+          <Button onClick={(e) => {handleEvent('openAll', e)}} className={classes.all}>
             Open All
           </Button>
         </div>
@@ -123,7 +137,7 @@ const FaqPanel = () => {
           {i18n.translate('FAQ', { returnObjects: true }).map((el, i) => {
             return (
               <>
-                <Accordion classes={{root: classes.btn}} square={true}>
+                <Accordion expanded={expanded[i]} onChange={(e) => {handleEvent(i, e)}} classes={{root: classes.btn}} square={true}>
                   <AccordionSummary
                     classes={{root: classes.titleContainer, content: classes.title}}
                     expandIcon={<ExpandMoreIcon className={classes.caret}/>}

@@ -122,7 +122,7 @@ const useStore = create((set, get) => ({
     active: false,
     panel: 'tract', // 'tract' or 'share' or 'faq'
   },
-  faqAllExpanded: false,
+  faqExpanded: [],
   legendPanel: {
     active: false,
     activated: false,

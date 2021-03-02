@@ -118,7 +118,7 @@ const ControlPanel = ({ ...props }) => {
   return (
     <Box className={clsx('control-panel', classes.root)}>
       <div className={classes.buttonGroup}>
-        <div class={clsx(classes.buttonContainer, slideoutPanel.active && slideoutPanel.panel === 'tract' ? 'active' : '')}>
+        <div className={clsx(classes.buttonContainer, slideoutPanel.active && slideoutPanel.panel === 'tract' ? 'active' : '')}>
           <IconButton
             onClick={(e) => {toggleSlideout('tract', e)}}
             className={clsx(
@@ -136,7 +136,7 @@ const ControlPanel = ({ ...props }) => {
             </div>
           </IconButton>
         </div>
-        <div class={clsx(classes.buttonContainer, slideoutPanel.active && slideoutPanel.panel === 'share' ? 'active' : '')}>
+        <div className={clsx(classes.buttonContainer, slideoutPanel.active && slideoutPanel.panel === 'share' ? 'active' : '')}>
           <IconButton
             onClick={(e) => {toggleSlideout('share', e)}}
             className={clsx(
