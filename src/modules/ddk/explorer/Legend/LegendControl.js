@@ -120,7 +120,7 @@ const LegendControl = ({ classes }) => {
     shallow,
   )
 
-  console.log('render legend control')
+  // console.log('render legend control')
 
   /** Handle active metric changes */
   const handleActiveMetric = event => {
