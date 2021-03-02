@@ -152,7 +152,7 @@ const useStore = create((set, get) => ({
   shareHash: null,
   breakpoint: null,
   browserWidth: null,
-  showIntroModal: true,
+  showIntroModal: false,
   showPanelModal: false,
   enableTour: true, // Set this true to show the launch tour button in intro modal.
   showMapModal: false,
