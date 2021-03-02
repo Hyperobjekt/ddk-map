@@ -471,7 +471,11 @@ const Legend = ({ ...props }) => {
                     centerState,
                     centerMetro,
                   )}
-                  activeBars={activePointLayers}
+                  activeBars={
+                    activePointLayers.length > 0
+                      ? activePointLayers
+                      : []
+                  }
                 />
               </div>
             )}

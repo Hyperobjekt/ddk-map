@@ -120,6 +120,7 @@ const IntroModal = () => {
       position.coords.longitude,
       12,
     )
+    setStoreValues({ doUpdateNorming: true })
   }
 
   useEffect(() => {
@@ -147,12 +148,12 @@ const IntroModal = () => {
     hideModal()
   }
 
-  const classes = styles()
-
   const handleClose = () => {
     // console.log('handleClose')
     hideModal()
   }
+
+  const classes = styles()
 
   return (
     <Dialog

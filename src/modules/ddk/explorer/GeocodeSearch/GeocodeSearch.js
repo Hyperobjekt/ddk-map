@@ -25,6 +25,7 @@ const GeocodeSearch = ({ ...props }) => {
     viewport,
     flyToBounds,
     flyToLatLon,
+    incrementUpdateNorming,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -33,6 +34,7 @@ const GeocodeSearch = ({ ...props }) => {
       viewport: state.viewport,
       flyToBounds: state.flyToBounds,
       flyToLatLon: state.flyToLatLon,
+      incrementUpdateNorming: state.incrementUpdateNorming,
     }),
     shallow,
   )
@@ -69,7 +71,10 @@ const GeocodeSearch = ({ ...props }) => {
     }
     // If intro panel is dsplayed, hide it.
     if (!!showIntroModal) {
-      setStoreValues({ showIntroModal: false })
+      setStoreValues({
+        showIntroModal: false,
+        doUpdateNorming: true,
+      })
     }
     handleClear()
     setStoreValues({
@@ -318,7 +323,6 @@ const useStyles = makeStyles(theme => ({
     width: '40px',
     minWidth: '40px',
     height: '40px',
-    // display: 'flex !important',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -339,6 +343,9 @@ const useStyles = makeStyles(theme => ({
 //   sectionContainerFirst:    'react-autosuggest__section-container--first',
 //   sectionTitle:             'react-autosuggest__section-title'
 
-GeocodeSearch.propTypes = {}
+GeocodeSearch.propTypes = {
+  classes: PropTypes.string,
+  prompt: PropTypes.string,
+}
 
 export default GeocodeSearch

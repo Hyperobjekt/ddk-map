@@ -146,7 +146,10 @@ const LegendControl = ({ classes }) => {
   /** Handle changes to the point layer checkboxes */
   const handleActivePointLayers = event => {
     const name = event.currentTarget.name
-    let layers = activePointLayers.slice()
+    let layers =
+      activePointLayers.length > 0
+        ? activePointLayers.slice()
+        : []
     const ind = layers.indexOf(name)
     if (ind >= 0) {
       layers.splice(ind, 1)

@@ -201,16 +201,18 @@ const Chart = ({ ...props }) => {
         />
         <Legend content={renderLegend} />
         <Customized key={'bg'} component={Background} />
-        {props.activeBars.map((el, i) => {
-          return (
-            <Bar
-              key={i}
-              radius={[2, 2, 0, 0]}
-              dataKey={el}
-              className={classes[el]}
-            />
-          )
-        })}
+        {!!props.activeBars
+          ? props.activeBars.map((el, i) => {
+              return (
+                <Bar
+                  key={i}
+                  radius={[2, 2, 0, 0]}
+                  dataKey={el}
+                  className={classes[el]}
+                />
+              )
+            })
+          : ''}
       </BarChart>
     </ResponsiveContainer>
   )

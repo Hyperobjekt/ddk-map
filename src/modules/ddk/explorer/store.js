@@ -145,12 +145,7 @@ const useStore = create((set, get) => ({
   },
   // Prompts to update norming when incremented.
   // Incremented when some auto-norming action has happened.
-  doUpdateNorming: 0,
-  incrementUpdateNorming: () => {
-    set(state => ({
-      doUpdateNorming: state.doUpdateNorming + 1,
-    }))
-  },
+  doUpdateNorming: false,
   // Have strings from cms been loaded.
   cmsStringsLoaded: false,
   shareLinkModal: false,
