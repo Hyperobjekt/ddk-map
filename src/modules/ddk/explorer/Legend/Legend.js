@@ -342,6 +342,7 @@ const Legend = ({ ...props }) => {
   const renderChart = () => {
     if (
       remoteJson.barcharts &&
+      activePointLayers.length > 0 &&
       ((activeNorm === 'm' && centerMetro > 0) ||
         (activeNorm === 's' && centerState > 0))
     ) {
