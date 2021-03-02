@@ -9,6 +9,7 @@ import {
   FB_APP_ID,
 } from './../../../../../constants/map'
 import { shareImage } from './../../../../assets/img'
+import { favicon } from './../../../../assets/img'
 
 const SEO = () => {
   const { activeLang, shareHash } = useStore(
@@ -25,6 +26,12 @@ const SEO = () => {
       <meta charSet="utf-8" />
       <title>{i18n.translate(`SITE_TITLE`)}</title>
       <link rel="canonical" href={BASE_URL} />
+      <link
+        rel="icon"
+        type="image/png"
+        href={favicon}
+        sizes="16x16"
+      />
       <meta
         name="description"
         content={i18n.translate(`SITE_DESCRIPTION`)}
