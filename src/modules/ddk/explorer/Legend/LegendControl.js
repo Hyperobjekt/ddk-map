@@ -6,6 +6,7 @@ import {
   FormControlLabel,
   Checkbox,
   withStyles,
+  Switch,
 } from '@material-ui/core'
 
 import SelectBox from '../App/components/SelectBox'
@@ -87,6 +88,13 @@ const styles = theme => ({
   indexSelect: {
     fontWeight: '500',
   },
+  tooltipSwitchRow: {
+    marginTop: '1rem',
+  },
+  switchLabel: {},
+  switchContainer: {
+    marginLeft: 0,
+  },
 })
 
 const createOptions = (prefix, options) => {
@@ -108,6 +116,7 @@ const LegendControl = ({ classes }) => {
     activePointLayers,
     activeMetric,
     setStoreValues,
+    displayPopup,
   } = useStore(
     state => ({
       loadYears: state.loadYears,
@@ -116,6 +125,7 @@ const LegendControl = ({ classes }) => {
       activePointLayers: state.activePointLayers,
       activeMetric: state.activeMetric,
       setStoreValues: state.setStoreValues,
+      displayPopup: state.displayPopup,
     }),
     shallow,
   )
@@ -161,8 +171,35 @@ const LegendControl = ({ classes }) => {
     })
   }
 
+  const toggleShowPopup = () => {
+    setStoreValues({
+      displayPopup: !displayPopup,
+    })
+  }
+
   return (
     <>
+      <div
+        className={clsx(
+          classes.row,
+          classes.tooltipSwitchRow,
+        )}
+      >
+        <FormControlLabel
+          classes={{ label: classes.switchLabel }}
+          className={classes.switchContainer}
+          control={
+            <Switch
+              size="small"
+              checked={displayPopup}
+              onChange={toggleShowPopup}
+              name="ToolCheck"
+              color="primary"
+            />
+          }
+          label={i18n.translate(`LEGEND_TOOLTIP_LABEL`)}
+        />
+      </div>
       <div className={classes.row}>
         <SelectBox
           options={createOptions(

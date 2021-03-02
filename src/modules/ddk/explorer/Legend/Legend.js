@@ -63,7 +63,7 @@ const useLegendStyles = makeStyles(theme => ({
     overflow: 'hidden',
   },
   controlActive: {
-    height: 243,
+    height: 280,
   },
   row: {
     width: '100%',
@@ -279,7 +279,6 @@ const Legend = ({ ...props }) => {
     remoteJson,
     activeView,
     breakpoint,
-    displayPopup,
     setStoreValues,
   } = useStore(
     state => ({
@@ -294,7 +293,6 @@ const Legend = ({ ...props }) => {
       remoteJson: state.remoteJson,
       activeView: state.activeView,
       breakpoint: state.breakpoint,
-      displayPopup: state.displayPopup,
       setStoreValues: state.setStoreValues,
     }),
     shallow,
@@ -302,9 +300,6 @@ const Legend = ({ ...props }) => {
 
   const handleEvent = (val, e) => {
     var data = {}
-    if (val === 'showPopup') {
-      return setStoreValues({ displayPopup: !displayPopup })
-    }
     if (val === 'showControl') {
       const data = { active: !legendControl.active }
       return setStoreValues({ legendControl: data })
@@ -416,22 +411,6 @@ const Legend = ({ ...props }) => {
                     : `LEGEND_CHART_TOGGLE_ON`,
                 )}
               </span>
-              <FormControlLabel
-                classes={{ label: classes.switchLabel }}
-                className={classes.switchContainer}
-                control={
-                  <Switch
-                    size="small"
-                    checked={displayPopup}
-                    onChange={e => {
-                      handleEvent('showPopup', e)
-                    }}
-                    name="ToolCheck"
-                    color="primary"
-                  />
-                }
-                label="Tooltip"
-              />
             </div>
             <LegendScale
               activeMetric={activeMetric}
