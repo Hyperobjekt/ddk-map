@@ -15,6 +15,7 @@ import SDScale from './../SDScale'
 import { getActiveArray } from './../utils'
 import PopStack from './../PopStack'
 import IndicatorList from './../IndicatorList'
+import { TramRounded } from '@material-ui/icons'
 
 // Styles for this component.
 const styles = makeStyles(theme => ({
@@ -38,7 +39,9 @@ const styles = makeStyles(theme => ({
     width: '100%',
     backgroundColor: '#fff',
     borderRadius: '0px',
-    margin: '7px 0px',
+    '&:nth-child(2)': {
+      margin: '7px 0px',
+    },
     '&::before': {
       display: 'none'
     },
@@ -89,19 +92,19 @@ const styles = makeStyles(theme => ({
 
 const FaqPanel = () => {
   const {
-    slideoutPanel,
+    faqAllExpanded,
+    setStoreValues,
   } = useStore(
     state => ({
-      slideoutPanel: state.slideoutPanel,
+      faqAllExpanded: state.faqAllExpanded,
+      setStoreValues: state.setStoreValues,
     }),
     shallow,
   )
-  
-  // const doAll = () => {
-  //   return 
-  // }
 
-  console.log(i18n.translate('FAQ', { returnObjects: true }))
+  const handleEvent = (val, e) => {
+    setStoreValues({faqAllExpanded: !faqAllExpanded})
+  }
 
   const classes = styles()
 
@@ -112,7 +115,7 @@ const FaqPanel = () => {
           Frequently Asked Questions
         </div>
         <div className={classes.allContainer}>
-          <Button className={classes.all}>
+          <Button onClick={(e) => {handleEvent('open', e)}} className={classes.all}>
             Open All
           </Button>
         </div>
