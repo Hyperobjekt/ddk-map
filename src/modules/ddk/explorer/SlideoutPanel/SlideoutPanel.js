@@ -14,6 +14,7 @@ import CloseIcon from '@material-ui/icons/Close'
 
 import useStore from './../store'
 import TractPanel from './../TractPanel'
+import FaqPanel from './../FaqPanel'
 
 const SlideoutPanel = ({ ...props }) => {
   // console.log('SlideoutPanel()')
@@ -100,7 +101,7 @@ const SlideoutPanel = ({ ...props }) => {
           <TractPanel />
         }
         {slideoutPanel.panel === 'faq' &&
-          <TractPanel />
+          <FaqPanel />
         }
       </div>
 

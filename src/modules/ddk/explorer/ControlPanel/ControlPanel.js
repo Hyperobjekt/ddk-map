@@ -34,13 +34,30 @@ const ControlPanel = ({ ...props }) => {
     shallow,
   )
 
-  const toggleSlideout = e => {
-    setStoreValues({
-      slideoutPanel: {
-        ...slideoutPanel,
-        active: !slideoutPanel.active,
-      },
-    })
+  const toggleSlideout = (val, e) => {
+    if (slideoutPanel.active && slideoutPanel.panel === val){
+      setStoreValues({
+        slideoutPanel: {
+          ...slideoutPanel,
+          active: false,
+        },
+      })
+    } else if (slideoutPanel.active && slideoutPanel.panel != val){
+      setStoreValues({
+        slideoutPanel: {
+          ...slideoutPanel,
+          panel: val
+        },
+      })
+    } else {
+      setStoreValues({
+        slideoutPanel: {
+          ...slideoutPanel,
+          active: true,
+          panel: val
+        },
+      })
+    }
   }
 
   const hideControlPanel =
@@ -91,7 +108,7 @@ const ControlPanel = ({ ...props }) => {
       letterSpacing: '1.5px'
     },
     buttonGroup: {
-      paddingTop: '50%'
+      paddingTop: '10vh'
     }
   }))
 
@@ -102,7 +119,7 @@ const ControlPanel = ({ ...props }) => {
       <div className={classes.buttonGroup}>
         <div class={clsx(classes.buttonContainer, slideoutPanel.active && slideoutPanel.panel === 'tract' ? 'active' : '')}>
           <IconButton
-            onClick={toggleSlideout}
+            onClick={(e) => {toggleSlideout('tract', e)}}
             className={clsx(
               'control-panel-button',
               classes.button
@@ -118,9 +135,9 @@ const ControlPanel = ({ ...props }) => {
             </div>
           </IconButton>
         </div>
-        <div class={clsx(classes.buttonContainer, slideoutPanel.active && slideoutPanel.panel === 'faq' ? 'active' : '')}>
+        <div class={clsx(classes.buttonContainer, slideoutPanel.active && slideoutPanel.panel === 'share' ? 'active' : '')}>
           <IconButton
-            onClick={toggleSlideout}
+            onClick={(e) => {toggleSlideout('share', e)}}
             className={clsx(
               'control-panel-button',
               classes.button,
@@ -136,7 +153,7 @@ const ControlPanel = ({ ...props }) => {
         </div>
         <div class={clsx(classes.buttonContainer, slideoutPanel.active && slideoutPanel.panel === 'faq' ? 'active' : '')}>
           <IconButton
-            onClick={toggleSlideout}
+            onClick={(e) => {toggleSlideout('faq', e)}}
             className={clsx(
               'control-panel-button',
               classes.button,
@@ -145,7 +162,7 @@ const ControlPanel = ({ ...props }) => {
             <div>
               <HelpOutlineIcon fontSize={'large'}/>
               <div className={classes.buttonLabel}>
-                FAQS
+                FAQs
               </div>
             </div>
           </IconButton>

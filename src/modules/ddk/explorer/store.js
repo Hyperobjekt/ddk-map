@@ -120,7 +120,7 @@ const useStore = create((set, get) => ({
   flyToState: null,
   slideoutPanel: {
     active: false,
-    panel: 'tract', // 'tract' or 'info' or 'help'
+    panel: 'tract', // 'tract' or 'share' or 'faq'
   },
   legendPanel: {
     active: false,
