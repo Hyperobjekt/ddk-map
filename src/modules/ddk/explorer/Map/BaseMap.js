@@ -715,7 +715,11 @@ const BaseMap = ({ ...props }) => {
     >
       <Mapbox
         ref={mapRef}
-        defaultViewport={{ ...DEFAULT_VIEWPORT }}
+        defaultViewport={{
+          zoom: DEFAULT_VIEWPORT.zoom,
+          latitude: DEFAULT_VIEWPORT.latitude,
+          longitude: DEFAULT_VIEWPORT.longitude,
+        }}
         MapGLProps={mapProps}
         style={{ width: '100%', height: '100%' }}
         onClick={handleClick}

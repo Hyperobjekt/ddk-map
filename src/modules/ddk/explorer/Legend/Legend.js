@@ -17,6 +17,7 @@ import useStore from './../store'
 import { STATES } from './../../../../constants/map'
 import LegendScale from './LegendScale'
 import LegendControl from './LegendControl'
+import LegendChartHeaders from './LegendChartHeaders'
 
 // Styles for this component.
 const useLegendStyles = makeStyles(theme => ({
@@ -224,7 +225,7 @@ const useLegendStyles = makeStyles(theme => ({
   },
 }))
 
-const processData = (data, geo, year) => {
+const processData = (data, geo, year, centerState) => {
   var struct = []
   var selected = []
   switch (geo) {
@@ -461,6 +462,7 @@ const Legend = ({ ...props }) => {
                     remoteJson,
                     activeNorm,
                     activeYear,
+                    centerState,
                   )}
                   activeBars={activePointLayers}
                 />

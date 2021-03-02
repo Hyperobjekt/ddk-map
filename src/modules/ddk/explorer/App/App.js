@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { isMobile } from 'react-device-detect'
 import { ThemeProvider } from '@material-ui/core/styles'
+// import * as merge from 'deepmerge'
+import shallow from 'zustand/shallow'
 
 import Layout from '../Layout/Layout'
 import { DataLoader } from './../DataLoader'
@@ -28,13 +30,39 @@ import '@fontsource/merriweather'
 const App = props => {
   // Logging theme during dev to facilitate front-end work
   // console.log('App, theme: ', theme)
+  // console.log('App', props)
 
   const BREAKPOINTS = theme.breakpoints.keys
   const BREAKPOINTS_OBJ = theme.breakpoints.values
 
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
+  const {
+    setStoreValues,
+    setLang,
+    langs,
+    activeLang,
+  } = useStore(
+    state => ({
+      setStoreValues: state.setStoreValues,
+      setLang: state.setLang,
+      langs: state.langs,
+      activeLang: state.activeLang,
+    }),
+    shallow,
   )
+
+  // if (!!props.lang) {
+  //   setStoreValues({
+  //     activeLang: props.lang,
+  //   })
+  // }
+  // let lang
+  // if (!!props.langSet) {
+  //   setLang(props.langSet)
+  // }
+  // i18n.init({
+  //   locale: activeLang,
+  //   languages: langs,
+  // })
 
   const setBrowserWidthAndBreakpoint = () => {
     // console.log('setBrowserWidthAndBreakpoint')
@@ -172,7 +200,7 @@ const App = props => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Language props={props} />
+      <Language {...props} />
       <SEO />
       <DataLoader />
       <RouteManager routeSet={ROUTE_SET} />

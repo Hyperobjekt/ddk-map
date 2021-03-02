@@ -125,21 +125,21 @@ const LegendControl = ({ classes }) => {
   /** Handle active metric changes */
   const handleActiveMetric = event => {
     setStoreValues({
-      activeMetric: e.target.value,
+      activeMetric: event.target.value,
     })
   }
 
   /** Handle active norm changes */
   const handleActiveNorm = event => {
     setStoreValues({
-      activeNorm: e.target.value,
+      activeNorm: event.target.value,
     })
   }
 
   /** Handle active year changes */
   const handleActiveYear = event => {
     setStoreValues({
-      activeYear: e.target.value,
+      activeYear: event.target.value,
     })
   }
 

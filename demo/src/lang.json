@@ -1,3 +1,6 @@
 {
-  "en_US": {}
+  "en_US": {
+    "SITE_TITLE": "DDK Map",
+    "MAP_LOADING_DATA": "Loading map data"
+  }
 }
