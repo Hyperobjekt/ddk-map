@@ -5,7 +5,6 @@ import {
   OPTIONS_ACTIVE_POINTS,
   CHOROPLETH_COLORS,
   SHAPE_ZOOM_LEVELS,
-  DDK_RED,
 } from './../../../../../constants/map'
 import { theme } from './../../theme'
 
@@ -166,11 +165,11 @@ const getShapeFilters = (type, context) => {
         ['==', ['number', ['get', 's']], ['number', 43]],
         false,
         // National norming, don't display.
-        ['==', ['string', context.activeNorm], 'n'],
-        false,
+        // ['==', ['string', context.activeNorm], 'n'],
+        // false,
         // State norming, don't display.
-        ['==', ['string', context.activeNorm], 's'],
-        false,
+        // ['==', ['string', context.activeNorm], 's'],
+        // false,
         // Not in top 100, don't display.
         ['!=', ['get', 'i'], 1],
         false,
@@ -307,6 +306,12 @@ export const getPolygonLines = (source, type, context) => {
           ['==', ['feature-state', 'centered'], true],
         ],
         6,
+        [
+          'all',
+          ['==', type, 'metros'],
+          ['!=', context.activeNorm, 'm'],
+        ],
+        0,
         // Metro area that is not centered.
         ['all', ['==', type, 'metros']],
         3,

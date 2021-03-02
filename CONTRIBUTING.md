@@ -80,8 +80,8 @@ When developing locally you need a `.env` file with 3 values:
 # Path to AWS bucket where version folders reside.
 # Should look like https://[bucket-name].s3.amazonaws.com/proc/
 AWS_ENDPOINT=***
-GATSBY_MAPBOX_USER=***
-GATSBY_MAPBOX_API_TOKEN=***
+MAPBOX_USER=***
+MAPBOX_API_TOKEN=***
 NODE_ENV=development
 ```
 

@@ -1,21 +1,19 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import i18n from '@pureartisan/simple-i18n'
 import { isMobile } from 'react-device-detect'
 import { ThemeProvider } from '@material-ui/core/styles'
-import * as merge from 'deepmerge'
+import shallow from 'zustand/shallow'
 
 import Layout from '../Layout/Layout'
 import { DataLoader } from './../DataLoader'
 import RouteManager from './../RouteManager/RouteManager'
 import { Tracking } from './../Tracking'
-
 import useStore from './../store'
 import { theme } from './../theme'
-import { langSet } from './../../../../constants/lang'
 import { ROUTE_SET } from './../../../../constants/map'
 import Language from './components/Language'
 import SEO from './components/SEO'
+import NormingManager from './../NormingManager'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
 import './App.css'
@@ -30,12 +28,24 @@ import '@fontsource/merriweather'
 const App = props => {
   // Logging theme during dev to facilitate front-end work
   // console.log('App, theme: ', theme)
+  // console.log('App', props)
 
   const BREAKPOINTS = theme.breakpoints.keys
   const BREAKPOINTS_OBJ = theme.breakpoints.values
 
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
+  const {
+    setStoreValues,
+    setLang,
+    langs,
+    activeLang,
+  } = useStore(
+    state => ({
+      setStoreValues: state.setStoreValues,
+      setLang: state.setLang,
+      langs: state.langs,
+      activeLang: state.activeLang,
+    }),
+    shallow,
   )
 
   const setBrowserWidthAndBreakpoint = () => {
@@ -174,11 +184,12 @@ const App = props => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Language props={props} />
+      <Language {...props} />
       <SEO />
       <DataLoader />
       <RouteManager routeSet={ROUTE_SET} />
       <Tracking />
+      <NormingManager />
       <Layout></Layout>
     </ThemeProvider>
   )

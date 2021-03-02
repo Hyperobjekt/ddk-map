@@ -1,37 +1,35 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
-import ReactMapGL, {
-  NavigationControl,
-  Popup,
-} from 'react-map-gl'
 import { Paper } from '@material-ui/core'
 
 import Header from './../Header'
 import ControlPanel from './../ControlPanel'
 import SlideoutPanel from './../SlideoutPanel'
 import Map from './../Map'
+import Legend from '../Legend'
+import IntroModal from './../IntroModal'
+import Menu from './../Menu'
+
+const useLayoutStyles = makeStyles(theme => ({
+  root: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+    backgroundColor: theme.palette.background.default,
+  },
+  main: {
+    // marginTop:
+    //   theme.extras.variables.dimensions.navbarHeight,
+    // height: `calc(100vh - ${theme.extras.variables.dimensions.navbarHeight})`,
+  },
+}))
 
 const Layout = ({ ...props }) => {
-  const layoutStyles = makeStyles(theme => ({
-    root: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh',
-      backgroundColor: theme.palette.background.default,
-    },
-    main: {
-      // marginTop:
-      //   theme.extras.variables.dimensions.navbarHeight,
-      // height: `calc(100vh - ${theme.extras.variables.dimensions.navbarHeight})`,
-    },
-  }))
-
-  const classes = layoutStyles()
+  const classes = useLayoutStyles()
 
   return (
     <Paper
@@ -42,7 +40,10 @@ const Layout = ({ ...props }) => {
       <main className={clsx(classes.main)}>
         <ControlPanel />
         <SlideoutPanel />
+        <Legend />
         <Map />
+        <Menu />
+        <IntroModal />
       </main>
     </Paper>
   )

@@ -5,61 +5,83 @@ import i18n from '@pureartisan/simple-i18n'
 import shallow from 'zustand/shallow'
 import { MdClose } from 'react-icons/md'
 import { IconButton } from '@material-ui/core'
+import { getStateFromFips } from '@hyperobjekt/us-states'
 
 import useStore from './../../store'
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+    borderRadius: '5px',
+    position: 'absolute',
+    left: '16px',
+    bottom: '42px',
+    color: theme.extras.variables.colors.white,
+    padding: '18px 36px 18px 18px',
+    fontFamily: 'Fira Sans',
+
+    fontSize: '14px',
+    lineHeight: '20px',
+    fontWeight: 400,
+    maxWidth: `calc(100vw - 160px)`,
+    [theme.breakpoints.up('sm')]: {
+      maxWidth: '393px',
+    },
+  },
+  button: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    '& svg': {
+      width: '20px',
+      height: '20px',
+      color: 'white',
+    },
+  },
+  text: {},
+}))
 
 const Notifications = () => {
   const {
     activeNorm,
     notifications,
     updateNotifications,
+    centerMetro,
+    centerState,
   } = useStore(
     state => ({
       activeNorm: state.activeNorm,
       notifications: state.notifications,
       updateNotifications: state.updateNotifications,
+      centerMetro: state.centerMetro,
+      centerState: state.centerState,
     }),
     shallow,
   )
 
-  const styles = makeStyles(theme => ({
-    root: {
-      backgroundColor: 'rgba(0, 0, 0, 0.85)',
-      borderRadius: '5px',
-      position: 'absolute',
-      left: '16px',
-      bottom: '42px',
-      color: theme.extras.variables.colors.white,
-      padding: '18px 36px 18px 18px',
-      fontFamily: 'Fira Sans',
+  const classes = useStyles()
 
-      fontSize: '14px',
-      lineHeight: '20px',
-      fontWeight: 400,
-      maxWidth: `calc(100vw - 160px)`,
-      [theme.breakpoints.up('sm')]: {
-        maxWidth: '393px',
-      },
-    },
-    button: {
-      position: 'absolute',
-      right: 0,
-      top: 0,
-      '& svg': {
-        width: '20px',
-        height: '20px',
-        color: 'white',
-      },
-    },
-    text: {},
-  }))
-
-  const classes = styles()
-
-  const warnStrings = {
-    n: `WARN_NATL_COMPARISON`,
-    s: `WARN_STATE_COMPARISON`,
-    m: `WARN_METRO_COMPARISON`,
+  const getNotification = norm => {
+    let str = i18n.translate(`WARN_NATL_NORM`)
+    if (norm === 's') {
+      if (centerState !== 0) {
+        str = i18n.translate(`WARN_STATE_NORM`, {
+          state: getStateFromFips(centerState).full,
+        })
+      } else {
+        str = i18n.translate(`WARN_STATE_NORM_GENERIC`)
+      }
+    }
+    if (norm === 'm') {
+      if (centerMetro !== 0) {
+        str = i18n.translate(`WARN_METRO_NORM`, {
+          metro: i18n.translate(centerMetro),
+        })
+      } else {
+        str = i18n.translate(`WARN_METRO_NORM_GENERIC`)
+      }
+    }
+    return str
   }
 
   const [showNotifcation, setShowNotification] = useState(
@@ -70,13 +92,16 @@ const Notifications = () => {
 
   useEffect(() => {
     if (notifications[activeNorm] === 0) {
-      setNotification(
-        i18n.translate(warnStrings[activeNorm]),
-      )
+      setNotification(getNotification(activeNorm))
     } else {
       setNotification('')
     }
-  }, [activeNorm, ...Object.values(notifications)])
+  }, [
+    activeNorm,
+    centerMetro,
+    centerState,
+    ...Object.values(notifications),
+  ])
 
   const handleClose = () => {
     // console.log('handleClose()')

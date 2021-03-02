@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
-import { Tooltip, Button } from '@material-ui/core'
 
 // Styles for this component.
-const styles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   popWrapper: {
     margin: '10px 0 0 0',
   },
@@ -34,7 +33,7 @@ const styles = makeStyles(theme => ({
 const PopStack = ({ ...props }) => {
   // console.log('PopStack, ', props.pop['w'])
   // Capture classes.
-  const classes = styles()
+  const classes = useStyles()
   // Population items.
   const popItems = ['w', 'ai', 'hi', 'ap', 'b']
 

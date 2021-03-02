@@ -138,16 +138,25 @@ const useStore = create((set, get) => ({
     m: 0,
   },
   updateNotifications: norm => {
-    console.log('updateNotifications, ', norm)
+    // console.log('updateNotifications, ', norm)
     const nots = get().notifications
     nots[norm] = nots[norm] + 1
     console.log('nots, ', nots)
     set({ notifications: nots })
   },
+  // Prompts to update norming when incremented.
+  // Incremented when some auto-norming action has happened.
+  doUpdateNorming: false,
+  // Have strings from cms been loaded.
+  cmsStringsLoaded: false,
   shareLinkModal: false,
   shareEmbedModal: false,
   unifiedShareModal: false,
-  handleToggleMenu: null,
+  // Whether or not to display slideout menu.
+  showMenu: false,
+  toggleShowMenu: () => {
+    set(state => ({ showMenu: !state.showMenu }))
+  },
   shareHash: null,
   breakpoint: null,
   browserWidth: null,

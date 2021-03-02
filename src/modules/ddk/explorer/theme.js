@@ -35,7 +35,10 @@ export const variables = {
     criColor3: '#cabbf5',
     barHighlight: '#e94f34',
     cpLabelColor: '#606b44',
-    ddkBlue: '#013457'
+    ddkBlue: '#013457',
+    ddkLightRed: 'rgba(201, 66, 44, 0.1)',
+    ddkLightRedHex: 'rgba(248, 231, 229, 1)',
+    ddkNavy: '#045781',
   },
   dimensions: {
     navbarHeight: '64px',
@@ -47,6 +50,15 @@ export const variables = {
     primary: 'Fira Sans',
   },
 }
+
+/** "on" colors for color scale */
+export const onColors = [
+  '#C9E8F8',
+  '#8DD4F9',
+  '#73A0C9',
+  '#588DA8',
+  '#56778D',
+]
 
 export const theme = createMuiTheme({
   // Update theme here according to the Mui documentation
@@ -64,6 +76,9 @@ export const theme = createMuiTheme({
     },
   },
   overrides: {
+    // '&$selected': {
+    //   backgroundColor: variables.colors.ddkLightRed,
+    // },
     MuiTooltip: {
       // Arrow styling.
       arrow: {
@@ -74,6 +89,30 @@ export const theme = createMuiTheme({
         backgroundColor: variables.colors.black,
         fontSize: '14px',
         padding: '16px',
+      },
+    },
+    MuiButtonBase: {
+      root: {
+        '&:hover': {
+          backgroundColor: variables.colors.ddkLightRed,
+        },
+      },
+    },
+    MuiIconButton: {
+      root: {
+        '&:hover': {
+          backgroundColor: variables.colors.ddkLightRed,
+        },
+      },
+    },
+    MuiListItem: {
+      button: {
+        '&$selected, &$selected:hover': {
+          backgroundColor: variables.colors.ddkLightRed,
+        },
+        '&:hover': {
+          backgroundColor: variables.colors.ddkLightRed,
+        },
       },
     },
   },
@@ -98,6 +137,12 @@ export const theme = createMuiTheme({
       edgePadding: 100,
       offset: 50,
     },
+    introModal: {
+      buttonWidth: 288,
+    },
+    autoSuggest: {
+      width: 338,
+    },
     variables: variables,
     SDScale: {
       offColors: [
@@ -107,20 +152,14 @@ export const theme = createMuiTheme({
         'rgba(88, 141, 168, 0.3)',
         'rgba(86, 119, 141, 0.3)',
       ],
-      onColors: [
-        '#C9E8F8',
-        '#8DD4F9',
-        '#73A0C9',
-        '#588DA8',
-        '#56778D',
-      ],
+      onColors: onColors,
     },
     demos: {
       ai: '#FF00CC',
       ap: '#FF730C',
       b: '#FFC31A',
       hi: '#7401B1',
-      w: '#66CC00'
-    }
+      w: '#66CC00',
+    },
   },
 })

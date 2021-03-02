@@ -38,3 +38,6 @@ body {
 #map .mapboxgl-ctrl-group:not(:empty) {
   box-shadow: none;
 }
+#map .mapboxgl-ctrl-group:not(:empty) button:hover {
+  background-color: rgba(248, 231, 229, 1);
+}

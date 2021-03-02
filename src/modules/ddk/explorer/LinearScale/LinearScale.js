@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { getRoundedValue, getHashLeft } from './../utils'
 
-const styles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
     height: '40px',
@@ -60,7 +60,7 @@ const styles = makeStyles(theme => ({
 const LinearScale = ({ ...props }) => {
   // console.log('LinearScale, ', props)
 
-  const classes = styles()
+  const classes = useStyles()
 
   const high_is_good = !!props.indicator.high_is_good
   const currency = !!props.indicator.curr

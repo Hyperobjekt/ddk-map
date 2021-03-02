@@ -21,6 +21,51 @@ import {
 import { FileCopy } from '@material-ui/icons'
 import { DEFAULT_ROUTE } from '../../../../constants/map'
 
+// Styles for this component.
+const useStyles = makeStyles(theme => ({
+  root: {
+    position: 'absolute',
+    width: 400,
+    maxWidth: '70vw',
+    // along with transform values on body, centers the modal
+    top: '50% !important',
+    left: '50% !important',
+    // inset: 'unset !important',
+  },
+  body: {
+    width: '100%',
+    // along with top/left values on root, centers the modal
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: theme.palette.background.paper,
+    border: '1px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 4),
+  },
+  input: {
+    width: 'calc(100% - 50px)',
+    background: '#eaebf4',
+    padding: theme.spacing(1),
+  },
+  shareButtons: {
+    display: 'flex',
+  },
+  fileIcon: {
+    '&:hover': {
+      fill: 'black',
+    },
+  },
+  shareButton: {
+    '&:hover': {
+      '& .social-icon': {
+        fill: 'black',
+      },
+      color: 'gray',
+      cursor: 'pointer',
+    },
+    '& .sr-only': { display: 'none' },
+  },
+}))
+
 const GenericShareModal = ({
   open,
   onClose,
@@ -72,52 +117,7 @@ const GenericShareModal = ({
     setStoreValues({ eventShareEmbed: eventShareEmbed + 1 })
   }
 
-  // Styles for this component.
-  const styles = makeStyles(theme => ({
-    root: {
-      position: 'absolute',
-      width: 400,
-      maxWidth: '70vw',
-      // along with transform values on body, centers the modal
-      top: '50% !important',
-      left: '50% !important',
-      // inset: 'unset !important',
-    },
-    body: {
-      width: '100%',
-      // along with top/left values on root, centers the modal
-      transform: 'translate(-50%, -50%)',
-      backgroundColor: theme.palette.background.paper,
-      border: '1px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 4),
-    },
-    input: {
-      width: 'calc(100% - 50px)',
-      background: '#eaebf4',
-      padding: theme.spacing(1),
-    },
-    shareButtons: {
-      display: 'flex',
-    },
-    fileIcon: {
-      '&:hover': {
-        fill: 'black',
-      },
-    },
-    shareButton: {
-      '&:hover': {
-        '& .social-icon': {
-          fill: 'black',
-        },
-        color: 'gray',
-        cursor: 'pointer',
-      },
-      '& .sr-only': { display: 'none' },
-    },
-  }))
-
-  const classes = styles()
+  const classes = useStyles()
 
   return (
     <Modal
