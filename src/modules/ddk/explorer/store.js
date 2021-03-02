@@ -151,7 +151,11 @@ const useStore = create((set, get) => ({
   shareLinkModal: false,
   shareEmbedModal: false,
   unifiedShareModal: false,
-  handleToggleMenu: null,
+  // Whether or not to display slideout menu.
+  showMenu: false,
+  toggleShowMenu: () => {
+    set(state => ({ showMenu: !state.showMenu }))
+  },
   shareHash: null,
   breakpoint: null,
   browserWidth: null,

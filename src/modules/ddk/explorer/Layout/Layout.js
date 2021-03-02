@@ -10,6 +10,7 @@ import SlideoutPanel from './../SlideoutPanel'
 import Map from './../Map'
 import Legend from '../Legend'
 import IntroModal from './../IntroModal'
+import Menu from './../Menu'
 
 const useLayoutStyles = makeStyles(theme => ({
   root: {
@@ -41,6 +42,7 @@ const Layout = ({ ...props }) => {
         <SlideoutPanel />
         <Legend />
         <Map />
+        <Menu />
         <IntroModal />
       </main>
     </Paper>

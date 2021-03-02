@@ -37,6 +37,7 @@ export const variables = {
     cpLabelColor: '#606b44',
     ddkLightRed: 'rgba(201, 66, 44, 0.1)',
     ddkLightRedHex: 'rgba(248, 231, 229, 1)',
+    ddkNavy: '#045781',
   },
   dimensions: {
     navbarHeight: '64px',

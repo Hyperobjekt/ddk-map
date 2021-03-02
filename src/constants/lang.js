@@ -108,5 +108,74 @@ export const langSet = {
     MODAL_INTRO_FAQ: ` Read FAQs`,
     MODAL_INTRO_SEARCH: `Search for an address, city, or state`,
     LEGEND_NORM_HELP: `This data can only be compared to other neighborhoods in this metro area. See FAQ for more information.`,
+    MENU_CLOSE: `Close menu`,
+    MENU: [
+      [
+        {
+          label: `Early Childhood`,
+          link: `https://www.diversitydatakids.org/early-childhood`,
+          active: 0,
+        },
+        {
+          label: `Income, Work and Family`,
+          link: `https://www.diversitydatakids.org/income-work-and-family`,
+          active: 0,
+        },
+        {
+          label: `Neighborhoods`,
+          link: `https://www.diversitydatakids.org/neighborhoods`,
+          active: 0,
+        },
+      ],
+      [
+        {
+          label: `Datasets`,
+          link: `https://data.diversitydatakids.org/dataset?_ga=2.118586825.1559503741.1614712999-1749705169.1612460726`,
+          active: 0,
+        },
+        {
+          label: `Child Opportunity Index`,
+          link: `https://www.diversitydatakids.org/child-opportunity-index`,
+          active: 0,
+        },
+        {
+          label: `Policy Equity Assessments`,
+          link: `https://www.diversitydatakids.org/policy-equity-assessments`,
+          active: 0,
+        },
+      ],
+      [
+        {
+          label: `Menu`,
+          link: `https://www.diversitydatakids.org/about-us`,
+          active: 1,
+        },
+        {
+          label: `About Us`,
+          link: `https://www.diversitydatakids.org/about-us`,
+          active: 0,
+        },
+        {
+          label: `FAQs`,
+          link: `https://www.diversitydatakids.org/research-library/frequently-asked-questions`,
+          active: 0,
+        },
+        {
+          label: `Impact Stories`,
+          link: `https://www.diversitydatakids.org/impact-stories`,
+          active: 0,
+        },
+        {
+          label: `News`,
+          link: `https://www.diversitydatakids.org/news`,
+          active: 0,
+        },
+        {
+          label: `Contact Us`,
+          link: `https://www.diversitydatakids.org/contact-us`,
+          active: 0,
+        },
+      ],
+    ],
   },
 }

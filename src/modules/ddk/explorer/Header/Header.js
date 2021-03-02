@@ -61,6 +61,39 @@ const useHeaderStyles = makeStyles(theme => ({
   },
   menuButton: {
     textTransform: 'none',
+    fontFamily: 'Fira Sans',
+    fontSize: '10px',
+    fontWeight: 600,
+    width: '38px',
+    marginLeft: '4px',
+    boxSizing: 'borderBox',
+    color: theme.extras.variables.colors.darkGray,
+    '& .MuiButton-label': {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    '& svg': {
+      width: '20px',
+      height: '20px',
+      flex: '0 0 100%',
+      '& path': {
+        stroke: theme.extras.variables.colors.darkGray,
+      },
+    },
+    [theme.breakpoints.up('sm')]: {
+      fontSize: '14px',
+      width: 'auto',
+      '& .MuiButton-label': {
+        display: 'flex',
+        flexWrap: 'nowrap',
+      },
+      '& svg': {
+        marginRight: '8px',
+        width: '24px',
+        height: '24px',
+        flex: '0 0 auto',
+      },
+    },
   },
   search: {
     marginRight: theme.spacing(1),
@@ -76,16 +109,18 @@ const useHeaderStyles = makeStyles(theme => ({
 
 const Header = ({ ...props }) => {
   // Header is not displayed if the view type is 'embed'
-  const {
-    activeView,
-    // breakpoint
-  } = useStore(
+  const { activeView, toggleShowMenu } = useStore(
     state => ({
       activeView: state.activeView,
-      // breakpoint: state.breakpoint,
+      toggleShowMenu: state.toggleShowMenu,
     }),
     shallow,
   )
+
+  const toggleMenu = () => {
+    // console.log('toggleMenu()')
+    toggleShowMenu()
+  }
 
   const classes = useHeaderStyles()
 
@@ -101,9 +136,12 @@ const Header = ({ ...props }) => {
             aria-label={i18n.translate('SITE_TITLE')}
           ></Typography>
           <GeocodeSearch classes={classes.search} />
-          <Button className={classes.menuButton}>
+          <Button
+            className={classes.menuButton}
+            onClick={toggleMenu}
+          >
             <HamburgerIcon />
-            {i18n.translate(`BTN_MENU`)}
+            <span>{i18n.translate(`BTN_MENU`)}</span>
           </Button>
         </Toolbar>
       </AppBar>

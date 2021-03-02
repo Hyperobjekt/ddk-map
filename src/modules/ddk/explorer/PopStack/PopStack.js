@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
-import { Tooltip, Button } from '@material-ui/core'
 
 // Styles for this component.
 const useStyles = makeStyles(theme => ({
