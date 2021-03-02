@@ -8,8 +8,10 @@ import {
   BASE_URL,
   FB_APP_ID,
 } from './../../../../../constants/map'
-import { shareImage } from './../../../../assets/img'
-import { favicon } from './../../../../assets/img'
+import {
+  shareImage,
+  favicon,
+} from './../../../../assets/img'
 
 const SEO = () => {
   const { activeLang, shareHash } = useStore(
