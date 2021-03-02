@@ -98,5 +98,10 @@ export const langSet = {
     MAP_RESET: `Reset map viewport`,
     MAP_FLY_TO_MY: `Fly to my location`,
     MAP_SCREENSHOT: `Take a screenshot of the map`,
+    FAQ: [
+      {title: "How can I use this information?", content: "You can't! Sorry!"},
+      {title: "How can't I use this information?", content: "You can't! Sorry!"},
+      {title: "How can I choose between metro-normed, state-normed, and nationally-normed data?", content: "You can't! Sorry!"},
+    ],
   },
 }

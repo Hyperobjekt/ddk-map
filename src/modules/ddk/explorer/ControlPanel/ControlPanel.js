@@ -97,6 +97,7 @@ const ControlPanel = ({ ...props }) => {
       width: '100%',
       color: '#fff',
       textAlign: 'center',
+      borderRight: `3px solid ${theme.extras.variables.colors.ddkBlue}`,
       '&.active' : {
         color: theme.extras.variables.colors.ddkBlue,
         backgroundColor: '#DAF0FF',

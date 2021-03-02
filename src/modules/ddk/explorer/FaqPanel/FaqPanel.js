@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
-import { Button } from '@material-ui/core'
+import { Button, Collapse, Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core'
 import shallow from 'zustand/shallow'
-import { FiChevronDown } from 'react-icons/fi'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import useStore from './../store'
 import {
@@ -26,72 +26,117 @@ const styles = makeStyles(theme => ({
     backgroundColor:
       theme.extras.variables.colors.lightLightGray,
   },
-  content: {
-    padding: '42px 16px',
+  container: {
+    padding: '50px 16px 0px',
+    display: 'flex',
+    flexDirection: 'column',
     height: '100%',
+    boxSizing: 'border-box',
   },
   btn: {
+    boxShadow: 'none',
     width: '100%',
     backgroundColor: '#fff',
     borderRadius: '0px',
-    display: 'flex',
-    justifyContent: 'space-between',
-    '& > span': {
-      float: 'left',
+    margin: '7px 0px',
+    '&::before': {
+      display: 'none'
     },
-    margin: '8px 0 0',
-    '&.open': {
-      margin: '8px 0 8px',
-    },
+    '&.Mui-expanded': {
+      margin: '7px 0px',
+    }
+  },
+  title: {
+    fontSize: '16px',
+    margin: '12px 0px',
+    '&.Mui-expanded': {
+      margin: '12px 0px'
+    }
+  },
+  titleContainer: {
+    minHeight: '48px',
+    '&.Mui-expanded': {
+      minHeight: '48px'
+    }
   },
   caret: {
     width: '30px',
     height: '30px',
     color: theme.extras.variables.colors.ddkRed,
-    float: 'right',
   },
+  content: {
+    fontSize: '14px',
+    borderTop: `1px solid ${theme.extras.variables.colors.lightLightGray}`,
+    padding: '16px 16px',
+    color: theme.extras.variables.colors.lightGray,
+  },
+  all: {
+    float: 'right',
+    color: theme.extras.variables.colors.ddkRed,
+    fontSize: '14px',
+  },
+  allContainer: {
+    position: 'relative',
+    height: '35px',
+  },
+  faqContainer: {
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    width: '100%',
+    flexGrow: '1'
+  }
 }))
 
 const FaqPanel = () => {
   const {
     slideoutPanel,
-    slideoutFeature,
-    allDataLoaded,
-    activeNorm,
-    remoteJson,
   } = useStore(
     state => ({
       slideoutPanel: state.slideoutPanel,
-      slideoutFeature: state.slideoutFeature,
-      allDataLoaded: state.allDataLoaded,
-      activeNorm: state.activeNorm,
-      remoteJson: state.remoteJson,
     }),
     shallow,
   )
+  
+  // const doAll = () => {
+  //   return 
+  // }
+
+  console.log(i18n.translate('FAQ', { returnObjects: true }))
 
   const classes = styles()
 
   return (
-    <div class={classes.root}>
-      <div class={classes.content}>
+    <div className={classes.root}>
+      <div className={classes.container}>
         <div>
           Frequently Asked Questions
         </div>
-        <Button
-        className={clsx(
-          'faq-toggle',
-          classes.btn,
-        )}
-      >
-        <span>How Can I Use This Information</span>
-        <FiChevronDown
-          className={clsx(
-            'faq-btn-caret',
-            classes.caret,
-          )}
-        />
-      </Button>
+        <div className={classes.allContainer}>
+          <Button className={classes.all}>
+            Open All
+          </Button>
+        </div>
+        <div className={classes.faqContainer}>
+          {i18n.translate('FAQ', { returnObjects: true }).map((el, i) => {
+            return (
+              <>
+                <Accordion classes={{root: classes.btn}} square={true}>
+                  <AccordionSummary
+                    classes={{root: classes.titleContainer, content: classes.title}}
+                    expandIcon={<ExpandMoreIcon className={classes.caret}/>}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                  >
+                    <div>{el.title}</div>
+                  </AccordionSummary>
+                  <AccordionDetails classes={{root: classes.content}}>
+                    <div>{el.content}</div>
+                  </AccordionDetails>
+                </Accordion>
+              </>
+            )
+          })}    
+        </div>    
       </div>
     </div>
   )
