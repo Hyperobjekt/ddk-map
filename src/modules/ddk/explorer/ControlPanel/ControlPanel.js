@@ -24,23 +24,22 @@ const useStyles = makeStyles(theme => {
         breakpoint === 'sm'
       return {
         display: hideControlPanel ? 'none' : 'flex',
-      zIndex: theme.extras.controlPanel.zIndex,
-      backgroundColor: theme.extras.variables.colors.ddkBlue,
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: theme.extras.controlPanel.width,
-      // Adjust for different app bar height.
-      height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px)`,
-      top: `${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px`,
-      [theme.breakpoints.up('sm')]: {
-        height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px)`,
-        top: `${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px`,
-      },
-      display: 'flex',
-      boxShadow: theme.shadows[3],
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
+        zIndex: theme.extras.controlPanel.zIndex,
+        backgroundColor: theme.extras.variables.colors.ddkBlue,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: theme.extras.controlPanel.width,
+        // Adjust for different app bar height.
+        height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px)`,
+        top: `${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px`,
+        [theme.breakpoints.up('sm')]: {
+          height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px)`,
+          top: `${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px`,
+        },
+        boxShadow: theme.shadows[3],
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
       }
     },
     button: {
