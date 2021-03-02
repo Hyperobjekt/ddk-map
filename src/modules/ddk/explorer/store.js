@@ -143,6 +143,8 @@ const useStore = create((set, get) => ({
     console.log('nots, ', nots)
     set({ notifications: nots })
   },
+  // Have strings from cms been loaded.
+  cmsStringsLoaded: false,
   shareLinkModal: false,
   shareEmbedModal: false,
   unifiedShareModal: false,

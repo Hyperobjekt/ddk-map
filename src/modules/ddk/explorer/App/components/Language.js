@@ -8,7 +8,8 @@ import useStore from './../../store'
  * If the active language or the language set
  * are updated, it re-initializes the translation object.
  */
-const Language = ({ ...props }) => {
+const Language = props => {
+  console.log('language(), ', props.lang, props.langSet)
   const setStoreValues = useStore(
     state => state.setStoreValues,
   )
@@ -16,6 +17,9 @@ const Language = ({ ...props }) => {
   const activeLang = useStore(state => state.activeLang)
   const langs = useStore(state => state.langs)
   const setLang = useStore(state => state.setLang)
+  const cmsStringsLoaded = useStore(
+    state => state.cmsStringsLoaded,
+  )
 
   // Initializes the languages in use.
   const initLang = () => {
@@ -30,16 +34,20 @@ const Language = ({ ...props }) => {
     initLang()
   }, [activeLang, langs])
 
-  if (!!props.lang) {
-    setStoreValues({
-      activeLang: props.lang,
-    })
+  if (!cmsStringsLoaded) {
+    if (!!props.lang) {
+      setStoreValues({
+        activeLang: props.lang,
+        cmsStringsLoaded: true,
+      })
+    }
+    // let lang
+    if (!!props.langSet) {
+      console.log('setting langset', props.langSet)
+      setLang(props.langSet)
+    }
+    initLang()
   }
-  let lang
-  if (!!props.langSet) {
-    setLang(props.langSet)
-  }
-  initLang()
 
   return ''
 }
