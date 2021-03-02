@@ -98,5 +98,11 @@ export const langSet = {
     MAP_RESET: `Reset map viewport`,
     MAP_FLY_TO_MY: `Fly to my location`,
     MAP_SCREENSHOT: `Take a screenshot of the map`,
+    MODAL_INTRO_HEADING: `Child Opportunity Map`,
+    MODAL_INTRO_DESC: `The map and charts in this tool provide a visualization of several indices, including Overall Child Opportunity Index, Social and Economic Index, Health and Environment Index, and Education Index.`,
+    MODAL_INTRO_PROMPT: ` Get started:`,
+    MODAL_INTRO_GO_TO: ` Go to my location`,
+    MODAL_INTRO_NAT: ` See the national map`,
+    MODAL_INTRO_FAQ: ` Read FAQs`,
   },
 }
