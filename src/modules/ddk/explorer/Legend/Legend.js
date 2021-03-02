@@ -225,7 +225,13 @@ const useLegendStyles = makeStyles(theme => ({
   },
 }))
 
-const processData = (data, geo, year, centerState) => {
+const processData = (
+  data,
+  geo,
+  year,
+  centerState,
+  centerMetro,
+) => {
   var struct = []
   var selected = []
   switch (geo) {
@@ -463,6 +469,7 @@ const Legend = ({ ...props }) => {
                     activeNorm,
                     activeYear,
                     centerState,
+                    centerMetro,
                   )}
                   activeBars={activePointLayers}
                 />

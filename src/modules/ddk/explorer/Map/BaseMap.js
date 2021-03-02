@@ -216,6 +216,9 @@ const BaseMap = ({ ...props }) => {
           },
         )
         if (!!metros && metros.length > 0) {
+          setStoreValues({
+            centerMetro: metros[0].id,
+          })
           flyToFeature(metros[0])
         }
       }
