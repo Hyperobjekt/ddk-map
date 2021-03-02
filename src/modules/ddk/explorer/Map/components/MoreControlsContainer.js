@@ -14,39 +14,39 @@ import {
   CameraIcon,
 } from './../../../../assets/Icons'
 
-const MoreControlsContainer = props => {
-  const styles = makeStyles(theme => ({
-    root: {
-      position: 'absolute',
-      bottom: '120px',
-      right: '16px',
-      display: 'flex',
+const styles = makeStyles(theme => ({
+  root: {
+    position: 'absolute',
+    bottom: '120px',
+    right: '16px',
+    display: 'flex',
+    width: '40px',
+    height: 'auto',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-end',
+    '& button': {
       width: '40px',
-      height: 'auto',
-      flexWrap: 'wrap',
-      justifyContent: 'flex-end',
-      '& button': {
-        width: '40px',
-        height: '40px',
-        backgroundColor: '#fff',
-        padding: 0,
-        minWidth: 0,
-        borderRadius: 0,
-      },
-    },
-    button: {
+      height: '40px',
       backgroundColor: '#fff',
-      '&:hover': {
-        backgroundColor: '#fff !important',
-      },
-      '& svg': {
-        width: '32px',
-        heigth: '32px',
-      },
-      marginTop: '0.15rem',
+      padding: 0,
+      minWidth: 0,
+      borderRadius: 0,
     },
-  }))
+  },
+  button: {
+    backgroundColor: '#fff',
+    '&:hover': {
+      backgroundColor: '#fff !important',
+    },
+    '& svg': {
+      width: '32px',
+      heigth: '32px',
+    },
+    marginTop: '0.15rem',
+  },
+}))
 
+const MoreControlsContainer = props => {
   const classes = styles()
 
   return (

@@ -45,21 +45,42 @@ const Notifications = () => {
     activeNorm,
     notifications,
     updateNotifications,
+    centerMetro,
+    centerState,
   } = useStore(
     state => ({
       activeNorm: state.activeNorm,
       notifications: state.notifications,
       updateNotifications: state.updateNotifications,
+      centerMetro: state.centerMetro,
+      centerState: state.centerState,
     }),
     shallow,
   )
 
   const classes = useStyles()
 
-  const warnStrings = {
-    n: `WARN_NATL_COMPARISON`,
-    s: `WARN_STATE_COMPARISON`,
-    m: `WARN_METRO_COMPARISON`,
+  const getNotification = norm => {
+    let str = i18n.translate(`WARN_NATL_NORM`)
+    if (norm === 's') {
+      if (centerState !== 0) {
+        str = i18n.translate(`WARN_STATE_NORM`, {
+          state: 'Alaska',
+        })
+      } else {
+        str = i18n.translate(`WARN_STATE_NORM_GENERIC`)
+      }
+    }
+    if (norm === 'm') {
+      if (centerMetro !== 0) {
+        str = i18n.translate(`WARN_METRO_NORM`, {
+          metro: i18n.translate(centerMetro),
+        })
+      } else {
+        str = i18n.translate(`WARN_METRO_NORM_GENERIC`)
+      }
+    }
+    return str
   }
 
   const [showNotifcation, setShowNotification] = useState(
@@ -70,13 +91,16 @@ const Notifications = () => {
 
   useEffect(() => {
     if (notifications[activeNorm] === 0) {
-      setNotification(
-        i18n.translate(warnStrings[activeNorm]),
-      )
+      setNotification(getNotification(activeNorm))
     } else {
       setNotification('')
     }
-  }, [activeNorm, ...Object.values(notifications)])
+  }, [
+    activeNorm,
+    centerMetro,
+    centerState,
+    ...Object.values(notifications),
+  ])
 
   const handleClose = () => {
     // console.log('handleClose()')
