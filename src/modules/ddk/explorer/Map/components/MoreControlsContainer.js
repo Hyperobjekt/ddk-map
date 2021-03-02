@@ -36,7 +36,7 @@ const styles = makeStyles(theme => ({
   button: {
     backgroundColor: '#fff',
     '&:hover': {
-      backgroundColor: '#fff !important',
+      backgroundColor: `${theme.extras.variables.colors.ddkLightRedHex} !important`,
     },
     '& svg': {
       width: '32px',

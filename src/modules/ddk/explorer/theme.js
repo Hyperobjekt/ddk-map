@@ -35,6 +35,8 @@ export const variables = {
     criColor3: '#cabbf5',
     barHighlight: '#e94f34',
     cpLabelColor: '#606b44',
+    ddkLightRed: 'rgba(201, 66, 44, 0.1)',
+    ddkLightRedHex: 'rgba(248, 231, 229, 1)',
   },
   dimensions: {
     navbarHeight: '64px',
@@ -72,6 +74,9 @@ export const theme = createMuiTheme({
     },
   },
   overrides: {
+    // '&$selected': {
+    //   backgroundColor: variables.colors.ddkLightRed,
+    // },
     MuiTooltip: {
       // Arrow styling.
       arrow: {
@@ -82,6 +87,30 @@ export const theme = createMuiTheme({
         backgroundColor: variables.colors.black,
         fontSize: '14px',
         padding: '16px',
+      },
+    },
+    MuiButtonBase: {
+      root: {
+        '&:hover': {
+          backgroundColor: variables.colors.ddkLightRed,
+        },
+      },
+    },
+    MuiIconButton: {
+      root: {
+        '&:hover': {
+          backgroundColor: variables.colors.ddkLightRed,
+        },
+      },
+    },
+    MuiListItem: {
+      button: {
+        '&$selected, &$selected:hover': {
+          backgroundColor: variables.colors.ddkLightRed,
+        },
+        '&:hover': {
+          backgroundColor: variables.colors.ddkLightRed,
+        },
       },
     },
   },
