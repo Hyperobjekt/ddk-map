@@ -2,20 +2,18 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { isMobile } from 'react-device-detect'
 import { ThemeProvider } from '@material-ui/core/styles'
-// import * as merge from 'deepmerge'
 import shallow from 'zustand/shallow'
 
 import Layout from '../Layout/Layout'
 import { DataLoader } from './../DataLoader'
 import RouteManager from './../RouteManager/RouteManager'
 import { Tracking } from './../Tracking'
-
 import useStore from './../store'
 import { theme } from './../theme'
-import { langSet } from './../../../../constants/lang'
 import { ROUTE_SET } from './../../../../constants/map'
 import Language from './components/Language'
 import SEO from './components/SEO'
+import NormingManager from './../NormingManager'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
 import './App.css'
@@ -49,20 +47,6 @@ const App = props => {
     }),
     shallow,
   )
-
-  // if (!!props.lang) {
-  //   setStoreValues({
-  //     activeLang: props.lang,
-  //   })
-  // }
-  // let lang
-  // if (!!props.langSet) {
-  //   setLang(props.langSet)
-  // }
-  // i18n.init({
-  //   locale: activeLang,
-  //   languages: langs,
-  // })
 
   const setBrowserWidthAndBreakpoint = () => {
     // console.log('setBrowserWidthAndBreakpoint')
@@ -205,6 +189,7 @@ const App = props => {
       <DataLoader />
       <RouteManager routeSet={ROUTE_SET} />
       <Tracking />
+      <NormingManager />
       <Layout></Layout>
     </ThemeProvider>
   )

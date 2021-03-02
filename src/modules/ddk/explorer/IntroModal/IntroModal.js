@@ -93,13 +93,13 @@ const IntroModal = () => {
     showIntroModal,
     flyToLatLon,
     setStoreValues,
-    flyToReset,
+    incrementUpdateNorming,
   } = useStore(
     state => ({
       showIntroModal: state.showIntroModal,
       flyToLatLon: state.flyToLatLon,
       setStoreValues: state.setStoreValues,
-      flyToReset: state.flyToReset,
+      incrementUpdateNorming: state.incrementUpdateNorming,
     }),
     shallow,
   )

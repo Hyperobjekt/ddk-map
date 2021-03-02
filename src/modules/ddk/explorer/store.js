@@ -137,11 +137,19 @@ const useStore = create((set, get) => ({
     m: 0,
   },
   updateNotifications: norm => {
-    console.log('updateNotifications, ', norm)
+    // console.log('updateNotifications, ', norm)
     const nots = get().notifications
     nots[norm] = nots[norm] + 1
     console.log('nots, ', nots)
     set({ notifications: nots })
+  },
+  // Prompts to update norming when incremented.
+  // Incremented when some auto-norming action has happened.
+  doUpdateNorming: 0,
+  incrementUpdateNorming: () => {
+    set(state => ({
+      doUpdateNorming: state.doUpdateNorming + 1,
+    }))
   },
   // Have strings from cms been loaded.
   cmsStringsLoaded: false,
