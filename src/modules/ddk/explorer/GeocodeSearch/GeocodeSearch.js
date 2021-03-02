@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import i18n from '@pureartisan/simple-i18n'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
@@ -11,14 +11,11 @@ import shallow from 'zustand/shallow'
 
 import { FULL_FUNCT_ZOOM_THRESHOLD } from './../../../../constants/map'
 import useStore from '../store'
-import { DEFAULT_VIEWPORT } from './../../../../constants/map'
 
 /**
  * MenuSearch: Autosuggest search input for header.
  */
 const GeocodeSearch = ({ ...props }) => {
-  const isLoaded = useRef(false)
-
   const classes = useStyles()
 
   const {
@@ -48,7 +45,7 @@ const GeocodeSearch = ({ ...props }) => {
 
   // Update the UI according to the context.
   const updateUIWithResult = suggestion => {
-    console.log('updateUIWithResult, ', suggestion)
+    // console.log('updateUIWithResult, ', suggestion)
     // If feature has a bounding box, use the
     // bounding box to fly, otherwise treat it
     // like a point.
@@ -170,13 +167,21 @@ const GeocodeSearch = ({ ...props }) => {
     onChange: handleChange, // called every time the input value changes
     onBlur: handleBlur, // called when the input loses focus, e.g. when user presses Tab
     type: 'search',
-    placeholder: i18n.translate(`SEARCH_PROMPT`),
+    placeholder: props.prompt
+      ? props.prompt
+      : i18n.translate(`SEARCH_PROMPT`),
     'aria-label': i18n.translate(`BTN_SEARCH`),
   }
 
+  // console.log(props.classes)
+
   return (
     <div
-      className={clsx('search-autosuggest', classes.root)}
+      className={clsx(
+        'search-autosuggest',
+        classes.root,
+        props.classes,
+      )}
     >
       <Autosuggest
         suggestions={suggestions}
@@ -212,7 +217,6 @@ const GeocodeSearch = ({ ...props }) => {
 const useStyles = makeStyles(theme => ({
   root: {
     position: 'relative',
-    width: '338px',
     border: `1px solid ${theme.extras.variables.colors.lightLightGray}`,
     color: theme.extras.variables.colors.lightGray,
     borderRadius: theme.shape.borderRadius,
@@ -227,14 +231,16 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 'auto',
     width: '100%',
     height: '40px',
+    zIndex: 3000,
     [theme.breakpoints.up('sm')]: {
       marginLeft: 'auto',
       marginRight: theme.spacing(1),
-      width: 'auto',
+      width: `${theme.extras.autoSuggest.width}px`,
     },
     '& .react-autosuggest__container': {
       flex: '1 1 80%',
-      width: '338px',
+      width: '100%',
+      zIndex: '3001',
       '& .react-autosuggest__input': {
         fontFamily: 'Fira Sans',
         height: '40px',
@@ -253,8 +259,7 @@ const useStyles = makeStyles(theme => ({
       },
       '& .react-autosuggest__suggestions-container': {
         top: '20px',
-        zIndex: '3000',
-        backgroundColor: 'transparent',
+        backgroundColor: '#fff',
         width: '100%',
         '& .react-autosuggest__suggestions-list': {
           border: '1px solid #ddd',
@@ -263,6 +268,7 @@ const useStyles = makeStyles(theme => ({
           padding: 0,
           marginBlockStart: '4px',
           '& .react-autosuggest__suggestion': {
+            backgroundColor: '#fff',
             height: 'auto',
             lineHeight: '1.5',
             padding: '8px 8px 8px 16px',

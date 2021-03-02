@@ -5,7 +5,6 @@ import {
   OPTIONS_ACTIVE_POINTS,
   CHOROPLETH_COLORS,
   SHAPE_ZOOM_LEVELS,
-  DDK_RED,
 } from './../../../../../constants/map'
 import { theme } from './../../theme'
 

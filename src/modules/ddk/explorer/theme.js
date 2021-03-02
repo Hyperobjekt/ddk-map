@@ -106,6 +106,12 @@ export const theme = createMuiTheme({
       edgePadding: 100,
       offset: 50,
     },
+    introModal: {
+      buttonWidth: 288,
+    },
+    autoSuggest: {
+      width: 338,
+    },
     variables: variables,
     SDScale: {
       offColors: [

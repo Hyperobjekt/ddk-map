@@ -212,14 +212,15 @@ export const CHOROPLETH_COLORS = [
   '#56778D',
 ]
 
-export const DDK_RED = '#C9422C'
-
 export const MAP_CONTROLS_CLASSES = [
   'map-legend',
   'mapboxgl-ctrl',
   'block-click',
   'map-notifications',
   'more-controls',
+  'map-fly-to-btn',
+  'modal-intro-parent',
+  'react-autosuggest__suggestions-container',
 ]
 
 /**

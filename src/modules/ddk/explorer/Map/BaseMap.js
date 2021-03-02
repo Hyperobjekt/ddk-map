@@ -298,31 +298,31 @@ const BaseMap = ({ ...props }) => {
     // console.log('mousemove, ', e)
     // If the cursor is over the legend or another control,
     // we need to clear hovered states.
-    // const hoveredElements = document.querySelectorAll(
-    //   ':hover',
-    // )
-    // const parents = []
-    // hoveredElements.forEach(el => {
-    //   parents.push(getParents(el))
-    // })
-    // const parentsList = Object.values(parents)
-    // const nodeList = Object.values(hoveredElements)
-    const isControl = false
-    // nodeList.some(node => {
-    //   // console.log('node, ', node, node.classList)
-    //   return MAP_CONTROLS_CLASSES.some(item =>
-    //     node.classList.contains(item),
-    //   )
-    // }) ||
-    // parentsList.some(node => {
-    //   // console.log('node, ', node, node.classList)
-    //   return MAP_CONTROLS_CLASSES.some(
-    //     item =>
-    //       node &&
-    //       node.classlist &&
-    //       node.classList.contains(item),
-    //   )
-    // })
+    const hoveredElements = document.querySelectorAll(
+      ':hover',
+    )
+    const parents = []
+    hoveredElements.forEach(el => {
+      parents.push(getParents(el))
+    })
+    const parentsList = Object.values(parents)
+    const nodeList = Object.values(hoveredElements)
+    const isControl =
+      nodeList.some(node => {
+        // console.log('node, ', node, node.classList)
+        return MAP_CONTROLS_CLASSES.some(item =>
+          node.classList.contains(item),
+        )
+      }) ||
+      parentsList.some(node => {
+        // console.log('node, ', node, node.classList)
+        return MAP_CONTROLS_CLASSES.some(
+          item =>
+            node &&
+            node.classlist &&
+            node.classList.contains(item),
+        )
+      })
     // console.log('isControl, ', isControl)
 
     // If we have moved the mouse outside of any tracts, remove
@@ -357,21 +357,21 @@ const BaseMap = ({ ...props }) => {
       // })
     }
     // If hovering a control, remove currently hovered.
-    // if (isControl) {
-    //   localMapRef.setFeatureState(
-    //     {
-    //       id: hoveredTract,
-    //       source: 'ddkids_tracts',
-    //       sourceLayer: 'tracts',
-    //     },
-    //     { hovered: false },
-    //   )
-    //   // Set previous hovered to null
-    //   setStoreValues({
-    //     hoveredTract: 0,
-    //     hoveredFeature: null,
-    //   })
-    // }
+    if (isControl) {
+      localMapRef.setFeatureState(
+        {
+          id: hoveredTract,
+          source: 'ddkids_tracts',
+          sourceLayer: 'tracts',
+        },
+        { hovered: false },
+      )
+      // Set previous hovered to null
+      setStoreValues({
+        hoveredTract: 0,
+        hoveredFeature: null,
+      })
+    }
     // If hovering a tract, and tract is different,
     // reset hovered.
     if (!!tracts && tracts.length > 0 && !isControl) {

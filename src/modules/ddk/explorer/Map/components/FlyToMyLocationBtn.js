@@ -35,17 +35,18 @@ const FlyToMyLocationBtn = ({ children, ...props }) => {
       navigator.permissions.query({ name: 'geolocation' })
     ) {
       // console.log('loaded. setting position.')
-      navigator.geolocation.getCurrentPosition(position => {
-        setPosition(position)
-      })
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          setPosition(position)
+        },
+        error => {
+          setPosition(false)
+        },
+      )
     }
   }, [])
 
-  if (
-    'geolocation' in navigator &&
-    navigator.permissions &&
-    navigator.permissions.query({ name: 'geolocation' })
-  ) {
+  if (!!position) {
     return (
       <Tooltip
         title={i18n.translate(`MAP_FLY_TO_MY`)}
@@ -55,7 +56,10 @@ const FlyToMyLocationBtn = ({ children, ...props }) => {
           aria-label={i18n.translate(`MAP_FLY_TO_MY`)}
           onClick={handleClick}
           placement={props.placement}
-          className={props.className}
+          className={clsx(
+            'map-fly-to-btn',
+            props.className,
+          )}
         >
           {children}
         </Button>

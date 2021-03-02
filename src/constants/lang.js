@@ -104,5 +104,6 @@ export const langSet = {
     MODAL_INTRO_GO_TO: ` Go to my location`,
     MODAL_INTRO_NAT: ` See the national map`,
     MODAL_INTRO_FAQ: ` Read FAQs`,
+    MODAL_INTRO_SEARCH: `Search for an address, city, or state`,
   },
 }

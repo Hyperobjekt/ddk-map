@@ -3,7 +3,7 @@ import i18n from '@pureartisan/simple-i18n'
 import AppBar from '@material-ui/core/AppBar'
 import { Button, Typography } from '@material-ui/core'
 import Toolbar from '@material-ui/core/Toolbar'
-import { makeStyles } from '@material-ui/core/styles'
+import { fade, makeStyles } from '@material-ui/core/styles'
 import shallow from 'zustand/shallow'
 
 import useStore from './../store'
@@ -62,6 +62,16 @@ const useHeaderStyles = makeStyles(theme => ({
   menuButton: {
     textTransform: 'none',
   },
+  search: {
+    marginRight: theme.spacing(1),
+    marginLeft: 'auto',
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: 'auto',
+      marginRight: theme.spacing(1),
+      width: `${theme.extras.autoSuggest.width}px`,
+    },
+  },
 }))
 
 const Header = ({ ...props }) => {
@@ -90,7 +100,7 @@ const Header = ({ ...props }) => {
             variant="h1"
             aria-label={i18n.translate('SITE_TITLE')}
           ></Typography>
-          <GeocodeSearch />
+          <GeocodeSearch classes={classes.search} />
           <Button className={classes.menuButton}>
             <HamburgerIcon />
             {i18n.translate(`BTN_MENU`)}
