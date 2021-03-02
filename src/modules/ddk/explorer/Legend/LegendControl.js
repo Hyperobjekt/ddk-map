@@ -184,7 +184,7 @@ const LegendControl = ({ classes }) => {
             )}
             current={activeNorm}
             handleChange={handleActiveNorm}
-            showHelp={true}
+            showHelp={i18n.translate(`LEGEND_NORM_HELP`)}
             label={i18n.translate('LEGEND_COMPARE')}
             className={clsx('block-click')}
           ></SelectBox>

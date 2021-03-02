@@ -107,5 +107,6 @@ export const langSet = {
     MODAL_INTRO_NAT: ` See the national map`,
     MODAL_INTRO_FAQ: ` Read FAQs`,
     MODAL_INTRO_SEARCH: `Search for an address, city, or state`,
+    LEGEND_NORM_HELP: `This data can only be compared to other neighborhoods in this metro area. See FAQ for more information.`,
   },
 }

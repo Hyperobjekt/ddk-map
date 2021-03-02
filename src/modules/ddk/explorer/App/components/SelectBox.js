@@ -4,6 +4,7 @@ import {
   Select,
   MenuItem,
   Icon,
+  Tooltip,
 } from '@material-ui/core'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
@@ -59,11 +60,24 @@ const SelectBox = ({ ...props }) => {
       <label className={classes.label} id="selectLabel">
         {props.label}
       </label>
-      {props.showHelp && (
-        <Icon
-          className={classes.help}
-          component={HelpOutlineIcon}
-        ></Icon>
+      {props.showHelp && props.showHelp.length > 0 && (
+        <Tooltip
+          title={
+            <React.Fragment>
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: props.showHelp,
+                }}
+              ></span>
+            </React.Fragment>
+          }
+          arrow
+        >
+          <Icon
+            className={classes.help}
+            component={HelpOutlineIcon}
+          ></Icon>
+        </Tooltip>
       )}
       <Select
         labelId="selectLabel"
