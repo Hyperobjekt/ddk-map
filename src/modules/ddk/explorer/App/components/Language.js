@@ -9,7 +9,7 @@ import useStore from './../../store'
  * are updated, it re-initializes the translation object.
  */
 const Language = props => {
-  console.log('language(), ', props.lang, props.langSet)
+  // console.log('language(), ', props.lang, props.langSet)
   const setStoreValues = useStore(
     state => state.setStoreValues,
   )
@@ -43,7 +43,6 @@ const Language = props => {
     }
     // let lang
     if (!!props.langSet) {
-      console.log('setting langset', props.langSet)
       setLang(props.langSet)
     }
     initLang()
