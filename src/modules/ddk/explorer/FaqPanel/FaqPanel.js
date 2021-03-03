@@ -126,11 +126,11 @@ const FaqPanel = () => {
     <div className={classes.root}>
       <div className={classes.container}>
         <div>
-          Frequently Asked Questions
+          {i18n.translate('FAQ_TITLE')}
         </div>
         <div className={classes.allContainer}>
           <Button onClick={(e) => {handleEvent('openAll', e)}} className={classes.all}>
-            Open All
+            {i18n.translate('FAQ_OPEN_BTN')}
           </Button>
         </div>
         <div className={classes.faqContainer}>

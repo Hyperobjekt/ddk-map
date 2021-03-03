@@ -135,9 +135,9 @@ const ControlPanel = ({ ...props }) => {
           >
             <div>
               <RoomOutlinedIcon fontSize={'large'}/>
-              <div className={classes.buttonLabel}>
-                Location<br />
-                Details
+              <div 
+                className={classes.buttonLabel}
+                dangerouslySetInnerHTML={{__html: i18n.translate('CONTROL_TRACT_BTN')}}>
               </div>
             </div>
           </IconButton>
@@ -153,7 +153,7 @@ const ControlPanel = ({ ...props }) => {
             <div>
               <ShareOutlinedIcon fontSize={'large'} />
               <div className={classes.buttonLabel}>
-                Share
+                {i18n.translate('CONTROL_SHARE_BTN')}
               </div>
             </div>
           </IconButton>
@@ -169,7 +169,7 @@ const ControlPanel = ({ ...props }) => {
             <div>
               <HelpOutlineIcon fontSize={'large'}/>
               <div className={classes.buttonLabel}>
-                FAQs
+                {i18n.translate('CONTROL_FAQ_BTN')}
               </div>
             </div>
           </IconButton>
