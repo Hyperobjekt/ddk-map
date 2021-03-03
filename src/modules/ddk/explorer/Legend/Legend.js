@@ -63,7 +63,7 @@ const useLegendStyles = makeStyles(theme => ({
     overflow: 'hidden',
   },
   controlActive: {
-    height: 280,
+    height: 295,
   },
   row: {
     width: '100%',

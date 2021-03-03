@@ -89,11 +89,25 @@ const styles = theme => ({
     fontWeight: '500',
   },
   tooltipSwitchRow: {
-    marginTop: '1rem',
+    marginTop: '0.5rem',
   },
   switchLabel: {},
   switchContainer: {
     marginLeft: 0,
+    fontSize: '12px',
+    '& .MuiFormControlLabel-label': {
+      fontSize: '12px',
+      fontFamily: 'Fira Sans',
+      color: theme.extras.variables.colors.lightGray,
+    },
+    '& .MuiSwitch-track': {
+      backgroundColor: `${theme.extras.variables.colors.ddkRed} !important`,
+      opacity: `1 !important`,
+      // height: '18px',
+    },
+    '& .MuiIconButton-label': {
+      color: '#fff',
+    },
   },
 })
 
@@ -190,7 +204,6 @@ const LegendControl = ({ classes }) => {
           className={classes.switchContainer}
           control={
             <Switch
-              size="small"
               checked={displayPopup}
               onChange={toggleShowPopup}
               name="ToolCheck"
