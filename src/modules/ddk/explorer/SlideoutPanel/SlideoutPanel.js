@@ -44,9 +44,9 @@ const useStyles = makeStyles(theme => ({
   modal: {
     // inset: '10vh 10vw !important',
     top: '10vh !important',
-    bottom: '10vh !important',
     left: '10vw !important',
-    right: '10vw !important',
+    height: '80vh',
+    width: '80vw',
     [theme.breakpoints.up('sm')]: {
       display: 'none',
     },

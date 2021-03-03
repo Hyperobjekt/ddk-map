@@ -25,8 +25,11 @@ const useStyles = makeStyles(theme => ({
       theme.extras.variables.colors.lightLightGray,
   },
   content: {
-    padding: '42px 16px',
+    padding: '42px 16px 0px',
     height: '100%',
+    boxSizing: 'border-box',
+    display: 'flex',
+    flexDirection: 'column'
   },
   h2: {
     fontWeight: 600,
@@ -88,11 +91,7 @@ const useStyles = makeStyles(theme => ({
   },
   tractScrollGroup: {
     overflowY: 'scroll',
-    height: '100%',
-    marginBottom: '15rem',
-  },
-  subindex: {
-    marginBottom: '20rem',
+    flexGrow: '1',
   },
 }))
 
@@ -314,7 +313,6 @@ const TractPanel = () => {
             <div
               className={clsx(
                 'tract-panel-pad-subindices',
-                classes.subindex,
               )}
             >
               {SUB_INDICES.map((el, i) => {

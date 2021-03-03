@@ -35,6 +35,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   collapseOpen: {
+    overflowX: 'hidden',
     height: 'auto',
     maxHeight: '1200px',
     transition: 'max-height 200ms ease-in-out',
