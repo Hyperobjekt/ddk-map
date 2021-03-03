@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import {
   Backdrop,
   Fade,
+  Hidden,
   IconButton,
   Modal,
 } from '@material-ui/core'
@@ -13,6 +14,7 @@ import CloseIcon from '@material-ui/icons/Close'
 
 import useStore from './../store'
 import TractPanel from './../TractPanel'
+import FaqPanel from './../FaqPanel'
 
 // Styles for this component.
 const useStyles = makeStyles(theme => ({
@@ -42,9 +44,9 @@ const useStyles = makeStyles(theme => ({
   modal: {
     // inset: '10vh 10vw !important',
     top: '10vh !important',
-    bottom: '10vh !important',
     left: '10vw !important',
-    right: '10vw !important',
+    height: '80vh',
+    width: '80vw',
     [theme.breakpoints.up('sm')]: {
       display: 'none',
     },
@@ -52,11 +54,12 @@ const useStyles = makeStyles(theme => ({
     outline: 0,
   },
   modalContent: {
-    border: '1px solid #000',
+    //border: '1px solid #000',
     outline: 0,
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(3, 4, 3),
     height: '100%',
+    borderRadius: '5px',
+    overflow: 'hidden'
   },
   button: {
     padding: '1.5rem',
@@ -97,7 +100,12 @@ const SlideoutPanel = ({ ...props }) => {
         >
           <CloseIcon />
         </IconButton>
-        <TractPanel />
+        {slideoutPanel.panel === 'tract' &&
+          <TractPanel />
+        }
+        {slideoutPanel.panel === 'faq' &&
+          <FaqPanel />
+        }
       </div>
 
       <Modal

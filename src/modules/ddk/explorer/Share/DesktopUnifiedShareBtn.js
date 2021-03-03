@@ -14,7 +14,7 @@ import { UnifiedShareModal } from '.'
 import { ShareLinkModal } from '.'
 import { ShareEmbedModal } from '.'
 import { IconButton, Popper } from '@material-ui/core'
-import ShareIcon from '@material-ui/icons/Share'
+import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
 import useStore from '../store'
 
 // Styles for this component.
@@ -47,6 +47,9 @@ const useStyles = makeStyles(theme => ({
     },
     '& .sr-only': { display: 'none' },
   },
+  shareIcon: {
+    color: 'white'
+  }
 }))
 
 const DesktopUnifiedShareBtn = ({ ...props }) => {
@@ -91,7 +94,7 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
         onClick={openShareModal}
         className={clsx(classes.popperButton)}
       >
-        <ShareIcon />
+        <ShareOutlinedIcon fontSize={'large'} className={classes.shareIcon} />
         <Popper
           id={id}
           open={open}

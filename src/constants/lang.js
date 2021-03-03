@@ -96,6 +96,11 @@ export const langSet = {
     WARN_STATE_NORM_GENERIC: `Your location is being compared to others in the state. To make comparisons across states switch to national norming.`,
     WARN_STATE_NORM: `Your location is being compared to others in {state}. To make comparisons across states switch to national norming.`,
     WARN_NATL_NORM: `Your location is being compared to others across the nation.`,
+    FAQ: [
+      {title: "How can I use this information?", content: "You can't! Sorry!"},
+      {title: "How can't I use this information?", content: "You can't! Sorry!"},
+      {title: "How can I choose between metro-normed, state-normed, and nationally-normed data?", content: "You can't! Sorry!"},
+    ],
     MAP_FLY_TO_STATE: `Fly to {state}`,
     MAP_RESET: `Reset map viewport`,
     MAP_FLY_TO_MY: `Fly to my location`,

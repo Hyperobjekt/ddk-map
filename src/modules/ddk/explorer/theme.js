@@ -35,6 +35,7 @@ export const variables = {
     criColor3: '#cabbf5',
     barHighlight: '#e94f34',
     cpLabelColor: '#606b44',
+    ddkBlue: '#013457',
     ddkLightRed: 'rgba(201, 66, 44, 0.1)',
     ddkLightRedHex: 'rgba(248, 231, 229, 1)',
     ddkNavy: '#045781',
