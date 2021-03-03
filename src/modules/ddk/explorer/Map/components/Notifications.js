@@ -66,7 +66,9 @@ const Notifications = () => {
     if (norm === 's') {
       if (centerState !== 0) {
         str = i18n.translate(`WARN_STATE_NORM`, {
-          state: getStateFromFips(centerState).full,
+          state: getStateFromFips(
+            String(centerState).padStart(2, '0'),
+          ).full,
         })
       } else {
         str = i18n.translate(`WARN_STATE_NORM_GENERIC`)
