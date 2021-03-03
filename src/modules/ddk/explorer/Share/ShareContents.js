@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
-import shallow from 'zustand/shallow'
 
 import {
   TwitterShareBtn,
@@ -11,10 +10,6 @@ import {
   LinkShareBtn,
   EmbedShareBtn,
 } from '.'
-// import { FacebookShareBtn } from '.'
-// import { MailShareBtn } from '.'
-import { DEFAULT_ROUTE } from '../../../../constants/map'
-import useStore from '../store'
 
 // Styles for this component.
 const useStyles = makeStyles(theme => ({
@@ -127,49 +122,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ShareContents = ({ children, ...props }) => {
-  const {
-    setStoreValues,
-    shareHash,
-    eventShareLink,
-    eventShareEmbed,
-  } = useStore(
-    state => ({
-      setStoreValues: state.setStoreValues,
-      shareHash: state.shareHash,
-      eventShareLink: state.eventShareLink,
-      eventShareEmbed: state.eventShareEmbed,
-    }),
-    shallow,
-  )
-
-  // Update value for share link only when window object exists.
-  const [shareLinkValue, setShareLinkValue] = useState('')
-  const [shareEmbedValue, setShareEmbedValue] = useState('')
-  useEffect(() => {
-    const linkValue = !!shareHash
-      ? window.location.origin +
-        window.location.pathname +
-        shareHash
-      : window.location.origin +
-        window.location.pathname +
-        DEFAULT_ROUTE
-
-    setShareLinkValue(linkValue)
-    const embedLink = linkValue.replace('explorer', 'embed')
-    const embedValue = `<iframe src="${embedLink}" style="width:720px;height:405px;max-width:100%;" frameborder="0"></iframe>`
-    setShareEmbedValue(embedValue)
-  }, [shareHash])
-
-  const onCopyLink = () => {
-    copy(shareLinkValue)
-    setStoreValues({ eventShareLink: eventShareLink + 1 })
-  }
-
-  const onCopyEmbed = () => {
-    copy(shareEmbedValue)
-    setStoreValues({ eventShareEmbed: eventShareEmbed + 1 })
-  }
-
   const classes = useStyles()
 
   return (

@@ -19,11 +19,14 @@ const styles = makeStyles(theme => ({
     position: 'absolute',
     bottom: '120px',
     right: '16px',
-    display: 'flex',
     width: '40px',
     height: 'auto',
     flexWrap: 'wrap',
     justifyContent: 'flex-end',
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+    },
     '& button': {
       width: '40px',
       height: '40px',

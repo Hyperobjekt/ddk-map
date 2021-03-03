@@ -151,8 +151,6 @@ const useStore = create((set, get) => ({
   // Have strings from cms been loaded.
   cmsStringsLoaded: false,
   shareLinkModal: false,
-  shareEmbedModal: false,
-  unifiedShareModal: false,
   // Whether or not to display slideout menu.
   showMenu: false,
   toggleShowMenu: () => {

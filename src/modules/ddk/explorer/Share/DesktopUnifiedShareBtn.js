@@ -252,7 +252,6 @@ const DesktopUnifiedShareBtn = ({ children, ...props }) => {
         <IconButton
           onClick={toggleShareTooltip}
           className={clsx(classes.close)}
-          disableRipple={true}
           id={`control_panel_share_btn`}
           aria-label={i18n.translate(`BTN_CLOSE`)}
         >

@@ -48,6 +48,7 @@ import {
 import MapPopup from './components/MapPopup'
 import Notifications from './components/Notifications'
 import MoreControlsContainer from './components/MoreControlsContainer'
+import { MobileShareBtn } from './../Share'
 
 const useStyles = makeStyles(theme => ({
   parent: {
@@ -76,7 +77,7 @@ const useStyles = makeStyles(theme => ({
   },
   navControls: {
     display: 'none',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'block',
     },
     position: 'absolute',
@@ -762,7 +763,12 @@ const BaseMap = ({ ...props }) => {
               )}
             </div>
             {activeView === 'explorer' && (
-              <MoreControlsContainer mapRef={localMapRef} />
+              <>
+                <MoreControlsContainer
+                  mapRef={localMapRef}
+                />
+                <MobileShareBtn />
+              </>
             )}
           </>
         }

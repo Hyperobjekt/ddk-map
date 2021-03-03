@@ -11,6 +11,7 @@ import Map from './../Map'
 import Legend from '../Legend'
 import IntroModal from './../IntroModal'
 import Menu from './../Menu'
+import { ShareModal } from './../Share'
 
 const useLayoutStyles = makeStyles(theme => ({
   root: {
@@ -20,11 +21,6 @@ const useLayoutStyles = makeStyles(theme => ({
     width: '100vw',
     height: '100vh',
     backgroundColor: theme.palette.background.default,
-  },
-  main: {
-    // marginTop:
-    //   theme.extras.variables.dimensions.navbarHeight,
-    // height: `calc(100vh - ${theme.extras.variables.dimensions.navbarHeight})`,
   },
 }))
 
@@ -44,6 +40,7 @@ const Layout = ({ ...props }) => {
         <Map />
         <Menu />
         <IntroModal />
+        <ShareModal />
       </main>
     </Paper>
   )
