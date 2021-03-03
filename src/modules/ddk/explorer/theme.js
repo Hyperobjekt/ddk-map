@@ -126,6 +126,7 @@ export const theme = createMuiTheme({
       cushionRight: 15,
       cushionTop: 25,
       zIndex: 13,
+      height: 295,
     },
     controlPanel: {
       width: '72px',

@@ -1,8 +1,20 @@
 import React from 'react'
 import i18n from '@pureartisan/simple-i18n'
-import { STATES } from './../../../../constants/map'
+import shallow from 'zustand/shallow'
+import { getStateFromFips } from '@hyperobjekt/us-states'
 
-const LegendChartHeaders = ({ activeNorm, classes }) => {
+import useStore from './../store'
+
+const LegendChartHeaders = ({ classes }) => {
+  const { activeNorm, centerMetro, centerState } = useStore(
+    state => ({
+      activeNorm: state.activeNorm,
+      centerMetro: state.centerMetro,
+      centerState: state.centerState,
+    }),
+    shallow,
+  )
+
   const SDArray = [
     i18n.translate(`SDSCALE_VLOW`),
     i18n.translate(`SDSCALE_LOW`),
@@ -14,16 +26,22 @@ const LegendChartHeaders = ({ activeNorm, classes }) => {
   const getChartSubtitle = geo => {
     switch (geo) {
       case 'n':
-        return 'the U.S'
+        return i18n.translate('GENERIC_THE_US')
       case 's':
         if (centerState > 0) {
-          return STATES[centerState].full
+          return getStateFromFips(
+            String(centerState).padStart(2, '0'),
+          )
+            ? getStateFromFips(
+                String(centerState).padStart(2, '0'),
+              ).full
+            : i18n.translate('GENERIC_THE_STATE')
         }
       case 'm':
         if (centerMetro > 0) {
-          return remoteJson.metros.data.find(
-            el => el.GEOID === centerMetro.toString(),
-          ).msaname15
+          return i18n.translate(centerMetro)
+            ? i18n.translate(centerMetro)
+            : i18n.translate('GENERIC_THE_METRO')
         }
     }
   }

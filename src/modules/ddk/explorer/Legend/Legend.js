@@ -63,7 +63,7 @@ const useLegendStyles = makeStyles(theme => ({
     overflow: 'hidden',
   },
   controlActive: {
-    height: 295,
+    height: theme.extras.Legend.height,
   },
   row: {
     width: '100%',
@@ -163,7 +163,7 @@ const useLegendStyles = makeStyles(theme => ({
   panel: {
     top: '0px',
     right: '284px',
-    height: '352px',
+    height: '100%', // '352px',
     width: '352px',
     padding: '16px 16px',
     zIndex: '-1',
@@ -442,6 +442,7 @@ const Legend = ({ ...props }) => {
                     panel: classes.panelSds,
                     cell: classes.sdsCell,
                   }}
+                  activeNorm={activeNorm}
                 />
                 <Chart
                   data={processData(

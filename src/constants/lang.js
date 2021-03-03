@@ -201,5 +201,8 @@ export const langSet = {
     CONTROL_PANEL_SHARE: `Share`,
     CONTROL_PANEL_LOCATION: `Location<br />Details`,
     CONTROL_PANEL_FAQS: `FAQs`,
+    GENERIC_THE_STATE: `the state`,
+    GENERIC_THE_METRO: `the metro area`,
+    GENERIC_THE_US: `the U.S`,
   },
 }
