@@ -97,6 +97,7 @@ const styles = makeStyles(theme => ({
 }))
 
 const FaqPanel = () => {
+  const faq = i18n.translate('FAQ')
   const [expanded, setExpanded] = useState(() => {
     var data = []
     i18n
@@ -123,6 +124,13 @@ const FaqPanel = () => {
       })
       setExpanded(data)
     }
+    if (val === 'hideAll') {
+      var data = []
+      expanded.forEach(el => {
+        data.push(false)
+      })
+      setExpanded(data)
+    }
   }
 
   const classes = styles()
@@ -134,11 +142,17 @@ const FaqPanel = () => {
         <div className={classes.allContainer}>
           <Button
             onClick={e => {
-              handleEvent('openAll', e)
+              if (expanded.every(el => el === true)) {
+                handleEvent('hideAll', e)
+              } else {
+                handleEvent('openAll', e)
+              }
             }}
             className={classes.all}
           >
-            Open All
+            {expanded.every(el => el === true)
+              ? 'hide all'
+              : 'Open All'}
           </Button>
         </div>
         <div className={classes.faqContainer}>
@@ -146,41 +160,40 @@ const FaqPanel = () => {
             .translate('FAQ', { returnObjects: true })
             .map((el, i) => {
               return (
-                <>
-                  <Accordion
-                    expanded={expanded[i]}
-                    onChange={e => {
-                      handleEvent(i, e)
+                <Accordion
+                  expanded={expanded[i]}
+                  onChange={e => {
+                    handleEvent(i, e)
+                  }}
+                  classes={{ root: classes.btn }}
+                  square={true}
+                  key={`faq-accordion-${i}`}
+                >
+                  <AccordionSummary
+                    classes={{
+                      root: classes.titleContainer,
+                      content: classes.title,
                     }}
-                    classes={{ root: classes.btn }}
-                    square={true}
+                    expandIcon={
+                      <ExpandMoreIcon
+                        className={classes.caret}
+                      />
+                    }
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
                   >
-                    <AccordionSummary
-                      classes={{
-                        root: classes.titleContainer,
-                        content: classes.title,
+                    <div>{el.title}</div>
+                  </AccordionSummary>
+                  <AccordionDetails
+                    classes={{ root: classes.content }}
+                  >
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: el.content,
                       }}
-                      expandIcon={
-                        <ExpandMoreIcon
-                          className={classes.caret}
-                        />
-                      }
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                    >
-                      <div>{el.title}</div>
-                    </AccordionSummary>
-                    <AccordionDetails
-                      classes={{ root: classes.content }}
-                    >
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: el.content,
-                        }}
-                      ></div>
-                    </AccordionDetails>
-                  </Accordion>
-                </>
+                    ></div>
+                  </AccordionDetails>
+                </Accordion>
               )
             })}
         </div>
