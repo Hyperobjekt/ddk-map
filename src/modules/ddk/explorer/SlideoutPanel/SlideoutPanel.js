@@ -122,7 +122,10 @@ const SlideoutPanel = ({ ...props }) => {
             >
               <CloseIcon />
             </IconButton>
-            <TractPanel />
+            {slideoutPanel.panel === 'tract' && (
+              <TractPanel />
+            )}
+            {slideoutPanel.panel === 'faq' && <FaqPanel />}
           </div>
         </Fade>
       </Modal>
