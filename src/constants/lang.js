@@ -97,9 +97,22 @@ export const langSet = {
     WARN_STATE_NORM: `Your location is being compared to others in {state}. To make comparisons across states switch to national norming.`,
     WARN_NATL_NORM: `Your location is being compared to others across the nation.`,
     FAQ: [
-      {title: "How can I use this information?", content: "You can't! Sorry!"},
-      {title: "How can't I use this information?", content: "You can't! Sorry!"},
-      {title: "How can I choose between metro-normed, state-normed, and nationally-normed data?", content: "You can't! Sorry!"},
+      {
+        title: 'How can I use this information?',
+        content:
+          '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
+      },
+      {
+        title: 'Where does this information come from?',
+        content:
+          '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
+      },
+      {
+        title:
+          'How can I choose between metro-normed, state-normed, and nationally-normed data?',
+        content:
+          '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
+      },
     ],
     MAP_FLY_TO_STATE: `Fly to {state}`,
     MAP_RESET: `Reset map viewport`,
