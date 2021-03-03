@@ -96,6 +96,7 @@ export const langSet = {
     WARN_STATE_NORM_GENERIC: `Your location is being compared to others in the state. To make comparisons across states switch to national norming.`,
     WARN_STATE_NORM: `Your location is being compared to others in {state}. To make comparisons across states switch to national norming.`,
     WARN_NATL_NORM: `Your location is being compared to others across the nation.`,
+    PANEL_FAQ_TITLE: `Frequently asked questions`,
     FAQ: [
       {
         title: 'How can I use this information?',

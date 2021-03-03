@@ -58,6 +58,9 @@ const styles = makeStyles(theme => ({
   title: {
     fontSize: '16px',
     margin: '12px 0px',
+    lineHeight: '24px',
+    letterSpacing: '0.25px',
+    fontWeight: 600,
     '&.Mui-expanded': {
       margin: '12px 0px',
     },
@@ -75,6 +78,8 @@ const styles = makeStyles(theme => ({
   },
   content: {
     fontSize: '14px',
+    lineHeight: '21px',
+    letterSpacing: '0.25px',
     borderTop: `1px solid ${theme.extras.variables.colors.lightLightGray}`,
     padding: '16px 16px',
     color: theme.extras.variables.colors.lightGray,
@@ -93,6 +98,12 @@ const styles = makeStyles(theme => ({
     overflowX: 'hidden',
     width: '100%',
     flexGrow: '1',
+  },
+  h3: {
+    fontSize: '20px',
+    fontWeight: 600,
+    lineHeight: '20px',
+    letterSpacing: '0.25px',
   },
 }))
 
@@ -138,7 +149,9 @@ const FaqPanel = () => {
   return (
     <div className={classes.root}>
       <div className={classes.container}>
-        <div>Frequently Asked Questions</div>
+        <h3 className={clsx(classes.h3)}>
+          {i18n.translate(`PANEL_FAQ_TITLE`)}
+        </h3>
         <div className={classes.allContainer}>
           <Button
             onClick={e => {
