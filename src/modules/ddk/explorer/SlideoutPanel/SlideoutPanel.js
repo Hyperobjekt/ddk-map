@@ -59,13 +59,13 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     height: '100%',
     borderRadius: '5px',
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   button: {
-    padding: '1.5rem',
+    padding: '1rem',
     position: 'absolute',
-    top: 0,
-    right: 0,
+    top: 6,
+    right: 6,
   },
 }))
 
@@ -100,12 +100,8 @@ const SlideoutPanel = ({ ...props }) => {
         >
           <CloseIcon />
         </IconButton>
-        {slideoutPanel.panel === 'tract' &&
-          <TractPanel />
-        }
-        {slideoutPanel.panel === 'faq' &&
-          <FaqPanel />
-        }
+        {slideoutPanel.panel === 'tract' && <TractPanel />}
+        {slideoutPanel.panel === 'faq' && <FaqPanel />}
       </div>
 
       <Modal
