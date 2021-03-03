@@ -107,8 +107,8 @@ const useStore = create((set, get) => ({
   // Tracks whether a control is hovered.
   controlHovered: false,
   // Settings pertaining to viewport state.
-  viewport: DEFAULT_VIEWPORT,
-  resetViewport: DEFAULT_VIEWPORT,
+  viewport: { ...DEFAULT_VIEWPORT },
+  resetViewport: { ...DEFAULT_VIEWPORT },
   setViewport: viewport =>
     set(state => ({
       viewport: { ...state.viewport, ...viewport },

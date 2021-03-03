@@ -10,20 +10,15 @@ import useStore from './../../store'
 import { DEFAULT_VIEWPORT } from './../../../../../constants/map'
 
 const FlyToResetBtn = ({ children, ...props }) => {
-  const { flyToLatLon } = useStore(
+  const { flyToReset } = useStore(
     state => ({
-      flyToLatLon: state.flyToLatLon,
+      flyToReset: state.flyToReset,
     }),
     shallow,
   )
-  // console.log('DEFAULT_VIEWPORT', DEFAULT_VIEWPORT)
 
   const handleClick = () => {
-    flyToLatLon(
-      DEFAULT_VIEWPORT.latitude,
-      DEFAULT_VIEWPORT.longitude,
-      DEFAULT_VIEWPORT.zoom,
-    )
+    flyToReset()
   }
 
   return (

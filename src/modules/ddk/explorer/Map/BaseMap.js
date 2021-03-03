@@ -128,7 +128,6 @@ const BaseMap = ({ ...props }) => {
   const {
     activeView,
     dataVersion,
-    // breakpoint,
     activeYear,
     activePointLayers,
     activeMetric,
@@ -146,7 +145,6 @@ const BaseMap = ({ ...props }) => {
     state => ({
       activeView: state.activeView,
       dataVersion: state.dataVersion,
-      // breakpoint: state.breakpoint,
       loadYears: state.loadYears,
       activeYear: state.activeYear,
       activePointLayers: state.activePointLayers,
@@ -720,9 +718,7 @@ const BaseMap = ({ ...props }) => {
       <Mapbox
         ref={mapRef}
         defaultViewport={{
-          zoom: DEFAULT_VIEWPORT.zoom,
-          latitude: DEFAULT_VIEWPORT.latitude,
-          longitude: DEFAULT_VIEWPORT.longitude,
+          ...DEFAULT_VIEWPORT,
         }}
         MapGLProps={mapProps}
         style={{ width: '100%', height: '100%' }}

@@ -10,7 +10,6 @@ import RouteManager from './../RouteManager/RouteManager'
 import { Tracking } from './../Tracking'
 import useStore from './../store'
 import { theme } from './../theme'
-import { ROUTE_SET } from './../../../../constants/map'
 import Language from './components/Language'
 import SEO from './components/SEO'
 import NormingManager from './../NormingManager'
@@ -187,10 +186,10 @@ const App = props => {
       <Language {...props} />
       <SEO />
       <DataLoader />
-      <RouteManager routeSet={ROUTE_SET} />
+      <RouteManager />
       <Tracking />
       <NormingManager />
-      <Layout></Layout>
+      <Layout />
     </ThemeProvider>
   )
 }

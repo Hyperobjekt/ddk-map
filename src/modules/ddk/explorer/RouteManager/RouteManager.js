@@ -17,6 +17,7 @@ import {
   ROUTE_METRIC,
   ROUTE_NORM,
   ROUTE_DATA_VERSION,
+  ROUTE_SET,
 } from './../../../../constants/map'
 import { validateRouteOption } from './utils/utils'
 
@@ -282,11 +283,11 @@ const RouteManager = props => {
         // Construct params object from hash.
         const params = getParamsFromPathname(
           path,
-          props.routeSet,
+          ROUTE_SET,
         )
         if (
           !isEmptyRoute(path) &&
-          isRouteValid(params, props.routeSet) &&
+          isRouteValid(params, ROUTE_SET) &&
           path !== shareHash
         ) {
           // console.log('updating hash')
@@ -328,16 +329,13 @@ const RouteManager = props => {
       // Get path.
       const path = window.location.hash
       // Construct params object from hash.
-      const params = getParamsFromPathname(
-        path,
-        props.routeSet,
-      )
+      const params = getParamsFromPathname(path, ROUTE_SET)
       const localStorageHash = localStorage.getItem(
         'ddk_hash',
       )
       if (
         !isEmptyRoute(path) &&
-        isRouteValid(params, props.routeSet)
+        isRouteValid(params, ROUTE_SET)
       ) {
         // Update state based on params
         // console.log(
@@ -349,9 +347,9 @@ const RouteManager = props => {
           // console.log('localStorage exists')
           const lsparams = getParamsFromPathname(
             localStorageHash,
-            props.routeSet,
+            ROUTE_SET,
           )
-          if (isRouteValid(lsparams, props.routeSet)) {
+          if (isRouteValid(lsparams, ROUTE_SET)) {
             // console.log(
             //   'localStorage is valid, setting state from localStorage',
             // )
