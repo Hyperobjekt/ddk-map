@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
       height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px)`,
       top: `${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px`,
     },
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
     boxShadow: theme.shadows[3],
@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
     left: '10vw !important',
     height: '80vh',
     width: '80vw',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'none',
     },
     boxShadow: theme.shadows[3],
