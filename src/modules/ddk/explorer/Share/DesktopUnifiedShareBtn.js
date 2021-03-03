@@ -67,6 +67,9 @@ const useStyles = makeStyles(theme => ({
     '& .MuiIconButton-label': {
       flexWrap: 'wrap',
       color: '#fff',
+      '& svg': {
+        marginBottom: '3px',
+      },
     },
   },
   popper: {
