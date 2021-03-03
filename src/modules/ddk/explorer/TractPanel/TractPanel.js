@@ -2,7 +2,11 @@ import React, { useState } from 'react'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
-import { Tooltip, Button } from '@material-ui/core'
+import {
+  Tooltip,
+  Button,
+  CircularProgress,
+} from '@material-ui/core'
 import shallow from 'zustand/shallow'
 
 import useStore from './../store'
@@ -92,6 +96,12 @@ const useStyles = makeStyles(theme => ({
   tractScrollGroup: {
     overflowY: 'scroll',
     flexGrow: '1',
+  },
+  spinner: {
+    margin: '6rem auto',
+  },
+  rootNoData: {
+    display: 'flex',
   },
 }))
 
@@ -375,7 +385,23 @@ const TractPanel = () => {
       </div>
     )
   } else {
-    return ''
+    return (
+      <div
+        className={clsx(
+          'tract-panel-parent',
+          classes.root,
+          classes.rootNoData,
+        )}
+      >
+        <CircularProgress
+          color="primary"
+          className={clsx(
+            'tract-panel-spinner',
+            classes.spinner,
+          )}
+        />
+      </div>
+    )
   }
 }
 

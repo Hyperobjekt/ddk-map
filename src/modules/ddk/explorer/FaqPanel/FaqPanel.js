@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
-import { Button, Collapse, Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core'
+import {
+  Button,
+  Collapse,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '@material-ui/core'
 import shallow from 'zustand/shallow'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
@@ -43,24 +49,24 @@ const styles = makeStyles(theme => ({
       margin: '7px 0px',
     },
     '&::before': {
-      display: 'none'
+      display: 'none',
     },
     '&.Mui-expanded': {
       margin: '7px 0px',
-    }
+    },
   },
   title: {
     fontSize: '16px',
     margin: '12px 0px',
     '&.Mui-expanded': {
-      margin: '12px 0px'
-    }
+      margin: '12px 0px',
+    },
   },
   titleContainer: {
     minHeight: '48px',
     '&.Mui-expanded': {
-      minHeight: '48px'
-    }
+      minHeight: '48px',
+    },
   },
   caret: {
     width: '30px',
@@ -86,26 +92,25 @@ const styles = makeStyles(theme => ({
     overflowY: 'auto',
     overflowX: 'hidden',
     width: '100%',
-    flexGrow: '1'
-  }
+    flexGrow: '1',
+  },
 }))
 
 const FaqPanel = () => {
-  
-  const [expanded, setExpanded] = useState(
-    () => {
-      var data = []
-      i18n.translate('FAQ', { returnObjects: true }).forEach((el) => {
-        data.push(false);
+  const [expanded, setExpanded] = useState(() => {
+    var data = []
+    i18n
+      .translate('FAQ', { returnObjects: true })
+      .forEach(el => {
+        data.push(false)
       })
-      return data
-    }
-  )
+    return data
+  })
 
   const handleEvent = (val, e) => {
     if (typeof val === 'number') {
       var data = []
-      expanded.forEach((el) => {
+      expanded.forEach(el => {
         data.push(el)
       })
       data[val] = !data[val]
@@ -113,7 +118,7 @@ const FaqPanel = () => {
     }
     if (val === 'openAll') {
       var data = []
-      expanded.forEach((el) => {
+      expanded.forEach(el => {
         data.push(true)
       })
       setExpanded(data)
@@ -125,35 +130,69 @@ const FaqPanel = () => {
   return (
     <div className={classes.root}>
       <div className={classes.container}>
+<<<<<<< HEAD
         <div>
           {i18n.translate('FAQ_TITLE')}
         </div>
         <div className={classes.allContainer}>
           <Button onClick={(e) => {handleEvent('openAll', e)}} className={classes.all}>
             {i18n.translate('FAQ_OPEN_BTN')}
+=======
+        <div>Frequently Asked Questions</div>
+        <div className={classes.allContainer}>
+          <Button
+            onClick={e => {
+              handleEvent('openAll', e)
+            }}
+            className={classes.all}
+          >
+            Open All
+>>>>>>> 83cade53c2e4f6d00751743af9b946c727629f4f
           </Button>
         </div>
         <div className={classes.faqContainer}>
-          {i18n.translate('FAQ', { returnObjects: true }).map((el, i) => {
-            return (
-              <>
-                <Accordion expanded={expanded[i]} onChange={(e) => {handleEvent(i, e)}} classes={{root: classes.btn}} square={true}>
-                  <AccordionSummary
-                    classes={{root: classes.titleContainer, content: classes.title}}
-                    expandIcon={<ExpandMoreIcon className={classes.caret}/>}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
+          {i18n
+            .translate('FAQ', { returnObjects: true })
+            .map((el, i) => {
+              return (
+                <>
+                  <Accordion
+                    expanded={expanded[i]}
+                    onChange={e => {
+                      handleEvent(i, e)
+                    }}
+                    classes={{ root: classes.btn }}
+                    square={true}
                   >
-                    <div>{el.title}</div>
-                  </AccordionSummary>
-                  <AccordionDetails classes={{root: classes.content}}>
-                    <div>{el.content}</div>
-                  </AccordionDetails>
-                </Accordion>
-              </>
-            )
-          })}    
-        </div>    
+                    <AccordionSummary
+                      classes={{
+                        root: classes.titleContainer,
+                        content: classes.title,
+                      }}
+                      expandIcon={
+                        <ExpandMoreIcon
+                          className={classes.caret}
+                        />
+                      }
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                    >
+                      <div>{el.title}</div>
+                    </AccordionSummary>
+                    <AccordionDetails
+                      classes={{ root: classes.content }}
+                    >
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: el.content,
+                        }}
+                      ></div>
+                    </AccordionDetails>
+                  </Accordion>
+                </>
+              )
+            })}
+        </div>
       </div>
     </div>
   )
