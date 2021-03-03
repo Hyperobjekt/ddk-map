@@ -2,10 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
+import { FiMail } from 'react-icons/fi'
+import { IconButton } from '@material-ui/core'
 
 import useStore from './../store'
-import { IconButton } from '@material-ui/core'
-import EmailIcon from '@material-ui/icons/Email'
+
 import { onMailShare, constructShareLink } from './Share'
 
 const MailShareBtn = ({ children, ...props }) => {
@@ -39,7 +40,7 @@ const MailShareBtn = ({ children, ...props }) => {
       <IconButton
         label={i18n.translate(`BUTTON_SHARE_EMAIL`)}
       >
-        <EmailIcon className="social-icon" />
+        <FiMail className="social-icon" />
         <span className="sr-only">
           {i18n.translate(`BUTTON_SHARE_EMAIL`)}
         </span>

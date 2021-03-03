@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import TwitterIcon from '@material-ui/icons/Twitter'
 import clsx from 'clsx'
+import { FiTwitter } from 'react-icons/fi'
 
 import useStore from './../store'
 import { onTwitterShare, constructShareLink } from './Share'
@@ -39,7 +40,7 @@ const TwitterShareBtn = ({ children, ...props }) => {
       <IconButton
         label={i18n.translate(`BUTTON_SHARE_TWITTER`)}
       >
-        <TwitterIcon className="social-icon" />
+        <FiTwitter className="social-icon" />
         <span className="sr-only">
           {i18n.translate(`BUTTON_SHARE_TWITTER`)}
         </span>

@@ -113,7 +113,7 @@ SelectBox.propTypes = {
   label: PropTypes.string,
   current: PropTypes.string,
   handleChange: PropTypes.func,
-  showHelp: PropTypes.bool,
+  showHelp: PropTypes.string,
 }
 
 export default SelectBox

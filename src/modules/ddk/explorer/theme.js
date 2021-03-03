@@ -39,6 +39,10 @@ export const variables = {
     ddkLightRed: 'rgba(201, 66, 44, 0.1)',
     ddkLightRedHex: 'rgba(248, 231, 229, 1)',
     ddkNavy: '#045781',
+    ddkAnotherNavy: `#3B5998`,
+    ddkAnotherGray: `#5E5E5E`,
+    ddkAnotherOneOffBlue: `#1DA1F2`,
+    ddkALighterOneOffBlue: `rgba(29,161,242,0.1)`,
   },
   dimensions: {
     navbarHeight: '64px',
@@ -130,6 +134,9 @@ export const theme = createMuiTheme({
     slideoutPanel: {
       width: '416px',
       zIndex: 10,
+    },
+    sharePopper: {
+      width: 320,
     },
     mapPopup: {
       width: 287,

@@ -122,6 +122,8 @@ const useStore = create((set, get) => ({
     active: false,
     panel: 'tract', // 'tract' or 'share' or 'faq'
   },
+  // Popover for share button in control panel
+  showSharePopover: false,
   legendPanel: {
     active: false,
     activated: false,

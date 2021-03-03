@@ -110,7 +110,7 @@ const IntroModal = () => {
     })
   }
 
-  const [position, setPosition] = useState(null)
+  const [position, setPosition] = useState(false)
 
   const flyToMyLocation = () => {
     // console.log('flyToMyLocation')
@@ -133,9 +133,11 @@ const IntroModal = () => {
       // console.log('loaded. setting position.')
       navigator.geolocation.getCurrentPosition(
         position => {
+          // console.log('got geocoding positoin')
           setPosition(position)
         },
         error => {
+          // console.log('did not get position')
           setPosition(false)
         },
       )

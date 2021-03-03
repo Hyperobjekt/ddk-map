@@ -19,13 +19,13 @@ export const langSet = {
     MODAL_SHARE_LINK_HEAD: 'Share a Link',
     MODAL_SHARE_LINK_INSTR:
       'Copy the link below to share the current view of the Explorer.',
-    MODAL_SHARE_LINK_INPUT: 'Current View URL',
+    MODAL_SHARE_LINK_INPUT: 'Current page link',
     BUTTON_SHARE_EMBED: 'Embed this map',
     DIALOG_SHARE_EMBED: 'share text', // TODO
     MODAL_SHARE_EMBED_HEAD: 'Embed this map',
     MODAL_SHARE_EMBED_INSTR:
       'Use the code below to embed the map on your website. The map will match your current map view and selections in the explorer.',
-    MODAL_SHARE_EMBED_INPUT: 'Map Embed Code',
+    MODAL_SHARE_EMBED_INPUT: 'Embed code',
     UNIT_MCM: '&#181;g/m&#0179;',
     UNIT_MCM_DESC: `Micrograms per cubic meter`,
     UNIT_PPB: 'ppb',
@@ -195,5 +195,8 @@ export const langSet = {
         },
       ],
     ],
+    CONTROL_PANEL_SHARE: `Share`,
+    CONTROL_PANEL_LOCATION: `Location<br />Details`,
+    CONTROL_PANEL_FAQS: `FAQs`,
   },
 }

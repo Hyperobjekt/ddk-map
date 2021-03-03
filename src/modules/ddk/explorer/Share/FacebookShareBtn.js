@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
-import FacebookIcon from '@material-ui/icons/Facebook'
+import { FiFacebook } from 'react-icons/fi'
 import clsx from 'clsx'
 
 import useStore from './../store'
@@ -42,7 +42,7 @@ const FacebookShareBtn = ({ children, ...props }) => {
       <IconButton
         label={i18n.translate(`BUTTON_SHARE_FACEBOOK`)}
       >
-        <FacebookIcon className="social-icon" />
+        <FiFacebook className="social-icon" />
         <span className="sr-only">
           {i18n.translate(`BUTTON_SHARE_FACEBOOK`)}
         </span>

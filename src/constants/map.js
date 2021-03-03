@@ -221,6 +221,7 @@ export const MAP_CONTROLS_CLASSES = [
   'map-fly-to-btn',
   'modal-intro-parent',
   'react-autosuggest__suggestions-container',
+  'control-panel-share-popper',
 ]
 
 /**
