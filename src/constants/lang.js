@@ -8,19 +8,19 @@ export const langSet = {
     SITE_KEYWORDS: `child, opportunity, measure, index, metric, health, social, economic, education, national, state, metro`,
     MAP_TEST_MERGE_EXTRA: `Test`,
     SHARE: 'Share',
-    BUTTON_SHARE_TWITTER: 'Share on Twitter',
+    BUTTON_SHARE_TWITTER: 'Twitter',
     DIALOG_SHARE_TWITTER: 'share text', // TODO
-    BUTTON_SHARE_FACEBOOK: 'Share on Facebook',
+    BUTTON_SHARE_FACEBOOK: 'Facebook',
     DIALOG_SHARE_FACEBOOK: 'share text', // TODO
-    BUTTON_SHARE_EMAIL: 'Share via email',
+    BUTTON_SHARE_EMAIL: 'Email',
     DIALOG_SHARE_EMAIL: 'share text', // TODO
-    BUTTON_SHARE_LINK: 'Get a custom link',
+    BUTTON_SHARE_LINK: 'Current page',
     DIALOG_SHARE_LINK: 'share text', // TODO
     MODAL_SHARE_LINK_HEAD: 'Share a Link',
     MODAL_SHARE_LINK_INSTR:
       'Copy the link below to share the current view of the Explorer.',
     MODAL_SHARE_LINK_INPUT: 'Current page link',
-    BUTTON_SHARE_EMBED: 'Embed this map',
+    BUTTON_SHARE_EMBED: 'Embed code',
     DIALOG_SHARE_EMBED: 'share text', // TODO
     MODAL_SHARE_EMBED_HEAD: 'Embed this map',
     MODAL_SHARE_EMBED_INSTR:
@@ -129,6 +129,7 @@ export const langSet = {
     LEGEND_NORM_HELP: `This data can only be compared to other neighborhoods in this metro area. See FAQ for more information.`,
     LEGEND_TOOLTIP_LABEL: `Show data on hover`,
     MENU_CLOSE: `Close menu`,
+    BTN_CLOSE: `Close`,
     MENU: [
       [
         {

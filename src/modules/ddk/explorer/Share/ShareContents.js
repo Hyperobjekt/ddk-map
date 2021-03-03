@@ -1,65 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 import shallow from 'zustand/shallow'
-import { IconButton, Popper } from '@material-ui/core'
-import { Close, ShareOutlined } from '@material-ui/icons'
-import copy from 'copy-to-clipboard'
 
-import ShareContents from './ShareContents'
+import {
+  TwitterShareBtn,
+  FacebookShareBtn,
+  MailShareBtn,
+  LinkShareBtn,
+  EmbedShareBtn,
+} from '.'
+// import { FacebookShareBtn } from '.'
+// import { MailShareBtn } from '.'
 import { DEFAULT_ROUTE } from '../../../../constants/map'
 import useStore from '../store'
 
 // Styles for this component.
 const useStyles = makeStyles(theme => ({
-  root: {
-    marginTop: 'auto',
-    marginBottom: '1.5rem',
-    transition:
-      'background-color 300ms ease-in-out, color 300ms ease-in-out',
-    boxSizing: 'border-box',
-    width: '100%',
-    color: '#fff',
-    textAlign: 'center',
-    borderRight: `3px solid ${theme.extras.variables.colors.ddkBlue}`,
-    '& button:hover': {
-      backgroundColor: 'transparent',
-      color: 'red', // '#DAF0FF',
-      '& .MuiIconButton-label, & svg': {
-        color: '#DAF0FF',
-      },
-    },
-    '&.active': {
-      color: theme.extras.variables.colors.ddkBlue,
-      backgroundColor: '#DAF0FF',
-      borderRight: `3px solid ${theme.extras.variables.colors.ddkRed}`,
-      '& .MuiIconButton-label, & svg': {
-        color: theme.extras.variables.colors.ddkBlue,
-        '&:hover': {
-          color: `${theme.extras.variables.colors.ddkBlue} !important`,
-        },
-      },
-      '& button, & button:hover': {
-        color: theme.extras.variables.colors.ddkBlue,
-        '& .MuiIconButton-label, & svg': {
-          color: theme.extras.variables.colors.ddkBlue,
-        },
-      },
-    },
-  },
-  popperButton: {
-    // padding: '1.5rem',
-    color: '#fff',
-    '& .MuiIconButton-label': {
-      flexWrap: 'wrap',
-      color: '#fff',
-      '& svg': {
-        marginBottom: '3px',
-      },
-    },
-  },
   popper: {
     padding: '19px',
     width: `${theme.extras.sharePopper.width}px`,
@@ -71,19 +29,28 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-start',
   },
   shareButton: {
-    width: '48px',
-    height: '48px',
     borderRadius: '24px',
-    flex: '0 0 auto',
-    color: theme.extras.variables.colors.ddkAnotherNavy,
-    backgroundColor: 'rgba(59, 89, 152, 0.1)',
-    marginRight: '1rem',
+    flex: '0 0 15%',
+    margin: '1.2rem 1.65rem',
+    '& button': {
+      backgroundColor: 'rgba(59, 89, 152, 0.1)',
+      color: theme.extras.variables.colors.ddkAnotherNavy,
+    },
     '& button:hover': {
       background:
         theme.extras.variables.colors.ddkALighterOneOffBlue, //'#eaebf4',
       color:
         theme.extras.variables.colors.ddkAnotherOneOffBlue,
       cursor: 'pointer',
+    },
+    '& span.btn-label': {
+      fontSize: '12px',
+      lineHeight: '16px',
+      width: '100%',
+      color: theme.extras.variables.colors.lightGray,
+      textAlign: 'center',
+      display: 'block',
+      marginTop: '0.25rem',
     },
     '& .sr-only': { display: 'none' },
   },
@@ -155,25 +122,22 @@ const useStyles = makeStyles(theme => ({
   },
   h3: {
     flex: `0 0 100%`,
+    margin: '1rem 0 0 ',
   },
 }))
 
-const DesktopUnifiedShareBtn = ({ children, ...props }) => {
+const ShareContents = ({ children, ...props }) => {
   const {
     setStoreValues,
     shareHash,
     eventShareLink,
     eventShareEmbed,
-    slideoutPanel,
-    showSharePopover,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
       shareHash: state.shareHash,
       eventShareLink: state.eventShareLink,
       eventShareEmbed: state.eventShareEmbed,
-      slideoutPanel: state.slideoutPanel,
-      showSharePopover: state.showSharePopover,
     }),
     shallow,
   )
@@ -206,62 +170,52 @@ const DesktopUnifiedShareBtn = ({ children, ...props }) => {
     setStoreValues({ eventShareEmbed: eventShareEmbed + 1 })
   }
 
-  const anchorEl = document.getElementById(
-    'control_panel_share_btn',
-  )
-
-  const toggleShareTooltip = () => {
-    // If the slideout panel is open, close it.
-    if (!!slideoutPanel.active) {
-      setStoreValues({
-        slideoutPanel: { ...slideoutPanel, active: false },
-        showSharePopover: true,
-      })
-    } else {
-      setStoreValues({
-        showSharePopover: !showSharePopover,
-      })
-    }
-  }
-
   const classes = useStyles()
 
   return (
     <div
       className={clsx(
-        classes.root,
-        showSharePopover ? 'active' : '',
+        'control-panel-share-contents',
+        classes.popper,
       )}
     >
-      <IconButton
-        onClick={toggleShareTooltip}
-        className={clsx(classes.popperButton)}
-        disableRipple={true}
-        id={`control_panel_share_btn`}
-        aria-label={i18n.translate(`CONTROL_PANEL_SHARE`)}
+      <h3 className={clsx(classes.h3)}>Share to:</h3>
+      <FacebookShareBtn
+        className={classes.shareButton}
+        aria-label={i18n.translate(`BUTTON_SHARE_FACEBOOK`)}
       >
-        <ShareOutlined fontSize={'large'} />
-        {children}
-      </IconButton>
-      <Popper
-        id={`simple-popper`}
-        open={showSharePopover}
-        anchorEl={anchorEl}
-        placement={'right-start'}
+        <span className="btn-label">
+          {i18n.translate(`BUTTON_SHARE_FACEBOOK`)}
+        </span>
+      </FacebookShareBtn>
+      <TwitterShareBtn
+        className={classes.shareButton}
+        aria-label={i18n.translate(`BUTTON_SHARE_TWITTER`)}
       >
-        <IconButton
-          onClick={toggleShareTooltip}
-          className={clsx(classes.close)}
-          disableRipple={true}
-          id={`control_panel_share_btn`}
-          aria-label={i18n.translate(`BTN_CLOSE`)}
-        >
-          <Close />
-        </IconButton>
-        <ShareContents />
-      </Popper>
+        <span className="btn-label">
+          {i18n.translate(`BUTTON_SHARE_TWITTER`)}
+        </span>
+      </TwitterShareBtn>
+      <MailShareBtn
+        className={classes.shareButton}
+        aria-label={i18n.translate(`BUTTON_SHARE_EMAIL`)}
+      >
+        <span className="btn-label">
+          {i18n.translate(`BUTTON_SHARE_EMAIL`)}
+        </span>
+      </MailShareBtn>
+      <LinkShareBtn className={classes.shareButton}>
+        <span className="btn-label">
+          {i18n.translate(`BUTTON_SHARE_LINK`)}
+        </span>
+      </LinkShareBtn>
+      <EmbedShareBtn className={classes.shareButton}>
+        <span className="btn-label">
+          {i18n.translate(`BUTTON_SHARE_EMBED`)}
+        </span>
+      </EmbedShareBtn>
     </div>
   )
 }
 
-export default DesktopUnifiedShareBtn
+export default ShareContents

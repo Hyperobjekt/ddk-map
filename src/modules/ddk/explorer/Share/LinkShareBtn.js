@@ -1,36 +1,55 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { useState, useEffect } from 'react'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
+import shallow from 'zustand/shallow'
+import copy from 'copy-to-clipboard'
 
 import useStore from './../store'
 import { IconButton } from '@material-ui/core'
-import LinkIcon from '@material-ui/icons/Link'
+import { FiLink } from 'react-icons/fi'
 
 const LinkShareBtn = ({ children, ...props }) => {
-  // Generic store value setter.
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
+  const {
+    setStoreValues,
+    shareHash,
+    eventShareLink,
+  } = useStore(
+    state => ({
+      setStoreValues: state.setStoreValues,
+      shareHash: state.shareHash,
+      eventShareLink: state.eventShareLink,
+    }),
+    shallow,
   )
 
-  const openModal = () => {
-    setStoreValues({
-      shareLinkModal: true,
-    })
+  // Update value for share link only when window object exists.
+  const [shareLinkValue, setShareLinkValue] = useState('')
+  useEffect(() => {
+    const linkValue = !!shareHash
+      ? window.location.origin +
+        window.location.pathname +
+        shareHash
+      : window.location.origin +
+        window.location.pathname +
+        DEFAULT_ROUTE
+
+    setShareLinkValue(linkValue)
+  }, [shareHash])
+
+  const onCopyLink = () => {
+    copy(shareLinkValue)
+    setStoreValues({ eventShareLink: eventShareLink + 1 })
   }
 
   return (
     <div
-      onClick={openModal}
+      onClick={onCopyLink}
       className={clsx(props.className)}
     >
       <IconButton
         label={i18n.translate(`BUTTON_SHARE_LINK`)}
       >
-        <LinkIcon className="social-icon" />
-        <span className="sr-only">
-          {i18n.translate(`BUTTON_SHARE_LINK`)}
-        </span>
+        <FiLink className="social-icon" />
       </IconButton>
       {children}
     </div>
