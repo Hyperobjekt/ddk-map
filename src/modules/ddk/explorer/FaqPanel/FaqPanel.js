@@ -9,19 +9,7 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from '@material-ui/core'
-import shallow from 'zustand/shallow'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-
-import useStore from './../store'
-import {
-  MAIN_INDEX,
-  SUB_INDICES,
-} from './../../../../constants/map'
-import SDScale from './../SDScale'
-import { getActiveArray } from './../utils'
-import PopStack from './../PopStack'
-import IndicatorList from './../IndicatorList'
-import { TramRounded } from '@material-ui/icons'
 
 // Styles for this component.
 const styles = makeStyles(theme => ({
@@ -92,6 +80,7 @@ const styles = makeStyles(theme => ({
   allContainer: {
     position: 'relative',
     height: '35px',
+    marginBottom: '6px',
   },
   faqContainer: {
     overflowY: 'auto',
@@ -164,8 +153,8 @@ const FaqPanel = () => {
             className={classes.all}
           >
             {expanded.every(el => el === true)
-              ? 'hide all'
-              : 'Open All'}
+              ? i18n.translate(`BTN_HIDE_ALL`)
+              : i18n.translate(`BTN_SHOW_ALL`)}
           </Button>
         </div>
         <div className={classes.faqContainer}>
