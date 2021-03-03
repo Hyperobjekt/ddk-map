@@ -130,15 +130,7 @@ const FaqPanel = () => {
   return (
     <div className={classes.root}>
       <div className={classes.container}>
-<<<<<<< HEAD
-        <div>
-          {i18n.translate('FAQ_TITLE')}
-        </div>
-        <div className={classes.allContainer}>
-          <Button onClick={(e) => {handleEvent('openAll', e)}} className={classes.all}>
-            {i18n.translate('FAQ_OPEN_BTN')}
-=======
-        <div>Frequently Asked Questions</div>
+        <div>{i18n.translate('FAQ_TITLE')}</div>
         <div className={classes.allContainer}>
           <Button
             onClick={e => {
@@ -147,7 +139,6 @@ const FaqPanel = () => {
             className={classes.all}
           >
             Open All
->>>>>>> 83cade53c2e4f6d00751743af9b946c727629f4f
           </Button>
         </div>
         <div className={classes.faqContainer}>
