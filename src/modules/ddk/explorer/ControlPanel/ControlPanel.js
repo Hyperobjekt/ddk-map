@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => {
       marginLeft: 'auto',
       marginRight: 'auto',
       '&.Mui-disabled': {
-        color: theme.extras.variables.colors.ddkRed,
+        color: theme.extras.variables.colors.lightGray,
       },
     },
     buttonContainer: {
