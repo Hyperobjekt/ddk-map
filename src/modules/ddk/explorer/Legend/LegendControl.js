@@ -254,31 +254,49 @@ const LegendControl = ({ classes }) => {
           {i18n.translate(`LEGEND_DEMO`)}
         </span>
         <div>
-          {OPTIONS_ACTIVE_POINTS.options.map((el, i) => {
-            return (
-              <FormControlLabel
-                className={classes.checkboxContainer}
-                classes={{ label: classes.checkboxLabel }}
-                control={
-                  <Checkbox
-                    className={classes.checkbox}
-                    classes={{
-                      root: classes[`checkboxColor_${el}`],
-                    }}
-                    checked={
-                      activePointLayers.indexOf(el) > -1
-                    }
-                    onChange={handleActivePointLayers}
-                    name={el}
-                  />
-                }
-                label={i18n.translate(
-                  `POP_${String(el).toUpperCase()}`,
-                )}
-                key={el}
-              />
-            )
-          })}
+          {OPTIONS_ACTIVE_POINTS.options
+            .slice()
+            .reverse()
+            .map((el, i) => {
+              return (
+                <FormControlLabel
+                  className={classes.checkboxContainer}
+                  classes={{ label: classes.checkboxLabel }}
+                  control={
+                    <Checkbox
+                      className={classes.checkbox}
+                      classes={{
+                        root:
+                          classes[`checkboxColor_${el}`],
+                      }}
+                      checked={
+                        activePointLayers.indexOf(el) > -1
+                      }
+                      onChange={handleActivePointLayers}
+                      name={el}
+                    />
+                  }
+                  label={
+                    i18n
+                      .translate(
+                        `POP_LONG_${String(
+                          el,
+                        ).toUpperCase()}`,
+                      )
+                      .indexOf('missing') < 0
+                      ? i18n.translate(
+                          `POP_LONG_${String(
+                            el,
+                          ).toUpperCase()}`,
+                        )
+                      : i18n.translate(
+                          `POP_${String(el).toUpperCase()}`,
+                        )
+                  }
+                  key={el}
+                />
+              )
+            })}
         </div>
       </div>
     </>

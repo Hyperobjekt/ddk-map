@@ -82,10 +82,10 @@ export const getPoints = (source, layer, context) => {
 }
 
 const pointIndex = 200
+const pointsArray = OPTIONS_ACTIVE_POINTS.options.slice()
 const getPointIndex = layer => {
   const ind =
-    OPTIONS_ACTIVE_POINTS.options.length -
-    OPTIONS_ACTIVE_POINTS.options.indexOf(layer)
+    pointsArray.length - pointsArray.indexOf(layer)
   // console.log('getting point layer index, ', layer, ind)
   return pointIndex + ind * 10
 }

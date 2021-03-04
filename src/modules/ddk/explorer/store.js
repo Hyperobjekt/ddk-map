@@ -9,21 +9,15 @@ import { langSet } from './../../../constants/lang'
 
 import {
   DEFAULT_VIEWPORT,
-  DEFAULT_ROUTE,
   DEFAULT_VIEW,
   DEFAULT_ACTIVE_SHAPE,
   DEFAULT_ACTIVE_YEAR,
   DEFAULT_LOAD_YEARS,
   DEFAULT_ACTIVE_POINTS,
   DEFAULT_METRIC,
-  OPTIONS_METRIC,
   DEFAULT_NORM,
   DEFAULT_DATA_VERSION,
-  DEFAULT_LAT,
-  DEFAULT_LNG,
-  DEFAULT_ZOOM,
   OPTIONS_NORM,
-  OPTIONS_ACTIVE_POINTS,
 } from './../../../constants/map'
 
 const useStore = create((set, get) => ({
