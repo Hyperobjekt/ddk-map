@@ -20,6 +20,9 @@ const FlyToMyLocationBtn = ({ children, ...props }) => {
 
   const handleClick = () => {
     // console.log('handleClick')
+    setStoreValues({
+      controlHovered: true,
+    })
     flyToLatLon(
       position.coords.latitude,
       position.coords.longitude,

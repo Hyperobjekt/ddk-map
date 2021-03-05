@@ -18,6 +18,9 @@ const FlyToStateBtn = ({ children, ...props }) => {
   )
 
   const handleClick = () => {
+    setStoreValues({
+      controlHovered: true,
+    })
     flyToState(props.fips.padStart(2, '0'))
   }
 

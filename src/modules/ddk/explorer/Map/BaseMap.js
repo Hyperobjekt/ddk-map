@@ -29,7 +29,6 @@ import Mapbox, {
 import { fromJS, set } from 'immutable'
 import shallow from 'zustand/shallow'
 
-import Legend from './../Legend'
 import useStore from './../store'
 import {
   DEFAULT_VIEWPORT,
@@ -40,15 +39,13 @@ import {
 import { defaultMapStyle } from './utils/selectors'
 import { getLayers } from './utils/layers'
 import { getSources } from './utils/sources'
-import {
-  useDebounce,
-  usePrevious,
-  getParents,
-} from './../utils'
+import { useDebounce, usePrevious } from './../utils'
+import { getClosest } from './utils/utils'
 import MapPopup from './components/MapPopup'
 import Notifications from './components/Notifications'
 import MoreControlsContainer from './components/MoreControlsContainer'
 import { MobileShareBtn } from './../Share'
+import { getIsControl, getParents } from './../utils'
 
 const useStyles = makeStyles(theme => ({
   parent: {
@@ -198,8 +195,8 @@ const BaseMap = ({ ...props }) => {
     flyToReset: useFlyToReset(),
   })
 
-  const handleClick = feature => {
-    // console.log('Map click, ', feature)
+  const handleClick = e => {
+    // console.log('Map click, ', e)
     if (controlHovered) {
       // console.log('control is hovered')
       return
@@ -268,6 +265,10 @@ const BaseMap = ({ ...props }) => {
     // console.log('Map hover, ', feature)
   }
 
+  // const handleDblClick = e => {
+  //   console.log('handleDblClick, ', e)
+  // }
+
   const handleMouseOut = e => {
     // console.log('handleMouseOut')
     // When the users mouses out of the map canvas,
@@ -294,6 +295,17 @@ const BaseMap = ({ ...props }) => {
       hoveredFeature: null,
     })
   }
+
+  // const handleInteractionStateChange = e => {
+  //   console.log('handleInteractionStateChange(), ', e)
+  // }
+
+  // const handleMouseDown = e => {
+  //   console.log('handleMouseDown(), ', e)
+  //   if (controlHovered) {
+  //     return
+  //   }
+  // }
 
   const handleMouseMove = e => {
     let updates = {}
@@ -707,6 +719,7 @@ const BaseMap = ({ ...props }) => {
     onMouseMove: handleMouseMove,
     onMouseOut: handleMouseOut,
     onResize: handleResize,
+    onClick: handleClick,
   }
 
   return (
@@ -722,7 +735,6 @@ const BaseMap = ({ ...props }) => {
         }}
         MapGLProps={mapProps}
         style={{ width: '100%', height: '100%' }}
-        onClick={handleClick}
         onHover={handleHover}
         onLoad={handleLoad}
         maxBounds={DEFAULT_VIEWPORT.maxBounds}

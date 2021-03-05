@@ -19,6 +19,9 @@ const styles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
+    '&:hover': {
+      backgroundColor: theme.extras.variables.colors.ddkRed,
+    },
   },
 }))
 
@@ -31,8 +34,10 @@ const MobileShareBtn = () => {
     shallow,
   )
 
-  const toggleShare = () => {
+  const toggleShare = e => {
+    e.preventDefault()
     setStoreValues({
+      controlHovered: true,
       shareLinkModal: !shareLinkModal,
     })
   }

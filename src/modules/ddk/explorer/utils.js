@@ -6,6 +6,7 @@ import {
   BOUNDS,
   DEFAULT_ROUTE,
 } from './../../../constants/map'
+import { select } from 'd3'
 
 export const getActiveArray = index => {
   const arr = [0, 0, 0, 0, 0]
@@ -271,4 +272,44 @@ export const getParents = function (elem) {
 
   // Return our parent array
   return parents
+}
+
+export const getIsControl = (e, controlsSelectors) => {
+  console.log('getIsControl()')
+  // If the cursor is over the legend or another control,
+  // we need to clear hovered states.
+  const isControl = e.srcEvent.path.every(el => {
+    console.log(el)
+    return controlsSelectors.every(sel => {
+      console.log(sel)
+      String(el).indexOf(sel) < 0
+    })
+  })
+
+  // const hoveredElements = document.querySelectorAll(
+  //   ':hover',
+  // )
+  // const parents = []
+  // hoveredElements.forEach(el => {
+  //   parents.push(getParents(el))
+  // })
+  // const parentsList = Object.values(parents)
+  // const nodeList = Object.values(hoveredElements)
+  // const isControl =
+  //   nodeList.some(node => {
+  //     // console.log('node, ', node, node.classList)
+  //     return MAP_CONTROLS_CLASSES.some(item =>
+  //       node.classList.contains(item),
+  //     )
+  //   }) ||
+  //   parentsList.some(node => {
+  //     // console.log('node, ', node, node.classList)
+  //     return MAP_CONTROLS_CLASSES.some(
+  //       item =>
+  //         node &&
+  //         node.classlist &&
+  //         node.classList.contains(item),
+  //     )
+  //   })
+  return isControl
 }

@@ -48,6 +48,7 @@ const Notifications = () => {
     updateNotifications,
     centerMetro,
     centerState,
+    setStoreValues,
   } = useStore(
     state => ({
       activeNorm: state.activeNorm,
@@ -55,6 +56,7 @@ const Notifications = () => {
       updateNotifications: state.updateNotifications,
       centerMetro: state.centerMetro,
       centerState: state.centerState,
+      setStoreValues: state.setStoreValues,
     }),
     shallow,
   )
@@ -107,6 +109,9 @@ const Notifications = () => {
 
   const handleClose = () => {
     // console.log('handleClose()')
+    setStoreValues({
+      controlHovered: true,
+    })
     updateNotifications(activeNorm)
   }
 

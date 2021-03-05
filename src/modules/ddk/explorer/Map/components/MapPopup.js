@@ -58,6 +58,8 @@ function usePopupState() {
     hoveredFeature,
     displayPopup,
     mapSize,
+    controlHovered,
+    interactionsMobile,
   } = useStore(
     state => ({
       coords: state.coords,
@@ -66,6 +68,8 @@ function usePopupState() {
       hoveredFeature: state.hoveredFeature,
       displayPopup: state.displayPopup,
       mapSize: state.mapSize,
+      controlHovered: state.controlHovered,
+      interactionsMobile: state.interactionsMobile,
     }),
     shallow,
   )
@@ -73,7 +77,9 @@ function usePopupState() {
   const showPopup =
     Boolean(coords) &&
     Boolean(displayPopup) &&
-    hoveredTract !== 0
+    hoveredTract !== 0 &&
+    !controlHovered &&
+    interactionsMobile === false
   const popupCoords = showPopup ? coords : null
   const { popupAnchor, popupOffset } = getPopupProps({
     mouseXY,

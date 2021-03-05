@@ -7,17 +7,20 @@ import { Tooltip, Button } from '@material-ui/core'
 import shallow from 'zustand/shallow'
 
 import useStore from './../../store'
-import { DEFAULT_VIEWPORT } from './../../../../../constants/map'
 
 const FlyToResetBtn = ({ children, ...props }) => {
-  const { flyToReset } = useStore(
+  const { flyToReset, setStoreValues } = useStore(
     state => ({
       flyToReset: state.flyToReset,
+      setStoreValues: state.setStoreValues,
     }),
     shallow,
   )
 
   const handleClick = () => {
+    setStoreValues({
+      controlHovered: true,
+    })
     flyToReset()
   }
 
