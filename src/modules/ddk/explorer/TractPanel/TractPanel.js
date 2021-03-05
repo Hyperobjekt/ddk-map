@@ -28,11 +28,19 @@ const useStyles = makeStyles(theme => ({
       theme.extras.variables.colors.lightLightGray,
   },
   content: {
-    padding: '42px 16px 0px',
+    padding: '0 16px 0px',
     height: '100%',
     boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
+    overflowY: 'scroll',
+  },
+  sticky: {
+    position: 'sticky',
+    top: 0,
+    zIndex: 2000,
+    backgroundColor:
+      theme.extras.variables.colors.lightLightGray,
   },
   h2: {
     fontWeight: 600,
@@ -46,6 +54,11 @@ const useStyles = makeStyles(theme => ({
   section: {
     marginTop: '1rem',
     '&:first-of-type': {
+      marginTop: 0,
+      paddingTop: '42px',
+      paddingBottom: '24px',
+    },
+    '&.section-pop': {
       marginTop: 0,
     },
   },
@@ -220,243 +233,244 @@ const TractPanel = () => {
     })
     return (
       <div
-        className={clsx('tract-panel-parent', classes.root)}
+        className={clsx(
+          'tract-panel-parent',
+          classes.root,
+          classes.content,
+        )}
       >
-        <div
+        {/* <div
           className={clsx(
             'tract-panel-contents',
             classes.content,
           )}
+        > */}
+        <div
+          className="geo"
+          className={clsx(
+            'section',
+            'section-geo',
+            classes.section,
+            classes.sticky,
+          )}
         >
-          <div
-            className="geo"
-            className={clsx(
-              'section',
-              'section-geo',
-              classes.section,
-            )}
-          >
-            {Number(feature.properties.m) === 0 && (
-              <>
-                <h2 className={clsx(classes.h2)}>
-                  {i18n.translate(`POPUP_CENSUS_TRACT`, {
-                    id: feature.id,
-                  })}
-                </h2>
-                <h3 className={clsx(classes.subtitle)}>
-                  {i18n.translate(`DATA_YEAR_PHRASE`, {
-                    year: '20' + activeYear,
-                  })}
-                </h3>
-              </>
-            )}
-            {Number(feature.properties.m) !== 0 && (
-              <>
-                <h2 className={clsx(classes.h2)}>
-                  {i18n.translate(feature.properties.m)}
-                </h2>
-                <h3 className={clsx(classes.subtitle)}>
-                  {i18n.translate(`SLIDEOUT_CENSUS_TRACT`, {
-                    id: feature.id,
-                    yearPhrase: i18n.translate(
-                      `DATA_YEAR_PHRASE`,
-                      {
-                        year: '20' + activeYear,
-                      },
-                    ),
-                  })}
-                </h3>
-              </>
-            )}
-          </div>
-          <div
-            className={clsx(
-              'section',
-              'section-pop',
-              classes.section,
-            )}
-          >
-            <h3 className={clsx(classes.h3)}>
-              <Tooltip
-                title={i18n.translate(
-                  `SLIDEOUT_CHILDREN_TIP`,
-                )}
-                arrow
-              >
-                <span className={clsx(classes.popTitle)}>
-                  {i18n.translate(`SLIDEOUT_CHILDREN`)}
-                </span>
-              </Tooltip>
-            </h3>
+          {Number(feature.properties.m) === 0 && (
+            <>
+              <h2 className={clsx(classes.h2)}>
+                {i18n.translate(`POPUP_CENSUS_TRACT`, {
+                  id: feature.id,
+                })}
+              </h2>
+              <h3 className={clsx(classes.subtitle)}>
+                {i18n.translate(`DATA_YEAR_PHRASE`, {
+                  year: '20' + activeYear,
+                })}
+              </h3>
+            </>
+          )}
+          {Number(feature.properties.m) !== 0 && (
+            <>
+              <h2 className={clsx(classes.h2)}>
+                {i18n.translate(feature.properties.m)}
+              </h2>
+              <h3 className={clsx(classes.subtitle)}>
+                {i18n.translate(`SLIDEOUT_CENSUS_TRACT`, {
+                  id: feature.id,
+                  yearPhrase: i18n.translate(
+                    `DATA_YEAR_PHRASE`,
+                    {
+                      year: '20' + activeYear,
+                    },
+                  ),
+                })}
+              </h3>
+            </>
+          )}
+        </div>
+        <div
+          className={clsx(
+            'section',
+            'section-pop',
+            classes.section,
+          )}
+        >
+          <h3 className={clsx(classes.h3)}>
+            <Tooltip
+              title={i18n.translate(
+                `SLIDEOUT_CHILDREN_TIP`,
+              )}
+              arrow
+            >
+              <span className={clsx(classes.popTitle)}>
+                {i18n.translate(`SLIDEOUT_CHILDREN`)}
+              </span>
+            </Tooltip>
+          </h3>
 
-            <PopStack
-              classes={clsx(classes.popStack)}
-              pop={pop}
-            />
+          <PopStack
+            classes={clsx(classes.popStack)}
+            pop={pop}
+          />
+        </div>
+        <div
+          className={clsx(
+            'section',
+            'section-data',
+            classes.section,
+          )}
+        >
+          <h2 className={clsx(classes.h2)}>
+            <Tooltip
+              title={i18n.translate(
+                `SLIDEOUT_HEADING_LEVELS_TIP`,
+              )}
+              arrow
+            >
+              <span className={clsx(classes.dataTitle)}>
+                {i18n.translate(`SLIDEOUT_HEADING_LEVELS`)}
+              </span>
+            </Tooltip>
+          </h2>
+          <div
+            className={clsx(
+              'tract-compare-tip',
+              classes.compareParent,
+            )}
+          >
+            <Tooltip
+              title={i18n.translate(
+                `SLIDEOUT_COMPARE_TIP`,
+                { normPhrase: getNormPhrase() },
+              )}
+              arrow
+            >
+              <span
+                className={clsx(
+                  'tract-compare-tip',
+                  classes.comparedTo,
+                )}
+                dangerouslySetInnerHTML={{
+                  __html: i18n.translate(
+                    `SLIDEOUT_COMPARING_TO`,
+                    {
+                      normPhrase: getNormPhrase(),
+                      normlyPhrase: getNormlyPhrase(),
+                    },
+                  ),
+                }}
+              ></span>
+            </Tooltip>
           </div>
           <div
             className={clsx(
-              'section',
-              'section-data',
-              classes.section,
+              'tract-panel-scroll-group',
+              classes.tractScrollGroup,
             )}
           >
-            <h2 className={clsx(classes.h2)}>
-              <Tooltip
-                title={i18n.translate(
-                  `SLIDEOUT_HEADING_LEVELS_TIP`,
-                )}
-                arrow
-              >
-                <span className={clsx(classes.dataTitle)}>
-                  {i18n.translate(
-                    `SLIDEOUT_HEADING_LEVELS`,
-                  )}
-                </span>
-              </Tooltip>
-            </h2>
             <div
               className={clsx(
-                'tract-compare-tip',
-                classes.compareParent,
+                'tract-panel-pad-index',
+                classes.pad,
+                classes.index,
               )}
             >
               <Tooltip
-                title={i18n.translate(
-                  `SLIDEOUT_COMPARE_TIP`,
-                  { normPhrase: getNormPhrase() },
-                )}
+                title={
+                  <React.Fragment>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: i18n.translate(
+                          `SLIDEOUT_TIP_COI`,
+                        ),
+                      }}
+                    ></span>
+                  </React.Fragment>
+                }
                 arrow
               >
                 <span
+                  role="heading"
+                  aria-level="4"
                   className={clsx(
-                    'tract-compare-tip',
-                    classes.comparedTo,
+                    'slideout-metric-title',
+                    classes.metricTitle,
                   )}
-                  dangerouslySetInnerHTML={{
-                    __html: i18n.translate(
-                      `SLIDEOUT_COMPARING_TO`,
-                      {
-                        normPhrase: getNormPhrase(),
-                        normlyPhrase: getNormlyPhrase(),
-                      },
-                    ),
-                  }}
-                ></span>
+                >
+                  {i18n.translate(`SLIDEOUT_HEADING_XC`)}
+                </span>
               </Tooltip>
+              <SDScale
+                className={classes.sdScale}
+                active={getActiveArray(
+                  feature.properties[
+                    `${MAIN_INDEX}${activeNorm}`
+                  ],
+                )}
+              />
             </div>
             <div
-              className={clsx(
-                'tract-panel-scroll-group',
-                classes.tractScrollGroup,
-              )}
+              className={clsx('tract-panel-pad-subindices')}
             >
-              <div
-                className={clsx(
-                  'tract-panel-pad-index',
-                  classes.pad,
-                  classes.index,
-                )}
-              >
-                <Tooltip
-                  title={
-                    <React.Fragment>
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: i18n.translate(
-                            `SLIDEOUT_TIP_COI`,
-                          ),
-                        }}
-                      ></span>
-                    </React.Fragment>
-                  }
-                  arrow
-                >
-                  <span
-                    role="heading"
-                    aria-level="4"
+              {SUB_INDICES.map((el, i) => {
+                return (
+                  <div
+                    key={`subindex-${i}`}
                     className={clsx(
-                      'slideout-metric-title',
-                      classes.metricTitle,
+                      'tract-panel-pad-subindex',
+                      classes.pad,
+                      classes.index,
                     )}
                   >
-                    {i18n.translate(`SLIDEOUT_HEADING_XC`)}
-                  </span>
-                </Tooltip>
-                <SDScale
-                  className={classes.sdScale}
-                  active={getActiveArray(
-                    feature.properties[
-                      `${MAIN_INDEX}${activeNorm}`
-                    ],
-                  )}
-                />
-              </div>
-              <div
-                className={clsx(
-                  'tract-panel-pad-subindices',
-                )}
-              >
-                {SUB_INDICES.map((el, i) => {
-                  return (
-                    <div
-                      key={`subindex-${i}`}
-                      className={clsx(
-                        'tract-panel-pad-subindex',
-                        classes.pad,
-                        classes.index,
-                      )}
+                    <Tooltip
+                      title={
+                        <React.Fragment>
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: i18n.translate(
+                                `SLIDEOUT_TIP_${el.toUpperCase()}`,
+                              ),
+                            }}
+                          ></span>
+                        </React.Fragment>
+                      }
+                      arrow
                     >
-                      <Tooltip
-                        title={
-                          <React.Fragment>
-                            <span
-                              dangerouslySetInnerHTML={{
-                                __html: i18n.translate(
-                                  `SLIDEOUT_TIP_${el.toUpperCase()}`,
-                                ),
-                              }}
-                            ></span>
-                          </React.Fragment>
-                        }
-                        arrow
-                      >
-                        <span
-                          role="heading"
-                          aria-level="4"
-                          className={clsx(
-                            'slideout-metric-title',
-                            classes.metricTitle,
-                          )}
-                        >
-                          {i18n.translate(
-                            `SLIDEOUT_HEADING_${String(
-                              el,
-                            ).toUpperCase()}`,
-                          )}
-                        </span>
-                      </Tooltip>
-                      <SDScale
-                        className={classes.sdScale}
-                        active={getActiveArray(
-                          feature.properties[
-                            `${el}${activeNorm}`
-                          ],
+                      <span
+                        role="heading"
+                        aria-level="4"
+                        className={clsx(
+                          'slideout-metric-title',
+                          classes.metricTitle,
                         )}
-                      />
-                      <IndicatorList
-                        subindex={el}
-                        isOpen={showSubs[i] === 1}
-                        toggleSub={toggleSub}
-                        subIndex={i}
-                      />
-                    </div>
-                  )
-                })}
-              </div>
+                      >
+                        {i18n.translate(
+                          `SLIDEOUT_HEADING_${String(
+                            el,
+                          ).toUpperCase()}`,
+                        )}
+                      </span>
+                    </Tooltip>
+                    <SDScale
+                      className={classes.sdScale}
+                      active={getActiveArray(
+                        feature.properties[
+                          `${el}${activeNorm}`
+                        ],
+                      )}
+                    />
+                    <IndicatorList
+                      subindex={el}
+                      isOpen={showSubs[i] === 1}
+                      toggleSub={toggleSub}
+                      subIndex={i}
+                    />
+                  </div>
+                )
+              })}
             </div>
           </div>
         </div>
+        {/* </div> */}
       </div>
     )
   } else {

@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     margin: '6px 0 0 4px',
   },
   popItem: {
-    flex: '0 0 36%',
+    flex: '0 0 30%',
     margin: '2px 4% 0px 0px',
     borderBottom: `1px solid ${theme.extras.variables.colors.lightLightGray}`,
     textAlign: 'bottom',
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
   },
   popItemLong: {
-    flex: '0 0 56%',
+    flex: '0 0 62%',
   },
 }))
 
