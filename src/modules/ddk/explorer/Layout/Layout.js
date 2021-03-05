@@ -12,6 +12,7 @@ import Legend from '../Legend'
 import IntroModal from './../IntroModal'
 import Menu from './../Menu'
 import { ShareModal } from './../Share'
+import Nofications from './../Notifications'
 
 const useLayoutStyles = makeStyles(theme => ({
   root: {
@@ -39,6 +40,7 @@ const Layout = ({ ...props }) => {
         <Legend />
         <Map />
         <Menu />
+        <Nofications />
         <IntroModal />
         <ShareModal />
       </main>

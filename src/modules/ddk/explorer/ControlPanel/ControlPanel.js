@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => {
         position: 'absolute',
         top: 0,
         left: 0,
-        width: theme.extras.controlPanel.width,
+        width: `${theme.extras.controlPanel.width}px`,
         // Adjust for different app bar height.
         height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px)`,
         top: `${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px`,

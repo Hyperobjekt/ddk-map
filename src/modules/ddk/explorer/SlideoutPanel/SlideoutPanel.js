@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
     boxShadow: theme.shadows[3],
   },
   active: {
-    left: theme.extras.controlPanel.width,
+    left: `${theme.extras.controlPanel.width}px`,
   },
   modal: {
     // inset: '10vh 10vw !important',

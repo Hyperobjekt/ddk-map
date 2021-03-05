@@ -112,6 +112,12 @@ export const langSet = {
     WARN_STATE_NORM_GENERIC: `Your location is being compared to others in the state. To make comparisons across states switch to national norming.`,
     WARN_STATE_NORM: `Your location is being compared to others in {state}. To make comparisons across states switch to national norming.`,
     WARN_NATL_NORM: `Your location is being compared to others across the nation.`,
+    WARN_NATL_NORM_LOWZOOM: `Locations are being compared to others across the nation. Zoom in to view more details. To make comparisons within states or metro areas switch to state or metro norming.`,
+    WARN_STATE_NORM_LOWZOOM: `Locations are being compared to others within their state. Zoom in to view more details. To make comparisons across the nation or within metro areas switch to national or metro norming.`,
+    WARN_METRO_NORM_LOWZOOM: `Locations are being compared to others within their metro area. Click on a metro area or zoom in to view more details. To make comparisons across the nation or within states  switch to national or state norming.`,
+    WARN_METRO_NORM_GENERIC_LOCAL: `With metro norming selected, only locations in the top 100 U.S. metro areas are displayed. Navigate to a top 100 metro area, or switch to state or national norming.`,
+    WARN_STATE_NORM_GENERIC_LOCAL: `Locations are being compared to others within their state. Navigate to a U.S. state to see details.`,
+    WARN_NATL_NORM_GENERIC_LOCAL: `Locations are being compared to others across the nation. At this zoom level, comparisons within states or metro areas are more likely. To make comparisons within states or metro areas, switch to state or metro norming`,
     PANEL_FAQ_TITLE: `Frequently asked questions`,
     FAQ: [
       {

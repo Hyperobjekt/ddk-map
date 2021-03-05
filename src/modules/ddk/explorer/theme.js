@@ -130,7 +130,7 @@ export const theme = createMuiTheme({
       heightMobile: 300,
     },
     controlPanel: {
-      width: '72px',
+      width: 72,
       zIndex: 15,
     },
     slideoutPanel: {

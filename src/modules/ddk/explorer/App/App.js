@@ -26,7 +26,7 @@ import '@fontsource/merriweather'
  */
 const App = props => {
   // Logging theme during dev to facilitate front-end work
-  // console.log('App, theme: ', theme)
+  console.log('App, theme: ', theme)
   // console.log('App', props)
 
   const BREAKPOINTS = theme.breakpoints.keys

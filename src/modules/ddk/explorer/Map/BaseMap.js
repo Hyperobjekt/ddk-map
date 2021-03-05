@@ -42,7 +42,6 @@ import { getSources } from './utils/sources'
 import { useDebounce, usePrevious } from './../utils'
 import { getClosest } from './utils/utils'
 import MapPopup from './components/MapPopup'
-import Notifications from './components/Notifications'
 import MoreControlsContainer from './components/MoreControlsContainer'
 import { MobileShareBtn } from './../Share'
 import { getIsControl, getParents } from './../utils'
@@ -57,8 +56,8 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px)`,
       top: `${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px`,
-      left: theme.extras.controlPanel.width,
-      width: `calc(100vw - ${theme.extras.controlPanel.width})`,
+      left: `${theme.extras.controlPanel.width}px`,
+      width: `calc(100vw - ${theme.extras.controlPanel.width}px)`,
     },
     root: {},
   },
@@ -742,7 +741,6 @@ const BaseMap = ({ ...props }) => {
         {
           <>
             <MapPopup />
-            <Notifications />
             <div
               className={clsx(
                 'custom-attribution',
