@@ -13,6 +13,7 @@ import LinearScale from './../LinearScale'
 const useStyles = makeStyles(theme => ({
   root: {},
   btn: {
+    color: theme.extras.variables.colors.ddkRed,
     width: '100%',
     display: 'flex',
     justifyContent: 'space-between',

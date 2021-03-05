@@ -47,6 +47,7 @@ const styles = theme => ({
       width: '14px',
       height: '14px',
       marginLeft: '3px',
+      marginBottom: '-2px',
     },
   },
   checkboxContainer: {
@@ -346,7 +347,18 @@ const LegendControl = ({
         <div className={classes.labelText}>
           <span>{i18n.translate(`LEGEND_DEMO`)}</span>
           <Tooltip
-            title={i18n.translate(`LEGEND_DEMO_TIP`)}
+            // title={i18n.translate(`LEGEND_DEMO_TIP`)}
+            title={
+              <React.Fragment>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: i18n.translate(
+                      `LEGEND_DEMO_TIP`,
+                    ),
+                  }}
+                ></span>
+              </React.Fragment>
+            }
             arrow
           >
             <HelpOutlineIcon />

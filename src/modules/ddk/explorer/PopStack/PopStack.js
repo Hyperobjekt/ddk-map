@@ -14,19 +14,22 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'top',
-    margin: '0',
+    margin: '6px 0 0 4px',
   },
   popItem: {
-    flex: '0 0 46%',
+    flex: '0 0 36%',
     margin: '2px 4% 0px 0px',
     borderBottom: `1px solid ${theme.extras.variables.colors.lightLightGray}`,
     textAlign: 'bottom',
     color: theme.extras.variables.colors.lightGray,
-    fontSize: '14px',
-    lineHeight: '24px',
+    fontSize: '13px',
+    lineHeight: '22px',
     letterSpacing: '0.25px',
     display: 'flex',
     justifyContent: 'space-between',
+  },
+  popItemLong: {
+    flex: '0 0 56%',
   },
 }))
 
@@ -48,11 +51,27 @@ const PopStack = ({ ...props }) => {
       {popItems.map((el, i) => {
         return (
           <div
-            className={clsx('pop-item', classes.popItem)}
+            className={clsx(
+              'pop-item',
+              classes.popItem,
+              el === 'ai' || el == 'ap'
+                ? classes.popItemLong
+                : '',
+            )}
             key={`popup-item-${i}`}
           >
             <span className={clsx('pop-item-title')}>
-              {i18n.translate(`POP_${el.toUpperCase()}`)}
+              {i18n
+                .translate(
+                  `POP_LONG_${String(el).toUpperCase()}`,
+                )
+                .indexOf('missing') < 0
+                ? i18n.translate(
+                    `POP_LONG_${String(el).toUpperCase()}`,
+                  )
+                : i18n.translate(
+                    `POP_${String(el).toUpperCase()}`,
+                  )}
             </span>
             <span className="pop-item-data">
               {props.pop[el]}

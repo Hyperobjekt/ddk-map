@@ -230,7 +230,7 @@ export const MAP_CONTROLS_CLASSES = [
  * overall, social & economic, health, education
  */
 export const MAIN_INDEX = 'xc'
-export const SUB_INDICES = ['xo', 'xh', 'xe']
+export const SUB_INDICES = ['xe', 'xh', 'xo']
 
 export const STATES = {
   1: {
