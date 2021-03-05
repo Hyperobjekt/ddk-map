@@ -69,7 +69,8 @@ export const langSet = {
     LEGEND_COMPARE: `Compared to:`,
     LEGEND_TIME: `Year:`,
     LEGEND_DEMO: `Select a race/ethnicity:`,
-    LEGEND_CHART_TITLE: `Percentage of Children at Each Opportunity Level`,
+    LEGEND_DEMO_TIP: `Ut eiusmod anim ullamco aute. In aliquip id voluptate esse laborum reprehenderit tempor veniam et consectetur dolore laboris culpa cillum. Qui ex enim ea commodo. Laborum ut labore mollit culpa dolor ex eu enim fugiat.`,
+    LEGEND_CHART_TITLE: `Percentage of children at each level, by race/ethnicity`,
     LEGEND_CHART_SUBTITLE: `By race/ethnicity for {chartSubtitle}`,
     LEGEND_CONTROL_TRUE: `HIDE CONTROLS`,
     LEGEND_CONTROL_FALSE: `SHOW CONTROLS`,
@@ -205,6 +206,6 @@ export const langSet = {
     CONTROL_PANEL_FAQS: `FAQs`,
     GENERIC_THE_STATE: `the state`,
     GENERIC_THE_METRO: `the metro area`,
-    GENERIC_THE_US: `the U.S`,
+    GENERIC_THE_US: `United States`,
   },
 }

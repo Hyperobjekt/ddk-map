@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import shallow from 'zustand/shallow'
@@ -7,8 +7,12 @@ import {
   Checkbox,
   withStyles,
   Switch,
+  Button,
+  Tooltip,
 } from '@material-ui/core'
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline'
 
+import Arrow from '../Icons'
 import SelectBox from '../App/components/SelectBox'
 
 import {
@@ -23,7 +27,7 @@ const styles = theme => ({
   row: {
     width: '100%',
     '&:nth-child(n+2)': {
-      paddingTop: '7px',
+      paddingTop: '8px',
     },
   },
   col3: {
@@ -39,6 +43,11 @@ const styles = theme => ({
     display: 'block',
     color: '#616161',
     paddingBottom: '3px',
+    '& svg': {
+      width: '14px',
+      height: '14px',
+      marginLeft: '3px',
+    },
   },
   checkboxContainer: {
     display: 'block',
@@ -46,6 +55,7 @@ const styles = theme => ({
     paddingLeft: '9px',
   },
   checkboxLabel: {
+    fontFamily: 'Fira Sans',
     verticalAlign: 'middle',
     paddingLeft: '6px',
     fontSize: '14px',
@@ -89,24 +99,87 @@ const styles = theme => ({
     fontWeight: '500',
   },
   tooltipSwitchRow: {
-    marginTop: '0.5rem',
+    // marginTop: '0.5rem',
   },
   switchLabel: {},
   switchContainer: {
-    marginLeft: 0,
+    marginLeft: '-6px',
     fontSize: '12px',
     '& .MuiFormControlLabel-label': {
       fontSize: '12px',
       fontFamily: 'Fira Sans',
       color: theme.extras.variables.colors.lightGray,
     },
-    '& .MuiSwitch-track': {
+    '& .MuiSwitch-colorPrimary.Mui-checked + .MuiSwitch-track': {
       backgroundColor: `${theme.extras.variables.colors.ddkRed} !important`,
-      opacity: `1 !important`,
-      // height: '18px',
+      opacity: `0.8 !important`,
     },
     '& .MuiIconButton-label': {
       color: '#fff',
+    },
+  },
+  showChart: {
+    color: '#C9422C',
+    fontSize: '14px',
+    verticalAlign: 'middle',
+    letterSpacing: '1.25px',
+    fontWeight: '500',
+    paddingLeft: '3px',
+    '&.disabled': {
+      color: '#616161',
+    },
+  },
+  showButton: {
+    padding: '6px 0',
+    cursor: 'pointer',
+    '& svg': {
+      width: '27px',
+      height: '27px',
+      padding: '0px',
+      marginLeft: '-2px',
+      transition: 'transform 300ms ease-in-out',
+      transform: 'rotate(0deg)',
+    },
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+  },
+  showButtonActive: {
+    '& svg': {
+      width: '27px',
+      height: '27px',
+      padding: '0px',
+      marginLeft: '-2px',
+      transform: 'rotate(180deg)',
+      transition: 'transform 300ms ease-in-out',
+    },
+  },
+  showButtonDisabled: {
+    '& svg circle, & svg path': {
+      stroke: theme.extras.variables.colors.lightGray,
+    },
+    color: theme.extras.variables.colors.lightGray,
+  },
+  showButtonGlow: {
+    position: 'absolute',
+    left: 0,
+    borderRadius: '50%',
+    width: '24px', // '100%',
+    height: '24px', // '100%',
+    transition: 'opacity 300ms ease-in-out',
+    backgroundColor: '#fff',
+    boxShadow: `0 0 4px 2px #fff, 0 0 10px 16px ${theme.extras.SDScale.onColors[0]}, 0 0 2px 8px ${theme.extras.SDScale.onColors[1]}`,
+    // boxShadow: `0 0 4px 2px #fff, 0 0 20px 12px ${theme.extras.SDScale.onColors[0]}, 0 0 28px 18px ${theme.extras.SDScale.onColors[1]}`,
+    opacity: 0,
+    // zIndex: -1,
+  },
+  showButtonGlowVisible: {
+    opacity: 0.8,
+  },
+  showChartRow: {
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
     },
   },
 })
@@ -122,7 +195,11 @@ const createOptions = (prefix, options) => {
   })
 }
 
-const LegendControl = ({ classes }) => {
+const LegendControl = ({
+  classes,
+  parentClasses,
+  ...props
+}) => {
   const {
     loadYears,
     activeYear,
@@ -131,6 +208,7 @@ const LegendControl = ({ classes }) => {
     activeMetric,
     setStoreValues,
     displayPopup,
+    legendPanel,
   } = useStore(
     state => ({
       loadYears: state.loadYears,
@@ -140,11 +218,10 @@ const LegendControl = ({ classes }) => {
       activeMetric: state.activeMetric,
       setStoreValues: state.setStoreValues,
       displayPopup: state.displayPopup,
+      legendPanel: state.legendPanel,
     }),
     shallow,
   )
-
-  // console.log('render legend control')
 
   /** Handle active metric changes */
   const handleActiveMetric = event => {
@@ -190,6 +267,22 @@ const LegendControl = ({ classes }) => {
       displayPopup: !displayPopup,
     })
   }
+
+  const handleEvent = (val, e) => {
+    // var data = {}
+    if (val === 'showChart') {
+      const data = {
+        active: legendPanel.active,
+        open: !legendPanel.open,
+        glow: legendPanel.glow + 1,
+      }
+      return setStoreValues({ legendPanel: data })
+    }
+  }
+
+  // useEffect(() => {
+  //   console.log('legendPanel changed ', legendPanel)
+  // }, [legendPanel])
 
   return (
     <>
@@ -250,9 +343,15 @@ const LegendControl = ({ classes }) => {
         </div>
       </div>
       <div className={classes.row}>
-        <span className={classes.labelText}>
-          {i18n.translate(`LEGEND_DEMO`)}
-        </span>
+        <div className={classes.labelText}>
+          <span>{i18n.translate(`LEGEND_DEMO`)}</span>
+          <Tooltip
+            title={i18n.translate(`LEGEND_DEMO_TIP`)}
+            arrow
+          >
+            <HelpOutlineIcon />
+          </Tooltip>
+        </div>
         <div>
           {OPTIONS_ACTIVE_POINTS.options
             .slice()
@@ -298,6 +397,45 @@ const LegendControl = ({ classes }) => {
               )
             })}
         </div>
+      </div>
+      <div className={(classes.row, classes.showChartRow)}>
+        <Button
+          disabled={!legendPanel.active}
+          disableRipple={true}
+          className={clsx(
+            classes.showButton,
+            !!legendPanel.open
+              ? classes.showButtonActive
+              : '',
+            !legendPanel.active
+              ? classes.showButtonDisabled
+              : '',
+          )}
+          onClick={e => {
+            handleEvent('showChart', e)
+          }}
+        >
+          <div
+            className={clsx(classes.showButtonGlow, {
+              [classes.showButtonGlowVisible]:
+                legendPanel.active &&
+                legendPanel.glow === 0,
+            })}
+          ></div>
+          <Arrow disabled={!legendPanel.active} />
+          <span
+            className={clsx(
+              classes.showChart,
+              !legendPanel.active ? 'disabled' : '',
+            )}
+          >
+            {i18n.translate(
+              legendPanel.open
+                ? `LEGEND_CHART_TOGGLE_OFF`
+                : `LEGEND_CHART_TOGGLE_ON`,
+            )}
+          </span>
+        </Button>
       </div>
     </>
   )

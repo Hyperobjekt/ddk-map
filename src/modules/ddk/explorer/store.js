@@ -120,8 +120,8 @@ const useStore = create((set, get) => ({
   showSharePopover: false,
   legendPanel: {
     active: false,
-    activated: false,
-    glow: false,
+    open: false,
+    glow: 0,
   },
   legendControl: {
     active: true,

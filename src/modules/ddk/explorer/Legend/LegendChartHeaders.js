@@ -52,9 +52,7 @@ const LegendChartHeaders = ({ classes }) => {
         {i18n.translate('LEGEND_CHART_TITLE')}
       </div>
       <div className={classes.subtitle}>
-        {i18n.translate('LEGEND_CHART_SUBTITLE', {
-          chartSubtitle: getChartSubtitle(activeNorm),
-        })}
+        {getChartSubtitle(activeNorm)}
       </div>
       <div className={classes.panel}>
         {SDArray.map((el, i) => {

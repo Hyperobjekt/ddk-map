@@ -10,6 +10,8 @@ const useStyles = makeStyles(theme => ({
     display: 'block',
     minHeight: '10px',
     // border: '1px solid red',
+    marginLeft: '-2px',
+    marginRight: '-2px',
   },
   blocks: {
     display: 'flex',

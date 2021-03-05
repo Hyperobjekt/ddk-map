@@ -3,16 +3,9 @@ import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
 import shallow from 'zustand/shallow'
-import {
-  Box,
-  FormControlLabel,
-  IconButton,
-  Button,
-  Switch,
-} from '@material-ui/core'
+import { Box, Button } from '@material-ui/core'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import Chart from '../Chart'
-import Arrow from '../Icons'
 import useStore from './../store'
 import { STATES } from './../../../../constants/map'
 import LegendScale from './LegendScale'
@@ -58,12 +51,20 @@ const useLegendStyles = makeStyles(theme => ({
     transition: 'height 300ms ease-in-out',
     height: 0,
     [theme.breakpoints.up('sm')]: {
-      height: '243px',
+      height: '330px',
     },
     overflow: 'hidden',
   },
   controlActive: {
-    height: theme.extras.Legend.height,
+    height: theme.extras.Legend.heightMobile,
+    overflow: 'hidden',
+    [theme.breakpoints.up('sm')]: {
+      height: theme.extras.Legend.height,
+      overflow: 'visible',
+    },
+  },
+  controlInactive: {
+    overflow: 'hidden',
   },
   row: {
     width: '100%',
@@ -105,7 +106,9 @@ const useLegendStyles = makeStyles(theme => ({
   labelText: {
     display: 'block',
     color: '#616161',
-    paddingBottom: '3px',
+    paddingBottom: '6px',
+    fontSize: '14px',
+    fontWeight: 600,
   },
   showChart: {
     color: '#C9422C',
@@ -177,13 +180,18 @@ const useLegendStyles = makeStyles(theme => ({
   },
   panelName: {
     fontSize: '14px',
-    padding: '6px 0px 10px 34px',
+    fontWeight: 600,
+    padding: '6px 0px 4px 12px',
     letterSpacing: '.1px',
-    color: theme.extras.variables.colors.darkGray,
+    lineHeight: '21px',
+    color: theme.extras.variables.colors.lightGray,
+    // textAlign: 'center',
   },
   panelLabel: {
-    padding: '0px 0px 0px 34px',
-    height: '39px',
+    padding: '0px 0px 8px 12px',
+    fontWeight: 500,
+    // color: theme.extras.variables.colors.lightLightGray,
+    // height: '39px',
   },
   panelSds: {
     color: '#616161',
@@ -196,32 +204,6 @@ const useLegendStyles = makeStyles(theme => ({
   },
   sdsCell: {
     width: '20%',
-  },
-  showButton: {
-    width: '27px',
-    height: '27px',
-    padding: '0px',
-    marginLeft: '-2px',
-    transition: 'transform 300ms ease-in-out',
-    transform: 'rotate(0deg)',
-    cursor: 'pointer',
-  },
-  showButtonDisabled: {
-    stroke: theme.extras.variables.colors.lightGray,
-  },
-  showButtonGlow: {
-    position: 'absolute',
-    borderRadius: '50%',
-    width: '100%',
-    height: '100%',
-    transition: 'opacity 300ms ease-in-out',
-    backgroundColor: '#fff',
-    boxShadow: `0 0 4px 2px #fff, 0 0 20px 12px ${theme.extras.SDScale.onColors[1]}, 0 0 28px 18px ${theme.extras.SDScale.onColors[2]}`,
-    opacity: 0,
-    zIndex: -1,
-  },
-  showButtonGlowVisible: {
-    opacity: 1,
   },
 }))
 
@@ -304,72 +286,36 @@ const Legend = ({ ...props }) => {
       const data = { active: !legendControl.active }
       return setStoreValues({ legendControl: data })
     }
-    if (val === 'showChart') {
-      const data = { active: !legendPanel.active }
-      return setStoreValues({ legendPanel: data })
-    }
     // console.log('hit')
     data[val] = e.target.value
     setStoreValues(data)
   }
 
   useEffect(() => {
-    if (
-      activeNorm === 'm' &&
-      centerMetro === 0 &&
-      legendPanel.active
-    ) {
-      const data = { active: !legendPanel.active }
-      setStoreValues({ legendPanel: data })
-    } else if (
-      activeNorm === 's' &&
-      centerState === 0 &&
-      legendPanel.active
-    ) {
-      const data = { active: !legendPanel.active }
-      setStoreValues({ legendPanel: data })
-    } else if (activeNorm === 'n' && legendPanel.active) {
-      const data = { active: !legendPanel.active }
-      setStoreValues({ legendPanel: data })
+    const data = {
+      active: true,
+      open: legendPanel.open,
+      glow: legendPanel.glow,
     }
-  }, [centerMetro, centerState, activeNorm])
-
-  const renderChart = () => {
     if (
-      remoteJson.barcharts &&
-      activePointLayers.length > 0 &&
-      ((activeNorm === 'm' && centerMetro > 0) ||
-        (activeNorm === 's' && centerState > 0))
+      (activeNorm === 'm' &&
+        centerMetro === 0 &&
+        legendPanel.active) ||
+      (activeNorm === 's' &&
+        centerState === 0 &&
+        legendPanel.active) ||
+      activePointLayers.length < 1
     ) {
-      if (legendPanel.activated === false) {
-        var data = {
-          active: legendPanel.active,
-          activated: true,
-          glow: true,
-        }
-        setStoreValues({ legendPanel: data })
-        setTimeout(function () {
-          data = {
-            active: legendPanel.active,
-            activated: true,
-            glow: false,
-          }
-          setStoreValues({ legendPanel: data })
-        }, 1500)
-      }
-      return true
-    } else {
-      if (legendPanel.activated === true) {
-        var data = {
-          active: legendPanel.active,
-          activated: false,
-          glow: false,
-        }
-        setStoreValues({ legendPanel: data })
-      }
-      return false
+      data.active = false
+      data.open = false
     }
-  }
+    setStoreValues({ legendPanel: data })
+  }, [
+    centerMetro,
+    centerState,
+    activeNorm,
+    activePointLayers,
+  ])
 
   const classes = useLegendStyles()
 
@@ -379,39 +325,10 @@ const Legend = ({ ...props }) => {
       {breakpoint != 'xs' && activeView === 'explorer' && (
         <Box
           className={clsx('map-legend', classes.root, {
-            [classes.active]: legendPanel.active,
+            [classes.active]: legendPanel.open,
           })}
         >
           <div className={classes.controller}>
-            <div className={classes.row}>
-              <IconButton
-                disabled={!renderChart()}
-                className={classes.showButton}
-                onClick={e => {
-                  handleEvent('showChart', e)
-                }}
-              >
-                <div
-                  className={clsx(classes.showButtonGlow, {
-                    [classes.showButtonGlowVisible]:
-                      legendPanel.glow,
-                  })}
-                ></div>
-                <Arrow disabled={!renderChart()} />
-              </IconButton>
-              <span
-                className={clsx(
-                  classes.showChart,
-                  !renderChart() ? 'disabled' : '',
-                )}
-              >
-                {i18n.translate(
-                  legendPanel.active
-                    ? `LEGEND_CHART_TOGGLE_OFF`
-                    : `LEGEND_CHART_TOGGLE_ON`,
-                )}
-              </span>
-            </div>
             <LegendScale
               activeMetric={activeMetric}
               activeNorm={activeNorm}
@@ -421,16 +338,18 @@ const Legend = ({ ...props }) => {
               }}
             />
             <div
-              className={clsx(classes.controlGuts, {
-                [classes.controlActive]:
-                  legendControl.active,
-              })}
+              className={clsx(
+                classes.controlGuts,
+                !!legendControl && !!legendControl.active
+                  ? classes.controlActive
+                  : classes.controlInactive,
+              )}
             >
-              <LegendControl />
+              <LegendControl parentClasses={classes} />
             </div>
           </div>
           <div className={classes.panel}>
-            {renderChart() && (
+            {!!legendPanel.active && (
               <div className={classes.panelChart}>
                 <LegendChartHeaders
                   classes={{
@@ -476,12 +395,17 @@ const Legend = ({ ...props }) => {
               }}
             />
             <div
-              className={clsx(classes.controlGuts, {
-                [classes.controlActive]:
-                  legendControl.active,
-              })}
+              className={clsx(
+                classes.controlGuts,
+                !!legendControl && !!legendControl.active
+                  ? classes.controlActive
+                  : classes.controlInactive,
+              )}
             >
-              <LegendControl />
+              <LegendControl
+                renderChart={renderChart}
+                parentClasses={classes}
+              />
             </div>
             <div className={clsx(classes.row)}>
               <div className={classes.controlButton}>

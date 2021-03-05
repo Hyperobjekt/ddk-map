@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
@@ -13,7 +13,9 @@ import {
   Legend,
   ResponsiveContainer,
   Customized,
+  Tooltip,
 } from 'recharts'
+import { OPTIONS_ACTIVE_POINTS } from './../../../../constants/map'
 
 const useStyles = makeStyles(theme => ({
   legendIndicator: {
@@ -76,27 +78,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Chart = ({ ...props }) => {
-  // const processData = (data, geo, year) => {
-  //   var struct = [];
-  //   var selected = [];
-  //   switch(geo.type){
-  //     case 'national':
-  //       selected = data.barcharts.data[`20${year}`][props.geo.type]
-  //     default:
-  //       selected = data.barcharts.data[`20${year}`][geo.type][geo.id]
-  //   }
-  //   selected.map(el => {
-  //     struct.push({
-  //       ai: el.ai,
-  //       ap: el.ap,
-  //       w: el.w,
-  //       b: el.b,
-  //       hi: el.hi,
-  //     })
-  //   })
-  //   return struct
-  // }
-
   const addPercent = el => {
     return `${el}%`
   }
@@ -139,7 +120,7 @@ const Chart = ({ ...props }) => {
 
   const Background = () => {
     const bgWidth = 311
-    const bgHeight = 225
+    const bgHeight = 265.5
     const xOffset = 36
     const yOffset = 5
     const indexes = ['vl', 'l', 'm', 'h', 'vh']
@@ -171,50 +152,88 @@ const Chart = ({ ...props }) => {
     )
   }
 
+  /**
+   * Finds the highest value from the arrays of data for
+   * active demographics.
+   */
+  const getMaxValue = useMemo(() => {
+    let maxValue = 0
+    props.activeBars.forEach(el => {
+      props.data.forEach(row => {
+        // console.log(`row val for ${row}`, row[el], maxValue)
+        if (row[el] > maxValue) {
+          maxValue = row[el]
+        }
+      })
+    })
+    return Math.round(maxValue / 5) * 5 + 5
+  }, [props.activeBars])
+
   const classes = useStyles()
 
+  // console.log('data is, ', props.data, props.activeBars)
+
+  const getBars = useMemo(() => {
+    const pointSet = OPTIONS_ACTIVE_POINTS.options.slice()
+    const barSet = pointSet.reverse().filter(el => {
+      return props.activeBars.indexOf(el) > -1
+    })
+    return barSet
+  }, [props.activeBars])
+
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <BarChart
-        data={props.data}
-        // data={processData(props.data, props.geo, props.year)}
-        margin={{ top: 5, right: 5, bottom: 5, left: -24 }}
-        barCategoryGap="5%"
-        barGap="0"
-      >
-        <CartesianGrid
-          horizontal={false}
-          vertical={false}
-        />
-        <XAxis
-          dataKey="name"
-          tickLine={false}
-          axisLine={false}
-        />
-        <YAxis
-          minTickGap={0}
-          axisLine={false}
-          tickLine={false}
-          domain={[0, 80]}
-          tickCount={9}
-          tickFormatter={addPercent}
-        />
-        <Legend content={renderLegend} />
-        <Customized key={'bg'} component={Background} />
-        {!!props.activeBars
-          ? props.activeBars.map((el, i) => {
-              return (
-                <Bar
-                  key={i}
-                  radius={[2, 2, 0, 0]}
-                  dataKey={el}
-                  className={classes[el]}
-                />
-              )
-            })
-          : ''}
-      </BarChart>
-    </ResponsiveContainer>
+    <div
+      className="responsive-container-parent"
+      style={{ height: '310px', width: '100%' }}
+    >
+      <ResponsiveContainer>
+        <BarChart
+          data={props.data}
+          // data={processData(props.data, props.geo, props.year)}
+          margin={{
+            top: 5,
+            right: 5,
+            bottom: 5,
+            left: -24,
+          }}
+          barCategoryGap="5%"
+          barGap="1"
+        >
+          <CartesianGrid
+            horizontal={false}
+            vertical={false}
+          />
+          <XAxis
+            dataKey="name"
+            tickLine={false}
+            axisLine={false}
+          />
+          <YAxis
+            minTickGap={0}
+            axisLine={false}
+            tickLine={false}
+            domain={[0, getMaxValue]}
+            tickCount={9}
+            tickFormatter={addPercent}
+          />
+          <Legend content={renderLegend} />
+
+          <Customized key={'bg'} component={Background} />
+          {!!getBars
+            ? getBars.map((el, i) => {
+                return (
+                  <Bar
+                    key={i}
+                    radius={[2, 2, 0, 0]}
+                    dataKey={el}
+                    className={classes[el]}
+                  />
+                )
+              })
+            : ''}
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   )
 }
 
