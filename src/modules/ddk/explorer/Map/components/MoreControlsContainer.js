@@ -17,7 +17,7 @@ import {
 const styles = makeStyles(theme => ({
   root: {
     position: 'absolute',
-    bottom: '120px',
+    bottom: '104px',
     right: '16px',
     width: '40px',
     height: 'auto',
@@ -28,8 +28,8 @@ const styles = makeStyles(theme => ({
       display: 'flex',
     },
     '& button': {
-      width: '40px',
-      height: '40px',
+      width: '32px',
+      height: '32px',
       backgroundColor: '#fff',
       padding: 0,
       minWidth: 0,
@@ -42,8 +42,8 @@ const styles = makeStyles(theme => ({
       backgroundColor: `${theme.extras.variables.colors.ddkLightRedHex} !important`,
     },
     '& svg': {
-      width: '32px',
-      heigth: '32px',
+      width: '24px !important',
+      heigth: '24px !important',
     },
     marginTop: '0.15rem',
   },

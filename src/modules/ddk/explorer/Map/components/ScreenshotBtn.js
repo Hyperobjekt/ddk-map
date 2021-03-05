@@ -1,11 +1,21 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
+import { makeStyles } from '@material-ui/core/styles'
 import i18n from '@pureartisan/simple-i18n'
 import { Tooltip, Button } from '@material-ui/core'
 import shallow from 'zustand/shallow'
 
 import useStore from './../../store'
+
+const styles = makeStyles(theme => ({
+  btn: {
+    '& svg': {
+      width: '20px',
+      height: '20px',
+    },
+  },
+}))
 
 const ScreenshotBtn = ({ children, ...props }) => {
   const { setStoreValues, eventMapCapture } = useStore(
@@ -31,6 +41,7 @@ const ScreenshotBtn = ({ children, ...props }) => {
       eventMapCapture: eventMapCapture + 1,
     })
   }
+  const classes = styles()
 
   return (
     <Tooltip title={i18n.translate(`MAP_SCREENSHOT`)} arrow>
@@ -38,7 +49,7 @@ const ScreenshotBtn = ({ children, ...props }) => {
         aria-label={i18n.translate(`MAP_SCREENSHOT`)}
         onClick={handleClick}
         placement={props.placement}
-        className={props.className}
+        className={clsx(props.className, classes.btn)}
       >
         {children}
       </Button>

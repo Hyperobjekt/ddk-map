@@ -8,6 +8,16 @@ import shallow from 'zustand/shallow'
 
 import useStore from './../../store'
 
+const styles = makeStyles(theme => ({
+  btn: {
+    '& svg': {
+      marginTop: '3px',
+      width: '24px',
+      height: '24px',
+    },
+  },
+}))
+
 const FlyToResetBtn = ({ children, ...props }) => {
   const { flyToReset, setStoreValues } = useStore(
     state => ({
@@ -24,13 +34,15 @@ const FlyToResetBtn = ({ children, ...props }) => {
     flyToReset()
   }
 
+  const classes = styles()
+
   return (
     <Tooltip title={i18n.translate(`MAP_RESET`)} arrow>
       <Button
         aria-label={i18n.translate(`MAP_RESET`)}
         onClick={handleClick}
         placement={props.placement}
-        className={props.className}
+        className={clsx(props.className, classes.btn)}
       >
         {children}
       </Button>
