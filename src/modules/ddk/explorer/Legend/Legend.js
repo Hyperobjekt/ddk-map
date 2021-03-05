@@ -402,10 +402,7 @@ const Legend = ({ ...props }) => {
                   : classes.controlInactive,
               )}
             >
-              <LegendControl
-                renderChart={renderChart}
-                parentClasses={classes}
-              />
+              <LegendControl parentClasses={classes} />
             </div>
             <div className={clsx(classes.row)}>
               <div className={classes.controlButton}>
