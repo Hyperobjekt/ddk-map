@@ -33,15 +33,22 @@ const styles = makeStyles(theme => ({
     width: '100%',
     backgroundColor: '#fff',
     borderRadius: '0px',
-    '&:nth-child(2)': {
-      margin: '7px 0px',
+    margin: '7px 0',
+    '&.Mui-expanded': {
+      margin: '7px 0',
     },
-    '&::before': {
+    '&:before': {
       display: 'none',
     },
-    '&.Mui-expanded': {
-      margin: '7px 0px',
-    },
+    // '&:nth-child(2)': {
+    //   margin: '7px 0px',
+    // },
+    // '&::before': {
+    //   display: 'none',
+    // },
+    // '&.Mui-expanded': {
+    //   margin: '7px 0px',
+    // },
   },
   title: {
     fontSize: '16px',
@@ -49,9 +56,9 @@ const styles = makeStyles(theme => ({
     lineHeight: '24px',
     letterSpacing: '0.25px',
     fontWeight: 600,
-    '&.Mui-expanded': {
-      margin: '12px 0px',
-    },
+    // '&.Mui-expanded': {
+    //   margin: '12px 0px',
+    // },
   },
   titleContainer: {
     minHeight: '48px',
@@ -71,6 +78,11 @@ const styles = makeStyles(theme => ({
     borderTop: `1px solid ${theme.extras.variables.colors.lightLightGray}`,
     padding: '16px 16px',
     color: theme.extras.variables.colors.lightGray,
+    '& svg': {
+      width: '16px',
+      height: '16px',
+      marginBottom: '-2px',
+    },
   },
   all: {
     float: 'right',
@@ -87,6 +99,7 @@ const styles = makeStyles(theme => ({
     overflowX: 'hidden',
     width: '100%',
     flexGrow: '1',
+    paddingBottom: '1.2rem',
   },
   h3: {
     fontSize: '20px',

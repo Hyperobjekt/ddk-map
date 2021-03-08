@@ -261,7 +261,7 @@ const BaseMap = ({ ...props }) => {
   }
 
   const handleHover = feature => {
-    // console.log('Map hover, ', feature)
+    console.log('Map hover, ', feature)
   }
 
   // const handleDblClick = e => {
@@ -551,6 +551,7 @@ const BaseMap = ({ ...props }) => {
     // then set the slideout tract id and feature
     setTimeout(() => {
       if (activeShape !== 0) {
+        // console.log('has activeShape', localMapRef)
         localMapRef.setFeatureState(
           {
             id: activeShape,
@@ -578,7 +579,7 @@ const BaseMap = ({ ...props }) => {
           })
         }
       }
-    }, 400)
+    }, 1000)
     // Set map dimensions
     setStoreValues({
       mapSize: getMapDimensions(),

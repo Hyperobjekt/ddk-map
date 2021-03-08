@@ -165,7 +165,7 @@ const TractPanel = () => {
 
   const classes = useStyles()
 
-  const [showSubs, setShowSubs] = useState([1, 0, 0])
+  const [showSubs, setShowSubs] = useState([0, 0, 0])
 
   const toggleShowSubs = () => {
     // console.log('toggleShowSubs')

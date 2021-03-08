@@ -37,7 +37,7 @@ export const langSet = {
     SLIDEOUT_HEADING_LEVELS: `Child Opportunity Levels`,
     SLIDEOUT_HEADING_LEVELS_TIP: `Child Opportunity Levels are five categories of neighborhood opportunity ranging from very low to very high.`,
     SLIDEOUT_HEADING_XC: `Overall Child Opportunity Index`,
-    SLIDEOUT_HEADING_XE: `Education Opportunity Index`,
+    SLIDEOUT_HEADING_XE: `Education Index`,
     SLIDEOUT_HEADING_XH: `Health and Environment Index`,
     SLIDEOUT_HEADING_XO: `Social and Economic Index`,
     DATA_YEAR_PHRASE: `{year} data`,
@@ -123,18 +123,61 @@ export const langSet = {
       {
         title: 'How can I use this information?',
         content:
-          '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
+          '<p>The Child Opportunity Index measures and maps 29 neighborhood conditions children need to grow and thrive, like access to healthy food, good schools, safe housing, playgrounds and green space among others. The Index reveals vast inequities in how neighborhood opportunity is distributed across the U.S.  You can use the information in the Index to understand what neighborhood opportunity patterns look like in your community: where do children experience all the conditions they need to thrive (high and very high-opportunity neighborhoods) and where do children lack access to neighborhood opportunity (very low and low-opportunity neighborhoods)?</p><p>You can use this data to start conversations about equity in your community, identify neighborhoods in your community that would benefit from targeted investment, propose changes to policies that shape where resources like parks and playgrounds are allocation, work to change exclusionary zoning and many other actions that can increase equity and ensure that all children are able to grow and thrive to their full potential.</p>',
+      },
+      {
+        title: 'What data can I choose from?',
+        content:
+          '<p>Using the legend panel on the right, you can select either the Overall Child Opportunity Index, which includes all 29 indicators, or one of the three sub-indices: Education Index, Health and Environment Index, or Social and Economic Index. You may view data for either 2010 or 2015. Use the check boxes to show where children of different racial and ethnic groups live in relation to opportunity. As you select a racial/ethnic group, colored dots appear on the map to show the population density for the selected group in the metro, state or nation.</p>',
+      },
+      {
+        title: 'What does the bar chart show?',
+        content:
+          '<p>The bar chart shows the distribution of children by race and ethnicity in relation to the five Child Opportunity Levels in your selected geography (metro, state or nation). You can select which racial/ethnic groups to display on the bar chart by checking the boxes under “Select a race/ethnicity.” The bar chart shows a consistent pattern across the U.S.: Black, Hispanic and American Indian/Alaska Native children overwhelming live in very low and low-opportunity neighborhoods, while White and Asian/Pacific Islander children generally live in moderate, high and very-high opportunity neighborhoods. </p>',
+      },
+      {
+        title:
+          'How should I choose between metro, state and national norming?',
+        content:
+          '<p>We offer three types of norming so you can make meaningful comparisons. To understand child opportunity patterns within your metro, choose metro norming. To understand how your census tract compares to others in your state, choose state norming.  And to explore how your census tract compares with others across the country, choose national norming. Note that metro norming is only available for the 100 largest U.S. metros. If metro norming isn’t available as an option, this means that the census tract you’ve selected is not part of the 100 largest U.S. metros. </p>',
+      },
+      {
+        title: 'What kinds of locations can I view?',
+        content:
+          '<p>You can view data for virtually all census tracts in the U.S. (over 72,000). By choosing between metro, state or national norming you can see data for any one of the 100 largest U.S. metros, for a state, or for the entire nation. </p>',
+      },
+      {
+        title:
+          'How can I find a location and view its data?',
+        content:
+          '<p>You can navigate to your desired location via the navigation controls in the map. Or type a location name into the search bar in the header.</p>',
+      },
+      {
+        title:
+          'How do I see all the data for a location at once?',
+        content:
+          '<p>Click on a census tract to display a side panel containing detailed information about that tract.</p>',
+      },
+      {
+        title: 'How can I share this information?',
+        content:
+          '<p>You can share a map that displays all your data selections on social media, as a URL, or as embedded code in a website. Click on the “share” symbol <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeLarge" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92zM18 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM6 13c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12 7.02c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"></path></svg> in the control panel on the left side to see options for sharing the map.</p>',
+      },
+      {
+        title: 'Can I download the data?',
+        content:
+          '<p>Raw data can be downloaded from our <a href="https://data.diversitydatakids.org/dataset/coi20-child-opportunity-index-2-0-database" target="_blank" ref="noopener noreferrer">data portal</a>.</p>',
       },
       {
         title: 'Where does this information come from?',
         content:
-          '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
+          '<p>The research team at diversitydatakids.org constructed the Child Opportunity Index from publicly available and proprietary data. You can find source information for each indicator and complete details about how the COI was constructed in our <a href="https://www.diversitydatakids.org/sites/default/files/2020-02/ddk_coi2.0_technical_documentation_20200212.pdf" target="_blank" ref="noopener noreferrer">Technical Document</a>.</p>',
       },
       {
         title:
-          'How can I choose between metro-normed, state-normed, and nationally-normed data?',
+          'Where can I get more help and info about child opportunity?',
         content:
-          '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
+          '<p>To learn more about children’s access to neighborhood opportunity in the U.S., explore our <a href="https://www.diversitydatakids.org/research-library?f%5B0%5D=content_types%3A16&f%5B1%5D=topics%3A76&f%5B2%5D=topics%3A171" target="_blank" rel="noopener noreferrer">data stories</a>. You can also see how communities across the U.S. are <a href="https://www.diversitydatakids.org/impact-stories" target="_blank" rel="noopener noreferrer">using</a> the COI, read <a href="https://www.diversitydatakids.org/news" target="_blank" rel="noopener noreferrer">news</a> stories about the Index, learn about our methods, and learn about our <a href="https://www.diversitydatakids.org/our-experts" target="_blank" rel="noopener noreferrer">team</a>. Still have questions? <a href="https://www.diversitydatakids.org/contact-us" target="_blank" rel="noopener noreferrer">Contact us</a>.</p>',
       },
     ],
     MAP_FLY_TO_STATE: `Fly to {state}`,

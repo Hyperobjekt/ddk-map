@@ -76,7 +76,7 @@ export const OPTIONS_ACTIVE_POINTS = {
 // 'se': 'o', ==> economic
 // 'coi': 'c', ==> overall
 export const OPTIONS_METRIC = {
-  options: ['xc', 'xo', 'xh', 'xe'],
+  options: ['xc', 'xe', 'xh', 'xo'],
   validate: 'one_exact_match',
 }
 export const OPTIONS_NORM = {
