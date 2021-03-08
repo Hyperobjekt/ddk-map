@@ -68,7 +68,7 @@ export const theme = createMuiTheme({
   // Update theme here according to the Mui documentation
   palette: {
     primary: {
-      main: '#6200EE',
+      main: variables.colors.ddkNavy, // '#6200EE',
       dark: '#3700B3',
     },
     secondary: {
