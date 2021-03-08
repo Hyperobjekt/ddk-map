@@ -17,6 +17,9 @@ const useStyles = makeStyles(theme => ({
     zIndex: '30',
     marginBottom: '-10px',
   },
+  rootZoomedOut: {
+    width: 'auto',
+  },
   title: {
     fontWeight: 600,
     fontSize: '16px',
@@ -85,22 +88,14 @@ const PopupContent = ({ ...props }) => {
   const feature = props.feature
   const {
     activeMetric,
-    // activeYear,
     activeNorm,
-    // hoveredFeature,
     hoveredTract,
-    // remoteJson,
-    // langs,
     viewport,
   } = useStore(
     state => ({
       activeMetric: state.activeMetric,
-      // activeYear: state.activeYear,
       activeNorm: state.activeNorm,
-      // hoveredFeature: state.hoveredFeature,
       hoveredTract: state.hoveredTract,
-      // remoteJson: state.remoteJson,
-      // langs: state.langs,
       viewport: state.viewport,
     }),
     shallow,
@@ -129,7 +124,13 @@ const PopupContent = ({ ...props }) => {
   if (viewport.zoom < FULL_FUNCT_ZOOM_THRESHOLD) {
     // Zoomed out, don't show tract data.
     return (
-      <div className={clsx('popup-parent', classes.root)}>
+      <div
+        className={clsx(
+          'popup-parent',
+          classes.root,
+          classes.rootZoomedOut,
+        )}
+      >
         {activeNorm === 'm' && (
           <p
             className={clsx(
