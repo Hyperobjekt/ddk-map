@@ -176,6 +176,41 @@ const BaseMap = ({ ...props }) => {
     }
   }, [mapRef.current])
 
+  const setFeatureState = (
+    featureId,
+    source,
+    layer,
+    attribute,
+    value,
+  ) => {
+    localMapRef.setFeatureState(
+      {
+        id: featureId,
+        source: source,
+        sourceLayer: layer,
+      },
+      { [attribute]: value },
+    )
+  }
+
+  // Necessary because different tilesets are loaded for different years.
+  // Restore hovered state to the same tract in the selected year tileset.
+  useEffect(() => {
+    console.log('activeYear changed')
+    // When active year is updated,
+    // Query the map for the previous active tract,
+    // And restore the state
+    if (activeShape) {
+      setFeatureState(
+        activeShape,
+        'ddkids_tracts',
+        'tracts',
+        'active',
+        true,
+      )
+    }
+  }, [activeYear])
+
   // storing previous hover / selected IDs
   const prev = usePrevious({
     hoveredTract,
@@ -295,17 +330,6 @@ const BaseMap = ({ ...props }) => {
     })
   }
 
-  // const handleInteractionStateChange = e => {
-  //   console.log('handleInteractionStateChange(), ', e)
-  // }
-
-  // const handleMouseDown = e => {
-  //   console.log('handleMouseDown(), ', e)
-  //   if (controlHovered) {
-  //     return
-  //   }
-  // }
-
   const handleMouseMove = e => {
     let updates = {}
     // console.log('mousemove, ', e)
@@ -364,10 +388,6 @@ const BaseMap = ({ ...props }) => {
         hoveredTract: 0,
         hoveredFeature: null,
       }
-      // setStoreValues({
-      //   hoveredTract: 0,
-      //   hoveredFeature: null,
-      // })
     }
     // If hovering a control, remove currently hovered.
     if (isControl) {
