@@ -470,7 +470,7 @@ export const getPolygonLayers = (source, type, context) => {
 }
 
 export const getLayers = (sources, context) => {
-  // console.log('getLayers', sources, context)
+  // console.log('getLayers', sourcest, context)
   const layers = []
   layers.push(
     ...getPolygonLayers('ddkids_shapes', 'states', context),

@@ -261,7 +261,7 @@ const BaseMap = ({ ...props }) => {
   }
 
   const handleHover = feature => {
-    console.log('Map hover, ', feature)
+    // console.log('Map hover, ', feature)
   }
 
   // const handleDblClick = e => {

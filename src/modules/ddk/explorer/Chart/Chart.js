@@ -3,7 +3,6 @@ import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-import * as lodash from 'lodash'
 import {
   Bar,
   BarChart,
@@ -15,7 +14,10 @@ import {
   Customized,
   Tooltip,
 } from 'recharts'
+import shallow from 'zustand/shallow'
+
 import { OPTIONS_ACTIVE_POINTS } from './../../../../constants/map'
+import useStore from './../store'
 
 const useStyles = makeStyles(theme => ({
   legendIndicator: {
@@ -78,6 +80,21 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Chart = ({ ...props }) => {
+  const {
+    activeYear,
+    activeNorm,
+    centerMetro,
+    centerState,
+  } = useStore(
+    state => ({
+      activeYear: state.activeYear,
+      activeNorm: state.activeNorm,
+      centerMetro: state.centerMetro,
+      centerState: state.centerState,
+    }),
+    shallow,
+  )
+
   const addPercent = el => {
     return `${el}%`
   }
@@ -166,8 +183,19 @@ const Chart = ({ ...props }) => {
         }
       })
     })
-    return Math.round(maxValue / 5) * 5 + 5
-  }, [props.activeBars])
+    // console.log(
+    //   'maxValue after looops, ',
+    //   maxValue,
+    //   Math.ceil((maxValue + 1) / 10) * 10,
+    // )
+    return Math.ceil((maxValue + 1) / 10) * 10
+  }, [
+    props.activeBars,
+    activeYear,
+    activeNorm,
+    centerMetro,
+    centerState,
+  ])
 
   const classes = useStyles()
 
@@ -213,7 +241,7 @@ const Chart = ({ ...props }) => {
             axisLine={false}
             tickLine={false}
             domain={[0, getMaxValue]}
-            tickCount={9}
+            tickCount={getMaxValue / 10 + 1}
             tickFormatter={addPercent}
           />
           <Legend content={renderLegend} />
