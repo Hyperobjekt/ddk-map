@@ -200,7 +200,7 @@ const BaseMap = ({ ...props }) => {
     // When active year is updated,
     // Query the map for the previous active tract,
     // And restore the state
-    if (activeShape) {
+    if (!!loaded && !!activeShape) {
       setFeatureState(
         activeShape,
         'ddkids_tracts',
