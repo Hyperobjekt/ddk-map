@@ -349,36 +349,38 @@ const Legend = ({ ...props }) => {
             </div>
           </div>
           <div className={classes.panel}>
-            {!!legendPanel.active && (
-              <div className={classes.panelChart}>
-                <LegendChartHeaders
-                  classes={{
-                    title: classes.panelName,
-                    subtitle: clsx(
-                      classes.labelText,
-                      classes.panelLabel,
-                    ),
-                    panel: classes.panelSds,
-                    cell: classes.sdsCell,
-                  }}
-                  activeNorm={activeNorm}
-                />
-                <Chart
-                  data={processData(
-                    remoteJson,
-                    activeNorm,
-                    activeYear,
-                    centerState,
-                    centerMetro,
-                  )}
-                  activeBars={
-                    activePointLayers.length > 0
-                      ? activePointLayers
-                      : []
-                  }
-                />
-              </div>
-            )}
+            {!!remoteJson &&
+              !!remoteJson.barcharts &&
+              !!legendPanel.active && (
+                <div className={classes.panelChart}>
+                  <LegendChartHeaders
+                    classes={{
+                      title: classes.panelName,
+                      subtitle: clsx(
+                        classes.labelText,
+                        classes.panelLabel,
+                      ),
+                      panel: classes.panelSds,
+                      cell: classes.sdsCell,
+                    }}
+                    activeNorm={activeNorm}
+                  />
+                  <Chart
+                    data={processData(
+                      remoteJson,
+                      activeNorm,
+                      activeYear,
+                      centerState,
+                      centerMetro,
+                    )}
+                    activeBars={
+                      activePointLayers.length > 0
+                        ? activePointLayers
+                        : []
+                    }
+                  />
+                </div>
+              )}
           </div>
         </Box>
       )}

@@ -9,9 +9,10 @@ import shallow from 'zustand/shallow'
 import useStore from './../../store'
 
 const FlyToMyLocationBtn = ({ children, ...props }) => {
-  const { flyToLatLon } = useStore(
+  const { flyToLatLon, setStoreValues } = useStore(
     state => ({
       flyToLatLon: state.flyToLatLon,
+      setStoreValues: state.setStoreValues,
     }),
     shallow,
   )
