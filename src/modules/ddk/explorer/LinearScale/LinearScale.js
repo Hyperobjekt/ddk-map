@@ -9,7 +9,7 @@ import { getRoundedValue, getHashLeft } from './../utils'
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    height: '58px',
+    height: '56px',
     position: 'relative',
   },
   bar: {

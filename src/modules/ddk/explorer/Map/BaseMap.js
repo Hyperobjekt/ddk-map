@@ -230,10 +230,10 @@ const BaseMap = ({ ...props }) => {
     // )
 
     if (!!loaded && hoveredTractArr.length > 80) {
-      console.log(
-        'clearing hovered tract array, ',
-        hoveredTractArr,
-      )
+      // console.log(
+      //   'clearing hovered tract array, ',
+      //   hoveredTractArr,
+      // )
       for (var i = 0; i++; i < hoveredTractArr.length) {
         if (hoveredTractArr[i] !== activeShape) {
           setFeatureState(
@@ -436,14 +436,6 @@ const BaseMap = ({ ...props }) => {
         false,
       )
       pushHoveredTract(prev.hoveredTract)
-      // localMapRef.setFeatureState(
-      //   {
-      //     id: prev.hoveredTract,
-      //     source: 'ddkids_tracts',
-      //     sourceLayer: 'tracts',
-      //   },
-      //   { hovered: false },
-      // )
       // Set previous hovered to null
       updates = {
         ...updates,
@@ -460,15 +452,7 @@ const BaseMap = ({ ...props }) => {
         'hovered',
         false,
       )
-
-      // localMapRef.setFeatureState(
-      //   {
-      //     id: hoveredTract,
-      //     source: 'ddkids_tracts',
-      //     sourceLayer: 'tracts',
-      //   },
-      //   { hovered: false },
-      // )
+      pushHoveredTract(prev.hoveredTract)
       // Set previous hovered to null
       setStoreValues({
         hoveredTract: 0,
