@@ -10,6 +10,7 @@ import useStore from './../store'
 import GeocodeSearch from './../GeocodeSearch'
 import { HamburgerIcon } from './../../../assets/Icons'
 import { ddkLogoSvg } from './../../../assets/img'
+import { PARENT_SITE } from './../../../../constants/map'
 
 // Styles for component.
 const useHeaderStyles = makeStyles(theme => ({
@@ -130,11 +131,13 @@ const Header = ({ ...props }) => {
     return (
       <AppBar className={classes.root}>
         <Toolbar>
-          <Typography
-            className={classes.h1}
-            variant="h1"
-            aria-label={i18n.translate('SITE_TITLE')}
-          ></Typography>
+          <a href={PARENT_SITE}>
+            <Typography
+              className={classes.h1}
+              variant="h1"
+              aria-label={i18n.translate('SITE_TITLE')}
+            ></Typography>
+          </a>
           <GeocodeSearch classes={classes.search} />
           <Button
             className={classes.menuButton}

@@ -1,5 +1,6 @@
 // Base URL for the map app
 export const BASE_URL = 'https://diversitydatakids.org/map/'
+export const PARENT_SITE = 'https://diversitydatakids.org/'
 export const FB_APP_ID = '527190134911454'
 
 // Routing

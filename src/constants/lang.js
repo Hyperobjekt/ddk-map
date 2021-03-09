@@ -96,7 +96,7 @@ export const langSet = {
     BTN_SEARCH: `Search`,
     BTN_SHOW_ALL: `SHOW ALL`,
     BTN_HIDE_ALL: `HIDE ALL`,
-    SCALE_MEAN: `Mean`,
+    SCALE_MEAN: `Average`,
     SCALE_INDICATORS_SHOW: `Show indicators`,
     SCALE_INDICATORS_HIDE: `Hide indicators`,
     LABEL_XC: `Overall Child Opportunity`,
@@ -239,11 +239,6 @@ export const langSet = {
         {
           label: `About Us`,
           link: `https://www.diversitydatakids.org/about-us`,
-          active: 0,
-        },
-        {
-          label: `FAQs`,
-          link: `https://www.diversitydatakids.org/research-library/frequently-asked-questions`,
           active: 0,
         },
         {
