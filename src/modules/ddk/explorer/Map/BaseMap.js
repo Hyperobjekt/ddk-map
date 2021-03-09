@@ -337,6 +337,42 @@ const BaseMap = ({ ...props }) => {
 
   const handleHover = feature => {
     // console.log('Map hover, ', feature)
+    if (!!controlHovered) {
+      return
+    }
+    // Is the feature a tract?
+    if (
+      feature &&
+      feature.layer &&
+      feature.layer['source-layer'] &&
+      feature.layer['source-layer'] === 'tracts'
+    ) {
+      if (feature.id !== prev.hoveredTract) {
+        // Set states for both.
+        // Previous not hovered.
+        setFeatureState(
+          prev.hoveredTract,
+          'ddkids_tracts',
+          'tracts',
+          'hovered',
+          false,
+        )
+        // Current to hovered.
+        setFeatureState(
+          feature.id,
+          'ddkids_tracts',
+          'tracts',
+          'hovered',
+          true,
+        )
+        // Store hovered in array for cleanup.
+        pushHoveredTract(feature.id)
+        setStoreValues({
+          hoveredTract: feature.id,
+          hoveredFeature: feature,
+        })
+      }
+    }
   }
 
   // const handleDblClick = e => {
@@ -361,22 +397,6 @@ const BaseMap = ({ ...props }) => {
       'hovered',
       false,
     )
-    // localMapRef.setFeatureState(
-    //   {
-    //     id: prev.hoveredTract,
-    //     source: 'ddkids_tracts',
-    //     sourceLayer: 'tracts',
-    //   },
-    //   { hovered: false },
-    // )
-    // localMapRef.setFeatureState(
-    //   {
-    //     id: hoveredTract,
-    //     source: 'ddkids_tracts',
-    //     sourceLayer: 'tracts',
-    //   },
-    //   { hovered: false },
-    // )
     // Set previous hovered to null
     setStoreValues({
       hoveredTract: 0,
@@ -435,7 +455,7 @@ const BaseMap = ({ ...props }) => {
         'hovered',
         false,
       )
-      pushHoveredTract(prev.hoveredTract)
+      // pushHoveredTract(prev.hoveredTract)
       // Set previous hovered to null
       updates = {
         ...updates,
@@ -452,7 +472,7 @@ const BaseMap = ({ ...props }) => {
         'hovered',
         false,
       )
-      pushHoveredTract(prev.hoveredTract)
+      // pushHoveredTract(prev.hoveredTract)
       // Set previous hovered to null
       setStoreValues({
         hoveredTract: 0,
@@ -461,38 +481,38 @@ const BaseMap = ({ ...props }) => {
     }
     // If hovering a tract, and tract is different,
     // reset hovered.
-    if (!!tracts && tracts.length > 0 && !isControl) {
-      // console.log(
-      //   'mousemove hovered tracts array: ',
-      //   tracts,
-      // )
-      if (tracts[0].id !== prev.hoveredTract) {
-        // Set states for both.
-        localMapRef.setFeatureState(
-          {
-            id: prev.hoveredTract,
-            source: 'ddkids_tracts',
-            sourceLayer: 'tracts',
-          },
-          { hovered: false },
-        )
-        localMapRef.setFeatureState(
-          {
-            id: tracts[0].id,
-            source: 'ddkids_tracts',
-            sourceLayer: 'tracts',
-          },
-          { hovered: true },
-        )
-        pushHoveredTract(tracts[0].id)
-        // Set new hovered hovered feature in store.
-        updates = {
-          ...updates,
-          hoveredTract: tracts[0].id,
-          hoveredFeature: tracts[0],
-        }
-      }
-    }
+    // if (!!tracts && tracts.length > 0 && !isControl) {
+    // console.log(
+    //   'mousemove hovered tracts array: ',
+    //   tracts,
+    // )
+    // if (tracts[0].id !== prev.hoveredTract) {
+    //   // Set states for both.
+    //   localMapRef.setFeatureState(
+    //     {
+    //       id: prev.hoveredTract,
+    //       source: 'ddkids_tracts',
+    //       sourceLayer: 'tracts',
+    //     },
+    //     { hovered: false },
+    //   )
+    //   localMapRef.setFeatureState(
+    //     {
+    //       id: tracts[0].id,
+    //       source: 'ddkids_tracts',
+    //       sourceLayer: 'tracts',
+    //     },
+    //     { hovered: true },
+    //   )
+    //   pushHoveredTract(tracts[0].id)
+    //   // Set new hovered hovered feature in store.
+    //   updates = {
+    //     ...updates,
+    //     hoveredTract: tracts[0].id,
+    //     hoveredFeature: tracts[0],
+    //   }
+    // }
+    // }
     // Setting mouse coords and lnglat
     // for general use by tooltips, etc.
     updates = {
