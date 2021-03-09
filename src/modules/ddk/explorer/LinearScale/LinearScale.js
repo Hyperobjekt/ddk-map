@@ -71,29 +71,25 @@ const LinearScale = ({ ...props }) => {
   const mean = Number(props.indicator.mean)
   const percent = false
 
-  // For checking a particular indicator, if there are issues with its presentation.
-  // if (props.indicator.id === 'epe') {
-  //   console.log(
-  //     'min is',
-  //     min,
-  //     String(min).indexOf('e') > 0,
-  //     parseFloat(Number(String(min))),
-  //     `${getRoundedValue(
-  //       min,
-  //       20,
-  //       false,
-  //       currency,
-  //       percent,
-  //     )}`,
-  //   )
-  // }
+  /**
+   * Founds a number in exponential notation to a whole number.
+   * @param Number val Number in scientific notation
+   * @returns String
+   */
+  const formatExponent = val => {
+    if (val < 1 && val > -1) {
+      return String(Math.round(val).toPrecision(1))
+    } else {
+      return getRoundedValue(val, 0, true, false, false)
+    }
+  }
 
   const rightVal = !!high_is_good ? max : min
   const leftVal = !!high_is_good ? min : max
 
   const rightLabel =
     String(rightVal).indexOf('e') > 0
-      ? String(rightVal)
+      ? formatExponent(rightVal)
       : `${getRoundedValue(
           rightVal,
           decimals,
@@ -103,7 +99,7 @@ const LinearScale = ({ ...props }) => {
         )}`
   const leftLabel =
     String(leftVal).indexOf('e') > 0
-      ? String(leftVal)
+      ? formatExponent(leftVal)
       : `${getRoundedValue(
           leftVal,
           decimals,
@@ -113,7 +109,7 @@ const LinearScale = ({ ...props }) => {
         )}`
   const valueLabel =
     String(props.value).indexOf('e') > 0
-      ? String(props.value)
+      ? formatExponent(props.value)
       : `${getRoundedValue(
           props.value,
           decimals,
