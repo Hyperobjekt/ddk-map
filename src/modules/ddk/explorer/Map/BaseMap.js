@@ -45,6 +45,7 @@ import MapPopup from './components/MapPopup'
 import MoreControlsContainer from './components/MoreControlsContainer'
 import { MobileShareBtn } from './../Share'
 import { getIsControl, getParents } from './../utils'
+import { PublishSharp } from '@material-ui/icons'
 
 const useStyles = makeStyles(theme => ({
   parent: {
@@ -137,6 +138,8 @@ const BaseMap = ({ ...props }) => {
     controlHovered,
     mouseXY,
     flyToFeature,
+    hoveredTractArr,
+    pushHoveredTract,
   } = useStore(
     state => ({
       activeView: state.activeView,
@@ -155,9 +158,13 @@ const BaseMap = ({ ...props }) => {
       controlHovered: state.controlHovered,
       mouseXY: state.mouseXY,
       flyToFeature: state.flyToFeature,
+      hoveredTractArr: state.hoveredTractArr,
+      pushHoveredTract: state.pushHoveredTract,
     }),
     shallow,
   )
+
+  //// SETUP
 
   // Token and viewport passed to the map.
   const token = process.env.MAPBOX_API_TOKEN
@@ -176,41 +183,6 @@ const BaseMap = ({ ...props }) => {
     }
   }, [mapRef.current])
 
-  const setFeatureState = (
-    featureId,
-    source,
-    layer,
-    attribute,
-    value,
-  ) => {
-    localMapRef.setFeatureState(
-      {
-        id: featureId,
-        source: source,
-        sourceLayer: layer,
-      },
-      { [attribute]: value },
-    )
-  }
-
-  // Necessary because different tilesets are loaded for different years.
-  // Restore hovered state to the same tract in the selected year tileset.
-  useEffect(() => {
-    console.log('activeYear changed')
-    // When active year is updated,
-    // Query the map for the previous active tract,
-    // And restore the state
-    if (!!loaded && !!activeShape) {
-      setFeatureState(
-        activeShape,
-        'ddkids_tracts',
-        'tracts',
-        'active',
-        true,
-      )
-    }
-  }, [activeYear])
-
   // storing previous hover / selected IDs
   const prev = usePrevious({
     hoveredTract,
@@ -228,6 +200,81 @@ const BaseMap = ({ ...props }) => {
     flyToState: useFlyToState(),
     flyToReset: useFlyToReset(),
   })
+
+  // FUNCTIONS FOR UPDATING MAP
+
+  const setFeatureState = (
+    featureId,
+    source,
+    layer,
+    attribute,
+    value,
+  ) => {
+    localMapRef.setFeatureState(
+      {
+        id: featureId,
+        source: source,
+        sourceLayer: layer,
+      },
+      { [attribute]: value },
+    )
+  }
+
+  /**
+   * Clears hovered state from old hovered items (cleanup for fast mouse movement).
+   */
+  useEffect(() => {
+    // console.log(
+    //   'checking hovered tract array, ',
+    //   hoveredTractArr,
+    // )
+
+    if (!!loaded) {
+      console.log('checking for hovered things')
+
+      // { hovered: false },
+
+      const features = localMapRef.queryRenderedFeatures({
+        sourceLayer: 'tracts',
+        filter: ['==', ['feature-state', 'hovered'], true],
+      })
+      console.log('hovered features: ', features)
+    }
+
+    // if (hoveredTractArr.length > 10) {
+    //   console.log('clearing hovered tract array')
+    //   for (var i = 0; i++; i < hoveredTractArr) {
+    //     setFeatureState(
+    //       hoveredTractArr[i],
+    //       'ddkids_tracts',
+    //       'tracts',
+    //       'hovered',
+    //       false,
+    //     )
+    //   }
+    //   setStoreValues({ hoveredTractArr: [] })
+    // }
+  }, [hoveredTractArr])
+
+  //// INTERACTION AND EVENT HANDLERS
+
+  // Necessary because different tilesets are loaded for different years.
+  // Restore hovered state to the same tract in the selected year tileset.
+  useEffect(() => {
+    // console.log('activeYear changed')
+    // When active year is updated,
+    // Query the map for the previous active tract,
+    // And restore the state
+    if (!!loaded && !!activeShape) {
+      setFeatureState(
+        activeShape,
+        'ddkids_tracts',
+        'tracts',
+        'active',
+        true,
+      )
+    }
+  }, [activeYear])
 
   const handleClick = e => {
     // console.log('Map click, ', e)
@@ -307,22 +354,36 @@ const BaseMap = ({ ...props }) => {
     // console.log('handleMouseOut')
     // When the users mouses out of the map canvas,
     // reset the hovered tract values and feature states.
-    localMapRef.setFeatureState(
-      {
-        id: prev.hoveredTract,
-        source: 'ddkids_tracts',
-        sourceLayer: 'tracts',
-      },
-      { hovered: false },
+    setFeatureState(
+      prev.hoveredTract,
+      'ddkids_tracts',
+      'tracts',
+      'hovered',
+      false,
     )
-    localMapRef.setFeatureState(
-      {
-        id: hoveredTract,
-        source: 'ddkids_tracts',
-        sourceLayer: 'tracts',
-      },
-      { hovered: false },
+    setFeatureState(
+      hoveredTract,
+      'ddkids_tracts',
+      'tracts',
+      'hovered',
+      false,
     )
+    // localMapRef.setFeatureState(
+    //   {
+    //     id: prev.hoveredTract,
+    //     source: 'ddkids_tracts',
+    //     sourceLayer: 'tracts',
+    //   },
+    //   { hovered: false },
+    // )
+    // localMapRef.setFeatureState(
+    //   {
+    //     id: hoveredTract,
+    //     source: 'ddkids_tracts',
+    //     sourceLayer: 'tracts',
+    //   },
+    //   { hovered: false },
+    // )
     // Set previous hovered to null
     setStoreValues({
       hoveredTract: 0,
@@ -374,14 +435,22 @@ const BaseMap = ({ ...props }) => {
     if (!tracts || tracts.length <= 0) {
       // Remove hovered state from previously hovered.
       // console.log('removing hovered state')
-      localMapRef.setFeatureState(
-        {
-          id: prev.hoveredTract,
-          source: 'ddkids_tracts',
-          sourceLayer: 'tracts',
-        },
-        { hovered: false },
+      setFeatureState(
+        prev.hoveredTract,
+        'ddkids_tracts',
+        'tracts',
+        'hovered',
+        false,
       )
+      pushHoveredTract(prev.hoveredTract)
+      // localMapRef.setFeatureState(
+      //   {
+      //     id: prev.hoveredTract,
+      //     source: 'ddkids_tracts',
+      //     sourceLayer: 'tracts',
+      //   },
+      //   { hovered: false },
+      // )
       // Set previous hovered to null
       updates = {
         ...updates,
@@ -391,14 +460,22 @@ const BaseMap = ({ ...props }) => {
     }
     // If hovering a control, remove currently hovered.
     if (isControl) {
-      localMapRef.setFeatureState(
-        {
-          id: hoveredTract,
-          source: 'ddkids_tracts',
-          sourceLayer: 'tracts',
-        },
-        { hovered: false },
+      setFeatureState(
+        hoveredTract,
+        'ddkids_tracts',
+        'tracts',
+        'hovered',
+        false,
       )
+
+      // localMapRef.setFeatureState(
+      //   {
+      //     id: hoveredTract,
+      //     source: 'ddkids_tracts',
+      //     sourceLayer: 'tracts',
+      //   },
+      //   { hovered: false },
+      // )
       // Set previous hovered to null
       setStoreValues({
         hoveredTract: 0,
@@ -430,16 +507,13 @@ const BaseMap = ({ ...props }) => {
           },
           { hovered: true },
         )
+        pushHoveredTract(tracts[0].id)
         // Set new hovered hovered feature in store.
         updates = {
           ...updates,
           hoveredTract: tracts[0].id,
           hoveredFeature: tracts[0],
         }
-        // setStoreValues({
-        //   hoveredTract: tracts[0].id,
-        //   hoveredFeature: tracts[0],
-        // })
       }
     }
     // Setting mouse coords and lnglat

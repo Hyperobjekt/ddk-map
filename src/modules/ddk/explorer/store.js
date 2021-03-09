@@ -89,6 +89,16 @@ const useStore = create((set, get) => ({
   centerState: 0,
   // Hovered tract.
   hoveredTract: 0,
+  // Array of previously hovered tracts.
+  hoveredTractArr: [],
+  pushHoveredTract: tract => {
+    // const updatedTract = get()
+    //   .hoveredTractArr.slice()
+    //   .push(tract)
+    set(state => ({
+      hoveredTractArr: [...get().hoveredTractArr, tract],
+    }))
+  },
   // Hovered feature.
   hoveredFeature: null,
   // Mouse XY.
