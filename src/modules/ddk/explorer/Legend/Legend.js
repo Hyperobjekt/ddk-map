@@ -349,15 +349,9 @@ const Legend = ({ ...props }) => {
             </div>
           </div>
           <div className={classes.panel}>
-<<<<<<< HEAD
             {!!remoteJson &&
               !!remoteJson.barcharts &&
               !!legendPanel.active && (
-=======
-            {!!legendPanel.active &&
-              !!remoteJson &&
-              !!remoteJson.barcharts && (
->>>>>>> Attempts to address persistent hover states when mousing around the map quickly
                 <div className={classes.panelChart}>
                   <LegendChartHeaders
                     classes={{
