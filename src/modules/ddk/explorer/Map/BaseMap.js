@@ -586,77 +586,6 @@ const BaseMap = ({ ...props }) => {
     })
   }
 
-  const getMapSources = () => {
-    const sources = getSources(
-      process.env.MAPBOX_USER,
-      process.env.MAPBOX_API_TOKEN,
-      dataVersion,
-      activeYear,
-    )
-    // setStoreValues({ mapSources: sources })
-    return sources
-  }
-
-  /** memoized array of shape and point layers */
-  const layers = useMemo(() => {
-    if (!loaded || !activeMetric || !activeNorm) {
-      return []
-    }
-    const context = {
-      activeYear,
-      activeMetric,
-      activeNorm,
-      activePointLayers,
-      centerState,
-      centerMetro,
-    }
-    // console.log('layers changed, ', hoveredTract)
-    return getLayers(getMapSources(), context)
-  }, [
-    loaded,
-    activeYear,
-    activeMetric,
-    activeNorm,
-    activePointLayers,
-    // centerState,
-    activeNorm === 's' ? centerState : null,
-    activeNorm === 'm' ? centerMetro : null,
-  ])
-
-  /**
-   * Returns the map style with the provided layers inserted
-   * @param {Map} style immutable Map of the base mapboxgl style
-   * @param {array} layers list of layer objects containing style and z order
-   */
-  const getUpdatedMapStyle = (
-    style,
-    layers,
-    sources = fromJS({}),
-  ) => {
-    const updatedSources = style
-      .get('sources')
-      .merge(sources)
-    const updatedLayers = layers.reduce(
-      (newLayers, layer) =>
-        newLayers.splice(layer.z, 0, layer.style),
-      style.get('layers'),
-    )
-    return style
-      .set('sources', updatedSources)
-      .set('layers', updatedLayers)
-  }
-
-  // update map style layers when layers change
-  const mapStyle = useMemo(
-    () =>
-      getUpdatedMapStyle(
-        defaultMapStyle,
-        layers,
-        getMapSources(),
-      ),
-    [defaultMapStyle, layers],
-  )
-
   const viewport = useStore(state => state.viewport)
   const setViewport = useStore(state => state.setViewport)
   // handler for viewport change, debounced to prevent
@@ -708,6 +637,79 @@ const BaseMap = ({ ...props }) => {
   const handleViewportChange = vp => {
     setMapViewport(vp)
   }
+
+  const getMapSources = () => {
+    const sources = getSources(
+      process.env.MAPBOX_USER,
+      process.env.MAPBOX_API_TOKEN,
+      dataVersion,
+      activeYear,
+    )
+    // setStoreValues({ mapSources: sources })
+    return sources
+  }
+
+  /** memoized array of shape and point layers */
+  const layers = useMemo(() => {
+    if (!loaded || !activeMetric || !activeNorm) {
+      return []
+    }
+    const context = {
+      activeYear,
+      activeMetric,
+      activeNorm,
+      activePointLayers,
+      centerState,
+      centerMetro,
+      viewport,
+    }
+    // console.log('layers changed, ', hoveredTract)
+    return getLayers(getMapSources(), context)
+  }, [
+    loaded,
+    activeYear,
+    activeMetric,
+    activeNorm,
+    activePointLayers,
+    // centerState,
+    activeNorm === 's' ? centerState : null,
+    activeNorm === 'm' ? centerMetro : null,
+    viewport.zoom,
+  ])
+
+  /**
+   * Returns the map style with the provided layers inserted
+   * @param {Map} style immutable Map of the base mapboxgl style
+   * @param {array} layers list of layer objects containing style and z order
+   */
+  const getUpdatedMapStyle = (
+    style,
+    layers,
+    sources = fromJS({}),
+  ) => {
+    const updatedSources = style
+      .get('sources')
+      .merge(sources)
+    const updatedLayers = layers.reduce(
+      (newLayers, layer) =>
+        newLayers.splice(layer.z, 0, layer.style),
+      style.get('layers'),
+    )
+    return style
+      .set('sources', updatedSources)
+      .set('layers', updatedLayers)
+  }
+
+  // update map style layers when layers change
+  const mapStyle = useMemo(
+    () =>
+      getUpdatedMapStyle(
+        defaultMapStyle,
+        layers,
+        getMapSources(),
+      ),
+    [defaultMapStyle, layers],
+  )
 
   // Passed through to the MapGL component.
   const mapProps = {

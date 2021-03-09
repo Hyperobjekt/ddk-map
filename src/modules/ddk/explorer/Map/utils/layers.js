@@ -5,6 +5,7 @@ import {
   OPTIONS_ACTIVE_POINTS,
   CHOROPLETH_COLORS,
   SHAPE_ZOOM_LEVELS,
+  FULL_FUNCT_ZOOM_THRESHOLD,
 } from './../../../../../constants/map'
 import { theme } from './../../theme'
 
@@ -293,6 +294,11 @@ export const getPolygonLines = (source, type, context) => {
           ['==', type, 'states'],
           ['==', context.activeNorm, 's'],
           ['==', ['feature-state', 'centered'], true],
+          [
+            '>=',
+            context.viewport.zoom,
+            FULL_FUNCT_ZOOM_THRESHOLD,
+          ],
         ],
         10,
         // State that is not centered.
@@ -304,6 +310,11 @@ export const getPolygonLines = (source, type, context) => {
           ['==', type, 'metros'],
           ['==', context.activeNorm, 'm'],
           ['==', ['feature-state', 'centered'], true],
+          [
+            '>=',
+            context.viewport.zoom,
+            FULL_FUNCT_ZOOM_THRESHOLD,
+          ],
         ],
         6,
         [
