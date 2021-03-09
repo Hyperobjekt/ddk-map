@@ -1,15 +1,15 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import PropTypes from 'proptypes'
 import clsx from 'clsx'
-import i18n from '@pureartisan/simple-i18n'
-import { makeStyles } from '@material-ui/core/styles'
+import i18n from '@pureartisan/simplei18n'
+import { makeStyles } from '@materialui/core/styles'
 
 import { getRoundedValue, getHashLeft } from './../utils'
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    height: '40px',
+    height: '58px',
     position: 'relative',
   },
   bar: {
@@ -19,26 +19,26 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     left: 0,
     backgroundImage:
-      'linear-gradient(90deg, #C9E8F8 0%, #58798F 101.52%)',
+      'lineargradient(90deg, #C9E8F8 0%, #58798F 101.52%)',
     backgroundSize: '100% 3px',
   },
   hashGroup: {
     position: 'absolute',
-    boxSizing: 'content-box',
+    boxSizing: 'contentbox',
   },
   hash: {
     width: '0.5px',
-    height: '22px',
+    height: '36px',
     backgroundColor: '#58798F',
   },
   hashMean: {
     width: '0.5px',
-    height: '5px',
+    height: '18px',
     backgroundColor: '#58798F',
   },
   scaleLabelGroup: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'spacebetween',
   },
   scaleLabel: {
     fontSize: '12px',
@@ -47,13 +47,22 @@ const useStyles = makeStyles(theme => ({
   },
   hashLabel: {
     width: '60px',
-    marginLeft: '-50%',
-    // marginTop: '-1px',
+    marginLeft: '50%',
+    // marginTop: '1px',
     display: 'block',
     textAlign: 'center',
   },
   valueLabel: {
     fontWeight: 500,
+  },
+  justifyRight: {
+    width: 'auto',
+    textAlign: 'left',
+    marginLeft: '100%',
+  },
+  justifyLeft: {
+    marginLeft: 0,
+    width: 'auto',
   },
 }))
 
@@ -77,7 +86,7 @@ const LinearScale = ({ ...props }) => {
    * @returns String
    */
   const formatExponent = val => {
-    if (val < 1 && val > -1) {
+    if (val < 1 && val > 1) {
       return String(Math.round(val).toPrecision(1))
     } else {
       return getRoundedValue(val, 0, true, false, false)
@@ -119,36 +128,53 @@ const LinearScale = ({ ...props }) => {
         )}`
 
   const meanLabel = i18n.translate(`SCALE_MEAN`)
-  const percentFromLeft = `${Math.round(
+  const percentFromLeft = Math.round(
     getHashLeft(
       props.value,
       !!high_is_good ? min : max,
       !!high_is_good ? max : min,
     ),
-  )}%`
-  const meanPercentFromLeft = `${Math.round(
+  )
+  const meanPercentFromLeft = Math.round(
     getHashLeft(
       mean,
       !!high_is_good ? min : max,
       !!high_is_good ? max : min,
     ),
-  )}%`
+  )
+
+  // Preserve: For checking a particular indicator, if there are issues with its presentation.
+  // if (props.indicator.id === 'epe') {
+  //   console.log(
+  //     'min is',
+  //     min,
+  //     String(min).indexOf('e') > 0,
+  //     parseFloat(Number(String(min))),
+  //     `${getRoundedValue(
+  //       min,
+  //       20,
+  //       false,
+  //       currency,
+  //       percent,
+  //     )}`,
+  //   )
+  // }
 
   return (
-    <div className={clsx('linear-scale', classes.root)}>
+    <div className={clsx('linearscale', classes.root)}>
       <div
-        className={clsx('linear-scale-bar', classes.bar)}
+        className={clsx('linearscalebar', classes.bar)}
       ></div>
       <div
         className={clsx(
-          'linear-scale-value',
+          'linearscalevalue',
           classes.hashGroup,
         )}
-        style={{ left: percentFromLeft }}
+        style={{ left: `${percentFromLeft}%` }}
       >
         <div
           className={clsx(
-            'linear-scale-hash-value',
+            'linearscalehashvalue',
             classes.hash,
           )}
         ></div>
@@ -158,6 +184,14 @@ const LinearScale = ({ ...props }) => {
             classes.scaleLabel,
             classes.hashLabel,
             classes.valueLabel,
+            percentFromLeft > 90 &&
+              String(percentFromLeft).length > 2
+              ? classes.justifyRight
+              : '',
+            percentFromLeft < 10 &&
+              String(percentFromLeft).length > 2
+              ? classes.justifyLeft
+              : '',
           )}
         >
           {valueLabel}
@@ -165,14 +199,14 @@ const LinearScale = ({ ...props }) => {
       </div>
       <div
         className={clsx(
-          'linear-scale-mean',
+          'linearscalemean',
           classes.hashGroup,
         )}
-        style={{ left: meanPercentFromLeft }}
+        style={{ left: `${meanPercentFromLeft}%` }}
       >
         <div
           className={clsx(
-            'linear-scale-hash-mean',
+            'linearscalehashmean',
             classes.hashMean,
           )}
         ></div>
@@ -181,6 +215,12 @@ const LinearScale = ({ ...props }) => {
             'label',
             classes.scaleLabel,
             classes.hashLabel,
+            meanPercentFromLeft > 90
+              ? classes.justifyRight
+              : '',
+            meanPercentFromLeft < 10
+              ? classes.justifyLeft
+              : '',
           )}
         >
           {meanLabel}
@@ -188,18 +228,18 @@ const LinearScale = ({ ...props }) => {
       </div>
       <div
         className={clsx(
-          'linear-scale-labels',
+          'linearscalelabels',
           classes.scaleLabelGroup,
         )}
       >
-        <div className={clsx('linear-scale-label-left')}>
+        <div className={clsx('linearscalelabelleft')}>
           <span
             className={clsx('label', classes.scaleLabel)}
           >
             {leftLabel}
           </span>
         </div>
-        <div className={clsx('linear-scale-label-right')}>
+        <div className={clsx('linearscalelabelright')}>
           <span
             className={clsx('label', classes.scaleLabel)}
           >
