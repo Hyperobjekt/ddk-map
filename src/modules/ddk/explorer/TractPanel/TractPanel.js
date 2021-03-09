@@ -7,6 +7,7 @@ import {
   CircularProgress,
 } from '@material-ui/core'
 import shallow from 'zustand/shallow'
+import { getStateFromFips } from '@hyperobjekt/us-states'
 
 import useStore from './../store'
 import {
@@ -239,12 +240,6 @@ const TractPanel = () => {
           classes.content,
         )}
       >
-        {/* <div
-          className={clsx(
-            'tract-panel-contents',
-            classes.content,
-          )}
-        > */}
         <div
           className="geo"
           className={clsx(
@@ -256,14 +251,29 @@ const TractPanel = () => {
         >
           {Number(feature.properties.m) === 0 && (
             <>
-              <h2 className={clsx(classes.h2)}>
-                {i18n.translate(`POPUP_CENSUS_TRACT`, {
-                  id: feature.id,
-                })}
-              </h2>
+              {!!getStateFromFips(
+                String(feature.properties.s),
+              ) && (
+                <h2 className={clsx(classes.h2)}>
+                  {
+                    getStateFromFips(
+                      String(feature.properties.s).padStart(
+                        2,
+                        '0',
+                      ),
+                    ).full
+                  }
+                </h2>
+              )}
               <h3 className={clsx(classes.subtitle)}>
-                {i18n.translate(`DATA_YEAR_PHRASE`, {
-                  year: '20' + activeYear,
+                {i18n.translate(`SLIDEOUT_CENSUS_TRACT`, {
+                  id: feature.id,
+                  yearPhrase: i18n.translate(
+                    `DATA_YEAR_PHRASE`,
+                    {
+                      year: '20' + activeYear,
+                    },
+                  ),
                 })}
               </h3>
             </>
@@ -470,7 +480,6 @@ const TractPanel = () => {
             </div>
           </div>
         </div>
-        {/* </div> */}
       </div>
     )
   } else {
