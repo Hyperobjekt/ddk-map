@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     overflowY: 'hidden',
     maxHeight: 0,
     transition: 'max-height 200ms ease-in-out',
-    padding: '0 1.5rem',
+    padding: '0 1rem',
     '& .linear-scale': {
       margin: '8px 0',
     },
@@ -55,6 +55,11 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 600,
     borderBottom: `1px dashed ${theme.extras.variables.colors.darkGray}`,
     color: theme.extras.variables.colors.darkGray,
+  },
+  indicator: {
+    '&:first-of-type': {
+      marginTop: '1rem',
+    },
   },
 }))
 
@@ -127,6 +132,7 @@ const IndicatorList = props => {
               className={clsx(
                 'indicator',
                 `indicator-${el.id}`,
+                classes.indicator,
               )}
               key={`indicator-${el.id}`}
             >

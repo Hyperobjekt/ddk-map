@@ -1,8 +1,8 @@
 import React from 'react'
-import PropTypes from 'proptypes'
+import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import i18n from '@pureartisan/simplei18n'
-import { makeStyles } from '@materialui/core/styles'
+import i18n from '@pureartisan/simple-i18n'
+import { makeStyles } from '@material-ui/core/styles'
 
 import { getRoundedValue, getHashLeft } from './../utils'
 
@@ -19,12 +19,12 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     left: 0,
     backgroundImage:
-      'lineargradient(90deg, #C9E8F8 0%, #58798F 101.52%)',
+      'linear-gradient(90deg, #C9E8F8 0%, #58798F 101.52%)',
     backgroundSize: '100% 3px',
   },
   hashGroup: {
     position: 'absolute',
-    boxSizing: 'contentbox',
+    boxSizing: 'content-box',
   },
   hash: {
     width: '0.5px',
@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   },
   scaleLabelGroup: {
     display: 'flex',
-    justifyContent: 'spacebetween',
+    justifyContent: 'space-between',
   },
   scaleLabel: {
     fontSize: '12px',
@@ -47,8 +47,7 @@ const useStyles = makeStyles(theme => ({
   },
   hashLabel: {
     width: '60px',
-    marginLeft: '50%',
-    // marginTop: '1px',
+    marginLeft: '-50%',
     display: 'block',
     textAlign: 'center',
   },
@@ -58,7 +57,7 @@ const useStyles = makeStyles(theme => ({
   justifyRight: {
     width: 'auto',
     textAlign: 'left',
-    marginLeft: '100%',
+    marginLeft: '-100%',
   },
   justifyLeft: {
     marginLeft: 0,
@@ -86,7 +85,7 @@ const LinearScale = ({ ...props }) => {
    * @returns String
    */
   const formatExponent = val => {
-    if (val < 1 && val > 1) {
+    if (val < 1 && val > -1) {
       return String(Math.round(val).toPrecision(1))
     } else {
       return getRoundedValue(val, 0, true, false, false)
@@ -144,37 +143,32 @@ const LinearScale = ({ ...props }) => {
   )
 
   // Preserve: For checking a particular indicator, if there are issues with its presentation.
-  // if (props.indicator.id === 'epe') {
-  //   console.log(
-  //     'min is',
-  //     min,
-  //     String(min).indexOf('e') > 0,
-  //     parseFloat(Number(String(min))),
-  //     `${getRoundedValue(
-  //       min,
-  //       20,
-  //       false,
-  //       currency,
-  //       percent,
-  //     )}`,
-  //   )
-  // }
+  if (props.indicator.id === 'eph') {
+    console.log(
+      'eph',
+      percentFromLeft,
+      percentFromLeft > 90 &&
+        String(percentFromLeft).length > 2,
+      percentFromLeft < 10 &&
+        String(percentFromLeft).length > 2,
+    )
+  }
 
   return (
-    <div className={clsx('linearscale', classes.root)}>
+    <div className={clsx('linear-scale', classes.root)}>
       <div
-        className={clsx('linearscalebar', classes.bar)}
+        className={clsx('linear-scale-bar', classes.bar)}
       ></div>
       <div
         className={clsx(
-          'linearscalevalue',
+          'linear-scale-value',
           classes.hashGroup,
         )}
         style={{ left: `${percentFromLeft}%` }}
       >
         <div
           className={clsx(
-            'linearscalehashvalue',
+            'linear-scale-hash-value',
             classes.hash,
           )}
         ></div>
@@ -185,11 +179,11 @@ const LinearScale = ({ ...props }) => {
             classes.hashLabel,
             classes.valueLabel,
             percentFromLeft > 90 &&
-              String(percentFromLeft).length > 2
+              String(valueLabel).length > 2
               ? classes.justifyRight
               : '',
             percentFromLeft < 10 &&
-              String(percentFromLeft).length > 2
+              String(valueLabel).length > 2
               ? classes.justifyLeft
               : '',
           )}
@@ -199,14 +193,14 @@ const LinearScale = ({ ...props }) => {
       </div>
       <div
         className={clsx(
-          'linearscalemean',
+          'linear-scale-mean',
           classes.hashGroup,
         )}
         style={{ left: `${meanPercentFromLeft}%` }}
       >
         <div
           className={clsx(
-            'linearscalehashmean',
+            'linear-scale-hash-mean',
             classes.hashMean,
           )}
         ></div>
@@ -228,18 +222,18 @@ const LinearScale = ({ ...props }) => {
       </div>
       <div
         className={clsx(
-          'linearscalelabels',
+          'linear-scale-labels',
           classes.scaleLabelGroup,
         )}
       >
-        <div className={clsx('linearscalelabelleft')}>
+        <div className={clsx('linear-scale-label-left')}>
           <span
             className={clsx('label', classes.scaleLabel)}
           >
             {leftLabel}
           </span>
         </div>
-        <div className={clsx('linearscalelabelright')}>
+        <div className={clsx('linear-scale-label-right')}>
           <span
             className={clsx('label', classes.scaleLabel)}
           >
