@@ -660,6 +660,7 @@ const BaseMap = ({ ...props }) => {
       activePointLayers,
       centerState,
       centerMetro,
+      viewport,
     }
     // console.log('layers changed, ', hoveredTract)
     return getLayers(getMapSources(), context)

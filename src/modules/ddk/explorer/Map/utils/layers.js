@@ -287,131 +287,61 @@ export const getPolygonLines = (source, type, context) => {
         '#ccc',
       ],
       'line-width': [
-        'interpolate',
-        ['linear'],
-        ['zoom'],
-        2,
-        // Cases for zoom level 3 and above
-        // [
-        //   'case',
-        //   // State
-        //   ['any', ['==', type, 'states']],
-        //   1,
-        //   // Metro area when metro norming is selected
-        //   [
-        //     'all',
-        //     ['==', type, 'metros'],
-        //     ['==', context.activeNorm, 'm'],
-        //   ],
-        //   2,
-        //   // Tract that is hovered
-        //   [
-        //     'all',
-        //     ['==', type, 'tracts'],
-        //     ['==', ['feature-state', 'hovered'], true],
-        //   ],
-        //   2,
-        //   0,
-        // ],
-        2,
-        // 14,
-        // FULL_FUNCT_ZOOM_THRESHOLD,
-        5,
-        // Cases for full funct zoom threshhold and above
+        'case',
+        // State that is centered (when norming is set to state).
         [
-          'case',
-          // State that is centered (when norming is set to state).
+          'all',
+          ['==', type, 'states'],
+          ['==', context.activeNorm, 's'],
+          ['==', ['feature-state', 'centered'], true],
           [
-            'all',
-            ['==', type, 'states'],
-            ['==', context.activeNorm, 's'],
-            ['==', ['feature-state', 'centered'], true],
+            '>=',
+            context.viewport.zoom,
+            FULL_FUNCT_ZOOM_THRESHOLD,
           ],
-          10,
-          // State that is not centered.
-          ['all', ['==', type, 'states']],
-          2,
-          // Metro area that is centered.
-          [
-            'all',
-            ['==', type, 'metros'],
-            ['==', context.activeNorm, 'm'],
-            ['==', ['feature-state', 'centered'], true],
-          ],
-          6,
-          [
-            'all',
-            ['==', type, 'metros'],
-            ['!=', context.activeNorm, 'm'],
-          ],
-          0,
-          // Metro area that is not centered.
-          ['all', ['==', type, 'metros']],
-          3,
-          // Tract that is clicked/active/
-          [
-            'all',
-            ['==', type, 'tracts'],
-            ['==', ['feature-state', 'active'], true],
-          ],
-          6,
-          // Tract that is hovered
-          [
-            'all',
-            ['==', type, 'tracts'],
-            ['==', ['feature-state', 'hovered'], true],
-          ],
-          3,
-          0,
         ],
+        10,
+        // State that is not centered.
+        ['all', ['==', type, 'states']],
+        2,
+        // Metro area that is centered.
+        [
+          'all',
+          ['==', type, 'metros'],
+          ['==', context.activeNorm, 'm'],
+          ['==', ['feature-state', 'centered'], true],
+          [
+            '>=',
+            context.viewport.zoom,
+            FULL_FUNCT_ZOOM_THRESHOLD,
+          ],
+        ],
+        6,
+        [
+          'all',
+          ['==', type, 'metros'],
+          ['!=', context.activeNorm, 'm'],
+        ],
+        0,
+        // Metro area that is not centered.
+        ['all', ['==', type, 'metros']],
+        3,
+        // Tract that is clicked/active/
+        [
+          'all',
+          ['==', type, 'tracts'],
+          ['==', ['feature-state', 'active'], true],
+        ],
+        6,
+        // Tract that is hovered
+        [
+          'all',
+          ['==', type, 'tracts'],
+          ['==', ['feature-state', 'hovered'], true],
+        ],
+        3,
+        0,
       ],
-
-      // [
-      //   'case',
-      //   // State that is centered (when norming is set to state).
-      //   [
-      //     'all',
-      //     ['==', type, 'states'],
-      //     ['==', context.activeNorm, 's'],
-      //     ['==', ['feature-state', 'centered'], true],
-      //   ],
-      //   10,
-      //   // State that is not centered.
-      //   ['all', ['==', type, 'states']],
-      //   2,
-      //   // Metro area that is centered.
-      //   [
-      //     'all',
-      //     ['==', type, 'metros'],
-      //     ['==', context.activeNorm, 'm'],
-      //     ['==', ['feature-state', 'centered'], true],
-      //   ],
-      //   6,
-      //   [
-      //     'all',
-      //     ['==', type, 'metros'],
-      //     ['!=', context.activeNorm, 'm'],
-      //   ],
-      //   0,
-      //   // Metro area that is not centered.
-      //   ['all', ['==', type, 'metros']],
-      //   3,
-      //   // Tract that is clicked/active/
-      //   [
-      //     'all',
-      //     ['==', type, 'tracts'],
-      //     ['==', ['feature-state', 'active'], true],
-      //   ],
-      //   6,
-      //   // Tract that is hovered
-      //   [
-      //     'all',
-      //     ['==', type, 'tracts'],
-      //     ['==', ['feature-state', 'hovered'], true],
-      //   ],
-      //   3,
-      //   0,
-      // ],
       // 2, // Line width adjusted if centered.
     },
     filter: getShapeFilters(type, context),
