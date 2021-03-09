@@ -229,31 +229,24 @@ const BaseMap = ({ ...props }) => {
     //   hoveredTractArr,
     // )
 
-    if (!!loaded) {
-      console.log('checking for hovered things')
-
-      // { hovered: false },
-
-      const features = localMapRef.queryRenderedFeatures({
-        sourceLayer: 'tracts',
-        filter: ['==', ['feature-state', 'hovered'], true],
-      })
-      console.log('hovered features: ', features)
+    if (!!loaded && hoveredTractArr.length > 80) {
+      console.log(
+        'clearing hovered tract array, ',
+        hoveredTractArr,
+      )
+      for (var i = 0; i++; i < hoveredTractArr.length) {
+        if (hoveredTractArr[i] !== activeShape) {
+          setFeatureState(
+            hoveredTractArr[i],
+            'ddkids_tracts',
+            'tracts',
+            'hovered',
+            false,
+          )
+        }
+      }
+      setStoreValues({ hoveredTractArr: [] })
     }
-
-    // if (hoveredTractArr.length > 10) {
-    //   console.log('clearing hovered tract array')
-    //   for (var i = 0; i++; i < hoveredTractArr) {
-    //     setFeatureState(
-    //       hoveredTractArr[i],
-    //       'ddkids_tracts',
-    //       'tracts',
-    //       'hovered',
-    //       false,
-    //     )
-    //   }
-    //   setStoreValues({ hoveredTractArr: [] })
-    // }
   }, [hoveredTractArr])
 
   //// INTERACTION AND EVENT HANDLERS
