@@ -123,34 +123,40 @@ export const langSet = {
       {
         title: 'How can I use this information?',
         content:
-          '<p>The Child Opportunity Index measures and maps 29 neighborhood conditions children need to grow and thrive, like access to healthy food, good schools, safe housing, playgrounds and green space among others. The Index reveals vast inequities in how neighborhood opportunity is distributed across the U.S.  You can use the information in the Index to understand what neighborhood opportunity patterns look like in your community: where do children experience all the conditions they need to thrive (high and very high-opportunity neighborhoods) and where do children lack access to neighborhood opportunity (very low and low-opportunity neighborhoods)?</p><p>You can use this data to start conversations about equity in your community, identify neighborhoods in your community that would benefit from targeted investment, propose changes to policies that shape where resources like parks and playgrounds are allocation, work to change exclusionary zoning and many other actions that can increase equity and ensure that all children are able to grow and thrive to their full potential.</p>',
+          '<p>The Child Opportunity Index measures and maps 29 neighborhood conditions children need to grow and thrive, like access to healthy food, good schools, safe housing, playgrounds and green space among others. The Index reveals vast inequities in how neighborhood opportunity is distributed across the U.S. You can use the information in the Index to understand what neighborhood opportunity patterns look like in your community: where do children experience all the conditions they need to thrive (high and very high-opportunity neighborhoods) and where do children lack access to neighborhood opportunity (very low and low-opportunity neighborhoods)?</p><p>You can use this data to start conversations about equity in your community, identify neighborhoods in your community that would benefit from targeted investment, propose changes to policies that shape where resources like parks and playgrounds are allocated, work to change exclusionary zoning and many other actions that can increase equity and ensure that all children are able to grow and thrive to their full potential.</p>',
       },
       {
         title: 'What data can I choose from?',
         content:
-          '<p>Using the legend panel on the right, you can select either the Overall Child Opportunity Index, which includes all 29 indicators, or one of the three sub-indices: Education Index, Health and Environment Index, or Social and Economic Index. You may view data for either 2010 or 2015. Use the check boxes to show where children of different racial and ethnic groups live in relation to opportunity. As you select a racial/ethnic group, colored dots appear on the map to show the population density for the selected group in the metro, state or nation.</p>',
+          '<p>Using the legend panel on the right, you can select either the Overall Child Opportunity Index, which includes all 29 indicators, or one of the three sub-indices: Education, Health and Environment, or Social and Economic. You may view data for either 2010 or 2015. Use the check boxes to show where children of different racial and ethnic groups live in relation to opportunity. As you select a racial/ethnic group, colored dots appear on the map to show the population density for the selected group in the metro, state or nation.</p>',
       },
       {
         title: 'What does the bar chart show?',
         content:
-          '<p>The bar chart shows the distribution of children by race and ethnicity in relation to the five Child Opportunity Levels in your selected geography (metro, state or nation). You can select which racial/ethnic groups to display on the bar chart by checking the boxes under “Select a race/ethnicity.” The bar chart shows a consistent pattern across the U.S.: Black, Hispanic and American Indian/Alaska Native children overwhelming live in very low and low-opportunity neighborhoods, while White and Asian/Pacific Islander children generally live in moderate, high and very-high opportunity neighborhoods. </p>',
+          '<p>The bar chart shows the distribution of children by race and ethnicity in relation to the five Child Opportunity Levels in your selected geography (metro, state or nation). You can select which racial/ethnic groups to display on the bar chart by checking the boxes under “Select a race/ethnicity.” The bar chart shows a consistent pattern across the U.S.: Black, Hispanic and American Indian/Alaska Native children overwhelmingly live in very low and low-opportunity neighborhoods, while White and Asian/Pacific Islander children generally live in moderate, high and very-high opportunity neighborhoods.</p>',
       },
       {
         title:
           'How should I choose between metro, state and national norming?',
         content:
-          '<p>We offer three types of norming so you can make meaningful comparisons. To understand child opportunity patterns within your metro, choose metro norming. To understand how your census tract compares to others in your state, choose state norming.  And to explore how your census tract compares with others across the country, choose national norming. Note that metro norming is only available for the 100 largest U.S. metros. If metro norming isn’t available as an option, this means that the census tract you’ve selected is not part of the 100 largest U.S. metros. </p>',
+          '<p>We offer three types of norming so you can make meaningful comparisons. To understand child opportunity patterns within your metro, choose metro norming. To understand how your census tract compares to others in your state, choose state norming. And to explore how your census tract compares with others across the country, choose national norming. Note that metro norming is only available for the 100 largest U.S. metros. If metro norming isn’t available as an option, this means that the census tract you’ve selected is not part of the 100 largest U.S. metros.</p>',
       },
       {
         title: 'What kinds of locations can I view?',
         content:
-          '<p>You can view data for virtually all census tracts in the U.S. (over 72,000). By choosing between metro, state or national norming you can see data for any one of the 100 largest U.S. metros, for a state, or for the entire nation. </p>',
+          '<p>You can view data for virtually all census tracts in the U.S. (over 72,000).</p>',
+      },
+      {
+        title:
+          'What is a census tract and why do use them?',
+        content:
+          '<p>Census tracts are small, relatively stable geographic units of between 1,200 to 8,000 people. Census tract boundaries generally follow visible and identifiable features and their primary purpose is to provide a stable geography for the presentation of data over a long window of time so that statistical comparisons can be made from one decennial census to the next. These qualities make census tracts closely mirror real neighborhoods, which, in turn, makes them a useful geography for understanding inequity. Neighborhoods reflect the everyday experiences of individuals, including their access to opportunity. Although some people might travel long distances in the pursuit of opportunity, in our day to day lives we often only have access to the opportunities and resources that are in our neighborhoods or close to where we live.</p>',
       },
       {
         title:
           'How can I find a location and view its data?',
         content:
-          '<p>You can navigate to your desired location via the navigation controls in the map. Or type a location name into the search bar in the header.</p>',
+          '<p>You can navigate to your desired location either by panning and zooming or by using the navigation controls in the bottom right corner. You can also type a location name into the search bar in the header.</p>',
       },
       {
         title:
@@ -166,7 +172,7 @@ export const langSet = {
       {
         title: 'Can I download the data?',
         content:
-          '<p>Raw data can be downloaded from our <a href="https://data.diversitydatakids.org/dataset/coi20-child-opportunity-index-2-0-database" target="_blank" ref="noopener noreferrer">data portal</a>.</p>',
+          '<p>All underlying data can be downloaded from our <a href="https://data.diversitydatakids.org/dataset/coi20-child-opportunity-index-2-0-database" target="_blank" ref="noopener noreferrer">data portal</a>.</p>',
       },
       {
         title: 'Where does this information come from?',
