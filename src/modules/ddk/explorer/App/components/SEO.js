@@ -87,6 +87,10 @@ const SEO = () => {
         name="twitter:card"
         content="summary_large_image"
       />
+      <script
+        type="text/javascript"
+        src="https://polyfill.io/v3/polyfill.min.js?features=Array.from,Array.prototype.entries,Array.prototype.find,Array.prototype.keys,Array.prototype.sort,Array.prototype.values,ArrayBuffer,Blob,console,DataView,document,Element,es5,Float32Array,Float64Array,Int16Array,Int32Array,Int8Array,Intl,JSON,localStorage,Map,Math.clz32,Math.cosh,Math.hypot,Math.log2,Math.sinh,Math.tanh,Number.isFinite,Number.MAX_SAFE_INTEGER,Object.assign,Object.getOwnPropertyDescriptors,Object.getOwnPropertySymbols,Object.is,Object.isExtensible,Object.isFrozen,Object.isSealed,Object.preventExtensions,Object.seal,Object.setPrototypeOf,Object.values,Promise,Reflect,Reflect.construct,Reflect.get,RegExp.prototype.flags,requestAnimationFrame,Set,String.prototype.endsWith,String.prototype.normalize,Symbol,Symbol.for,Symbol.iterator,TextDecoder,Uint16Array,Uint32Array,Uint8Array,Uint8ClampedArray,URL,WeakMap,WeakSet"
+      />
     </Helmet>
   )
 }
