@@ -9,8 +9,8 @@ import {
 } from './../../../../../constants/map'
 import { theme } from './../../theme'
 
-let z = 150
-const dotSize = 2
+// let z = 150
+// const dotSize = 2
 
 const getDemographic = layer => {
   return layer.substring(0, layer.length - 2)
@@ -118,7 +118,7 @@ export const getPoints = (source, layer, context) => {
   })
 }
 
-const pointIndex = 200
+const pointIndex = 35 // 200
 const pointsArray = OPTIONS_ACTIVE_POINTS.options.slice()
 const getPointIndex = layer => {
   const ind =
@@ -478,7 +478,7 @@ export const getPolygonShapes = (source, type, context) => {
 }
 
 const shapeIndex = 40
-const lineIndex = 90
+const lineIndex = 50
 export const getPolygonLayers = (source, type, context) => {
   const shapeLayerOrder = ['states', 'metros', 'tracts']
   // context.activeNorm === 's'

@@ -607,6 +607,9 @@ const BaseMap = ({ ...props }) => {
     // console.log('Map loaded.')
     setLoaded(true)
     updateCentered()
+    // Put place labels on top.
+    localMapRef.moveLayer('settlement-minor-label')
+    localMapRef.moveLayer('settlement-major-label')
     // If there is an active shape inherited from the hash
     // then set the slideout tract id and feature
     setTimeout(() => {
