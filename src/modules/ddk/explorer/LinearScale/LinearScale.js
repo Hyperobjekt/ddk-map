@@ -143,16 +143,16 @@ const LinearScale = ({ ...props }) => {
   )
 
   // Preserve: For checking a particular indicator, if there are issues with its presentation.
-  if (props.indicator.id === 'eph') {
-    console.log(
-      'eph',
-      percentFromLeft,
-      percentFromLeft > 90 &&
-        String(percentFromLeft).length > 2,
-      percentFromLeft < 10 &&
-        String(percentFromLeft).length > 2,
-    )
-  }
+  // if (props.indicator.id === 'eph') {
+  //   console.log(
+  //     'eph',
+  //     percentFromLeft,
+  //     percentFromLeft > 90 &&
+  //       String(percentFromLeft).length > 2,
+  //     percentFromLeft < 10 &&
+  //       String(percentFromLeft).length > 2,
+  //   )
+  // }
 
   return (
     <div className={clsx('linear-scale', classes.root)}>
