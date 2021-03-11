@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
@@ -58,15 +58,36 @@ const useLoaderStyles = makeStyles({
     animationDuration: '1s',
     animationIterationCount: 'infinite',
   },
+  text: {
+    fontFamily: 'Fira Sans !important',
+    color: theme.extras.variables.colors.darkGray,
+  },
+  supportedBrowsers: {
+    margin: '2rem auto',
+    display: 'block',
+    fontFamily: 'Fira Sans !important',
+    color: theme.extras.variables.colors.darkGray,
+    width: '90%',
+    [theme.breakpoints.up('md')]: {
+      width: '60%',
+    },
+  },
 })
 
 const DataLoaderContent = ({ ...props }) => {
   // console.log('DataLoaderContent, ', variables)
   // Values from store.
-  const { dataLoadedPercent, allDataLoaded } = useStore(
+  const {
+    dataLoadedPercent,
+    allDataLoaded,
+    unsupportedBrowser,
+    browser,
+  } = useStore(
     state => ({
       dataLoadedPercent: state.dataLoadedPercent,
       allDataLoaded: state.allDataLoaded,
+      unsupportedBrowser: state.unsupportedBrowser,
+      browser: state.browser,
     }),
     shallow,
   )
@@ -76,6 +97,12 @@ const DataLoaderContent = ({ ...props }) => {
   setTimeout(() => {
     setShowContent(true)
   }, 500)
+
+  const hasBrowserSupport = useMemo(() => {
+    return browser && !unsupportedBrowser
+  }, [browser, unsupportedBrowser])
+
+  // console.log('browser, ', browser)
 
   const styles = useLoaderStyles()
 
@@ -91,41 +118,80 @@ const DataLoaderContent = ({ ...props }) => {
           [styles.hideContent]: !showContent,
         })}
       >
-        <Typography variant="h4" gutterBottom>
-          {i18n.translate(`MAP_LOADING_DATA`)}
-          <Box component="span" className={styles.dots}>
-            .
-          </Box>
-          <Box
-            component="span"
-            style={{
-              animationDelay: '200ms',
-            }}
-            className={clsx(styles.dots)}
-          >
-            .
-          </Box>
-          <Box
-            component="span"
-            style={{
-              animationDelay: '400ms',
-            }}
-            className={clsx(styles.dots)}
-          >
-            .
-          </Box>
-        </Typography>
-        <LinearProgress
-          variant="determinate"
-          value={dataLoadedPercent}
-        />
+        {hasBrowserSupport && (
+          <>
+            <Typography
+              variant="h4"
+              gutterBottom
+              className={clsx(styles.text)}
+            >
+              {i18n.translate(`MAP_LOADING_DATA`)}
+              <Box component="span" className={styles.dots}>
+                .
+              </Box>
+              <Box
+                component="span"
+                style={{
+                  animationDelay: '200ms',
+                }}
+                className={clsx(styles.dots)}
+              >
+                .
+              </Box>
+              <Box
+                component="span"
+                style={{
+                  animationDelay: '400ms',
+                }}
+                className={clsx(styles.dots)}
+              >
+                .
+              </Box>
+            </Typography>
+            <LinearProgress
+              variant="determinate"
+              value={dataLoadedPercent}
+            />
+          </>
+        )}
+        {!hasBrowserSupport && (
+          <>
+            <Typography
+              variant="h4"
+              gutterBottom
+              className={clsx(styles.text)}
+            >
+              {i18n.translate(`MAP_UNSUPPORTED_BROWSER`, {
+                name:
+                  !!browser && !!browser.name
+                    ? browser.name
+                    : '',
+                version:
+                  !!browser && !!browser.version
+                    ? browser.version
+                    : '',
+              })}
+            </Typography>
+            <div
+              className={clsx(
+                'supported-browsers',
+                styles.supportedBrowsers,
+              )}
+              dangerouslySetInnerHTML={{
+                __html: i18n.translate(
+                  'MAP_SUPPORTED_BROWSERS',
+                ),
+              }}
+            ></div>
+          </>
+        )}
       </Box>
     </Box>
   )
 }
 
 const DataLoader = ({ ...props }) => {
-  // console.log("Hey, it's the DataLoader!!!!!!")
+  // console.log('DataLoader()')
   // Values from store.
   const {
     initialStateSetFromHash,
@@ -134,7 +200,8 @@ const DataLoader = ({ ...props }) => {
     dataVersion,
     setLang,
     activeYear,
-    // remoteJson,
+    unsupportedBrowser,
+    browser,
   } = useStore(
     state => ({
       initialStateSetFromHash:
@@ -146,7 +213,8 @@ const DataLoader = ({ ...props }) => {
       dataVersion: state.dataVersion,
       setLang: state.setLang,
       activeYear: state.activeYear,
-      // remoteJson: state.remoteJson,
+      unsupportedBrowser: state.unsupportedBrowser,
+      browser: state.browser,
     }),
     shallow,
   )
@@ -298,7 +366,10 @@ const DataLoader = ({ ...props }) => {
     } else {
       // console.log('initial state set.')
       // console.log('activeYear, ', activeYear)
-      loadFiles()
+      // Only proceed if browser is supported.
+      if (!!browser && !unsupportedBrowser) {
+        loadFiles()
+      }
     }
   }, [initialStateSetFromHash])
 
@@ -307,7 +378,10 @@ const DataLoader = ({ ...props }) => {
       return
     } else {
       // console.log('activeYear, ', activeYear)
-      loadYearFiles()
+      // Only proceed if browser is supported.
+      if (!!browser && !unsupportedBrowser) {
+        loadYearFiles()
+      }
     }
   }, [activeYear])
 

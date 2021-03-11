@@ -170,6 +170,18 @@ const App = props => {
       function unsupportedBrowser() {
         return !webgl_support() || isIE()
       }
+
+      const updates = {
+        browser: browser,
+      }
+
+      if (!!unsupportedBrowser()) {
+        console.log('Browser not supported!!!')
+        updates['unsupportedBrowser'] = true
+      }
+      // For dev unsupported browser UI. Comment out when live.
+      // updates['unsupportedBrowser'] = true
+      setStoreValues({ ...updates })
     })()
   }, [])
 

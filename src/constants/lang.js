@@ -2,6 +2,8 @@ export const langSet = {
   en_US: {
     SITE_TITLE: `DDK Map`,
     MAP_LOADING_DATA: `Loading map data`,
+    MAP_UNSUPPORTED_BROWSER: `Unfortunately your browser, {name} {version}, is not supported by this application. Please upgrade your browser or try a different one.`,
+    MAP_SUPPORTED_BROWSERS: `<p>This application supports the last two versions of:<ul><li>Chrome</li><li>Firefox</li><li>Safari</li><li>Edge</li></ul></p>`,
     MAP_UI_POWERED_BY: `© diversitydatakids.org`,
     MAP_AUTHOR: `diversitydatakids.org`,
     SITE_DESCRIPTION: `Exploratory map developed by diversitydatakids.org`,

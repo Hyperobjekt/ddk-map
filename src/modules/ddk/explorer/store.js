@@ -25,6 +25,10 @@ const useStore = create((set, get) => ({
   setStoreValues: obj => {
     set({ ...obj })
   },
+  // Store browser info.
+  browser: null,
+  // Is the browser supported?
+  unsupportedBrowser: false,
   // Track loading of remote data files.
   allDataLoaded: false,
   // Percent loaded for remote data files.
