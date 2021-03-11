@@ -128,7 +128,6 @@ const useStyles = makeStyles(theme => ({
     },
   },
   tractScrollGroup: {
-    overflowY: 'scroll',
     flexGrow: '1',
   },
   spinner: {
