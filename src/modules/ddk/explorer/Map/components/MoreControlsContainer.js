@@ -17,7 +17,7 @@ import {
 const styles = makeStyles(theme => ({
   root: {
     position: 'absolute',
-    bottom: '104px',
+    bottom: '88px',
     right: '16px',
     width: '40px',
     height: 'auto',
@@ -28,8 +28,8 @@ const styles = makeStyles(theme => ({
       display: 'flex',
     },
     '& button': {
-      width: '32px',
-      height: '32px',
+      width: '28px', // '32px',
+      height: '28px', // '32px',
       backgroundColor: '#fff',
       padding: 0,
       minWidth: 0,
@@ -42,13 +42,17 @@ const styles = makeStyles(theme => ({
       backgroundColor: `${theme.extras.variables.colors.ddkLightRedHex} !important`,
     },
     '& svg': {
-      width: '24px !important',
-      height: '24px !important',
+      width: '20px !important', // '24px !important',
+      height: '20px !important', // '24px !important',
     },
     marginTop: '0.15rem',
     '& .MuiButton-label': {
-      width: '24px !important',
-      height: '24px !important',
+      width: '28px !important', // '24px !important',
+      height: '28px !important', // '24px !important',
+    },
+    '&.btn-reset svg': {
+      marginTop: '6px',
+      marginLeft: '1px',
     },
   },
 }))

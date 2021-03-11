@@ -42,7 +42,11 @@ const FlyToResetBtn = ({ children, ...props }) => {
         aria-label={i18n.translate(`MAP_RESET`)}
         onClick={handleClick}
         placement={props.placement}
-        className={clsx(props.className, classes.btn)}
+        className={clsx(
+          'btn-reset',
+          props.className,
+          classes.btn,
+        )}
       >
         {children}
       </Button>
