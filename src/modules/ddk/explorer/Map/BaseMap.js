@@ -140,6 +140,8 @@ const BaseMap = ({ ...props }) => {
     flyToFeature,
     hoveredTractArr,
     pushHoveredTract,
+    showIntroModal,
+    flyToReset,
   } = useStore(
     state => ({
       activeView: state.activeView,
@@ -160,6 +162,8 @@ const BaseMap = ({ ...props }) => {
       flyToFeature: state.flyToFeature,
       hoveredTractArr: state.hoveredTractArr,
       pushHoveredTract: state.pushHoveredTract,
+      showIntroModal: state.showIntroModal,
+      flyToReset: state.flyToReset,
     }),
     shallow,
   )
@@ -610,6 +614,10 @@ const BaseMap = ({ ...props }) => {
     // Put place labels on top.
     localMapRef.moveLayer('settlement-minor-label')
     localMapRef.moveLayer('settlement-major-label')
+    // If initial load, reset the map to viewport.
+    if (!!showIntroModal) {
+      flyToReset()
+    }
     // If there is an active shape inherited from the hash
     // then set the slideout tract id and feature
     setTimeout(() => {
