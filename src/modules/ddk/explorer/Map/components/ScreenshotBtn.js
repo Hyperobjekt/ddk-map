@@ -10,9 +10,9 @@ import useStore from './../../store'
 
 const styles = makeStyles(theme => ({
   btn: {
-    '& svg': {
-      width: '20px',
-      height: '20px',
+    '& .MuiButton-label svg': {
+      width: '66%', // '20px',
+      height: '66%', // '20px',
     },
   },
 }))
@@ -50,7 +50,11 @@ const ScreenshotBtn = ({ children, ...props }) => {
         aria-label={i18n.translate(`MAP_SCREENSHOT`)}
         onClick={handleClick}
         placement={props.placement}
-        className={clsx(props.className, classes.btn)}
+        className={clsx(
+          'btn-screenshot',
+          props.className,
+          classes.btn,
+        )}
       >
         {children}
       </Button>

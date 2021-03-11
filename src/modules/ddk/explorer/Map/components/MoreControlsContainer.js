@@ -42,17 +42,21 @@ const styles = makeStyles(theme => ({
       backgroundColor: `${theme.extras.variables.colors.ddkLightRedHex} !important`,
     },
     '& svg': {
-      width: '20px !important', // '24px !important',
-      height: '20px !important', // '24px !important',
+      width: '20px',
+      height: '20px',
     },
     marginTop: '0.15rem',
     '& .MuiButton-label': {
-      width: '28px !important', // '24px !important',
-      height: '28px !important', // '24px !important',
+      width: '28px',
+      height: '28px',
     },
     '&.btn-reset svg': {
       marginTop: '6px',
       marginLeft: '1px',
+    },
+    '&.map-fly-to-btn svg': {
+      width: '18px',
+      height: '18px',
     },
   },
 }))
