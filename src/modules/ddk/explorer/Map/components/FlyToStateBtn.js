@@ -10,9 +10,10 @@ import useStore from './../../store'
 import { STATES } from './../../../../../constants/map'
 
 const FlyToStateBtn = ({ children, ...props }) => {
-  const { flyToState } = useStore(
+  const { flyToState, setStoreValues } = useStore(
     state => ({
       flyToState: state.flyToState,
+      setStoreValues: state.setStoreValues,
     }),
     shallow,
   )

@@ -205,6 +205,9 @@ const useLegendStyles = makeStyles(theme => ({
   sdsCell: {
     width: '20%',
   },
+  embed: {
+    top: '16px',
+  },
 }))
 
 const processData = (
@@ -437,7 +440,13 @@ const Legend = ({ ...props }) => {
       )}
       {/* EMBED VIEW */}
       {activeView === 'embed' && (
-        <Box className={clsx('map-legend', classes.root)}>
+        <Box
+          className={clsx(
+            'map-legend',
+            classes.root,
+            classes.embed,
+          )}
+        >
           <div className={classes.controller}>
             <LegendScale
               activeMetric={activeMetric}

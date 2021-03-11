@@ -275,6 +275,9 @@ const BaseMap = ({ ...props }) => {
 
   const handleClick = e => {
     // console.log('Map click, ', e)
+    if (activeView === 'embed') {
+      return
+    }
     if (controlHovered) {
       // console.log('control is hovered')
       return
@@ -349,6 +352,9 @@ const BaseMap = ({ ...props }) => {
 
   const handleMouseOut = e => {
     // console.log('handleMouseOut')
+    if (activeView === 'embed') {
+      return
+    }
     // When the users mouses out of the map canvas,
     // reset the hovered tract values and feature states.
     setFeatureState(
@@ -373,6 +379,9 @@ const BaseMap = ({ ...props }) => {
   }
 
   const handleMouseMove = e => {
+    if (activeView === 'embed') {
+      return
+    }
     let updates = {}
     // console.log('mousemove, ', e)
     // If the cursor is over the legend or another control,
@@ -610,6 +619,7 @@ const BaseMap = ({ ...props }) => {
   const handleLoad = () => {
     // console.log('Map loaded.')
     setLoaded(true)
+    document.dispatchEvent(new Event('mapDataLoaded'))
     updateCentered()
     // Put place labels on top.
     localMapRef.moveLayer('settlement-minor-label')

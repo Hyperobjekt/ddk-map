@@ -50,6 +50,7 @@ const useStyles = makeStyles(theme => ({
 
 const Notifications = () => {
   const {
+    activeView,
     activeNorm,
     notifications,
     updateNotifications,
@@ -59,6 +60,7 @@ const Notifications = () => {
     viewport,
   } = useStore(
     state => ({
+      activeView: state.activeView,
       activeNorm: state.activeNorm,
       notifications: { ...state.notifications },
       updateNotifications: state.updateNotifications,
@@ -118,7 +120,10 @@ const Notifications = () => {
   // const [notification, setNotification] = useState('')
 
   const notification = useMemo(() => {
-    if (notifications[activeNorm] === 0) {
+    if (
+      notifications[activeNorm] === 0 &&
+      activeView === 'explorer'
+    ) {
       return getNotification(activeNorm)
     } else {
       return ''

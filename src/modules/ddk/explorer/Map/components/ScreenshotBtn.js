@@ -27,8 +27,12 @@ const ScreenshotBtn = ({ children, ...props }) => {
   )
 
   const handleClick = () => {
-    console.log('handleClick', props.mapRef)
+    // console.log('handleClick', props.mapRef)
     // console.log('captureMap')
+    setStoreValues({
+      controlHovered: true,
+      eventMapCapture: eventMapCapture + 1,
+    })
     const dataURL = props.mapRef
       .getCanvas()
       .toDataURL('image/png')
@@ -37,9 +41,6 @@ const ScreenshotBtn = ({ children, ...props }) => {
     a.setAttribute('download', 'ddk-explorer-capture.png')
     a.click()
     a.remove()
-    setStoreValues({
-      eventMapCapture: eventMapCapture + 1,
-    })
   }
   const classes = styles()
 

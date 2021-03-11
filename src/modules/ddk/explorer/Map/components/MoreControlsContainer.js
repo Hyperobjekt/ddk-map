@@ -43,9 +43,13 @@ const styles = makeStyles(theme => ({
     },
     '& svg': {
       width: '24px !important',
-      heigth: '24px !important',
+      height: '24px !important',
     },
     marginTop: '0.15rem',
+    '& .MuiButton-label': {
+      width: '24px !important',
+      height: '24px !important',
+    },
   },
 }))
 
