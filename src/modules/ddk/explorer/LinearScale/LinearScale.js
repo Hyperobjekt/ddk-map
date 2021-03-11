@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   hash: {
     width: '0.5px',
     height: '36px',
-    backgroundColor: '#58798F',
+    backgroundColor: theme.extras.variables.colors.ddkRed, // '#58798F',
   },
   hashMean: {
     width: '0.5px',
@@ -46,17 +46,21 @@ const useStyles = makeStyles(theme => ({
     letterSpacing: '0.4px',
   },
   hashLabel: {
-    width: '60px',
+    width: '56px',
     marginLeft: '-50%',
     display: 'block',
     textAlign: 'center',
   },
   valueLabel: {
     fontWeight: 500,
+    color: theme.extras.variables.colors.ddkRed,
+  },
+  meanLabel: {
+    background: theme.extras.variables.colors.white,
   },
   justifyRight: {
-    width: 'auto',
-    textAlign: 'left',
+    width: '56px',
+    textAlign: 'right',
     marginLeft: '-100%',
   },
   justifyLeft: {
@@ -209,6 +213,7 @@ const LinearScale = ({ ...props }) => {
             'label',
             classes.scaleLabel,
             classes.hashLabel,
+            classes.meanLabel,
             meanPercentFromLeft > 90
               ? classes.justifyRight
               : '',
