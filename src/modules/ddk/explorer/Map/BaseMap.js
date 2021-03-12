@@ -139,6 +139,7 @@ const BaseMap = ({ ...props }) => {
     windowInnerHeight,
     flyToTract,
     mapSize,
+    mapInteractionState,
   } = useStore(
     state => ({
       activeView: state.activeView,
@@ -165,6 +166,7 @@ const BaseMap = ({ ...props }) => {
       windowInnerHeight: state.windowInnerHeight,
       flyToTract: state.flyToTract,
       mapSize: state.mapSize,
+      mapInteractionState: state.mapInteractionState,
     }),
     shallow,
   )
@@ -339,6 +341,9 @@ const BaseMap = ({ ...props }) => {
       // console.log('control is hovered')
       return
     }
+    if (!!mapInteractionState) {
+      return
+    }
     // If zoomed out, don't offer the same click funct.
     if (viewport.zoom < FULL_FUNCT_ZOOM_THRESHOLD) {
       if (activeNorm === 'm') {
@@ -419,6 +424,9 @@ const BaseMap = ({ ...props }) => {
 
   const handleMouseMove = e => {
     if (activeView === 'embed') {
+      return
+    }
+    if (!!mapInteractionState) {
       return
     }
     let updates = {}
@@ -663,6 +671,21 @@ const BaseMap = ({ ...props }) => {
     })
   }
 
+  const handleInteractionStateChange = e => {
+    // console.log('handleInteractionStateChange(), ', e)
+    let state =
+      e.inTransition ||
+      e.isDragging ||
+      e.isPanning ||
+      e.isRotating ||
+      e.isZooming
+        ? true
+        : false
+    setStoreValues({
+      mapInteractionState: state,
+    })
+  }
+
   const handleLoad = () => {
     // console.log('Map loaded.')
     setLoaded(true)
@@ -863,6 +886,7 @@ const BaseMap = ({ ...props }) => {
     onResize: handleResize,
     onClick: handleClick,
     onTransitionEnd: handleTransitionEnd,
+    onInteractionStateChange: handleInteractionStateChange,
   }
 
   return (

@@ -245,7 +245,31 @@ export const getPolygonLines = (source, type, context) => {
         'case',
         ['==', type, 'states'],
         theme.extras.variables.colors.ddkRed,
-        ['==', type, 'metros'],
+        // ['==', type, 'metros'],
+        // theme.extras.SDScale.onColors[4],
+        [
+          'all',
+          ['==', type, 'metros'],
+          ['==', context.activeNorm, 'm'],
+          ['!=', ['feature-state', 'centered'], true],
+          [
+            '>=',
+            context.viewport.zoom,
+            FULL_FUNCT_ZOOM_THRESHOLD,
+          ],
+        ],
+        theme.extras.SDScale.onColors[4],
+        [
+          'all',
+          ['==', type, 'metros'],
+          ['==', context.activeNorm, 'm'],
+          ['==', ['feature-state', 'centered'], true],
+          [
+            '>=',
+            context.viewport.zoom,
+            FULL_FUNCT_ZOOM_THRESHOLD,
+          ],
+        ],
         theme.extras.variables.colors.ddkRed,
         ['==', type, 'tracts'],
         [
@@ -364,7 +388,7 @@ export const getPolygonLines = (source, type, context) => {
         0,
         // Metro area that is not centered.
         ['all', ['==', type, 'metros']],
-        3,
+        1,
         // Tract that is clicked/active/
         [
           'all',
