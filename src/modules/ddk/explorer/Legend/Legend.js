@@ -60,7 +60,7 @@ const useLegendStyles = makeStyles(theme => ({
   controlActive: {
     height: theme.extras.Legend.heightMobile,
     overflow: 'hidden',
-    height: '250px',
+    // height: '250px',
     [theme.breakpoints.up('sm')]: {
       height: theme.extras.Legend.height,
       overflow: 'visible',
