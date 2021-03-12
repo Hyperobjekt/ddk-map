@@ -7,6 +7,7 @@ import { Tooltip, Button } from '@material-ui/core'
 import shallow from 'zustand/shallow'
 
 import useStore from './../../store'
+import { FLY_TO_ZOOM } from './../../../../../constants/map'
 
 const FlyToMyLocationBtn = ({ children, ...props }) => {
   const { flyToLatLon, setStoreValues } = useStore(
@@ -27,7 +28,7 @@ const FlyToMyLocationBtn = ({ children, ...props }) => {
     flyToLatLon(
       position.coords.latitude,
       position.coords.longitude,
-      12,
+      FLY_TO_ZOOM,
     )
   }
 
