@@ -4,11 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap" rel="stylesheet"> -->
   <title>Loading...</title>
+  <!-- <style>
+    html *, body *, h1 {
+      font-family: 'Fira Sans', sans-serif;
+    }
+  </style> -->
 </head>
 <body>
-  <h1>Loading...</h1>
+  <!-- <div style="width:100%;height:100vh;display:flex;justify-content:center;align-items:center">
+    <div style="width:80%;height:auto;text-align:center;">
+      <h1>Loading...</h1>
+    </div>
+  </div> -->
   <script>
+    var hash = window.location.hash
+    var index = window.location.href.indexOf('check.html')
+    var root = window.location.href.slice(0, index)
+    // console.log('hash = ', window.location, root)
     /*!
     * copy from is.js : https://is.js.org/
     * Author: Aras Atasaygin
@@ -55,17 +70,17 @@
 
     // redirect to un-support page if browser is not in our support range
     if (chrome('<88')) {
-      document.location = './unsupported.html#chrome';
+      document.location = root + 'unsupported.html#chrome';
     } else if (firefox('<85')) {
-      document.location = './unsupported.html#firefox';
+      document.location = root + 'unsupported.html#firefox';
     } else if (safari('<13')) {
-      document.location = './unsupported.html#safari';
+      document.location =  root + 'unsupported.html#safari';
     } else if (ie('<12')) {
-      document.location = './unsupported.html#ie';
+      document.location = root + 'unsupported.html#ie';
     } else if (edge('<88')) {
-      document.location = './unsupported.html#edge';
+      document.location = root + 'unsupported.html#edge';
     } else {
-      document.location = './index.html';
+      document.location = root + hash;
     }
 
   </script>
