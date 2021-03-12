@@ -36,7 +36,7 @@ const SEO = () => {
       <link
         rel="icon"
         type="image/png"
-        href={favicon}
+        href={`${root}${String(favicon).replace('/', '')}`}
         sizes="16x16"
       />
       <meta

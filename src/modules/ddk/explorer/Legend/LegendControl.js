@@ -21,6 +21,7 @@ import {
   OPTIONS_NORM,
 } from './../../../../constants/map'
 import useStore from '../store'
+import { Block } from '@material-ui/icons'
 
 // Styles for this component.
 const styles = theme => ({
@@ -100,7 +101,10 @@ const styles = theme => ({
     fontWeight: '500',
   },
   tooltipSwitchRow: {
-    // marginTop: '0.5rem',
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
+    },
   },
   switchLabel: {},
   switchContainer: {

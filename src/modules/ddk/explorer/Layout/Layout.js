@@ -13,6 +13,7 @@ import IntroModal from './../IntroModal'
 import Menu from './../Menu'
 import { ShareModal } from './../Share'
 import Nofications from './../Notifications'
+import { MobileShareBtn } from './../Share'
 
 const useLayoutStyles = makeStyles(theme => ({
   root: {
@@ -42,6 +43,7 @@ const Layout = ({ ...props }) => {
         <Menu />
         <Nofications />
         <IntroModal />
+        <MobileShareBtn />
         <ShareModal />
       </main>
     </Paper>

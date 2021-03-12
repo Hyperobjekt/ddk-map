@@ -864,7 +864,6 @@ const BaseMap = ({ ...props }) => {
                 <MoreControlsContainer
                   mapRef={localMapRef}
                 />
-                <MobileShareBtn />
               </>
             )}
           </>

@@ -138,7 +138,7 @@ const useStore = create((set, get) => ({
     glow: 0,
   },
   legendControl: {
-    active: true,
+    active: false,
   },
   // Notifications tracking
   notifications: {
