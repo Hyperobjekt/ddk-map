@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import shallow from 'zustand/shallow'
 import { Box, Button } from '@material-ui/core'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
+
 import Chart from '../Chart'
 import useStore from './../store'
 import { STATES } from './../../../../constants/map'

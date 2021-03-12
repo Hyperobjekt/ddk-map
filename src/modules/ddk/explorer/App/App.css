@@ -41,3 +41,7 @@ body {
 #map .mapboxgl-ctrl-group:not(:empty) button:hover {
   background-color: rgba(248, 231, 229, 1);
 }
+#map .mapboxgl-ctrl-attrib-inner,
+#map .mapboxgl-ctrl-attrib {
+  display: none;
+}

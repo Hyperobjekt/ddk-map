@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '5px',
     position: 'absolute',
     left: '16px',
-    bottom: '42px',
+    bottom: '36px',
     color: theme.extras.variables.colors.white,
     padding: '18px 36px 18px 18px',
     fontFamily: 'Fira Sans',
@@ -116,8 +116,6 @@ const Notifications = () => {
     }
     return str
   }
-
-  // const [notification, setNotification] = useState('')
 
   const notification = useMemo(() => {
     if (

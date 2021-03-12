@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper } from '@material-ui/core'
+import shallow from 'zustand/shallow'
+import { isMobile } from 'react-device-detect'
 
+import useStore from './../store'
 import Header from './../Header'
 import ControlPanel from './../ControlPanel'
 import SlideoutPanel from './../SlideoutPanel'
@@ -29,10 +32,27 @@ const useLayoutStyles = makeStyles(theme => ({
 const Layout = ({ ...props }) => {
   const classes = useLayoutStyles()
 
+  const { breakpoint, windowInnerHeight } = useStore(
+    state => ({
+      breakpoint: state.breakpoint,
+      windowInnerHeight: state.windowInnerHeight,
+    }),
+    shallow,
+  )
+
+  const height = useMemo(() => {
+    return !!isMobile
+      ? {
+          height: `${windowInnerHeight}px`,
+        }
+      : { height: `100vh` }
+  }, [isMobile, breakpoint])
+
   return (
     <Paper
       elevation={0}
       className={clsx('layout', classes.root)}
+      style={{ ...height }}
     >
       <Header />
       <main className={clsx(classes.main)}>

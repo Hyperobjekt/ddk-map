@@ -79,7 +79,7 @@ const useStyles = makeStyles(theme => ({
     },
     position: 'absolute',
     right: '16px',
-    bottom: '26px',
+    bottom: '16px',
     '& .mapboxgl-ctrl.mapboxgl-ctrl-group': {
       borderRadius: 0,
       '& .mapboxgl-ctrl-icon': {

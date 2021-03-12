@@ -12,7 +12,16 @@ import ShareContents from './ShareContents'
 
 // Styles for this component.
 const useStyles = makeStyles(theme => ({
-  root: {},
+  root: {
+    width: `${theme.extras.sharePopper.widthMobile}px`,
+    [theme.breakpoints.up('sm')]: {
+      width: `${theme.extras.sharePopper.width}px`,
+    },
+    margin: 'auto',
+    '& .MuiDialog-paper': {
+      overflowX: 'hidden',
+    },
+  },
   close: {
     padding: '1rem',
     position: 'absolute',

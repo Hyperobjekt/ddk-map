@@ -17,7 +17,7 @@ import {
 const styles = makeStyles(theme => ({
   root: {
     position: 'absolute',
-    bottom: '88px',
+    bottom: '80px',
     right: '16px',
     width: '40px',
     height: 'auto',

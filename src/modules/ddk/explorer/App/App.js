@@ -62,14 +62,23 @@ const App = props => {
         breakpoint === 'sm' ||
         breakpoint === 'md'
       ),
+      windowInnerHeight: window.innerHeight,
     })
   }
 
   useEffect(() => {
-    // console.log('useEffect')
+    // console.log(
+    //   'load, ',
+    //   window.innerWidth,
+    //   window.innerHeight,
+    // )
     setBrowserWidthAndBreakpoint()
     window.addEventListener('resize', () => {
-      // console.log('resize, ', window.innerWidth)
+      // console.log(
+      //   'resize, ',
+      //   window.innerWidth,
+      //   window.innerHeight,
+      // )
       setBrowserWidthAndBreakpoint()
     })
   }, [])

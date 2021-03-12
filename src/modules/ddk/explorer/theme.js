@@ -46,6 +46,8 @@ export const variables = {
   },
   dimensions: {
     navbarHeight: '64px',
+    navbarHeightPx: 64,
+    navbarHeightSmPx: 56,
     controlPanelWidth: '72px',
     spacer: `0.8rem`,
   },
@@ -138,7 +140,8 @@ export const theme = createMuiTheme({
       zIndex: 10,
     },
     sharePopper: {
-      width: 320,
+      width: 420,
+      widthMobile: 320,
     },
     mapPopup: {
       width: 287,

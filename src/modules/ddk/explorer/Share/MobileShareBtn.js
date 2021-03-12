@@ -3,10 +3,11 @@ import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
 import shallow from 'zustand/shallow'
 import { makeStyles } from '@material-ui/core/styles'
-
-import useStore from '../store'
 import { IconButton } from '@material-ui/core'
 import { FiShare2 } from 'react-icons/fi'
+
+import useStore from '../store'
+import { theme } from './../theme'
 
 const styles = makeStyles(theme => ({
   root: {
