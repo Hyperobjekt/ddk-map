@@ -22,11 +22,14 @@ const useStyles = makeStyles(theme => ({
     borderBottom: `1px solid ${theme.extras.variables.colors.lightLightGray}`,
     textAlign: 'bottom',
     color: theme.extras.variables.colors.lightGray,
-    fontSize: '13px',
     lineHeight: '22px',
     letterSpacing: '0.25px',
     display: 'flex',
     justifyContent: 'space-between',
+    fontSize: '8px',
+    [theme.breakpoints.up('sm')]: {
+      fontSize: '13px',
+    },
   },
   popItemLong: {
     flex: '0 0 62%',

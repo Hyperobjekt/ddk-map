@@ -44,6 +44,7 @@ const Layout = ({ ...props }) => {
     return !!isMobile
       ? {
           height: `${windowInnerHeight}px`,
+          bottom: 0,
         }
       : { height: `100vh` }
   }, [isMobile, breakpoint])
