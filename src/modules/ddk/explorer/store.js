@@ -93,6 +93,10 @@ const useStore = create((set, get) => ({
   centerState: 0,
   // Hovered tract.
   hoveredTract: 0,
+  // Activate a tract after flyTo
+  flyToTrack: false,
+  // Is the user currently interacting with the map?
+  mapInteractionState: false,
   // Array of previously hovered tracts.
   hoveredTractArr: [],
   pushHoveredTract: tract => {

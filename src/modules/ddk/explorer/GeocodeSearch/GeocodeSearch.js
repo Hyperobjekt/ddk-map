@@ -9,7 +9,10 @@ import { fade, makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import shallow from 'zustand/shallow'
 
-import { FULL_FUNCT_ZOOM_THRESHOLD } from './../../../../constants/map'
+import {
+  FULL_FUNCT_ZOOM_THRESHOLD,
+  FLY_TO_ZOOM,
+} from './../../../../constants/map'
 import useStore from '../store'
 
 /**
@@ -66,8 +69,11 @@ const GeocodeSearch = ({ ...props }) => {
       flyToLatLon(
         suggestion.suggestion.center[1],
         suggestion.suggestion.center[0],
-        12,
+        FLY_TO_ZOOM,
       )
+      setStoreValues({
+        flyToTract: true,
+      })
     }
     // If intro panel is dsplayed, hide it.
     if (!!showIntroModal) {

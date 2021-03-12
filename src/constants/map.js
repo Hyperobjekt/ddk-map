@@ -233,6 +233,9 @@ export const MAP_CONTROLS_CLASSES = [
 export const MAIN_INDEX = 'xc'
 export const SUB_INDICES = ['xe', 'xh', 'xo']
 
+// Default zoom level for all fly-to actions.
+export const FLY_TO_ZOOM = 13
+
 export const STATES = {
   1: {
     full: 'Alabama',
