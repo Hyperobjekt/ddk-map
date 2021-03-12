@@ -16,6 +16,7 @@ import {
 const styles = makeStyles(theme => ({
   root: {
     padding: '32px',
+    overflowY: 'scroll',
     fontFamily: 'Fira Sans',
     '& .MUIPaper-root, & .MuiDialog-paper': {
       overflowY: 'visible !important',

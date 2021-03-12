@@ -18,9 +18,9 @@ const useStyles = makeStyles(theme => ({
     overflowX: 'hidden',
     width: '100%',
     // width: `86%`,
-    // [theme.breakpoints.up('sm')]: {
-    //   width: `${theme.extras.sharePopper.width}px`,
-    // },
+    [theme.breakpoints.up('lg')]: {
+      width: `${theme.extras.sharePopper.widthMobile}px`,
+    },
     backgroundColor: theme.palette.background.paper,
     boxShadow: `0px 0px 4px rgba(0, 0, 0, 0.25)`,
     borderRadius: '5px',
