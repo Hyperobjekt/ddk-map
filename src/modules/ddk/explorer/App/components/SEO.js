@@ -36,7 +36,7 @@ const SEO = () => {
       <link
         rel="icon"
         type="image/png"
-        href={`${root}${String(favicon).replace('/', '')}`}
+        href={favicon}
         sizes="16x16"
       />
       <meta
@@ -58,12 +58,12 @@ const SEO = () => {
       <meta name="og:type" content={`website`} />
       <meta
         name="og:image"
-        content={`${root}${String(shareImage).replace(
-          '/',
-          '',
-        )}`}
+        content={`${root}${shareImage}`}
       />
-      <meta name="og:url" content={`${root}${shareHash}`} />
+      <meta
+        name="og:url"
+        content={`${root}${shareHash ? shareHash : ''}`}
+      />
       <meta name="fb:app_id" content={FB_APP_ID} />
 
       <meta
@@ -80,10 +80,7 @@ const SEO = () => {
       />
       <meta
         name="twitter:image"
-        content={`${root}${String(shareImage).replace(
-          '/',
-          '',
-        )}`}
+        content={`${root}${shareImage}`}
       />
       <meta
         name="twitter:card"

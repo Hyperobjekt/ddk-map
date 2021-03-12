@@ -815,6 +815,8 @@ const BaseMap = ({ ...props }) => {
     maxZoom: DEFAULT_VIEWPORT.maxZoom,
     mapStyle: mapStyle,
     preserveDrawingBuffer: true,
+    scrollZoom: false,
+    dragRotate: false,
     onMouseMove: handleMouseMove,
     onMouseOut: handleMouseOut,
     onResize: handleResize,
