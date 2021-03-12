@@ -215,8 +215,11 @@ const getShapeFilters = (type, context) => {
       break
     case type === 'states':
       return [
-        'all',
-        ['!=', ['number', ['get', 'fips']], ['number', 43]],
+        'case',
+        // If puerto rico, filter out.
+        ['==', ['number', ['get', 'fips']], ['number', 43]],
+        false,
+        true,
       ]
       break
     default:
@@ -241,9 +244,9 @@ export const getPolygonLines = (source, type, context) => {
       'line-color': [
         'case',
         ['==', type, 'states'],
-        '#fff',
+        theme.extras.variables.colors.ddkRed,
         ['==', type, 'metros'],
-        theme.extras.variables.colors.ddkRed, // DDK_RED, // '#D65743',
+        theme.extras.variables.colors.ddkRed,
         ['==', type, 'tracts'],
         [
           'case',
@@ -257,7 +260,7 @@ export const getPolygonLines = (source, type, context) => {
               ['==', ['feature-state', 'active'], true],
             ],
           ],
-          theme.extras.variables.colors.ddkRed, // CHOROPLETH_COLORS[4],
+          theme.extras.variables.colors.ddkRed,
           [
             '==',
             [
@@ -336,10 +339,10 @@ export const getPolygonLines = (source, type, context) => {
             FULL_FUNCT_ZOOM_THRESHOLD,
           ],
         ],
-        10,
+        6,
         // State that is not centered.
         ['all', ['==', type, 'states']],
-        2,
+        0,
         // Metro area that is centered.
         [
           'all',
