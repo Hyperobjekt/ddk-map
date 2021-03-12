@@ -137,6 +137,8 @@ const BaseMap = ({ ...props }) => {
     flyToReset,
     breakpoint,
     windowInnerHeight,
+    flyToTract,
+    mapSize,
   } = useStore(
     state => ({
       activeView: state.activeView,
@@ -161,6 +163,8 @@ const BaseMap = ({ ...props }) => {
       flyToReset: state.flyToReset,
       breakpoint: state.breakpoint,
       windowInnerHeight: state.windowInnerHeight,
+      flyToTract: state.flyToTract,
+      mapSize: state.mapSize,
     }),
     shallow,
   )
@@ -278,6 +282,54 @@ const BaseMap = ({ ...props }) => {
     }
   }, [activeYear])
 
+  /**
+   * Remove active state from prev tract, add to curr tract
+   * @param {} tract
+   * @param {*} panelActive
+   */
+  const switchActiveTract = tract => {
+    if (tract.id !== prev.activeShape) {
+      // Set states for both.
+      setFeatureState(
+        prev.activeShape,
+        'ddkids_tracts',
+        'tracts',
+        'active',
+        false,
+      )
+    }
+    setFeatureState(
+      tract.id,
+      'ddkids_tracts',
+      'tracts',
+      'active',
+      true,
+    )
+  }
+
+  // const switchHoveredTract = tract => {
+  //   // console.log('switchHoveredTract(), ', tract)
+  //   pushHoveredTract(tract.id)
+  //   if (tract.id !== prev.activeShape) {
+  //     // console.log('removing previous')
+  //     // Set states for both.
+  //     setFeatureState(
+  //       prev.activeShape,
+  //       'ddkids_tracts',
+  //       'tracts',
+  //       'hovered',
+  //       false,
+  //     )
+  //   }
+  //   setFeatureState(
+  //     tract.id,
+  //     'ddkids_tracts',
+  //     'tracts',
+  //     'hovered',
+  //     true,
+  //   )
+  // }
+
   const handleClick = e => {
     // console.log('Map click, ', e)
     if (activeView === 'embed') {
@@ -315,25 +367,7 @@ const BaseMap = ({ ...props }) => {
       )
       if (!!tracts && tracts.length > 0) {
         // If the clicked item is new, reset.
-        if (tracts[0].id !== prev.activeShape) {
-          // Set states for both.
-          localMapRef.setFeatureState(
-            {
-              id: prev.activeShape,
-              source: 'ddkids_tracts',
-              sourceLayer: 'tracts',
-            },
-            { active: false },
-          )
-        }
-        localMapRef.setFeatureState(
-          {
-            id: tracts[0].id,
-            source: 'ddkids_tracts',
-            sourceLayer: 'tracts',
-          },
-          { active: true },
-        )
+        switchActiveTract(tracts[0])
         setStoreValues({
           activeShape: tracts[0].id,
           slideoutTract: tracts[0].id,
@@ -471,35 +505,41 @@ const BaseMap = ({ ...props }) => {
     // If hovering a tract, and tract is different,
     // reset hovered.
     if (!!tracts && tracts.length > 0 && !isControl) {
-      // console.log(
-      //   'mousemove hovered tracts array: ',
-      //   tracts,
-      // )
+      console.log(
+        'mousemove hovered tracts array: ',
+        tracts,
+      )
+      // if (tracts[0].id !== prev.hoveredTract) {
+      // pushHoveredTract(tracts[0].id)
+      // switchHoveredTract(tracts[0])
+
       if (tracts[0].id !== prev.hoveredTract) {
         pushHoveredTract(tracts[0].id)
+        console.log('removing previous')
         // Set states for both.
         setFeatureState(
-          prev.hoveredTract,
+          prev.activeShape,
           'ddkids_tracts',
           'tracts',
           'hovered',
           false,
         )
-        setFeatureState(
-          tracts[0].id,
-          'ddkids_tracts',
-          'tracts',
-          'hovered',
-          true,
-        )
-        // Set new hovered hovered feature in store.
-        updates = {
-          ...updates,
-          hoveredTract: tracts[0].id,
-          hoveredFeature: tracts[0],
-        }
+      }
+      setFeatureState(
+        tracts[0].id,
+        'ddkids_tracts',
+        'tracts',
+        'hovered',
+        true,
+      )
+      // Set new hovered hovered feature in store.
+      updates = {
+        ...updates,
+        hoveredTract: tracts[0].id,
+        hoveredFeature: tracts[0],
       }
     }
+
     // Setting mouse coords and lnglat
     // for general use by tooltips, etc.
     updates = {
@@ -511,13 +551,48 @@ const BaseMap = ({ ...props }) => {
     setStoreValues(updates)
   }
 
+  /**
+   * Handles tract highlight after a fly-to
+   */
+  const handleTransitionEnd = () => {
+    // console.log('handleTransitionEnd, ', flyToTract)
+    // Get point at map center
+    // const mapEl = document.getElementById('map')
+    // const mapCenterX = mapEl.offsetWidth / 2
+    // const mapCenterY = mapEl.offsetHeight / 2
+    var tracts = localMapRef.queryRenderedFeatures(
+      [mapSize[0] / 2, mapSize[1] / 2],
+      {
+        layers: [`tractsShapes`],
+      },
+    )
+    // console.log('handleTransitionEnd, ', flyToTract, tracts)
+    // If there's a fly-to tract to highlight, find it.
+    if (!!flyToTract) {
+      // const tract = features.find(feature => {
+      //   return feature.layer.id === `tractShapes`
+      // })
+      if (tracts.length > 0) {
+        // console.log('tracts, ', tracts)
+        switchActiveTract(tracts[0])
+        setStoreValues({
+          activeShape: tracts[0].id,
+          slideoutTract: tracts[0].id,
+          slideoutFeature: tracts[0],
+          flyToTract: false,
+        })
+      }
+    }
+  }
+
   const updateCentered = () => {
+    // console.log('updateCentered, ')
     if (!!localMapRef && !!loaded) {
       // console.log('local map ref exists')
       // Get point at map center
-      const mapEl = document.getElementById('map')
-      const mapCenterX = mapEl.offsetWidth / 2
-      const mapCenterY = mapEl.offsetHeight / 2
+      // const mapEl = document.getElementById('map')
+      // const mapCenterX = mapEl.offsetWidth / 2
+      // const mapCenterY = mapEl.offsetHeight / 2
       // Find all features at a point
       const layersArray = CENTER_TRACKED_SHAPES.map(
         layer => {
@@ -525,7 +600,7 @@ const BaseMap = ({ ...props }) => {
         },
       )
       var features = localMapRef.queryRenderedFeatures(
-        [mapCenterX, mapCenterY],
+        [mapSize[0] / 2, mapSize[1] / 2],
         {
           layers: layersArray,
         },
@@ -556,7 +631,6 @@ const BaseMap = ({ ...props }) => {
           }
         })
         if (
-          // mapViewport[0].zoom >= el.minZoom &&
           !!feature &&
           !!feature.id &&
           !!feature.properties
@@ -565,23 +639,20 @@ const BaseMap = ({ ...props }) => {
             if (feature.id !== prev[el.storeHandle]) {
               // console.log(`Setting centered for ${el.id}.`)
               if (!!prev[el.storeHandle]) {
-                localMapRef.setFeatureState(
-                  {
-                    id: prev[el.storeHandle],
-                    source: el.source,
-                    sourceLayer: el.id,
-                  },
-                  { centered: false },
+                setFeatureState(
+                  prev[el.storeHandle],
+                  el.source,
+                  el.id,
+                  'centered',
+                  false,
                 )
               }
-              localMapRef.setFeatureState(
-                {
-                  id: feature.id,
-                  source: feature.layer.source,
-                  sourceLayer:
-                    feature.layer['source-layer'],
-                },
-                { centered: true },
+              setFeatureState(
+                feature.id,
+                feature.layer.source,
+                feature.layer['source-layer'],
+                'centered',
+                true,
               )
             }
           }
@@ -590,13 +661,12 @@ const BaseMap = ({ ...props }) => {
           ] = !!feature ? feature.id : 0
         } else {
           if (!!prev[el.storeHandle]) {
-            localMapRef.setFeatureState(
-              {
-                id: prev[el.storeHandle],
-                source: el.source,
-                sourceLayer: el.id,
-              },
-              { centered: false },
+            setFeatureState(
+              prev[el.storeHandle],
+              el.source,
+              el.id,
+              'centered',
+              false,
             )
           }
           centerSettingsObj[`center${capitalized}`] = 0
@@ -638,13 +708,12 @@ const BaseMap = ({ ...props }) => {
     setTimeout(() => {
       if (activeShape !== 0) {
         // console.log('has activeShape', localMapRef)
-        localMapRef.setFeatureState(
-          {
-            id: activeShape,
-            source: 'ddkids_tracts',
-            sourceLayer: 'tracts',
-          },
-          { active: true },
+        setFeatureState(
+          activeShape,
+          'ddkids_tracts',
+          'tracts',
+          'active',
+          true,
         )
         const features = localMapRef.querySourceFeatures(
           'ddkids_tracts',
@@ -821,6 +890,7 @@ const BaseMap = ({ ...props }) => {
     onMouseOut: handleMouseOut,
     onResize: handleResize,
     onClick: handleClick,
+    onTransitionEnd: handleTransitionEnd,
   }
 
   return (

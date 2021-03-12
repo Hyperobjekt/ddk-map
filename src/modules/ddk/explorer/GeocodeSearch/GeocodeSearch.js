@@ -71,6 +71,9 @@ const GeocodeSearch = ({ ...props }) => {
         suggestion.suggestion.center[0],
         FLY_TO_ZOOM,
       )
+      setStoreValues({
+        flyToTract: true,
+      })
     }
     // If intro panel is dsplayed, hide it.
     if (!!showIntroModal) {
