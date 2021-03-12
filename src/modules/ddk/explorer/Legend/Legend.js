@@ -51,10 +51,11 @@ const useLegendStyles = makeStyles(theme => ({
   controlGuts: {
     transition: 'height 300ms ease-in-out',
     height: 0,
+    overflow: 'hidden',
     [theme.breakpoints.up('sm')]: {
       height: '330px',
+      // overflow: 'visible',
     },
-    overflow: 'hidden',
   },
   controlActive: {
     height: theme.extras.Legend.heightMobile,
@@ -66,7 +67,7 @@ const useLegendStyles = makeStyles(theme => ({
     },
   },
   controlInactive: {
-    overflow: 'hidden',
+    // overflow: 'hidden',
   },
   row: {
     width: '100%',
@@ -323,6 +324,8 @@ const Legend = ({ ...props }) => {
   ])
 
   const classes = useLegendStyles()
+
+  // console.log('legendControl, ', legendControl)
 
   return (
     <>

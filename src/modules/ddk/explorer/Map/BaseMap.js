@@ -44,9 +44,9 @@ const useStyles = makeStyles(theme => ({
   parent: {
     position: 'absolute',
     left: 0,
-    height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px)`,
+    height: `calc(100vh - ${theme.mixins.toolbar.minHeight}px)`,
     width: '100vw',
-    top: `${theme.mixins.toolbar['@media (min-width:0px) and (orientation: landscape)'].minHeight}px`,
+    top: `${theme.mixins.toolbar.minHeight}px`,
     [theme.breakpoints.up('md')]: {
       height: `calc(100vh - ${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px)`,
       top: `${theme.mixins.toolbar['@media (min-width:600px)'].minHeight}px`,

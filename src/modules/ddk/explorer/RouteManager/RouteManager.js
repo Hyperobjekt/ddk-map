@@ -241,6 +241,9 @@ const RouteManager = props => {
           activePointLayers: params[
             ROUTE_ACTIVE_POINTS
           ].split(','),
+          legendControl: {
+            active: true,
+          },
         })
       }
     }
