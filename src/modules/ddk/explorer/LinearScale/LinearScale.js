@@ -9,7 +9,7 @@ import { getRoundedValue, getHashLeft } from './../utils'
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    height: '56px',
+    height: '34px',
     position: 'relative',
   },
   bar: {
@@ -28,17 +28,18 @@ const useStyles = makeStyles(theme => ({
   },
   hash: {
     width: '0.5px',
-    height: '36px',
+    height: '30px',
     backgroundColor: theme.extras.variables.colors.ddkRed, // '#58798F',
   },
   hashMean: {
     width: '0.5px',
-    height: '18px',
+    height: '10px',
     backgroundColor: '#58798F',
   },
   scaleLabelGroup: {
     display: 'flex',
     justifyContent: 'space-between',
+    marginTop: '-22.5px',
   },
   scaleLabel: {
     fontSize: '12px',

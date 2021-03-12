@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     transition: 'max-height 200ms ease-in-out',
     padding: '0 1rem',
     '& .linear-scale': {
-      margin: '8px 0',
+      margin: '24px 0',
     },
   },
   collapseOpen: {
