@@ -307,28 +307,28 @@ const BaseMap = ({ ...props }) => {
     )
   }
 
-  // const switchHoveredTract = tract => {
-  //   // console.log('switchHoveredTract(), ', tract)
-  //   pushHoveredTract(tract.id)
-  //   if (tract.id !== prev.activeShape) {
-  //     // console.log('removing previous')
-  //     // Set states for both.
-  //     setFeatureState(
-  //       prev.activeShape,
-  //       'ddkids_tracts',
-  //       'tracts',
-  //       'hovered',
-  //       false,
-  //     )
-  //   }
-  //   setFeatureState(
-  //     tract.id,
-  //     'ddkids_tracts',
-  //     'tracts',
-  //     'hovered',
-  //     true,
-  //   )
-  // }
+  const switchHoveredTract = tract => {
+    // console.log('switchHoveredTract(), ', tract)
+    pushHoveredTract(tract.id)
+    if (tract.id !== prev.hoveredTract) {
+      // console.log('removing previous')
+      // Set states for both.
+      setFeatureState(
+        prev.hoveredTract,
+        'ddkids_tracts',
+        'tracts',
+        'hovered',
+        false,
+      )
+    }
+    setFeatureState(
+      tract.id,
+      'ddkids_tracts',
+      'tracts',
+      'hovered',
+      true,
+    )
+  }
 
   const handleClick = e => {
     // console.log('Map click, ', e)
@@ -505,33 +505,12 @@ const BaseMap = ({ ...props }) => {
     // If hovering a tract, and tract is different,
     // reset hovered.
     if (!!tracts && tracts.length > 0 && !isControl) {
-      console.log(
-        'mousemove hovered tracts array: ',
-        tracts,
-      )
-      // if (tracts[0].id !== prev.hoveredTract) {
-      // pushHoveredTract(tracts[0].id)
-      // switchHoveredTract(tracts[0])
-
-      if (tracts[0].id !== prev.hoveredTract) {
-        pushHoveredTract(tracts[0].id)
-        console.log('removing previous')
-        // Set states for both.
-        setFeatureState(
-          prev.activeShape,
-          'ddkids_tracts',
-          'tracts',
-          'hovered',
-          false,
-        )
-      }
-      setFeatureState(
-        tracts[0].id,
-        'ddkids_tracts',
-        'tracts',
-        'hovered',
-        true,
-      )
+      // console.log(
+      //   'mousemove hovered tracts array: ',
+      //   tracts,
+      // )
+      pushHoveredTract(tracts[0].id)
+      switchHoveredTract(tracts[0])
       // Set new hovered hovered feature in store.
       updates = {
         ...updates,
@@ -557,9 +536,6 @@ const BaseMap = ({ ...props }) => {
   const handleTransitionEnd = () => {
     // console.log('handleTransitionEnd, ', flyToTract)
     // Get point at map center
-    // const mapEl = document.getElementById('map')
-    // const mapCenterX = mapEl.offsetWidth / 2
-    // const mapCenterY = mapEl.offsetHeight / 2
     var tracts = localMapRef.queryRenderedFeatures(
       [mapSize[0] / 2, mapSize[1] / 2],
       {
@@ -589,10 +565,6 @@ const BaseMap = ({ ...props }) => {
     // console.log('updateCentered, ')
     if (!!localMapRef && !!loaded) {
       // console.log('local map ref exists')
-      // Get point at map center
-      // const mapEl = document.getElementById('map')
-      // const mapCenterX = mapEl.offsetWidth / 2
-      // const mapCenterY = mapEl.offsetHeight / 2
       // Find all features at a point
       const layersArray = CENTER_TRACKED_SHAPES.map(
         layer => {
@@ -884,7 +856,7 @@ const BaseMap = ({ ...props }) => {
     maxZoom: DEFAULT_VIEWPORT.maxZoom,
     mapStyle: mapStyle,
     preserveDrawingBuffer: true,
-    scrollZoom: false,
+    scrollZoom: true,
     dragRotate: false,
     onMouseMove: handleMouseMove,
     onMouseOut: handleMouseOut,
