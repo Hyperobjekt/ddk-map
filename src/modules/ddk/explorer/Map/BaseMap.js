@@ -825,12 +825,7 @@ const BaseMap = ({ ...props }) => {
       className={clsx(classes.parent, {
         [classes.embed]: activeView === 'embed',
       })}
-      style={
-        !!isMobile &&
-        (breakpoint === 'xs' || breakpoint === 'sm')
-          ? { ...height }
-          : {}
-      }
+      style={!!isMobile ? { ...height } : {}}
     >
       <Mapbox
         ref={mapRef}
