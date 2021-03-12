@@ -227,28 +227,36 @@ const BaseMap = ({ ...props }) => {
   /**
    * Clears hovered state from old hovered items (cleanup for fast mouse movement).
    */
+  const resetTractHoverStates = () => {
+    // console.log('resetTractHoverStates()')
+    const tracts = localMapRef
+      .queryRenderedFeatures({
+        layers: ['tractsShapes'], // layers: ['tractsShapes', 'tractsLines'],
+      })
+      .filter(el => el.state.hovered === true)
+    // console.log('tracts,', tracts.length, tracts)
+    for (var i = 0; i < tracts.length; i++) {
+      // console.log(
+      //   `Removing hover state from ${tracts[i].id}`,
+      // )
+      setFeatureState(
+        tracts[i].id,
+        'ddkids_tracts',
+        'tracts',
+        'hovered',
+        false,
+      )
+    }
+  }
+
   useEffect(() => {
     // console.log(
     //   'checking hovered tract array, ',
     //   hoveredTractArr,
     // )
-
-    if (!!loaded && hoveredTractArr.length > 80) {
-      // console.log(
-      //   'clearing hovered tract array, ',
-      //   hoveredTractArr,
-      // )
-      for (var i = 0; i++; i < hoveredTractArr.length) {
-        if (hoveredTractArr[i] !== activeShape) {
-          setFeatureState(
-            hoveredTractArr[i],
-            'ddkids_tracts',
-            'tracts',
-            'hovered',
-            false,
-          )
-        }
-      }
+    if (!!loaded && hoveredTractArr.length > 30) {
+      // console.log('in useeffect, ', hoveredTractArr.length)
+      resetTractHoverStates()
       setStoreValues({ hoveredTractArr: [] })
     }
   }, [hoveredTractArr])
@@ -305,7 +313,7 @@ const BaseMap = ({ ...props }) => {
       const tracts = localMapRef.queryRenderedFeatures(
         mouseXY,
         {
-          layers: ['tractsShapes', 'tractsLines'],
+          layers: ['tractsShapes'], // layers: ['tractsShapes', 'tractsLines'],
         },
       )
       if (!!tracts && tracts.length > 0) {
@@ -420,7 +428,7 @@ const BaseMap = ({ ...props }) => {
     const tracts = localMapRef.queryRenderedFeatures(
       e.point,
       {
-        layers: ['tractsShapes', 'tractsLines'],
+        layers: ['tractsShapes'], // layers: ['tractsShapes', 'tractsLines'],
       },
     )
     // console.log('tracts, ', tracts)
