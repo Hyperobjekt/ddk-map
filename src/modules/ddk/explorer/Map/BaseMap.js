@@ -9,14 +9,8 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { makeStyles } from '@material-ui/core/styles'
-import {
-  Typography,
-  useMediaQuery,
-} from '@material-ui/core'
-import ReactMapGL, {
-  NavigationControl,
-  Popup,
-} from 'react-map-gl'
+import { Typography } from '@material-ui/core'
+import { NavigationControl } from 'react-map-gl'
 import Mapbox, {
   useMapStore,
   useMapViewport,
@@ -28,8 +22,10 @@ import Mapbox, {
 } from '@hyperobjekt/mapbox'
 import { fromJS, set } from 'immutable'
 import shallow from 'zustand/shallow'
+import { isMobile } from 'react-device-detect'
 
 import useStore from './../store'
+import { theme } from './../theme'
 import {
   DEFAULT_VIEWPORT,
   CENTER_TRACKED_SHAPES,
@@ -40,12 +36,9 @@ import { defaultMapStyle } from './utils/selectors'
 import { getLayers } from './utils/layers'
 import { getSources } from './utils/sources'
 import { useDebounce, usePrevious } from './../utils'
-import { getClosest } from './utils/utils'
 import MapPopup from './components/MapPopup'
 import MoreControlsContainer from './components/MoreControlsContainer'
-import { MobileShareBtn } from './../Share'
 import { getIsControl, getParents } from './../utils'
-import { PublishSharp } from '@material-ui/icons'
 
 const useStyles = makeStyles(theme => ({
   parent: {
@@ -60,7 +53,6 @@ const useStyles = makeStyles(theme => ({
       left: `${theme.extras.controlPanel.width}px`,
       width: `calc(100vw - ${theme.extras.controlPanel.width}px)`,
     },
-    root: {},
   },
   embed: {
     height: `100vh`,
@@ -142,6 +134,8 @@ const BaseMap = ({ ...props }) => {
     pushHoveredTract,
     showIntroModal,
     flyToReset,
+    breakpoint,
+    windowInnerHeight,
   } = useStore(
     state => ({
       activeView: state.activeView,
@@ -164,6 +158,8 @@ const BaseMap = ({ ...props }) => {
       pushHoveredTract: state.pushHoveredTract,
       showIntroModal: state.showIntroModal,
       flyToReset: state.flyToReset,
+      breakpoint: state.breakpoint,
+      windowInnerHeight: state.windowInnerHeight,
     }),
     shallow,
   )
@@ -800,6 +796,17 @@ const BaseMap = ({ ...props }) => {
     [defaultMapStyle, layers],
   )
 
+  const height = useMemo(() => {
+    return {
+      height: `${
+        windowInnerHeight -
+        theme.mixins.toolbar[
+          '@media (min-width:0px) and (orientation: landscape)'
+        ].minHeight
+      }px`,
+    }
+  }, [isMobile, breakpoint])
+
   // Passed through to the MapGL component.
   const mapProps = {
     mapboxApiAccessToken: token,
@@ -818,6 +825,12 @@ const BaseMap = ({ ...props }) => {
       className={clsx(classes.parent, {
         [classes.embed]: activeView === 'embed',
       })}
+      style={
+        !!isMobile &&
+        (breakpoint === 'xs' || breakpoint === 'sm')
+          ? { ...height }
+          : {}
+      }
     >
       <Mapbox
         ref={mapRef}
