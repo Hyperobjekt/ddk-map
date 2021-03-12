@@ -22,12 +22,17 @@ const SEO = () => {
     shallow,
   )
 
+  const root = window.location.href.slice(
+    0,
+    window.location.href.indexOf('#'),
+  )
+
   return (
     <Helmet>
       <html lang={activeLang} />
       <meta charSet="utf-8" />
       <title>{i18n.translate(`SITE_TITLE`)}</title>
-      <link rel="canonical" href={BASE_URL} />
+      <link rel="canonical" href={root} />
       <link
         rel="icon"
         type="image/png"
@@ -53,15 +58,12 @@ const SEO = () => {
       <meta name="og:type" content={`website`} />
       <meta
         name="og:image"
-        content={`${BASE_URL}${String(shareImage).replace(
+        content={`${root}${String(shareImage).replace(
           '/',
           '',
         )}`}
       />
-      <meta
-        name="og:url"
-        content={`${BASE_URL}${shareHash}`}
-      />
+      <meta name="og:url" content={`${root}${shareHash}`} />
       <meta name="fb:app_id" content={FB_APP_ID} />
 
       <meta
@@ -78,7 +80,7 @@ const SEO = () => {
       />
       <meta
         name="twitter:image"
-        content={`${BASE_URL}${String(shareImage).replace(
+        content={`${root}${String(shareImage).replace(
           '/',
           '',
         )}`}
